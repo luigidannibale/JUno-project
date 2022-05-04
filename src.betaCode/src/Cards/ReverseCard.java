@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class ReverseCard extends Card implements ActionCard {
 
-    protected ReverseCard(CardColor color, Image icon)
+    public ReverseCard(CardColor color, Image icon)
     {
         super(color, icon, CardValue.REVERSE);
     }

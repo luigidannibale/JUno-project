@@ -7,8 +7,8 @@ import java.awt.*;
 
 public class WildCard extends Card implements WildAction {
 
-    public WildCard(CardColor color, Image icon)
+    public WildCard(Image icon)
     {
-        super(color,icon, CardValue.WILD);
+        super(CardColor.WILD,icon, CardValue.WILD);
     }
 }
