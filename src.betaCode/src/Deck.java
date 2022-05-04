@@ -18,9 +18,12 @@ public class Deck {
         for (CardColor c : CardColor.values()){
             if (c == CardColor.WILD) continue;
             int k = 14*c.getIntValue();
-            int skip1=11+k,skip2=67+k;
-            int rev1=12+k,rev2=68+k;
-            int draw1=13+k,draw2=69+k;
+            //int skip1=11+k,skip2=67+k;
+            //int rev1=12+k,rev2=68+k;
+            //int draw1=13+k,draw2=69+k;
+            int skip1=11+k;
+            int rev1=12+k;
+            int draw1=13+k;
 
             deck.addAll(Arrays.asList(new SkipCard(c, null), new SkipCard(c, null)));
             deck.addAll(Arrays.asList(new ReverseCard(c, null), new ReverseCard(c, null)));
