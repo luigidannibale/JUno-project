@@ -1,4 +1,6 @@
-public enum UnoCardColor {
+package Enumerations;
+
+public enum CardColor {
     YELLOW,
     RED,
     GREEN,
