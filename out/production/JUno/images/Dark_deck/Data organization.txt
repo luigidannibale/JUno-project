@@ -1,0 +1,24 @@
+How many cards in an uno deck (from : "https://www.unorules.org/how-many-cards-in-uno/")
+19 Red cards – 0 to 9
+19 Blue cards – 0 to 9
+19 Green cards – 0 to 9
+19 Yellow cards – 0 to 9
+8 Skip cards – two cards of each color
+8 Reverse cards – two cards of each color
+8 Draw cards – two cards of each color
+8 Black cards – 4 wild cards and 4 Wild Draw 4 cards
+4 Blank cards (can be used as replacements cards or as special cards that fit your house rules.) For original Uno, you can put them aside.
+
+
+--Our work--
+Each card has a name based on numbers (i.e. "0.png") and the calculation of those names are organised in such a mathematic pattern thought as it follows:
+
+wild			: 14*(1-2-3-4)
+wild draw 4		: 14*(5-6-7-8)
+blank cards		: 57-71-85-99
+
+0-9			: 1-10     + 14*color
+skip-reverse-draw	: 11-12-13 + 14*color
+1-9			: 58-66    + 14*color
+skip-reverse-draw	: 67-68-69 + 14*color
+color legend : R:0 - Y:1 - G:2 - B:3
