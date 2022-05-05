@@ -2,17 +2,15 @@ package model;
 
 import org.json.JSONObject;
 
-import java.io.FileReader;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class HumanPlayer extends Player{
 
-    private static final String filePath = "file.json";
+    private static final String filePath = "resources/file.json";
     private int matchWon;
     private int matchLost;
     private int level; //float and the decimal part is in a progress bar
@@ -77,6 +75,6 @@ public class HumanPlayer extends Player{
     }
 
     public int getMatchWon() { return matchWon; }
-    public int getMatchLost() {return matchLost; }
+    public int getMatchLost() { return matchLost; }
     public int getLevel() { return level; }
 }

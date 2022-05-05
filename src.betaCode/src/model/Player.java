@@ -10,7 +10,9 @@ public abstract class Player {
     protected String name;
     protected Stack<Card> hand;
 
-    public void drawCard(Card drawedCard){  hand.push(drawedCard);  };
-    public Card playCard(){  return hand.pop();  };
+    public void drawCard(Card drawedCard){  hand.push(drawedCard);  }
+
+    public Card playCard(){  return hand.pop();  }
+
     public abstract void shoutUno();
 }
