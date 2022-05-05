@@ -30,9 +30,9 @@ public class HumanPlayer extends Player{
 
     public boolean getProfile(String filePath)
     {
-        try (Reader file = new FileReader(filePath)) {
+        try {
             //We can write any JSONArray or JSONObject instance to the file
-            String text = new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
+            String text = Files.readString(Paths.get(filePath));
             System.out.println(text);
 
 
