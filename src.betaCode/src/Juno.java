@@ -1,6 +1,7 @@
 import model.Cards.*;
 import model.Deck;
 import model.Enumerations.CardValue;
+import model.HumanPlayer;
 
 import java.util.Random;
 
@@ -42,5 +43,6 @@ public class Juno {
         System.out.println("skip:"+skip);
         System.out.println("reverse:"+reverse);
         System.out.println("normal:"+normal);
+        HumanPlayer gigi = new HumanPlayer("gigione");
     }
 }
