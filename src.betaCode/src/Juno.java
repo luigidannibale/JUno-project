@@ -8,6 +8,11 @@ import java.util.Random;
 public class Juno {
     public static void main(String[] args){
         new PrimoFrame();
+        provaDeck();
+        HumanPlayer gigi = new HumanPlayer("gigione");
+    }
+
+    public static void provaDeck(){
         Deck deck = new Deck();
         System.out.print("I'm shuffling deck");
         for(int casualNumberOfTimes = 1; casualNumberOfTimes<(new Random()).nextInt(4,7); casualNumberOfTimes++)
@@ -43,6 +48,5 @@ public class Juno {
         System.out.println("skip:"+skip);
         System.out.println("reverse:"+reverse);
         System.out.println("normal:"+normal);
-        HumanPlayer gigi = new HumanPlayer("gigione");
     }
 }
