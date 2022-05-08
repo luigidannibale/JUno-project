@@ -1,6 +1,7 @@
 package model;
 
 import model.Cards.Card;
+import model.Enumerations.CardColor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,16 +27,15 @@ public abstract class Player {
         return hand;
     }
 
-    public List<Card> getPlayableCards(Card card){
-        List<Card> playableCard = new ArrayList<>(hand);
+    public List<Card> getPlayableCards(Card check){
+        List<Card> playableCard = new ArrayList<>();
 
-        /*
-        Iterator<Card> i = playableCard.iterator();
-        while(i.hasNext()){
-            Card c = i.next();
-            if (c.getColor() != card.getColor()) i.remove();
-        }*/
-        playableCard.removeIf(c -> c.getColor() != card.getColor());
+        //in teoria il +4 si può giocare solo se non si ha nessuna carta dello stesso colore
+        for (Card card : hand) {
+            if (card.getColor() == check.getColor()) playableCard.add(card);
+            else if (card.getValue() == check.getValue()) playableCard.add(card);
+            else if (card.getColor() == CardColor.WILD) playableCard.add(card);
+        }
 
         return playableCard;
     }

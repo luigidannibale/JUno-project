@@ -34,12 +34,14 @@ public class UnoGameTable {
             }
         }
 
+        discards.push(deck.draw());
+
         //debug
+        System.out.println(discards.peek());
         for (Player p : players) {
-            System.out.println(p.name + " " + p.getHand());;
+            System.out.println(p.name + " " + p.getHand() + "\n-playable: " + p.getPlayableCards(discards.peek()));;
         }
 
-        discards.push(deck.draw());
         //if discard discard.peek == draw -> il primo pesca due carte
         //if discard discard.peek == reverse -> il primo gioca e poi cambia giro
         //if discard discard.peek == skip -> il primo viene skippato
