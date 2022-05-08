@@ -17,9 +17,10 @@ public class PrimoFrame extends JFrame {
 
         setSize(800, 800);
         setLocationRelativeTo(null);            //centra il frame
-        setResizable(false);
+        //setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
+        setIconImage(new ImageIcon("resources/images/icon2.png").getImage());
     }
 
     private void InitializeComponents(){
