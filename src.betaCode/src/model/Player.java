@@ -28,15 +28,13 @@ public abstract class Player {
     }
 
     public List<Card> getPlayableCards(Card check){
+        //List<Card> playableCard = hand.stream().filter(card -> card.isPlayable(check)).collect(Collectors.toList());
         List<Card> playableCard = new ArrayList<>();
 
         //in teoria il +4 si può giocare solo se non si ha nessuna carta dello stesso colore
         for (Card card : hand) {
-            if (card.getColor() == check.getColor()) playableCard.add(card);
-            else if (card.getValue() == check.getValue()) playableCard.add(card);
-            else if (card.getColor() == CardColor.WILD) playableCard.add(card);
+            if (card.isPlayable(check)) playableCard.add(card);
         }
-
         return playableCard;
     }
 

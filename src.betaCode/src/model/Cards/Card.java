@@ -20,6 +20,10 @@ public class Card {
 
     public CardColor getColor() { return color; }
 
+    public boolean isPlayable(Card check){
+        return getColor() == check.getColor() || getValue() == check.getValue() || getColor() == CardColor.WILD;
+    }
+
     @Override
     public String toString(){
         return value.name() + "-"+ color.name();

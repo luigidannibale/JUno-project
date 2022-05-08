@@ -2,6 +2,7 @@ package model;
 
 import model.Cards.Card;
 
+import java.util.List;
 import java.util.Stack;
 
 public class UnoGameTable {
@@ -12,14 +13,14 @@ public class UnoGameTable {
     private Stack<Card> discards;
     private Player[] players;
 
-    private int turno;
+    private int turn;
 
     public UnoGameTable(Player[] players){
         deck = new Deck();
         discards = new Stack<>();
         this.players = players;
 
-        turno = 0;
+        turn = 0;
     }
 
     public void startGame(){
@@ -50,6 +51,15 @@ public class UnoGameTable {
     }
 
     public void playTurn(){
+        List<Card> playableCards = players[turn].getPlayableCards(discards.peek());
 
+        if (playableCards.size() == 0) {
+            Card drawed = deck.draw();
+            if (!drawed.isPlayable(discards.peek())) skipTurn();
+        }
+    }
+
+    public void skipTurn(){
+        turn ++;
     }
 }

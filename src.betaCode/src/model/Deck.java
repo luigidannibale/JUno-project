@@ -31,8 +31,6 @@ public class Deck {
             }
         }//deck creation ends
         shuffle();
-
-
     }
 
     public Card draw() { return deck.pop(); }
