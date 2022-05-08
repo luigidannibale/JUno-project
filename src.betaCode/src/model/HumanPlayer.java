@@ -16,9 +16,9 @@ public class HumanPlayer extends Player{
     private int level; //float and the decimal part is in a progress bar
 
     public HumanPlayer(String nickname){
-        super.name = nickname;
-        if (!getProfile(filePath))
-            updateProfile(filePath);
+        super(nickname);
+        //if (!getProfile(filePath))
+            //updateProfile(filePath);
 
 
     }

@@ -2,14 +2,22 @@ import model.Cards.*;
 import model.Deck;
 import model.Enumerations.CardValue;
 import model.HumanPlayer;
+import model.Player;
+import model.UnoGameTable;
 
 import java.util.Random;
 
 public class Juno {
     public static void main(String[] args){
         new PrimoFrame();
-        provaDeck();
+        //provaDeck();
         HumanPlayer gigi = new HumanPlayer("gigione");
+        HumanPlayer d = new HumanPlayer("danielone");
+        HumanPlayer w = new HumanPlayer("waluigi");
+        HumanPlayer wa = new HumanPlayer("wario");
+
+        UnoGameTable uno = new UnoGameTable(new Player[] {gigi, d, w, wa});
+        uno.startGame();
     }
 
     public static void provaDeck(){

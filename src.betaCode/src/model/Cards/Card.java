@@ -18,6 +18,8 @@ public class Card {
         return value;
     }
 
+    public CardColor getColor() { return color; }
+
     @Override
     public String toString(){
         return value.name() + "-"+ color.name();
