@@ -8,26 +8,34 @@ public class PrimoFrame extends JFrame {
 
     private JButton button;
 
+    private final int frameWidth = 1400;
+    private final int frameHeight = 900;
+    private final String pathImages = "resources/images/";
+
     public PrimoFrame(){
         super("Prima finestra");
+        setLayout(new BorderLayout());
+        //HMMM è da sistemare decisamente
+        setContentPane(new JLabel(new ImageIcon((pathImages + "background.png"))));
         //Divide il frame in righe e colonne
         setLayout(new GridBagLayout());
 
         InitializeComponents();
 
-        setSize(800, 800);
-        setLocationRelativeTo(null);            //centra il frame
+        setSize(frameWidth, frameHeight);
+        //centra il frame
+        setLocationRelativeTo(null);
         //setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setIconImage(new ImageIcon(pathImages + "icon2.png").getImage());
         setVisible(true);
-        setIconImage(new ImageIcon("resources/images/icon2.png").getImage());
     }
 
     private void InitializeComponents(){
         //Components
         label = new JLabel("Prova");
 
-        image = new JLabel(new ImageIcon("resources/images/White_deck/01.png"));
+        image = new JLabel(new ImageIcon(pathImages + "White_deck/01.png"));
 
         button = new JButton("Cliccami");
         button.setFocusPainted(false);

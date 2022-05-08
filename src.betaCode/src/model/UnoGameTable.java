@@ -2,6 +2,8 @@ package model;
 
 import model.Cards.Card;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
@@ -57,6 +59,11 @@ public class UnoGameTable {
             Card drawed = deck.draw();
             if (!drawed.isPlayable(discards.peek())) skipTurn();
         }
+    }
+
+    public void reverse(){
+        Collections.reverse(Arrays.asList(players));
+        turn = Math.abs(turn - players.length);     // |indice - num giocatori|
     }
 
     public void skipTurn(){
