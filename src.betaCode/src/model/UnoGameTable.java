@@ -14,7 +14,7 @@ public class UnoGameTable {
     //basta riprendere lo stack degli scarti e assegnarlo al deck
     private Stack<Card> discards;
     private Player[] players;
-
+    
     private int turn;
 
     public UnoGameTable(Player[] players){
