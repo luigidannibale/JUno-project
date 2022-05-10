@@ -63,30 +63,47 @@ public class MainFrame extends JFrame {
 
     private void InitializeComponents()
     {
+        //Components
+        startingPanel = new StartingMenuPanel();
+
+        JButton start = new JButton("Start");
+
         JPanel p = new JPanel();
         p.setBackground(Color.orange);
         p.setVisible(true);
         p.setSize(250,250);
-        JButton start = new JButton("Start");
-        start.addActionListener(e -> View.AudioManager.getInstance().play("resources/audio/rick roll.wav"));
-        GridBagConstraints layout = new GridBagConstraints();
-        layout.gridx = 1;
-        layout.gridy = 2;
-        layout.weightx = 0;
-        layout.weighty = 0.01;
         p.add(start);
-        add(p, layout);
+
+        JButton stop = new JButton("Stop");
+
         JPanel p1 = new JPanel();
         p1.setBackground(Color.green);
         p1.setVisible(true);
         p1.setSize(250,250);
-        JButton stop = new JButton("Stop");
+        p1.add(stop);
+
+        //Listener
+        start.addActionListener(e -> View.AudioManager.getInstance().play("resources/audio/rick roll.wav"));
         stop.addActionListener(e -> View.AudioManager.getInstance().play(null));
+
+        //Layout
+        GridBagConstraints layout = new GridBagConstraints();
+        layout.gridx = 1;
+        layout.gridy = 1;
+        layout.weightx = 0;
+        layout.weighty = 0;
+        add(startingPanel,layout);
+
+        layout.gridx = 1;
+        layout.gridy = 2;
+        layout.weightx = 0;
+        layout.weighty = 0.01;
+        add(p, layout);
+
         layout.gridx = 1;
         layout.gridy = 0;
         layout.weightx = 0;
         layout.weighty = 0.01;
-        p1.add(stop);
         add(p1, layout);
     }
 
