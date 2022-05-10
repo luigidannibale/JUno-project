@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Juno {
     public static void main(String[] args){
-        new PrimoFrame();
+        new MainFrame();
         //provaDeck();
         HumanPlayer gigi = new HumanPlayer("gigione");
         HumanPlayer d = new HumanPlayer("danielone");

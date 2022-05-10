@@ -1,12 +1,10 @@
 package model;
 
 import model.Cards.Card;
-import model.Enumerations.CardColor;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 public abstract class Player {
 
@@ -27,15 +25,9 @@ public abstract class Player {
         return hand;
     }
 
-    public List<Card> getPlayableCards(Card check){
-        //List<Card> playableCard = hand.stream().filter(card -> card.isPlayable(check)).collect(Collectors.toList());
-        List<Card> playableCard = new ArrayList<>();
-
-        //in teoria il +4 si può giocare solo se non si ha nessuna carta dello stesso colore
-        for (Card card : hand) {
-            if (card.isPlayable(check)) playableCard.add(card);
-        }
-        return playableCard;
+    public List<Card> getPlayableCards(Card check)
+    {
+        return hand.stream().filter(card -> card.isPlayable(check)).collect(Collectors.toList());
     }
 
     public abstract void shoutUno();
