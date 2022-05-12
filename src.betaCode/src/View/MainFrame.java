@@ -1,7 +1,10 @@
 package View;
 
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame {
     private JPanel userPanel;
@@ -14,7 +17,8 @@ public class MainFrame extends JFrame {
         super("J Uno");
         //setResizable(false);
         //setLayout(new BorderLayout());
-        setContentPane(new JLabel(getImageIcon("MainFrame/background.png")));
+        //setContentPane(new JLabel(getImageIcon("MainFrame/background.png")));
+        setContentPane(new BasicBackgroundPanel(getImageIcon("MainFrame/background.png").getImage()));
         setLayout(new GridBagLayout());
         setSize(frameWidth, frameHeight);
         setLocationRelativeTo(null);    //centra il frame
@@ -32,7 +36,7 @@ public class MainFrame extends JFrame {
         setVisible(true);
 
 
-        /*addWindowListener(new WindowAdapter()
+        addWindowListener(new WindowAdapter()
         {
             @Override
             public void windowClosing(WindowEvent e)
@@ -50,7 +54,7 @@ public class MainFrame extends JFrame {
                         options, options[1]);
                 if (confirm == JOptionPane.YES_OPTION) System.exit(0);
             }
-        });*/
+        });
     }
 
     private ImageIcon getImageIcon(String filename){
@@ -59,66 +63,73 @@ public class MainFrame extends JFrame {
 
     private void InitializeComponents()
     {
+        //Components
+        startingPanel = new StartingMenuPanel();
+
+        JButton start = new JButton("Start");
+
         JPanel p = new JPanel();
         p.setBackground(Color.orange);
         p.setVisible(true);
         p.setSize(250,250);
-        JButton start = new JButton("Start");
-        start.addActionListener(e -> View.AudioManager.getInstance().play("resources/audio/rick roll.wav"));
-        GridBagConstraints layout = new GridBagConstraints();
-        layout.gridx = 1;
-        layout.gridy = 2;
-        layout.weightx = 0;
-        layout.weighty = 0.01;
         p.add(start);
-        add(p, layout);
+
+        JButton stop = new JButton("Stop");
+
         JPanel p1 = new JPanel();
         p1.setBackground(Color.green);
         p1.setVisible(true);
         p1.setSize(250,250);
-        JButton stop = new JButton("Stop");
+        p1.add(stop);
+
+        //Listener
+        start.addActionListener(e -> View.AudioManager.getInstance().play("resources/audio/rick roll.wav"));
         stop.addActionListener(e -> View.AudioManager.getInstance().play(null));
+
+        //Layout
+        GridBagConstraints layout = new GridBagConstraints();
+        layout.gridx = 1;
+        layout.gridy = 1;
+        layout.weightx = 0;
+        layout.weighty = 0;
+        add(startingPanel,layout);
+
+        layout.gridx = 1;
+        layout.gridy = 2;
+        layout.weightx = 0;
+        layout.weighty = 0.01;
+        add(p, layout);
+
         layout.gridx = 1;
         layout.gridy = 0;
         layout.weightx = 0;
         layout.weighty = 0.01;
-        p1.add(stop);
         add(p1, layout);
     }
-        //Components
-        //label = new JLabel("Prova");
 
-        //image = new JLabel(new ImageIcon(pathImages + "White_deck/01.png"));
+    public class BasicBackgroundPanel extends JPanel
+    {
+        private final Image background;
 
+        public BasicBackgroundPanel(Image background)
+        {
+            this.background = background;
+            setLayout( new BorderLayout() );
+        }
 
-        //button.setFocusPainted(false);
+        @Override
+        protected void paintComponent(Graphics g)
+        {
+            super.paintComponent(g);
+            Graphics2D gd = (Graphics2D)g.create();
+            gd.drawImage(background, 0, 0, Math.max(getWidth(), 800), Math.max(getHeight(), 600), null);
+            gd.dispose();
+        }
 
-        //Listener
-        /*button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("riuscita");
-            }
-        });*/
-        //
-
-        //Layout
-        /*
-
-        layout.gridx = 0;
-        layout.gridy = 0;
-        layout.weightx = 0;
-        layout.weighty = 0.01;
-        add(label, layout);
-
-
-
-        layout.gridx = 0;
-        layout.gridy = 1;
-        layout.weightx = 0;
-        layout.weighty = 1.0;
-        layout.gridwidth = 2;
-        layout.gridheight = 1;
-        add(image, layout);*/
-
+        @Override
+        public Dimension getPreferredSize()
+        {
+            return new Dimension(background.getWidth(this), background.getHeight(this));
+        }
+    }
 }

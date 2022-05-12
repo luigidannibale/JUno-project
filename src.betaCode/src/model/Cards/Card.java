@@ -3,7 +3,7 @@ package model.Cards;
 import model.Enumerations.CardColor;
 import model.Enumerations.CardValue;
 
-public class Card {
+public class Card /*implements Comparable<Card>*/{
 
     protected final CardColor color;
     protected final CardValue value;
@@ -28,4 +28,10 @@ public class Card {
     public String toString(){
         return value.name() + "-"+ color.name();
     }
+
+    /*
+    @Override
+    public int compareTo(Card o) {
+        return getColor() == o.getColor() ? 0 : getValue() == o.getValue() ? -1 : 1;
+    }*/
 }
