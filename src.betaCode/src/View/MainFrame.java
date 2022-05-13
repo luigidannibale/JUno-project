@@ -1,10 +1,7 @@
 package View;
 
 import javax.swing.*;
-import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame {
     private JPanel userPanel;
@@ -35,7 +32,7 @@ public class MainFrame extends JFrame {
         InitializeComponents();
         setVisible(true);
 
-
+        /* devo fare i test non posso perdere tempo a chiudere jdialogs di conferma
         addWindowListener(new WindowAdapter()
         {
             @Override
@@ -54,7 +51,7 @@ public class MainFrame extends JFrame {
                         options, options[1]);
                 if (confirm == JOptionPane.YES_OPTION) System.exit(0);
             }
-        });
+        });*/
     }
 
     private ImageIcon getImageIcon(String filename){
