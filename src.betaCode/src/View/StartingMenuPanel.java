@@ -8,7 +8,8 @@ import java.util.Arrays;
 
 public class StartingMenuPanel extends JPanel {
     private String ImagesPath = "resources/images/MainFrame/panel/";
-    private enum compSizes{
+
+    /*private enum compSizes{
         Small(48),
         Medium(56),
         Big(64),
@@ -59,7 +60,10 @@ public class StartingMenuPanel extends JPanel {
         }
 
     }
-    private JLabel[] icons;
+
+     */
+    //private JLabel[] icons;
+    private ImageComponent[] icons;
     private JLabel[] options;
 
     public StartingMenuPanel(){
@@ -71,11 +75,20 @@ public class StartingMenuPanel extends JPanel {
 
     private void InitializeComponents(){
         //Components
+        /*
         icons = new JLabel[]{
                 new JLabel(new ImageIcon(comp.StartGame.getPath(compSizes.Small.getSize()))),
                 new JLabel(new ImageIcon(comp.Settings.getPath(48))),
                 new JLabel(new ImageIcon(comp.Quit.getPath(48)))
         };
+         */
+        icons = new ImageComponent[]{
+                new ImageComponent("Startgame", ImageComponent.Size.SMALL),
+                new ImageComponent("Settings", ImageComponent.Size.SMALL),
+                new ImageComponent("Quit", ImageComponent.Size.SMALL)
+        };
+
+
         GridBagConstraints layout = new GridBagConstraints();
         for (int i = 0 ; i<3;i++)
         {
@@ -92,6 +105,7 @@ public class StartingMenuPanel extends JPanel {
         };*/
 
         //Listener
+
         Arrays.stream(icons).forEach(op -> op.addMouseListener(new MouseAdapter() {
 
             @Override
@@ -100,6 +114,7 @@ public class StartingMenuPanel extends JPanel {
                 //System.out.println(op.getWidth() + " " + op.getHeight());
                 //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                 //è da fare con due immagini separate
+                /*
                 if (e.getComponent() instanceof JLabel) {
                     String icona = ((JLabel) e.getComponent()).getIcon().toString().replace(ImagesPath, "").replace(".png", "");
                     System.out.println(((JLabel) e.getComponent()).getIcon().toString().replace(ImagesPath, "").replace(".png", ""));
@@ -108,19 +123,24 @@ public class StartingMenuPanel extends JPanel {
                     int size = Integer.getInteger(icona.substring(icona.length()-2,icona.length()));
 
                     //finiamo dopo 
-                    comp.valueOf(name)
+                    comp.valueOf(name);
 
-                }
+                }*/
+                op.setIcon(ImageComponent.Size.MEDIUM);
+
             }
+
 
             @Override
             public void mouseExited(MouseEvent e) {
                 //op.setSize(op.getWidth() - 15, op.getHeight() - 15);
                 //System.out.println(op.getWidth() + " " + op.getHeight());
-                Image i = ((ImageIcon) op.getIcon()).getImage();
-                i = i.getScaledInstance(op.getWidth() - 15, op.getHeight() - 5, Image.SCALE_SMOOTH);
-                op.setIcon(new ImageIcon(i));
+                //Image i = ((ImageIcon) op.getIcon()).getImage();
+                //i = i.getScaledInstance(op.getWidth() - 15, op.getHeight() - 5, Image.SCALE_SMOOTH);
+                //op.setIcon(new ImageIcon(i));
+                op.setIcon(ImageComponent.Size.SMALL);
             }
+
         }));
 
         //Layout
