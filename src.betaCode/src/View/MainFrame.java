@@ -16,7 +16,9 @@ public class MainFrame extends JFrame {
         //setLayout(new BorderLayout());
         //setContentPane(new JLabel(getImageIcon("MainFrame/background.png")));
         var a = new ImageBackground(getImageIcon("MainFrame/background.png").getImage());
-        setContentPane(a);
+        //a.setBounds(0,0, frameWidth, frameHeight);
+        a.setSize(frameWidth, frameHeight);
+        //setContentPane(a);
         setLayout(null);
         setSize(frameWidth, frameHeight);
         setLocationRelativeTo(null);    //centra il frame
@@ -26,8 +28,9 @@ public class MainFrame extends JFrame {
         startingPanel = new StartingMenuPanel();
         //startingPanel.setBounds(getHeight()/2,);
         //startingPanel.setLocation(getWidth()/2, getHeight()/2);
-        add(startingPanel);
+        a.add(startingPanel);
 
+        add(a);
 
         InitializeComponents();
         setVisible(true);

@@ -17,7 +17,9 @@ public class ImageBackground extends JPanel{
     {
         super.paintComponent(g);
         Graphics2D gd = (Graphics2D)g.create();
-        gd.drawImage(background, 0, 0, Math.max(getWidth(), 800), Math.max(getHeight(), 600), null);
+        int w = getRootPane().getWidth(), h = getRootPane().getHeight();
+        setSize(w, h);
+        gd.drawImage(background, 0, 0, Math.max(w, 800), Math.max(h, 600), null);
         gd.dispose();
     }
 
