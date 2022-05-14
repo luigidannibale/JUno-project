@@ -5,10 +5,7 @@ import model.Enumerations.CardColor;
 import model.Enumerations.CardValue;
 import model.Player.Player;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class UnoGameTable {
@@ -38,8 +35,6 @@ public class UnoGameTable {
     private Stack<Card> discards;
     private Player[] players;
 
-    boolean win = false;
-
     public UnoGameTable(Player[] players)
     {
         deck = new Deck();
@@ -53,7 +48,7 @@ public class UnoGameTable {
 
         //sarebbe da scegliere chi inizia?
         //debug
-        deck.deck.removeIf(c -> c.getColor() == CardColor.WILD);
+        //deck.deck.removeIf(c -> c.getColor() == CardColor.WILD);
 
         //distribuzione carte
         IntStream.range(0, 7).forEach(i -> Arrays.stream(players).forEach(p -> p.drawCard(deck.draw())));
@@ -73,6 +68,12 @@ public class UnoGameTable {
             System.out.println();
         }
 
+        auto_game_mode();
+    }
+
+    boolean win = false;
+    private void auto_game_mode(){
+        boolean hasPlayed = false;
         while (!win){
             var player = players[TurnManager.player];
             var lastCard = TurnManager.card;
@@ -90,6 +91,7 @@ public class UnoGameTable {
                 {
                     discards.push(drawed);
                     System.out.println("Played: " + drawed);
+                    hasPlayed = true;
                 }
                 else{
                     player.drawCard(drawed);
@@ -101,6 +103,7 @@ public class UnoGameTable {
                 player.playCard(played);
                 discards.push(played);
                 System.out.println("Played: " + played);
+                hasPlayed = true;
             }
 
             if (player.getHand().size() == 0) win = true;
@@ -108,21 +111,43 @@ public class UnoGameTable {
             TurnManager.card = discards.peek();
             TurnManager.skipTurn();
 
-            if (TurnManager.card.getValue() == CardValue.SKIP){
-                System.out.println("Skipped: " + players[TurnManager.player].getName());
-                TurnManager.skipTurn();
-            }
-            if(TurnManager.card.getValue() == CardValue.DRAW){
-                var drawed = deck.draw(2);
-                System.out.println("Next player " + players[TurnManager.player].getName() + " drawed 2: " + drawed);
-                System.out.println("Skipped");
-                players[TurnManager.player].drawCards(drawed);
-                TurnManager.skipTurn();
-            }
-            if(TurnManager.card.getValue() == CardValue.REVERSE){
-                reverse();
-                System.out.println("Reversed direction");
-                //TurnManager.skipTurn();
+            if (hasPlayed) {
+                switch (TurnManager.card.getValue()) {
+                    case SKIP -> {
+                        System.out.println("Skipped: " + players[TurnManager.player].getName());
+                        TurnManager.skipTurn();
+                    }
+                    case DRAW -> {
+                        var drawed = deck.draw(2);
+                        System.out.println("Next player " + players[TurnManager.player].getName() + " drawed 2: " + drawed);
+                        System.out.println("Skipped");
+                        players[TurnManager.player].drawCards(drawed);
+                        TurnManager.skipTurn();
+                    }
+                    case REVERSE -> {
+                        reverse();
+                        System.out.println("Reversed direction");
+                    }
+                    //TurnManager.skipTurn();
+                    case WILD -> {
+                        Random r = new Random();
+                        var randomColor = CardColor.values()[r.nextInt(4)];
+                        System.out.println("New color: " + randomColor);
+                        TurnManager.card = new Card(randomColor, CardValue.WILD);
+                    }
+                    case WILD_DRAW -> {
+                        Random r = new Random();
+                        var randomColor = CardColor.values()[r.nextInt(4)];
+                        System.out.println("New color: " + randomColor);
+                        TurnManager.card = new Card(randomColor, CardValue.WILD_DRAW);
+                        var drawed = deck.draw(4);
+                        System.out.println("Next player " + players[TurnManager.player].getName() + " drawed 4: " + drawed);
+                        System.out.println("Skipped");
+                        players[TurnManager.player].drawCards(drawed);
+                        TurnManager.skipTurn();
+                    }
+                }
+                hasPlayed = false;
             }
 
             if (deck.size() == 0){
@@ -136,6 +161,7 @@ public class UnoGameTable {
         System.out.println("Winner was:" + players[TurnManager.player].getName());
     }
 
+
     public void playTurn(){
         List<Card> playableCards = players[TurnManager.player].getPlayableCards(TurnManager.card);
         if (playableCards.size() == 0) {
@@ -146,7 +172,7 @@ public class UnoGameTable {
 
     public void reverse(){
         Collections.reverse(Arrays.asList(players));
-        TurnManager.player = Math.abs(TurnManager.player - players.length - 1);
+        TurnManager.player = Math.abs(TurnManager.player - (players.length - 1));
     }
 
 
