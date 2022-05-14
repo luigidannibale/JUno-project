@@ -1,4 +1,4 @@
-package model;
+package model.Player;
 
 import model.Cards.Card;
 
@@ -30,6 +30,8 @@ public abstract class Player {
     {
         return hand.stream().filter(card -> card.isPlayable(check)).collect(Collectors.toList());
     }
+
+    public String getName(){ return name; }
 
     public abstract void shoutUno();
 }

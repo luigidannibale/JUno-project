@@ -3,13 +3,13 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 
-public class BackgroundImage extends JPanel{
+public class ImageBackground extends JPanel{
     private final Image background;
 
-    public BackgroundImage(Image background)
+    public ImageBackground(Image background)
     {
         this.background = background;
-        setLayout( new BorderLayout() );
+        //setLayout( new BorderLayout() );
     }
 
     @Override

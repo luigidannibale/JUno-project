@@ -1,6 +1,6 @@
 package model.Interfaces;
 
-import model.Player;
+import model.Player.Player;
 
 public class GameTurnNode{
 

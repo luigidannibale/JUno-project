@@ -65,4 +65,11 @@ public class StartingMenuPanel extends JPanel {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, background.getWidth(null), background.getHeight(null), null);
     }
+
+    @Override
+    public Dimension getPreferredSize()
+    {
+        return (new Dimension(background.getWidth(null), background.getHeight(null)));
+    }
+
 }

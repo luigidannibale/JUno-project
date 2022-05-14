@@ -1,4 +1,4 @@
-package model;
+package model.Player;
 
 import model.Cards.Card;
 import model.Enumerations.CardColor;

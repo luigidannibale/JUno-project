@@ -15,7 +15,8 @@ public class MainFrame extends JFrame {
         //setResizable(false);
         //setLayout(new BorderLayout());
         //setContentPane(new JLabel(getImageIcon("MainFrame/background.png")));
-        setContentPane(new BackgroundImage(getImageIcon("MainFrame/background.png").getImage()));
+        var a = new ImageBackground(getImageIcon("MainFrame/background.png").getImage());
+        setContentPane(a);
         setLayout(null);
         setSize(frameWidth, frameHeight);
         setLocationRelativeTo(null);    //centra il frame
@@ -24,10 +25,11 @@ public class MainFrame extends JFrame {
 
         startingPanel = new StartingMenuPanel();
         //startingPanel.setBounds(getHeight()/2,);
+        //startingPanel.setLocation(getWidth()/2, getHeight()/2);
         add(startingPanel);
 
 
-        //InitializeComponents();
+        InitializeComponents();
         setVisible(true);
 
         /* devo fare i test non posso perdere tempo a chiudere jdialogs di conferma
@@ -78,8 +80,10 @@ public class MainFrame extends JFrame {
         stop.addActionListener(e -> View.AudioManager.getInstance().play(null));
 
         //Layout
+        p.setLocation(200, 200);
         add(p, BorderLayout.SOUTH);
         add(p1, BorderLayout.NORTH);
+
     }
 
 }

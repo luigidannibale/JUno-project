@@ -2,6 +2,9 @@ import View.MainFrame;
 import model.*;
 import model.Cards.*;
 import model.Enumerations.CardValue;
+import model.Player.AIPlayer;
+import model.Player.HumanPlayer;
+import model.Player.Player;
 
 import java.util.Random;
 

@@ -3,6 +3,7 @@ package model;
 import model.Cards.Card;
 import model.Enumerations.CardColor;
 import model.Enumerations.CardValue;
+import model.Player.Player;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,7 +63,7 @@ public class UnoGameTable {
         //debug
         System.out.println(discards.peek());
         for (Player p : players) {
-            System.out.println(p.name + " " + p.getHand());// + "\n-playable: " +
+            System.out.println(p.getName() + " " + p.getHand());// + "\n-playable: " +
             p.getPlayableCards(discards.peek());
             System.out.println();
         }
@@ -82,5 +83,6 @@ public class UnoGameTable {
         Collections.reverse(Arrays.asList(players));
         TurnManager.player = Math.abs(TurnManager.player - players.length);
     }
+
 
 }
