@@ -71,10 +71,9 @@ public class UnoGameTable {
         auto_game_mode();
     }
 
-    boolean win = false;
     private void auto_game_mode(){
         boolean hasPlayed = false;
-        while (!win){
+        while (true){
             var player = players[TurnManager.player];
             var lastCard = TurnManager.card;
             System.out.println("Deck: " + deck.size() + " Discards: " + discards.size());
@@ -106,10 +105,9 @@ public class UnoGameTable {
                 hasPlayed = true;
             }
 
-            if (player.getHand().size() == 0) win = true;
+            if (player.getHand().size() == 0) break;
 
             TurnManager.card = discards.peek();
-            TurnManager.skipTurn();
 
             if (hasPlayed) {
                 switch (TurnManager.card.getValue()) {
@@ -149,6 +147,8 @@ public class UnoGameTable {
                 }
                 hasPlayed = false;
             }
+
+            TurnManager.skipTurn();
 
             if (deck.size() == 0){
                 System.out.println("Deck re-shuffle");

@@ -42,4 +42,9 @@ public abstract class Player {
     public String getName(){ return name; }
 
     public abstract void shoutUno();
+
+    @Override
+    public String toString(){
+        return name;
+    }
 }
