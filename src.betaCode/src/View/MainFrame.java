@@ -15,21 +15,19 @@ public class MainFrame extends JFrame {
         //setResizable(false);
         //setLayout(new BorderLayout());
         //setContentPane(new JLabel(getImageIcon("MainFrame/background.png")));
-        setContentPane(new BasicBackgroundPanel(getImageIcon("MainFrame/background.png").getImage()));
-        setLayout(new GridBagLayout());
+        setContentPane(new BackgroundImage(getImageIcon("MainFrame/background.png").getImage()));
+        setLayout(null);
         setSize(frameWidth, frameHeight);
         setLocationRelativeTo(null);    //centra il frame
         setDefaultCloseOperation(EXIT_ON_CLOSE); //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setIconImage(getImageIcon("icon2.png").getImage());
-        GridBagConstraints layout = new GridBagConstraints();
-        layout.gridx = 1;
-        layout.gridy = 1;
-        layout.weightx = 0;
-        layout.weighty = 0;
 
         startingPanel = new StartingMenuPanel();
-        add(startingPanel,layout);
-        InitializeComponents();
+        startingPanel.setBounds(getHeight()/2,);
+        add(startingPanel);
+
+
+        //InitializeComponents();
         setVisible(true);
 
         /* devo fare i test non posso perdere tempo a chiudere jdialogs di conferma
@@ -61,10 +59,7 @@ public class MainFrame extends JFrame {
     private void InitializeComponents()
     {
         //Components
-        startingPanel = new StartingMenuPanel();
-
         JButton start = new JButton("Start");
-
         JPanel p = new JPanel();
         p.setBackground(Color.orange);
         p.setVisible(true);
@@ -72,7 +67,6 @@ public class MainFrame extends JFrame {
         p.add(start);
 
         JButton stop = new JButton("Stop");
-
         JPanel p1 = new JPanel();
         p1.setBackground(Color.green);
         p1.setVisible(true);
@@ -84,49 +78,8 @@ public class MainFrame extends JFrame {
         stop.addActionListener(e -> View.AudioManager.getInstance().play(null));
 
         //Layout
-        GridBagConstraints layout = new GridBagConstraints();
-        layout.gridx = 1;
-        layout.gridy = 1;
-        layout.weightx = 0;
-        layout.weighty = 0;
-        add(startingPanel,layout);
-
-        layout.gridx = 1;
-        layout.gridy = 2;
-        layout.weightx = 0;
-        layout.weighty = 0.01;
-        add(p, layout);
-
-        layout.gridx = 1;
-        layout.gridy = 0;
-        layout.weightx = 0;
-        layout.weighty = 0.01;
-        add(p1, layout);
+        add(p, BorderLayout.SOUTH);
+        add(p1, BorderLayout.NORTH);
     }
 
-    public class BasicBackgroundPanel extends JPanel
-    {
-        private final Image background;
-
-        public BasicBackgroundPanel(Image background)
-        {
-            this.background = background;
-            setLayout( new BorderLayout() );
-        }
-
-        @Override
-        protected void paintComponent(Graphics g)
-        {
-            super.paintComponent(g);
-            Graphics2D gd = (Graphics2D)g.create();
-            gd.drawImage(background, 0, 0, Math.max(getWidth(), 800), Math.max(getHeight(), 600), null);
-            gd.dispose();
-        }
-
-        @Override
-        public Dimension getPreferredSize()
-        {
-            return new Dimension(background.getWidth(this), background.getHeight(this));
-        }
-    }
 }

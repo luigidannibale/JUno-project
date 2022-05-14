@@ -1,11 +1,11 @@
 package model.Enumerations;
 
 public enum CardColor {
-    YELLOW(1),
     RED(0),
+    YELLOW(1),
     GREEN(2),
     BLUE(3),
-    WILD(5);
+    WILD(4);
 
     private final int num;
     private CardColor(int num){
