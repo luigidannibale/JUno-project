@@ -23,7 +23,7 @@ public class MainFrame extends JFrame {
         setIconImage(getImageIcon("icon2.png").getImage());
 
         startingPanel = new StartingMenuPanel();
-        startingPanel.setBounds(getHeight()/2,);
+        //startingPanel.setBounds(getHeight()/2,);
         add(startingPanel);
 
 
