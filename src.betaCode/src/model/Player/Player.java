@@ -18,9 +18,17 @@ public abstract class Player {
         hand = new Stack<>();
     }
 
-    public void drawCard(Card drawedCard){  hand.push(drawedCard);  }
+    public void drawCard(Card drawedCard){
+        hand.push(drawedCard);
+    }
 
-    public Card playCard(){  return hand.pop();  }
+    public void drawCards(List<Card> cards){
+        hand.addAll(cards);
+    }
+
+    public void playCard(Card played){
+        hand.remove(played);
+    }
 
     public Stack<Card> getHand(){
         return hand;

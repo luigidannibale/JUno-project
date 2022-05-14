@@ -18,23 +18,27 @@ public class UnoGameTable {
 
         static public void skipTurn(CardValue v, CardColor c){
             player++;
-            if (player > 4) player = player - 5;
+            player = next();
             card = new Card(c,v);
         }
         static public void skipTurn(Card c){
             player++;
-            if (player > 4) player = player - 5;
+            player = next();
             card = c;
         }
         static public void skipTurn(){
             player++;
-            if (player > 4) player = player - 5;
+            player = next();
+        }
+        static public int next(){
+            return player == 4 ? 0 : player;
         }
     }
     private Deck deck;
     private Stack<Card> discards;
     private Player[] players;
 
+    boolean win = false;
 
     public UnoGameTable(Player[] players)
     {
@@ -48,6 +52,8 @@ public class UnoGameTable {
         deck.shuffle();
 
         //sarebbe da scegliere chi inizia?
+        //debug
+        deck.deck.removeIf(c -> c.getColor() == CardColor.WILD);
 
         //distribuzione carte
         IntStream.range(0, 7).forEach(i -> Arrays.stream(players).forEach(p -> p.drawCard(deck.draw())));
@@ -63,12 +69,71 @@ public class UnoGameTable {
         //debug
         System.out.println(discards.peek());
         for (Player p : players) {
-            System.out.println(p.getName() + " " + p.getHand());// + "\n-playable: " +
-            p.getPlayableCards(discards.peek());
+            System.out.println(p.getName() + " " + p.getHand() + "\n-playable: " + p.getPlayableCards(discards.peek()));
             System.out.println();
         }
 
+        while (!win){
+            var player = players[TurnManager.player];
+            var lastCard = TurnManager.card;
+            System.out.println("Deck: " + deck.size() + " Discards: " + discards.size());
+            System.out.println("Player: " + player.getName());
+            System.out.println("lastCard: " + lastCard);
 
+            System.out.println("Hand: " + player.getHand());
+            var playable = player.getPlayableCards(lastCard);
+            System.out.println("Playable: " + playable);
+            if (playable.size() == 0){
+                var drawed = deck.draw();
+                System.out.println("Drawed: " + drawed);
+                if (drawed.isPlayable(lastCard))
+                {
+                    discards.push(drawed);
+                    System.out.println("Played: " + drawed);
+                }
+                else{
+                    player.drawCard(drawed);
+                    System.out.println("New Hand: " + player.getHand());
+                }
+            }
+            else{
+                var played = playable.get(0);
+                player.playCard(played);
+                discards.push(played);
+                System.out.println("Played: " + played);
+            }
+
+            if (player.getHand().size() == 0) win = true;
+
+            TurnManager.card = discards.peek();
+            TurnManager.skipTurn();
+
+            if (TurnManager.card.getValue() == CardValue.SKIP){
+                System.out.println("Skipped: " + players[TurnManager.player].getName());
+                TurnManager.skipTurn();
+            }
+            if(TurnManager.card.getValue() == CardValue.DRAW){
+                var drawed = deck.draw(2);
+                System.out.println("Next player " + players[TurnManager.player].getName() + " drawed 2: " + drawed);
+                System.out.println("Skipped");
+                players[TurnManager.player].drawCards(drawed);
+                TurnManager.skipTurn();
+            }
+            if(TurnManager.card.getValue() == CardValue.REVERSE){
+                reverse();
+                System.out.println("Reversed direction");
+                //TurnManager.skipTurn();
+            }
+
+            if (deck.size() == 0){
+                System.out.println("Deck re-shuffle");
+                deck.re_shuffle(discards);
+            }
+
+            System.out.println("");
+            System.out.println("");
+        }
+        System.out.println("Winner was:" + players[TurnManager.player].getName());
     }
 
     public void playTurn(){
@@ -81,7 +146,7 @@ public class UnoGameTable {
 
     public void reverse(){
         Collections.reverse(Arrays.asList(players));
-        TurnManager.player = Math.abs(TurnManager.player - players.length);
+        TurnManager.player = Math.abs(TurnManager.player - players.length - 1);
     }
 
 

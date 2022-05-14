@@ -46,4 +46,13 @@ public class Deck {
     public void shuffle() { Collections.shuffle(deck); }
 
     public Stack<Card> getDeck() {return deck; }
+
+    public void re_shuffle(Stack<Card> discards){
+        deck = discards;
+        shuffle();
+    }
+
+    public int size(){
+        return deck.size();
+    }
 }
