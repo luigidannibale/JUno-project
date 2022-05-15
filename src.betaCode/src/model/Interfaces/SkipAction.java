@@ -1,8 +1,10 @@
 package model.Interfaces;
 
-public interface SkipAction {
-    public default void skipturn()
-    {
+import model.UnoGameTable;
 
+public interface SkipAction {
+    default void skipturn()
+    {
+        UnoGameTable.TurnManager.skipTurn();
     }
 }

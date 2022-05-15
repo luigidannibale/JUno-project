@@ -1,15 +1,19 @@
 package model;
 
 import model.Cards.Card;
+import model.Cards.WildCard;
 import model.Enumerations.CardColor;
 import model.Enumerations.CardValue;
+import model.Interfaces.ActionCard;
+import model.Interfaces.SkipAction;
+import model.Interfaces.WildAction;
 import model.Player.Player;
 
 import java.util.*;
 import java.util.stream.IntStream;
 
 public class UnoGameTable {
-    private static class TurnManager{
+    public static class TurnManager{
         static int player = 0;
         static Card card;
 
@@ -30,6 +34,8 @@ public class UnoGameTable {
         static public int next(){
             return player == 4 ? 0 : player;
         }
+
+        static public void setCard(Card c){card = c;}
     }
     private Deck deck;
     private Stack<Card> discards;
@@ -107,14 +113,25 @@ public class UnoGameTable {
 
             if (player.getHand().size() == 0) break;
 
-            TurnManager.card = discards.peek();
-
             if (hasPlayed) {
+                TurnManager.card = discards.peek();
+                //if (TurnManager.card instanceof WildAction){
+                if (TurnManager.card.getColor() == CardColor.WILD){
+                    ((WildAction) TurnManager.card).changeColor(TurnManager.card.getValue());
+                }
+                /*if(TurnManager.card instanceof ActionCard){we have a problem
+                    ((ActionCard) TurnManager.card).action();
+                }*/
+                if(TurnManager.card instanceof SkipAction){ //va messo per ultimo
+                    System.out.println("Skipped: " + players[TurnManager.player].getName());
+                    ((SkipAction) TurnManager.card).skipturn();
+                }
+
                 switch (TurnManager.card.getValue()) {
-                    case SKIP -> {
+                    /*case SKIP -> {
                         System.out.println("Skipped: " + players[TurnManager.player].getName());
                         TurnManager.skipTurn();
-                    }
+                    }*/
                     case DRAW -> {
                         var drawed = deck.draw(2);
                         System.out.println("Next player " + players[TurnManager.player].getName() + " drawed 2: " + drawed);
@@ -127,17 +144,17 @@ public class UnoGameTable {
                         System.out.println("Reversed direction");
                     }
                     //TurnManager.skipTurn();
-                    case WILD -> {
+                    /*case WILD -> {
                         Random r = new Random();
                         var randomColor = CardColor.values()[r.nextInt(4)];
                         System.out.println("New color: " + randomColor);
                         TurnManager.card = new Card(randomColor, CardValue.WILD);
-                    }
+                    }*/
                     case WILD_DRAW -> {
-                        Random r = new Random();
+                        /*Random r = new Random();
                         var randomColor = CardColor.values()[r.nextInt(4)];
                         System.out.println("New color: " + randomColor);
-                        TurnManager.card = new Card(randomColor, CardValue.WILD_DRAW);
+                        TurnManager.card = new Card(randomColor, CardValue.WILD_DRAW);*/
                         var drawed = deck.draw(4);
                         System.out.println("Next player " + players[TurnManager.player].getName() + " drawed 4: " + drawed);
                         System.out.println("Skipped");
