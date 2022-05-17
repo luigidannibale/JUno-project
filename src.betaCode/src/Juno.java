@@ -1,6 +1,6 @@
 import View.MainFrame;
-import model.*;
-import model.Cards.*;
+import model.Cards.Card;
+import model.Deck;
 import model.Enumerations.CardValue;
 import model.Player.AIPlayer;
 import model.Player.HumanPlayer;
@@ -12,14 +12,20 @@ public class Juno {
     public static void main(String[] args){
         new MainFrame();
         //provaDeck();
+
         Player gigi = new HumanPlayer("gigione");
         Player d = new AIPlayer("danielone");
         Player w = new AIPlayer("waluigi");
         Player wa = new AIPlayer("wario");
 
-        UnoGameTable uno = new UnoGameTable(new Player[] {gigi, d, w, wa});
-        uno.startGame();
+        //UnoGame uno = new tipoDiUno(new Player[] {mario,filippo,marco,gianfranco});
+        //UnoGameTable uno = new UnoGameTable(new Player[] {gigi, d, w, wa});
+        //uno.startGame();
+
+
+
     }
+
 
     public static void provaDeck(){
         Deck deck = new Deck();

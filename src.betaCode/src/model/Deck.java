@@ -33,26 +33,32 @@ public class Deck {
         shuffle();
     }
 
+    public Stack<Card> getDeck() {return deck; }
+
     public Card draw() { return deck.pop(); }
+
+    public void push(Card card) { deck.push(card); }
 
     public ArrayList<Card> draw(int cardsToDraw)
     {
-        ArrayList<Card> cardsDrawed = new ArrayList<>();
+        ArrayList<Card> drawed = new ArrayList<>();
         for (int i = 0; i < cardsToDraw; i++)
-            cardsDrawed.add(deck.pop());
-        return cardsDrawed;
-    }
-
-    public void shuffle() { Collections.shuffle(deck); }
-
-    public Stack<Card> getDeck() {return deck; }
-
-    public void re_shuffle(Stack<Card> discards){
-        deck = discards;
-        shuffle();
+            drawed.add(deck.pop());
+        return drawed;
     }
 
     public int size(){
         return deck.size();
+    }
+
+    public Card peek(){
+        return deck.peek();
+    }
+
+    public void shuffle() { Collections.shuffle(deck); }
+
+    public void re_shuffle(Stack<Card> discards){
+        deck = discards;
+        shuffle();
     }
 }

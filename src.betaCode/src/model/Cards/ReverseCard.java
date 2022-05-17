@@ -2,15 +2,22 @@ package model.Cards;
 
 import model.Enumerations.CardColor;
 import model.Enumerations.CardValue;
-import model.Interfaces.ActionCard;
+import model.Player.Player;
+import model.TurnManager;
 
-public class ReverseCard extends Card implements ActionCard {
+import java.util.Arrays;
+import java.util.Collections;
+
+public class ReverseCard extends Card {
 
     public ReverseCard(CardColor color)
     {
         super(color, CardValue.REVERSE);
     }
 
-    @Override
-    public void action(){}
+
+    public void reverse(TurnManager turnManager, Player[] players){
+        Collections.reverse(Arrays.asList(players));
+        turnManager.setPlayer(players.length - 1 - turnManager.getPlayer());
+    }
 }
