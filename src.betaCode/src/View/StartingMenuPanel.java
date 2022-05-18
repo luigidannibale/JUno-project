@@ -30,7 +30,7 @@ public class StartingMenuPanel extends JPanel {
         setVisible(true);
     }
 
-    private <T extends JPanel> void InitializeComponents(T[] panels,JFrame f){
+    private <T extends JPanel> void InitializeComponents(T[] panels, JFrame f){
 
 
         icons = new ImageComponent[]{
@@ -39,38 +39,40 @@ public class StartingMenuPanel extends JPanel {
                 new ImageComponent("Quit", ImageComponent.Size.SMALL)
         };
 
-
         icons[0].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (panels[0] != null && panels[0].isValid())
-                {
-                    panels[0].setVisible(true);
-                    setVisible(false);
-                }
+//                if (panels[0] != null && panels[0].isValid())
+//                {
+//                    panels[0].setVisible(true);
+//                    setVisible(false);
+//                }
+                changePanel(panels[0]);
             }
         });
         icons[1].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (panels[1] != null && panels[1].isValid())
-                {
-                    panels[1].setVisible(true);
-                    setVisible(false);
-                }
+//                if (panels[1] != null && panels[1].isValid())
+//                {
+//                    panels[1].setVisible(true);
+//                    setVisible(false);
+//                }
+                changePanel(panels[1]);
             }
         });
         icons[2].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                try
-                {
-                    ((WindowAdapter) ((Arrays.stream(f.getWindowListeners()).toArray())[0])).windowClosing(null);
-                }
-                catch(Exception ex)
-                {
-                    f.dispose();
-                }
+//                try
+//                {
+                    //((WindowAdapter) ((Arrays.stream(f.getWindowListeners()).toArray())[0])).windowClosing(null);
+                    System.exit(0);
+//                }
+//                catch(Exception ex)
+//                {
+//                    f.dispose();
+//                }
             }
         });
 
@@ -94,7 +96,15 @@ public class StartingMenuPanel extends JPanel {
             }
 
         }));
+    }
 
+    //riusabile in altri panel
+    private void changePanel(JPanel p){
+        if (p != null && p.isValid())
+        {
+            p.setVisible(true);
+            setVisible(false);
+        }
     }
 
     @Override
