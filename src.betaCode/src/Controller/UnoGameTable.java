@@ -19,6 +19,5 @@ public class UnoGameTable {
 
     public void startGame() {
         model.startGame(7);
-        
     }
 }
