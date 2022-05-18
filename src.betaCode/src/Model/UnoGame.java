@@ -1,8 +1,13 @@
-package model;
+package Model;
 
-import model.Cards.*;
-import model.Enumerations.*;
-import model.Player.Player;
+import Model.Cards.Card;
+import Model.Cards.DrawCard;
+import Model.Cards.ReverseCard;
+import Model.Enumerations.CardColor;
+import Model.Enumerations.CardValue;
+import Model.Interfaces.SkipAction;
+import Model.Interfaces.WildAction;
+import Model.Player.Player;
 
 import java.util.Arrays;
 import java.util.Observable;
@@ -17,13 +22,27 @@ public abstract class UnoGame extends Observable {
     protected Player[] players;
     protected boolean win;
 
+    protected UnoGame(Player[] players)
+    {
+        deck = new Deck();
+        discards = new Stack<>();
+        this.players = players;
+    }
+
+    /**
+     * Starts a generic game, instantiating the deck and the discards stack,
+     * also distributing cards to each player hand
+     * @param cardsForEachPlayer: the number of cards that are distributed to each player
+     */
     public void startGame(int cardsForEachPlayer)
     {
         win = false;
         deck.shuffle();
+        //Distributing cards to each player
         IntStream.range(0, cardsForEachPlayer).forEach(i -> Arrays.stream(players).forEach(p -> p.drawCard(deck.draw())));
-        //if discard discard.peek == wild_four -> carta rimessa nel deck e se ne prende un'altra
+        //While the first card put on the ground is a wild four it's re-put in the deck, the deck is shuffled, and it is put the first card of the deck on the ground
         while(deck.peek().getValue() == CardValue.WILD_DRAW){ deck.shuffle(); }
+
         discards.push(deck.draw());
         turnManager = new TurnManager(discards.peek());
         cardActionPerformance(discards.peek());
@@ -32,8 +51,7 @@ public abstract class UnoGame extends Observable {
 
 
     public void cardActionPerformance(Card card)
-    {
-
+    {/*
         switch (card.getValue()){
             case REVERSE -> ((ReverseCard) card).reverse(turnManager,players); //if discard discard.peek == reverse -> il primo gioca e poi cambia giro
             case DRAW -> {//if discard discard.peek == draw -> il primo pesca due carte
@@ -52,10 +70,10 @@ public abstract class UnoGame extends Observable {
                 turnManager.updateCard(new Card(c,CardValue.WILD));
             }
             default -> {}
-        }
+        }*/
 
         //Valid alternative
-        /* tornerà...
+
         if (turnManager.getCard() instanceof WildAction && turnManager.getCard().getColor() == CardColor.WILD) {
             CardColor c = ((WildAction) turnManager.getCard()).changeColor();
             turnManager.updateCard(new Card(c,CardValue.WILD));
@@ -66,7 +84,7 @@ public abstract class UnoGame extends Observable {
             ((ReverseCard) turnManager.getCard()).reverse(turnManager, players);
         if(turnManager.getCard() instanceof SkipAction)
             ((SkipAction) turnManager.getCard()).skipTurn(turnManager);
-    */
+
     }
 }
 

@@ -1,7 +1,7 @@
-package model.Cards;
+package Model.Cards;
 
-import model.Enumerations.CardColor;
-import model.Enumerations.CardValue;
+import Model.Enumerations.CardColor;
+import Model.Enumerations.CardValue;
 
 public class Card /*implements Comparable<Card>*/{
 

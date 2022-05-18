@@ -1,6 +1,6 @@
-package model.Interfaces;
+package Model.Interfaces;
 
-import model.Enumerations.CardColor;
+import Model.Enumerations.CardColor;
 
 import java.util.Random;
 

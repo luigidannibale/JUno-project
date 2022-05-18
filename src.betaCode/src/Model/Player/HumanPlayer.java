@@ -1,4 +1,4 @@
-package model.Player;
+package Model.Player;
 
 import org.json.JSONObject;
 

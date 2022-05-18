@@ -4,7 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
-    private JPanel userPanel;
+    private JPanel newGamePanel = new JPanel();
+    private JPanel settingsPanel = new JPanel();
     private StartingMenuPanel startingPanel;
     private final int frameWidth = 1080;
     private final int frameHeight = 720;
@@ -12,31 +13,25 @@ public class MainFrame extends JFrame {
 
     public MainFrame(){
         super("J Uno");
-        //setResizable(false);
-        //setLayout(new BorderLayout());
-        //setContentPane(new JLabel(getImageIcon("MainFrame/background.png")));
-        var a = new ImageBackground(getImageIcon("MainFrame/background.png").getImage());
-        //a.setBounds(0,0, frameWidth, frameHeight);
-        a.setSize(frameWidth, frameHeight);
-        //setContentPane(a);
-        setLayout(null);
+        ImageBackground background = new ImageBackground(getImageIcon("MainFrame/background.png").getImage());
+        setResizable(true);
+        background.setSize(frameWidth, frameHeight);
+        setContentPane(background);
+        //setLayout(null);
+
+        setLayout(new GridBagLayout());
         setSize(frameWidth, frameHeight);
         setLocationRelativeTo(null);    //centra il frame
         setDefaultCloseOperation(EXIT_ON_CLOSE); //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setIconImage(getImageIcon("icon2.png").getImage());
 
-        startingPanel = new StartingMenuPanel();
-        //startingPanel.setBounds(getHeight()/2,);
-        //startingPanel.setLocation(getWidth()/2, getHeight()/2);
-        a.add(startingPanel);
 
-        add(a);
 
         InitializeComponents();
         setVisible(true);
 
-        /* devo fare i test non posso perdere tempo a chiudere jdialogs di conferma
-        addWindowListener(new WindowAdapter()
+        // devo fare i test non posso perdere tempo a chiudere j dialogs di conferma
+        /*addWindowListener(new WindowAdapter()
         {
             @Override
             public void windowClosing(WindowEvent e)
@@ -63,30 +58,24 @@ public class MainFrame extends JFrame {
 
     private void InitializeComponents()
     {
-        //Components
-        JButton start = new JButton("Start");
-        JPanel p = new JPanel();
-        p.setBackground(Color.orange);
-        p.setVisible(true);
-        p.setSize(250,250);
-        p.add(start);
+        newGamePanel.setMinimumSize(new Dimension(500,100));
+        newGamePanel.setPreferredSize(new Dimension(500,100));
+        newGamePanel.setMaximumSize(new Dimension(500,100));
+        newGamePanel.setBackground(Color.CYAN);
+        newGamePanel.add(new JLabel("new game panel goes here"));
+        newGamePanel.setVisible(false);
 
-        JButton stop = new JButton("Stop");
-        JPanel p1 = new JPanel();
-        p1.setBackground(Color.green);
-        p1.setVisible(true);
-        p1.setSize(250,250);
-        p1.add(stop);
+        settingsPanel.setMinimumSize(new Dimension(500,100));
+        settingsPanel.setPreferredSize(new Dimension(500,100));
+        settingsPanel.setMinimumSize(new Dimension(500,100));
+        settingsPanel.setBackground(Color.green);
+        settingsPanel.add(new JLabel("settings panel goes here"));
+        settingsPanel.setVisible(false);
 
-        //Listener
-        start.addActionListener(e -> View.AudioManager.getInstance().play("resources/audio/rick roll.wav"));
-        stop.addActionListener(e -> View.AudioManager.getInstance().play(null));
-
-        //Layout
-        p.setLocation(200, 200);
-        add(p, BorderLayout.SOUTH);
-        add(p1, BorderLayout.NORTH);
-
+        startingPanel = new StartingMenuPanel(new JPanel[]{newGamePanel,settingsPanel},this);
+        add(newGamePanel);
+        add(settingsPanel);
+        add(startingPanel);
     }
 
 }

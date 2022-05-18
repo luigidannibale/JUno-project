@@ -1,8 +1,7 @@
-package model.Player;
+package Model.Player;
 
-import model.Cards.Card;
+import Model.Cards.Card;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;

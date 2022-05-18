@@ -1,10 +1,10 @@
-package model.Cards;
+package Model.Cards;
 
-import model.Deck;
-import model.Enumerations.*;
-import model.Interfaces.*;
-import model.Player.Player;
-import model.TurnManager;
+import Model.Deck;
+import Model.Enumerations.*;
+import Model.Interfaces.*;
+import Model.Player.Player;
+import Model.TurnManager;
 
 public class DrawCard extends Card implements WildAction, SkipAction {
 

@@ -9,5 +9,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="json" level="project" />
+    <orderEntry type="library" name="17.0" level="project" />
+    <orderEntry type="library" name="openjfx" level="application" />
+    <orderEntry type="library" name="javafx-base-17.0.1-sources" level="application" />
   </component>
 </module>

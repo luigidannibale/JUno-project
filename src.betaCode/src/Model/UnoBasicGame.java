@@ -1,19 +1,16 @@
-package model;
+package Model;
 
-import model.Cards.Card;
-import model.Player.AIPlayer;
-import model.Player.Player;
+import Model.Cards.Card;
+import Model.Player.AIPlayer;
+import Model.Player.Player;
 
 import java.util.List;
-import java.util.Stack;
 
 public class UnoBasicGame extends UnoGame{
 
     public UnoBasicGame(Player[] players)
     {
-        deck = new Deck();
-        discards = new Stack<>();
-        this.players = players;
+        super(players);
     }
 
     public void gamePlay(){
@@ -30,12 +27,17 @@ public class UnoBasicGame extends UnoGame{
             Card cardToPlay = null;
             if (player instanceof AIPlayer) cardToPlay = playableCards.get(0);
 
-
             discards.push(cardToPlay);
             turnManager.updateCard(cardToPlay);
 
             win = win || players[turnManager.getPlayer()].getHand().empty() ;
             turnManager.passTurn();
         }
+    }
+    public void playCard(Player player,Card card)
+    {
+        player.playCard(card);
+        discards.push(card);
+        cardActionPerformance(card);
     }
 }

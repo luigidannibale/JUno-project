@@ -1,9 +1,9 @@
-package model.Cards;
+package Model.Cards;
 
-import model.Enumerations.CardColor;
-import model.Enumerations.CardValue;
-import model.Player.Player;
-import model.TurnManager;
+import Model.Enumerations.CardColor;
+import Model.Enumerations.CardValue;
+import Model.Player.Player;
+import Model.TurnManager;
 
 import java.util.Arrays;
 import java.util.Collections;

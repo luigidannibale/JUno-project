@@ -1,7 +1,7 @@
-package model.Player;
+package Model.Player;
 
-import model.Cards.Card;
-import model.Enumerations.CardColor;
+import Model.Cards.Card;
+import Model.Enumerations.CardColor;
 
 import java.util.*;
 import java.util.stream.Collectors;

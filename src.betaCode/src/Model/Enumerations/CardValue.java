@@ -1,4 +1,4 @@
-package model.Enumerations;
+package Model.Enumerations;
 
 public enum CardValue
 {

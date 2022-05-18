@@ -1,10 +1,10 @@
+import Model.Cards.Card;
+import Model.Deck;
+import Model.Enumerations.CardValue;
+import Model.Player.AIPlayer;
+import Model.Player.HumanPlayer;
+import Model.Player.Player;
 import View.MainFrame;
-import model.Cards.Card;
-import model.Deck;
-import model.Enumerations.CardValue;
-import model.Player.AIPlayer;
-import model.Player.HumanPlayer;
-import model.Player.Player;
 
 import java.util.Random;
 
@@ -19,7 +19,7 @@ public class Juno {
         Player wa = new AIPlayer("wario");
 
         //UnoGame uno = new tipoDiUno(new Player[] {mario,filippo,marco,gianfranco});
-        //UnoGameTable uno = new UnoGameTable(new Player[] {gigi, d, w, wa});
+        //UnoGameTable uno = new UnoGameTable(new UnoBasicGame(new Player[] {gigi, d, w, wa}));
         //uno.startGame();
 
 

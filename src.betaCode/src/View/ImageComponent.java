@@ -1,6 +1,7 @@
 package View;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class ImageComponent extends JLabel{
 
@@ -14,6 +15,7 @@ public class ImageComponent extends JLabel{
 
         Size(int s) { size = s; }
         int getSize() { return size; }
+
     }
 
     private static String imagePath = "resources/images/MainFrame/panel/";
@@ -25,6 +27,8 @@ public class ImageComponent extends JLabel{
         super(new ImageIcon(imagePath + imageName + size.getSize() + ".png"));
         this.imageName = imageName;
         this.size = size;
+        setMaximumSize(new Dimension(350, 100));
+        setMinimumSize(new Dimension(350, 100));
     }
 
     public void setIcon(Size s){

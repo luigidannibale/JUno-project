@@ -1,8 +1,8 @@
-package model;
+package Model;
 
-import model.Cards.*;
-import model.Enumerations.CardColor;
-import model.Enumerations.CardValue;
+import Model.Cards.*;
+import Model.Enumerations.CardColor;
+import Model.Enumerations.CardValue;
 
 import java.util.*;
 

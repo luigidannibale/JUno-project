@@ -1,8 +1,8 @@
-package model.Cards;
+package Model.Cards;
 
-import model.Enumerations.CardColor;
-import model.Enumerations.CardValue;
-import model.Interfaces.SkipAction;
+import Model.Enumerations.CardColor;
+import Model.Enumerations.CardValue;
+import Model.Interfaces.SkipAction;
 
 public class SkipCard extends Card implements SkipAction {
 

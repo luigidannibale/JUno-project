@@ -1,6 +1,6 @@
-package model.Interfaces;
+package Model.Interfaces;
 
-import model.TurnManager;
+import Model.TurnManager;
 
 public interface SkipAction {
     default void skipTurn(TurnManager turnManager)
