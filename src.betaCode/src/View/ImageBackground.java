@@ -9,7 +9,6 @@ public class ImageBackground extends JPanel{
     public ImageBackground(Image background)
     {
         this.background = background;
-        //setLayout( new BorderLayout() );
     }
 
     @Override

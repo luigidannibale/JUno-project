@@ -1,12 +1,8 @@
 package Model;
 
-import Model.Cards.Card;
-import Model.Cards.DrawCard;
-import Model.Cards.ReverseCard;
+import Model.Cards.*;
 import Model.Enumerations.CardColor;
 import Model.Enumerations.CardValue;
-import Model.Interfaces.SkipAction;
-import Model.Interfaces.WildAction;
 import Model.Player.Player;
 
 import java.util.Arrays;
@@ -51,7 +47,7 @@ public abstract class UnoGame extends Observable {
 
 
     public void cardActionPerformance(Card card)
-    {/*
+    {
         switch (card.getValue()){
             case REVERSE -> ((ReverseCard) card).reverse(turnManager,players); //if discard discard.peek == reverse -> il primo gioca e poi cambia giro
             case DRAW -> {//if discard discard.peek == draw -> il primo pesca due carte
@@ -70,10 +66,10 @@ public abstract class UnoGame extends Observable {
                 turnManager.updateCard(new Card(c,CardValue.WILD));
             }
             default -> {}
-        }*/
+        }
 
         //Valid alternative
-
+        /*
         if (turnManager.getCard() instanceof WildAction && turnManager.getCard().getColor() == CardColor.WILD) {
             CardColor c = ((WildAction) turnManager.getCard()).changeColor();
             turnManager.updateCard(new Card(c,CardValue.WILD));
@@ -84,7 +80,7 @@ public abstract class UnoGame extends Observable {
             ((ReverseCard) turnManager.getCard()).reverse(turnManager, players);
         if(turnManager.getCard() instanceof SkipAction)
             ((SkipAction) turnManager.getCard()).skipTurn(turnManager);
-
+        */
     }
 }
 

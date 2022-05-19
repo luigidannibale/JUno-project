@@ -1,16 +1,18 @@
+import Controller.UnoGameTable;
 import Model.Cards.Card;
 import Model.Deck;
 import Model.Enumerations.CardValue;
 import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
-import View.MainFrame;
+import Model.UnoBasicGame;
 
 import java.util.Random;
 
 public class Juno {
     public static void main(String[] args){
-        new MainFrame();
+        UnoGameTable table;
+
         //provaDeck();
 
         Player gigi = new HumanPlayer("gigione");
@@ -22,8 +24,7 @@ public class Juno {
         //UnoGameTable uno = new UnoGameTable(new UnoBasicGame(new Player[] {gigi, d, w, wa}));
         //uno.startGame();
 
-
-
+        table = new UnoGameTable(new UnoBasicGame(new Player[]{gigi,d,w,wa}));
     }
 
 
