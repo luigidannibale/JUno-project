@@ -35,9 +35,9 @@ public class StartingMenuPanel extends JPanel {
                     720x560   --> 320x280  (290x 80)
                 */
                 if (compWidth > 1800 && compHeight > 900)
-                    updateSize(440,480,ImageComponent.Size.BIG);
+                    updateSize(440,460,ImageComponent.Size.BIG);
                 else if (compWidth > 1400 && compHeight >850)
-                    updateSize(360,420, ImageComponent.Size.MEDIUM);
+                    updateSize(360,400, ImageComponent.Size.MEDIUM);
                 else if (compWidth < 850 && compHeight < 600)
                     updateSize(300,300,ImageComponent.Size.SMALL);
                 else

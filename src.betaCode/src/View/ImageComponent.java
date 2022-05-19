@@ -42,8 +42,8 @@ public class ImageComponent extends JLabel{
         this.imageName = imageName;
         this.size = size;
         setIcon(getImageIcon(size.getIntSize()));
-        //setMaximumSize(new Dimension(350, 100));
-        //setMinimumSize(new Dimension(350, 100));
+        setMaximumSize(new Dimension(350, 100));
+        setMinimumSize(new Dimension(350, 100));
         setPreferredSize(new Dimension(350, 100));
     }
 
