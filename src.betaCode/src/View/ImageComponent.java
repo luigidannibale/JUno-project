@@ -42,8 +42,9 @@ public class ImageComponent extends JLabel{
         this.imageName = imageName;
         this.size = size;
         setIcon(getImageIcon(size.getIntSize()));
-        setMaximumSize(new Dimension(350, 100));
-        setMinimumSize(new Dimension(350, 100));
+        //setMaximumSize(new Dimension(350, 100));
+        //setMinimumSize(new Dimension(350, 100));
+        setPreferredSize(new Dimension(350, 100));
     }
 
     public void resetIcon()
@@ -71,7 +72,7 @@ public class ImageComponent extends JLabel{
     public void scaleUpIcon()
     {
         Image im = ((ImageIcon) getIcon()).getImage();
-        im = im.getScaledInstance(im.getWidth(this)+15, im.getHeight(this)+10, Image.SCALE_SMOOTH);
+        im = im.getScaledInstance(im.getWidth(this)+15, im.getHeight(this)+5, Image.SCALE_SMOOTH);
         super.setIcon(new ImageIcon(im));
     }
 

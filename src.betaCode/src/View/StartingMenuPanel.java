@@ -2,6 +2,7 @@ package View;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
@@ -34,13 +35,13 @@ public class StartingMenuPanel extends JPanel {
                     720x560   --> 320x280  (290x 80)
                 */
                 if (compWidth > 1800 && compHeight > 900)
-                    updateSize(380,480,ImageComponent.Size.LARGE);
+                    updateSize(440,480,ImageComponent.Size.BIG);
                 else if (compWidth > 1400 && compHeight >850)
-                    updateSize(320,430, ImageComponent.Size.BIG);
+                    updateSize(360,420, ImageComponent.Size.MEDIUM);
                 else if (compWidth < 850 && compHeight < 600)
-                    updateSize(280,320,ImageComponent.Size.SMALL);
+                    updateSize(300,300,ImageComponent.Size.SMALL);
                 else
-                    updateSize(300,350,ImageComponent.Size.MEDIUM);
+                    updateSize(320,360,ImageComponent.Size.MEDIUM);
             }
         });
 
@@ -79,14 +80,18 @@ public class StartingMenuPanel extends JPanel {
             }
         });
 
-        icons[0].setBorder(new EmptyBorder(25, 0, 0, 0));
-        icons[icons.length-1].setBorder(new EmptyBorder(0, 0, 25, 0));
+        //icons[0].setBorder(new EmptyBorder(25, 0, 0, 0));
+        //icons[icons.length-1].setBorder(new EmptyBorder(0, 0, 25, 0));
         add(icons[0], BorderLayout.NORTH);
         add(icons[1], BorderLayout.CENTER);
         add(icons[2], BorderLayout.SOUTH);
 
-
-
+        //debug
+        /*
+        Arrays.stream(icons).forEach(icon -> {
+            icon.setBorder(new LineBorder(Color.black));
+        } );
+        */
 
         Arrays.stream(icons).forEach(op -> op.addMouseListener(new MouseAdapter() {
             @Override
@@ -108,7 +113,9 @@ public class StartingMenuPanel extends JPanel {
         panelHeight = heigth;
         panelWidth = width;
         setSize(panelWidth,panelHeight);
-        Arrays.stream(icons).forEach((icon)-> {icon.setIcon(s);} );
+        int offset = panelHeight*6/100;
+        setBorder(new EmptyBorder(offset,0,offset,0));
+        Arrays.stream(icons).forEach(icon -> icon.setIcon(s));
     }
 
     @Override
