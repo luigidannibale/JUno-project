@@ -92,6 +92,7 @@ public class GameFrame extends JFrame implements Observer {
                 updateSize(1920,1060, ImageComponent.Size.LARGE);
             }
         });
+        p.add(new JLabel("Per dimensionare il frame"));
         p.add(b1);
         p.add(b2);
         p.add(b3);
