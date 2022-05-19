@@ -7,28 +7,45 @@ import java.awt.event.MouseEvent;
 import java.util.Observable;
 import java.util.Observer;
 
-public class GameFrame extends JFrame implements Observer {
-    private JPanel newGamePanel = new JPanel();
-    private JPanel settingsPanel = new JPanel();
+public class MainFrame extends JFrame implements Observer {
+    public enum Dimensions{
+        FULLHD(new Dimension(1920,1080)),
+        WIDESCREEN(new Dimension(1440,920)),
+        HD(new Dimension(1080,720));
+
+        private final Dimension dimension;
+
+        Dimensions(Dimension dimension){
+            this.dimension = dimension;
+        }
+
+        public Dimension getDimension() {
+            return dimension;
+        }
+    }
+
+    private JPanel newGamePanel;
+    private SettingsPanel settingsPanel;
     private StartingMenuPanel startingPanel;
-    private final int framePreferredWidth = 1830;
-    private final int framePreferredHeight = 950;
+    private Dimensions currentDimension = Dimensions.WIDESCREEN;
+
     private final String pathImages = "resources/images/";
     private Image i = getImageIcon("MainFrame/background.png").getImage();
 
-    public GameFrame()
+    public MainFrame()
     {
         super("J Uno");
 
         ImageBackground background = new ImageBackground(getImageIcon("MainFrame/background.png").getImage());
-        background.setSize(framePreferredWidth, framePreferredHeight);
+        background.setSize(currentDimension.getDimension());
         setContentPane(background);
 
         setLayout(new GridBagLayout());
-        setSize(framePreferredWidth, framePreferredHeight);
+        setSize(currentDimension.getDimension());
+        setPreferredSize(currentDimension.getDimension());
         setResizable(false);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE); //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE); //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setIconImage(getImageIcon("icon2.png").getImage());
 
 
@@ -64,36 +81,29 @@ public class GameFrame extends JFrame implements Observer {
     private void InitializeComponents()
     {
         JPanel p = new JPanel();
-        Button b1 = new Button("1");
-        b1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                updateSize(720,560, ImageComponent.Size.SMALL);
-            }
-        });
         Button b2 = new Button("2");
         b2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                updateSize(1080,720, ImageComponent.Size.MEDIUM);
+                updateSize(Dimensions.HD);
             }
         });
         Button b3 = new Button("3");
         b3.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                updateSize(1440,920, ImageComponent.Size.BIG);
+                updateSize(Dimensions.WIDESCREEN);
             }
         });
         Button b4 = new Button("4");
         b4.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                updateSize(1920,1060, ImageComponent.Size.LARGE);
+                updateSize(Dimensions.FULLHD);
             }
         });
-        p.add(new JLabel("Per dimensionare il frame"));
-        p.add(b1);
+        //p.add(new JLabel("Per dimensionare il frame"));
+
         p.add(b2);
         p.add(b3);
         p.add(b4);
@@ -101,7 +111,7 @@ public class GameFrame extends JFrame implements Observer {
         add(p);
 
 
-
+        newGamePanel = new JPanel();
         newGamePanel.setMinimumSize(new Dimension(500,100));
         newGamePanel.setPreferredSize(new Dimension(500,100));
         newGamePanel.setMaximumSize(new Dimension(500,100));
@@ -109,6 +119,7 @@ public class GameFrame extends JFrame implements Observer {
         newGamePanel.add(new JLabel("new game panel goes here"));
         newGamePanel.setVisible(false);
 
+        settingsPanel = new SettingsPanel();
         settingsPanel.setMinimumSize(new Dimension(500,100));
         settingsPanel.setPreferredSize(new Dimension(500,100));
         settingsPanel.setMinimumSize(new Dimension(500,100));
@@ -129,9 +140,14 @@ public class GameFrame extends JFrame implements Observer {
     {
 
     }
-    public void updateSize(int width, int heigth, ImageComponent.Size a ){
-        setSize(width,heigth);
+    public void updateSize(Dimensions dimension){
+        currentDimension = dimension;
+        setSize(dimension.getDimension());
         setLocationRelativeTo(null);
+    }
+
+    public Dimensions getDimension(){
+        return currentDimension;
     }
 
 }

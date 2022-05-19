@@ -25,6 +25,7 @@ public class Juno {
         //uno.startGame();
 
         table = new UnoGameTable(new UnoBasicGame(new Player[]{gigi,d,w,wa}));
+
     }
 
 

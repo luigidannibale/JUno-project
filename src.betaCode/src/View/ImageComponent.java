@@ -8,42 +8,23 @@ public class ImageComponent extends JLabel{
     public enum Size{
         SMALL(48),
         MEDIUM(56),
-        BIG(64),
-        LARGE(80);
+        BIG(64);
 
         final int size;
 
         Size(int s) { size = s; }
         int getIntSize() { return size; }
-        public int getBigger()
-        {
-            switch (size){
-                case 48  -> {return 56;}
-                case 56 -> {return 64; }
-                default     -> {return 80;}
-            }
-        }
-        public int getSmaller()
-        {
-            switch (size){
-                case 64   -> {return 56;}
-                case 80 -> {return 64;}
-                default    -> {return 48;}
-            }
-        }
+        public int getBigger()  { return size == 48 ? 56:  64; }
+        public int getSmaller() { return size == 64 ? 56 : 48; }
     }
 
-    private static final String imagePath = "resources/images/MainFrame/panel/";
-    private final String imageName;
+    private final String imagePath;
     private Size size;
 
-    public ImageComponent(String imageName, Size size){
-        //super(new ImageIcon(imageName + imageName + s));
-        this.imageName = imageName;
+    public ImageComponent(String imagePath, Size size){
+        this.imagePath = imagePath;
         this.size = size;
         setIcon(getImageIcon(size.getIntSize()));
-        //setMaximumSize(new Dimension(350, 100));
-        //setMinimumSize(new Dimension(350, 100));
         setPreferredSize(new Dimension(350, 100));
     }
 
@@ -66,7 +47,7 @@ public class ImageComponent extends JLabel{
     }
 
     public ImageIcon getImageIcon(int size){
-        return new ImageIcon(imagePath + imageName + size + ".png");
+        return new ImageIcon(imagePath + size + ".png");
     }
 
     public void scaleUpIcon()

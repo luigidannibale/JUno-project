@@ -1,30 +1,30 @@
 package Controller;
 
 import Model.UnoGame;
-import View.GameFrame;
+import View.MainFrame;
 
 import java.util.Arrays;
 
 public class UnoGameTable {
     //UnoGame uno = new tipoDiUno(new Player[] {mario,filippo,marco,gianfranco});
-    GameFrame view;
+    MainFrame view;
     UnoGame model;
 
     //qui dentro ci sono anche la view e tutti i suoi eventi
 
     public UnoGameTable(UnoGame model)
     {
-        view = new GameFrame();
+        view = new MainFrame();
         var a = view.getAccessibleContext();
         var b = a.getAccessibleComponent();
 
         System.out.println(Arrays.toString(view.getComponents()));
         this.model = model;
         this.model.addObserver(view);
-        /*
+        /*my computer hates me
         while(true) {
             view.setVisible(true);
-            b.setVisible(false);
+            view.setVisible(false);
         }*/
 
 
