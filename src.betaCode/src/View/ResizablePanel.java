@@ -61,8 +61,9 @@ public class ResizablePanel extends JPanel {
 
     /**
      *
-     * @param panel: the panel that is shawn istead of the current
+     * @param panel: the panel that is shown istead of the current
      */
+
     protected void changePanel(JPanel panel){
         if (panel != null && panel.isValid())
         {

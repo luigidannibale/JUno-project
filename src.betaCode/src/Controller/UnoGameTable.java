@@ -17,8 +17,8 @@ public class UnoGameTable {
         var b = a.getAccessibleComponent();
 
         //System.out.println(Arrays.toString(view.getComponents()));
-        this.model = model;
-        this.model.addObserver(view);
+        //this.model = model;
+        //this.model.addObserver(view);
         /*my computer hates me
         while(true) {
             view.setVisible(true);

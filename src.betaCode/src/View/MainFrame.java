@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import java.util.Observable;
 import java.util.Observer;
 
-public class MainFrame extends JFrame implements Observer {
+public class MainFrame extends JFrame {
     public enum Dimensions{
         FULLHD(new Dimension(1920,1080)),
         WIDESCREEN(new Dimension(1440,920)),
@@ -135,11 +135,10 @@ public class MainFrame extends JFrame implements Observer {
 
     }
 
-    @Override
-    public void update(Observable model, Object o)
-    {
-
+    public StartingMenuPanel getStartingPanel() {
+        return startingPanel;
     }
+
     public void updateSize(Dimensions dimension){
         currentDimension = dimension;
         setSize(dimension.getDimension());
