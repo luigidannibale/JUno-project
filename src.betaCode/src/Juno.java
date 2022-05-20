@@ -29,7 +29,8 @@ public class Juno {
     }
 
 
-    public static void provaDeck(){
+    public static void provaDeck()
+    {
         Deck deck = new Deck();
         System.out.print("I'm shuffling deck");
         for(int casualNumberOfTimes = 1; casualNumberOfTimes<(new Random()).nextInt(4,7); casualNumberOfTimes++)

@@ -10,7 +10,6 @@ public class ImageBackground extends JPanel{
     {
         this.background = background;
     }
-
     @Override
     protected void paintComponent(Graphics g)
     {

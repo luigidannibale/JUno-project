@@ -45,7 +45,7 @@ public class MainFrame extends JFrame implements Observer {
         setPreferredSize(currentDimension.getDimension());
         setResizable(false);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE); //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE); //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setIconImage(getImageIcon("icon2.png").getImage());
 
 
@@ -119,15 +119,15 @@ public class MainFrame extends JFrame implements Observer {
         newGamePanel.add(new JLabel("new game panel goes here"));
         newGamePanel.setVisible(false);
 
-        settingsPanel = new SettingsPanel();
-        settingsPanel.setMinimumSize(new Dimension(500,100));
-        settingsPanel.setPreferredSize(new Dimension(500,100));
-        settingsPanel.setMinimumSize(new Dimension(500,100));
-        settingsPanel.setBackground(Color.green);
-        settingsPanel.add(new JLabel("settings panel goes here"));
+        settingsPanel = new SettingsPanel(this);
+        // settingsPanel.setMinimumSize(new Dimension(500,100));
+        //settingsPanel.setPreferredSize(new Dimension(500,100));
+        //settingsPanel.setMinimumSize(new Dimension(500,100));
+        //settingsPanel.setBackground(Color.green);
+        //settingsPanel.add(new JLabel("settings panel goes here"));
         settingsPanel.setVisible(false);
 
-        startingPanel = new StartingMenuPanel(new JPanel[]{newGamePanel,settingsPanel},this);
+        startingPanel = new StartingMenuPanel(new JPanel[]{newGamePanel,settingsPanel,startingPanel},this);
 
         add(newGamePanel);
         add(settingsPanel);

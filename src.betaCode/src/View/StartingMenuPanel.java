@@ -1,65 +1,49 @@
 package View;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
 import java.util.Arrays;
-import java.util.function.BiFunction;
+import java.util.HashMap;
 
-public class StartingMenuPanel extends JPanel {
-    private final String imagePath = "resources/images/MainFrame/StartingMenuPanel/";
-    private ImageComponent[] icons;
-    private final Image background;
-
-    int panelWidth = 380;
-    int panelHeight = 480;
-
-    public StartingMenuPanel(JPanel[] panels,MainFrame f){
+public class StartingMenuPanel extends ResizablePanel
+{
+    private static final String imagePath = "resources/images/MainFrame/StartingMenuPanel/";
+    public StartingMenuPanel(JPanel[] panels,MainFrame mainFrame)
+    {
+        super(new ImageIcon(imagePath+"background.png").getImage(),mainFrame);
         setLayout(new BorderLayout());
-        background = new ImageIcon(imagePath+"background.png").getImage();
+        Percentages = new HashMap<>(){{
+            put(MainFrame.Dimensions.FULLHD, new Double[]{0.25,0.45});
+            put(MainFrame.Dimensions.WIDESCREEN, new Double[]{0.27,0.45});
+            put(MainFrame.Dimensions.HD, new Double[]{0.33,0.55});
+        }};
+        addScalingListener();
 
-        InitializeComponents(panels,f);
+        InitializeComponents(panels);
         setVisible(true);
-
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentMoved(ComponentEvent e) {
-                BiFunction<Double, Double, Integer> percentage = (num, p) -> ((int) (num * p));
-                MainFrame.Dimensions parentSize = f.getDimension();
-                double widthScalingPercentage, heightScalingPercentage;
-                ImageComponent.Size toSize;
-
-                switch (parentSize){
-                    case FULLHD     -> {widthScalingPercentage = 0.25; heightScalingPercentage = 0.50; toSize = ImageComponent.Size.BIG;}
-                    case WIDESCREEN -> {widthScalingPercentage = 0.27; heightScalingPercentage = 0.45; toSize = ImageComponent.Size.MEDIUM;}
-                    case HD         -> {widthScalingPercentage = 0.33; heightScalingPercentage = 0.55; toSize = ImageComponent.Size.SMALL;}
-                    default         -> {widthScalingPercentage = 0; heightScalingPercentage = 0; toSize = ImageComponent.Size.SMALL;}
-                }
-                updateSize(percentage.apply(parentSize.getDimension().getWidth(), widthScalingPercentage), percentage.apply(parentSize.getDimension().getHeight(), heightScalingPercentage),toSize);
-            }
-        });
     }
 
-    private void InitializeComponents(JPanel[] panels, JFrame f)
+    private void InitializeComponents(JPanel[] panels)
     {
         icons = new ImageComponent[]{
                 new ImageComponent(imagePath + "Startgame", ImageComponent.Size.BIG),
                 new ImageComponent(imagePath + "Settings", ImageComponent.Size.BIG),
                 new ImageComponent(imagePath + "Quit", ImageComponent.Size.BIG)
         };
-
-        var current = this;
+        StartingMenuPanel current = this;
         icons[0].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                changePanel(current, panels[0]);
+                changePanel(panels[0]);
             }
         });
         icons[1].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                changePanel(current, panels[1]);
+                changePanel(panels[1]);
             }
         });
         icons[2].addMouseListener(new MouseAdapter() { // Quit button
@@ -68,9 +52,9 @@ public class StartingMenuPanel extends JPanel {
 
                 try //If the parent has a listener that manages the window closing it links that event, if an exception is generated the frame just get closed
                 {
-                    ((WindowAdapter) ((Arrays.stream(f.getWindowListeners()).toArray())[0])).windowClosing(null);
+                    ((WindowAdapter) ((Arrays.stream(mainFrame.getWindowListeners()).toArray())[0])).windowClosing(null);
                 }
-                catch(Exception ex) { f.dispose(); }
+                catch(Exception ex) { mainFrame.dispose(); }
             }
         });
 
@@ -85,36 +69,6 @@ public class StartingMenuPanel extends JPanel {
             public void mouseExited(MouseEvent e)  { op.resetIcon(); }
         }));
     }
-
-    private void changePanel(JPanel current, JPanel p){
-        if (p != null && p.isValid())
-        {
-            p.setVisible(true);
-            current.setVisible(false);
-        }
-    }
-
-    public void updateSize(int width, int heigth, ImageComponent.Size s){
-        panelHeight = heigth;
-        panelWidth = width;
-        setSize(panelWidth,panelHeight);
-        int offset = panelHeight*6/100;
-        setBorder(new EmptyBorder(offset,offset,offset,0));
-        Arrays.stream(icons).forEach(icon -> icon.setIcon(s));
-    }
-
-
-    @Override
-    protected void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        g.drawImage(background, 0, 0, panelWidth, panelHeight, null);
-    }
-
-    @Override
-    public Dimension getPreferredSize() { return (new Dimension(panelWidth, panelHeight)); }
-
-
 
 
 }

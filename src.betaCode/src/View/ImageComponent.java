@@ -3,8 +3,8 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 
-public class ImageComponent extends JLabel{
-
+public class ImageComponent extends JLabel
+{
     public enum Size{
         SMALL(48),
         MEDIUM(56),
@@ -21,7 +21,8 @@ public class ImageComponent extends JLabel{
     private final String imagePath;
     private Size size;
 
-    public ImageComponent(String imagePath, Size size){
+    public ImageComponent(String imagePath, Size size)
+    {
         this.imagePath = imagePath;
         this.size = size;
         setIcon(getImageIcon(size.getIntSize()));

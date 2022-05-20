@@ -3,8 +3,6 @@ package Controller;
 import Model.UnoGame;
 import View.MainFrame;
 
-import java.util.Arrays;
-
 public class UnoGameTable {
     //UnoGame uno = new tipoDiUno(new Player[] {mario,filippo,marco,gianfranco});
     MainFrame view;
@@ -18,7 +16,7 @@ public class UnoGameTable {
         var a = view.getAccessibleContext();
         var b = a.getAccessibleComponent();
 
-        System.out.println(Arrays.toString(view.getComponents()));
+        //System.out.println(Arrays.toString(view.getComponents()));
         this.model = model;
         this.model.addObserver(view);
         /*my computer hates me
