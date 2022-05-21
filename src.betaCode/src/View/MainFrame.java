@@ -2,10 +2,6 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Observable;
-import java.util.Observer;
 
 public class MainFrame extends JFrame {
     public enum Dimensions{
@@ -21,6 +17,13 @@ public class MainFrame extends JFrame {
 
         public Dimension getDimension() {
             return dimension;
+        }
+
+        @Override
+        public String toString() {
+            int width = (int)getDimension().getWidth();
+            int height = (int)getDimension().getHeight();
+            return width + "x" + height;
         }
     }
 
@@ -80,6 +83,7 @@ public class MainFrame extends JFrame {
 
     private void InitializeComponents()
     {
+        /*
         JPanel p = new JPanel();
         Button b2 = new Button("2");
         b2.addMouseListener(new MouseAdapter() {
@@ -108,7 +112,7 @@ public class MainFrame extends JFrame {
         p.add(b3);
         p.add(b4);
         p.setBackground(Color.PINK);
-        add(p);
+        add(p);*/
 
 
         newGamePanel = new JPanel();

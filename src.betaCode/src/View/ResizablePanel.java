@@ -55,7 +55,7 @@ public class ResizablePanel extends JPanel {
         setSize(dimension);
 
         int offset = panelHeight*6/100;
-        setBorder(new EmptyBorder(offset,offset,offset,0));
+        setBorder(new EmptyBorder(offset,offset,offset,offset));
         if (icons != null) Arrays.stream(icons).forEach(icon -> icon.setIcon(size));
     }
 

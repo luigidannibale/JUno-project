@@ -1,8 +1,9 @@
 package View;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
@@ -11,86 +12,94 @@ public class SettingsPanel extends ResizablePanel
 {
     private static final String imagePath = "resources/images/MainFrame/SettingsPanel/";
 
+    private float effectVolumeChanges;
+    private float musicVolumeChanges;
+    private MainFrame.Dimensions dimesionChanges;
+
     public SettingsPanel(MainFrame mainFrame)
     {
         super(new ImageIcon(imagePath+"background.png").getImage(),mainFrame);
+        //setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+        setLayout(new GridBagLayout());
         super.Percentages = new HashMap<>(){{
-            put(MainFrame.Dimensions.FULLHD, new Double[]{0.60,0.50});
-            put(MainFrame.Dimensions.WIDESCREEN, new Double[]{0.60,0.45});
+            put(MainFrame.Dimensions.FULLHD, new Double[]{0.57,0.60});
+            put(MainFrame.Dimensions.WIDESCREEN, new Double[]{0.70,0.55});
             put(MainFrame.Dimensions.HD, new Double[]{0.60,0.55});
         }};
         //setLayout(new BorderLayout());
         addScalingListener();
+        setOpaque(true);
+
+        dimesionChanges = mainFrame.getDimension();
+
         InitializeComponents();
         setVisible(true);
     }
 
     private void InitializeComponents()
     {
-        var label = new JLabel("go back");
-        label.setFont(new Font("Sans Serif", Font.PLAIN, 20));
-        label.setForeground(Color.white);
-        label.addMouseListener(new MouseAdapter() {
+        JLabel imm = new JLabel(new ImageIcon(imagePath+"Effectsvolumeon.png"));
+        JLabel imm2 = new JLabel(new ImageIcon(imagePath+"Musicvolume.png"));
+        JLabel imm3= new JLabel(new ImageIcon(imagePath+"Screensize.png"));
+
+        JLabel saveButton = new JLabel(new ImageIcon(imagePath+"save.png"));
+        saveButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                changePanel(mainFrame.getStartingPanel());
-            }
+            public void mouseClicked(MouseEvent e) { mainFrame.updateSize(dimesionChanges); }
+        });
+        JLabel closeButton = new JLabel(new ImageIcon(imagePath+"discard.png"));
+        closeButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) { changePanel(mainFrame.getStartingPanel()); }
         });
 
-        /*
-        //var slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
-        JSlider slider  = new JSlider(JSlider.HORIZONTAL, 0, 100, 50){
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2d = (Graphics2D) g.create();
-                g2d.setColor(getBackground());
-                g2d.setComposite(AlphaComposite.SrcOver.derive(0.5f));
-                g2d.fillRect(0, 0, getWidth(), getHeight());
-                g2d.dispose();
+        VolumeSlider effectsVolumeSlider = new VolumeSlider();
+        VolumeSlider musicVolumeSlider = new VolumeSlider();
 
-                super.paintComponent(g);
-            }
-        };
-        slider.setSize(new Dimension(120, 20));
-        slider.setMajorTickSpacing(10);
-        slider.setMinorTickSpacing(1);
-        //slider.setPaintTicks(true);
-        slider.setPaintLabels(true);
-        slider.setOpaque(false);
-        //slider.setBackground(Color.BLUE);
-
-        */
-        var slider = new JProgressBar();
-        //slider.setSize(new Dimension(200, 20));
-        slider.setValue(50);
-        slider.setPreferredSize(new Dimension(200, 20));
-        //slider.setMinimumSize(new Dimension(200, 20));
-        slider.setStringPainted(true);
-        slider.setFont(new Font("MV Boli", Font.PLAIN, 14));
-        slider.setForeground(Color.blue);
-        slider.setBackground(Color.WHITE);
-        slider.addMouseListener(new MouseAdapter() {
+        JComboBox<MainFrame.Dimensions> combo = new JComboBox<>(MainFrame.Dimensions.values());
+        combo.setSelectedItem(mainFrame.getDimension());
+        combo.addItemListener(new ItemListener() {
             @Override
-            public void mouseReleased(MouseEvent e) {
-                var x = e.getX();
-                var max = slider.getWidth();
-                var perc = 100 * x / max;
-                perc = perc < 0 ? 0 : Math.min(perc, 100);
-                slider.setValue(perc);
-                System.out.println("x:" + "100=" + x + ":" + max);
-                System.out.println("x = " + perc);
-            }
-
-            /*
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                System.out.println(e.getX());
-            }*/
+            public void itemStateChanged(ItemEvent e) { dimesionChanges = (MainFrame.Dimensions) e.getItem();}
         });
 
-        add(label);
-        add(slider);
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        //------------First line
+        gbc.gridx = 0;      gbc.gridy = 0;
+        gbc.weightx = 0.2;  gbc.weighty = 0.5;
+        add(imm, gbc);
+
+        gbc.gridx = 1;      gbc.gridy = 0;
+        gbc.weightx = 0.1;  gbc.weighty = 0.5;
+        add(musicVolumeSlider, gbc);
+
+        //------------Second line
+        gbc.gridx = 0;      gbc.gridy = 1;
+        gbc.weightx = 0.2;  gbc.weighty = 0.5;
+        add(imm2, gbc);
+
+        gbc.gridx = 1;      gbc.gridy = 1;
+        gbc.weightx = 0.1;  gbc.weighty = 0.5;
+        add(effectsVolumeSlider, gbc);
+
+        //------------Third line
+        gbc.gridx = 0;      gbc.gridy = 2;
+        gbc.weightx = 0.2;  gbc.weighty = 0.5;
+        add(imm3, gbc);
+
+        gbc.gridx = 1;      gbc.gridy = 2;
+        gbc.weightx = 0.1;  gbc.weighty = 0.5;
+        add(combo, gbc);
+
+        //------------Fourth line
+        gbc.gridx = 1;      gbc.gridy = 3;
+        gbc.weightx = 0.05; gbc.weighty = 0.1;
+        add(saveButton, gbc);
+
+        gbc.gridx = 2;      gbc.gridy = 3;
+        gbc.weightx = 0.05; gbc.weighty = 0.1;
+        add(closeButton, gbc);
     }
-
-
 }
+
