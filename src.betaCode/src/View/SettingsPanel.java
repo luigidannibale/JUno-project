@@ -38,31 +38,41 @@ public class SettingsPanel extends ResizablePanel
 
     private void InitializeComponents()
     {
+        //Components
         JLabel imm = new JLabel(new ImageIcon(imagePath+"Effectsvolumeon.png"));
         JLabel imm2 = new JLabel(new ImageIcon(imagePath+"Musicvolume.png"));
         JLabel imm3= new JLabel(new ImageIcon(imagePath+"Screensize.png"));
 
         JLabel saveButton = new JLabel(new ImageIcon(imagePath+"save.png"));
-        saveButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) { mainFrame.updateSize(dimesionChanges); }
-        });
         JLabel closeButton = new JLabel(new ImageIcon(imagePath+"discard.png"));
-        closeButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) { changePanel(mainFrame.getStartingPanel()); }
-        });
 
         VolumeSlider effectsVolumeSlider = new VolumeSlider();
         VolumeSlider musicVolumeSlider = new VolumeSlider();
 
         JComboBox<MainFrame.Dimensions> combo = new JComboBox<>(MainFrame.Dimensions.values());
         combo.setSelectedItem(mainFrame.getDimension());
+
+        //Listener
+        saveButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                mainFrame.updateSize(dimesionChanges);
+                AudioManager.getInstance().setBackgroundVolume(musicVolumeSlider.getValue());
+                //AudioManager.getInstance().setEffectVolume((effectsVolumeSlider.getValue()));
+            }
+        });
+        closeButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                changePanel(mainFrame.getStartingPanel());
+            }
+        });
         combo.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) { dimesionChanges = (MainFrame.Dimensions) e.getItem();}
         });
 
+        //Layout
         GridBagConstraints gbc = new GridBagConstraints();
 
         //------------First line

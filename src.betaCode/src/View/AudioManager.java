@@ -12,6 +12,9 @@ public class AudioManager
     private static FloatControl backgroundVolume;
     private static FloatControl effectVolume;
     private static final float offset = -20.0f;
+    private static final float maxVolume = 20.0f;
+
+    private static final String pathAudio = "resources/audio/";
 
     private AudioManager(){}
     public static AudioManager getInstance()
@@ -29,19 +32,32 @@ public class AudioManager
             AudioPlayer.player.start(sound);*/
             if (clip != null && clip.isRunning()) clip.stop();
 
-            AudioInputStream stream = AudioSystem.getAudioInputStream(new File(filename));
+            AudioInputStream stream = AudioSystem.getAudioInputStream(new File(pathAudio + filename));
             clip = AudioSystem.getClip();
             clip.open(stream);
             floatControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            floatControl.setValue(offset); // Reduce volume by offset decibels.
+            //floatControl.setValue(offset); // Reduce volume by offset decibels.
+            System.out.println(floatControl.getMaximum());
+            System.out.println(floatControl.getMinimum());
+            setVolume(floatControl, 50);
             clip.start();
         }
         catch (IOException | UnsupportedAudioFileException | LineUnavailableException e1) { e1.printStackTrace(); }
     }
-    private void setVolume(FloatControl floatControl, double volume){
-        floatControl.setValue((float) volume - offset);
+
+    private void setVolume2(FloatControl floatControl, double volume){
+        floatControl.setValue((float) volume + offset);
     }
-    public void playBackroundMusic(String filename){ startAudio(backgroundMusic, backgroundVolume, filename);}
+
+    private void setVolume(FloatControl floatControl, int perc){
+        var volume = maxVolume * perc / 100 + offset;
+        System.out.println(volume);
+        floatControl.setValue(volume);
+    }
+
+    public void playBackroundMusic(String filename){
+        startAudio(backgroundMusic, backgroundVolume, filename);
+    }
         /*try {
             if (backgroundMusic != null && backgroundMusic.isRunning()) backgroundMusic.stop();
 
@@ -54,7 +70,23 @@ public class AudioManager
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e1) {
             e1.printStackTrace();
         }*/
-    public void playEffect(String filename){ startAudio(effect, effectVolume, filename); }
-    public void setBackgroundVolume(double volume){ setVolume(backgroundVolume, volume); }
-    public void setEffectVolume(double volume){ setVolume(effectVolume, volume); }
+    public void playEffect(String filename){
+        startAudio(effect, effectVolume, filename);
+    }
+
+    public void setBackgroundVolume2(double volume){
+        setVolume2(backgroundVolume, volume);
+    }
+
+    public void setBackgroundVolume(int perc){
+        setVolume(backgroundVolume, perc);
+    }
+
+    public void setEffectVolume2(double volume){
+        setVolume2(effectVolume, volume);
+    }
+
+    public void setEffectVolume(int perc){
+        setVolume(effectVolume, perc);
+    }
 }

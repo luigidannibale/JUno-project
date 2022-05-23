@@ -55,6 +55,8 @@ public class MainFrame extends JFrame {
         InitializeComponents();
         setVisible(true);
 
+        AudioManager.getInstance().playBackroundMusic("rick roll.wav");
+
         // devo fare i test non posso perdere tempo a chiudere j dialogs di conferma
         /*addWindowListener(new WindowAdapter()
         {
