@@ -26,7 +26,7 @@ public class SettingsPanel extends ResizablePanel
             put(MainFrame.Dimensions.WIDESCREEN, new Double[]{0.70,0.55});
             put(MainFrame.Dimensions.HD, new Double[]{0.60,0.55});
         }};
-        //setLayout(new BorderLayout());
+        offset = 6;
         addScalingListener();
         setOpaque(true);
 

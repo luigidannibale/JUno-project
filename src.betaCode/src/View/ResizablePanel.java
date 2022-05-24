@@ -14,6 +14,7 @@ public class ResizablePanel extends JPanel {
     protected MainFrame mainFrame;
     protected int panelWidth, panelHeight;
     protected Map<MainFrame.Dimensions,Double[]> Percentages;
+    protected int offset;
     protected ImageComponent[] icons;
 
     public static final BiFunction<Double, Double, Integer> percentage = (num, p) -> ((int) (num * p));
@@ -53,9 +54,9 @@ public class ResizablePanel extends JPanel {
         panelHeight = (int) dimension.getHeight();
         panelWidth = (int) dimension.getWidth();
         setSize(dimension);
-
-        int offset = panelHeight*6/100;
-        setBorder(new EmptyBorder(offset,offset,offset,offset));
+        
+        int offsetpx = panelHeight*offset/100;
+        setBorder(new EmptyBorder(offsetpx,offsetpx,offsetpx,offsetpx));
         if (icons != null) Arrays.stream(icons).forEach(icon -> icon.setIcon(size));
     }
 

@@ -20,6 +20,7 @@ public class StartingMenuPanel extends ResizablePanel
             put(MainFrame.Dimensions.WIDESCREEN, new Double[]{0.27,0.45});
             put(MainFrame.Dimensions.HD, new Double[]{0.33,0.55});
         }};
+        offset = 6;
         addScalingListener();
 
         InitializeComponents(panels);
