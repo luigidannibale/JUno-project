@@ -57,6 +57,7 @@ public class SettingsPanel extends ResizablePanel
             @Override
             public void mouseClicked(MouseEvent e) {
                 mainFrame.updateSize(dimesionChanges);
+                System.out.println(musicVolumeSlider.getValue());
                 AudioManager.getInstance().setBackgroundVolume(musicVolumeSlider.getValue());
                 //AudioManager.getInstance().setEffectVolume((effectsVolumeSlider.getValue()));
             }

@@ -37,8 +37,10 @@ public class AudioManager
             clip.open(stream);
             floatControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             //floatControl.setValue(offset); // Reduce volume by offset decibels.
-            System.out.println(floatControl.getMaximum());
-            System.out.println(floatControl.getMinimum());
+            //System.out.println(floatControl.getMaximum());
+            //System.out.println(floatControl.getMinimum());
+            backgroundVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            effectVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             setVolume(floatControl, 50);
             clip.start();
         }
@@ -51,8 +53,9 @@ public class AudioManager
 
     private void setVolume(FloatControl floatControl, int perc){
         var volume = maxVolume * perc / 100 + offset;
-        System.out.println(volume);
+        //System.out.println(volume);
         floatControl.setValue(volume);
+
     }
 
     public void playBackroundMusic(String filename){

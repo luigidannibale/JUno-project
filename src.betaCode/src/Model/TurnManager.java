@@ -43,7 +43,7 @@ public class TurnManager{
      *
      * @param player: the player that has to play the turn
      */
-    public void setPlayer(int player){ this.player = player; }
+    //public void setPlayer(int player){ this.player = player; }
 
     /**
      *

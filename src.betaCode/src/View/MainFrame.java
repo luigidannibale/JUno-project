@@ -55,7 +55,8 @@ public class MainFrame extends JFrame {
         InitializeComponents();
         setVisible(true);
 
-        AudioManager.getInstance().playBackroundMusic("rick roll.wav");
+        //debug
+        //AudioManager.getInstance().playBackroundMusic("rick roll.wav");
 
         // devo fare i test non posso perdere tempo a chiudere j dialogs di conferma
         /*addWindowListener(new WindowAdapter()
@@ -117,12 +118,12 @@ public class MainFrame extends JFrame {
         add(p);*/
 
 
-        newGamePanel = new JPanel();
-        newGamePanel.setMinimumSize(new Dimension(500,100));
-        newGamePanel.setPreferredSize(new Dimension(500,100));
-        newGamePanel.setMaximumSize(new Dimension(500,100));
-        newGamePanel.setBackground(Color.CYAN);
-        newGamePanel.add(new JLabel("new game panel goes here"));
+        newGamePanel = new GamePanel(this);
+//        newGamePanel.setMinimumSize(new Dimension(500,100));
+//        newGamePanel.setPreferredSize(new Dimension(500,100));
+//        newGamePanel.setMaximumSize(new Dimension(500,100));
+//        newGamePanel.setBackground(Color.CYAN);
+//        newGamePanel.add(new JLabel("new game panel goes here"));
         newGamePanel.setVisible(false);
 
         settingsPanel = new SettingsPanel(this);

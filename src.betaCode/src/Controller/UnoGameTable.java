@@ -13,8 +13,7 @@ public class UnoGameTable {
     public UnoGameTable(UnoGame model)
     {
         view = new MainFrame();
-        var a = view.getAccessibleContext();
-        var b = a.getAccessibleComponent();
+        this.model = model;
 
         //System.out.println(Arrays.toString(view.getComponents()));
         //this.model = model;
@@ -30,6 +29,6 @@ public class UnoGameTable {
     }
 
     public void startGame() {
-        model.startGame(7);
+        model.startGame();
     }
 }

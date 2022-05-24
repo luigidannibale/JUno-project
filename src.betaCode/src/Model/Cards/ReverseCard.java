@@ -17,7 +17,12 @@ public class ReverseCard extends Card {
 
 
     public void reverse(TurnManager turnManager, Player[] players){
+        Player player = players[turnManager.getPlayer()];
         Collections.reverse(Arrays.asList(players));
-        turnManager.setPlayer(players.length - 1 - turnManager.getPlayer());
+        for(int i = 0;i< players.length;i++)
+            if(player == players[i])
+                while(i+1> players.length?turnManager.getPlayer()!=0:turnManager.getPlayer()!=i+1)
+                    turnManager.passTurn();
+        //turnManager.setPlayer(players.length - 1 - turnManager.getPlayer());
     }
 }
