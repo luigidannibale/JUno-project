@@ -7,6 +7,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -72,21 +74,26 @@ public class GamePanel extends ResizablePanel{
         var a = new CardImage(CardColor.BLUE, CardValue.THREE);
         var c = new CardImage(CardColor.RED, CardValue.EIGHT);
         var d = new CardImage(CardColor.GREEN, CardValue.FOUR);
-        new CardImage(CardColor.YELLOW, CardValue.FIVE);
-        new CardImage(CardColor.WILD, CardValue.WILD);
-        new CardImage(CardColor.WILD, CardValue.WILD_DRAW);
+        var e = new CardImage(CardColor.YELLOW, CardValue.FIVE);
+        var f = new CardImage(CardColor.WILD, CardValue.WILD);
+        var g = new CardImage(CardColor.WILD, CardValue.WILD_DRAW);
 
         deckPanel.add(a);
         deckPanel.add(c);
         deckPanel.add(d);
+        deckPanel.add(e);
+        deckPanel.add(f);
+        deckPanel.add(g);
 
         add(deckPanel, BorderLayout.CENTER);
     }
 
     public class CardImage extends JLabel{
-        private static final Image backCard = new ImageIcon("/resources/images/Back_card.png").getImage();
+        private static final Image backCard = new ImageIcon("resources/images/Back_card.png").getImage();
         private static final String pathDeck = "resources/images/White_deck/";
         private final Image img;
+
+        private boolean covered = false;
 
         private final int width;
         private final int height;
@@ -101,17 +108,26 @@ public class GamePanel extends ResizablePanel{
             else num = value == CardValue.WILD ? 14 : 14 * 5;
             String numero = String.format("%02d", num) + ".png";
             System.out.println(pathDeck + numero);
+
             img = new ImageIcon(pathDeck + numero).getImage();
             width = img.getWidth(null) * 50 / 100;
             height = img.getHeight(null) * 50 / 100;
+
             setPreferredSize(new Dimension(width, height));
             setSize(new Dimension(width, height));
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    covered = !covered;
+                    repaint();
+                }
+            });
         }
 
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            g.drawImage(img, 0, 0, width, height, null);
+            g.drawImage(covered ? img : backCard, 0, 0, width, height, null);
         }
 
         @Override
