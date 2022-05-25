@@ -21,7 +21,7 @@ public class GamePanel extends ResizablePanel{
 
         setLayout(new BorderLayout());
         Percentages = new HashMap<>(){{
-            put(MainFrame.Dimensions.FULLHD, new Double[]{1.0, 1.0});
+            put(MainFrame.Dimensions.FULLHD, new Double[]{0.97, 0.95});
             put(MainFrame.Dimensions.WIDESCREEN, new Double[]{0.97, 0.95});
             put(MainFrame.Dimensions.HD, new Double[]{1.0, 1.0});
         }};
@@ -50,14 +50,12 @@ public class GamePanel extends ResizablePanel{
         JPanel botPlayer = new JPanel();*/
         JPanel[] panels = new JPanel[4];
         String[] b = new String[]{BorderLayout.NORTH, BorderLayout.WEST, BorderLayout.EAST, BorderLayout.SOUTH};
-        final int[] i = {0};
-        Arrays.stream(panels).forEach(p -> {
-            p = new JPanel();
-            p.setBorder(new LineBorder(Color.BLACK));
-            p.setOpaque(false);
-            add(p, b[i[0]]);
-            i[0] += 1;
-        });
+        for (int i = 0; i < 4; i++){
+            panels[i] = new JPanel();
+            panels[i].setBorder(new LineBorder(Color.BLACK));
+            panels[i].setOpaque(false);
+            add(panels[i], b[i]);
+        }
 
         JPanel deckPanel = new JPanel();
         deckPanel.setBorder(new LineBorder(Color.BLACK));
@@ -78,7 +76,7 @@ public class GamePanel extends ResizablePanel{
         var f = new CardImage(CardColor.WILD, CardValue.WILD);
         var g = new CardImage(CardColor.WILD, CardValue.WILD_DRAW);
 
-        deckPanel.add(a);
+        panels[0].add(a);
         deckPanel.add(c);
         deckPanel.add(d);
         deckPanel.add(e);
