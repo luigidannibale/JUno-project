@@ -7,6 +7,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
@@ -114,8 +116,9 @@ public class GamePanel extends ResizablePanel{
             setPreferredSize(new Dimension(width, height));
             setSize(new Dimension(width, height));
             addMouseListener(new MouseAdapter() {
+                //usato mouseReleased perchè a volte il clicked non prendeva
                 @Override
-                public void mouseClicked(MouseEvent e) {
+                public void mouseReleased(MouseEvent e) {
                     covered = !covered;
                     repaint();
                 }
