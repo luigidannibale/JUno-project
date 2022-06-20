@@ -1,7 +1,12 @@
 package View;
 
+import com.sun.tools.javac.Main;
+
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame {
     public enum Dimensions{
@@ -35,11 +40,19 @@ public class MainFrame extends JFrame {
     private final String pathImages = "resources/images/";
     private Image i = getImageIcon("MainFrame/background.png").getImage();
 
-    private AudioManager backMusic;
+    public AudioManager backMusic;
+    public AudioManager soundEffects;
+
+    private Config config;
 
     public MainFrame()
     {
         super("J Uno");
+        backMusic = new AudioManager();
+        soundEffects = new AudioManager();
+
+        config = new Config(this);
+        config.loadConfig();
 
         ImageBackground background = new ImageBackground(getImageIcon("MainFrame/background.png").getImage());
         background.setSize(currentDimension.getDimension());
@@ -56,16 +69,19 @@ public class MainFrame extends JFrame {
 
         InitializeComponents();
         setVisible(true);
+
         //debug
-        backMusic = new AudioManager();
-        backMusic.playMusic("rick roll.wav");
+        backMusic.playMusic("rick roll.wav", -20);
+        soundEffects.playEffect("deck shuffle.wav");
 
         // devo fare i test non posso perdere tempo a chiudere j dialogs di conferma
-        /*addWindowListener(new WindowAdapter()
+        addWindowListener(new WindowAdapter()
         {
             @Override
             public void windowClosing(WindowEvent e)
             {
+                config.saveConfig();
+                /*
                 UIManager.put("OptionPane.background", new ColorUIResource(255,255,255));
                 UIManager.put("Panel.background", new ColorUIResource(255,255,255));
                 String[] options = new String[]{"Yes", "No"};
@@ -78,8 +94,10 @@ public class MainFrame extends JFrame {
                         getImageIcon("block.png"),
                         options, options[1]);
                 if (confirm == JOptionPane.YES_OPTION) System.exit(0);
+                */
+                System.exit(0);
             }
-        });*/
+        });
     }
 
     private ImageIcon getImageIcon(String filename){
@@ -121,19 +139,9 @@ public class MainFrame extends JFrame {
 
 
         newGamePanel = new GamePanel(this);
-//        newGamePanel.setMinimumSize(new Dimension(500,100));
-//        newGamePanel.setPreferredSize(new Dimension(500,100));
-//        newGamePanel.setMaximumSize(new Dimension(500,100));
-//        newGamePanel.setBackground(Color.CYAN);
-//        newGamePanel.add(new JLabel("new game panel goes here"));
         newGamePanel.setVisible(false);
 
         settingsPanel = new SettingsPanel(this);
-        // settingsPanel.setMinimumSize(new Dimension(500,100));
-        //settingsPanel.setPreferredSize(new Dimension(500,100));
-        //settingsPanel.setMinimumSize(new Dimension(500,100));
-        //settingsPanel.setBackground(Color.green);
-        //settingsPanel.add(new JLabel("settings panel goes here"));
         settingsPanel.setVisible(false);
 
         startingPanel = new StartingMenuPanel(new JPanel[]{newGamePanel,settingsPanel,startingPanel},this);
@@ -146,6 +154,17 @@ public class MainFrame extends JFrame {
 
     public StartingMenuPanel getStartingPanel() {
         return startingPanel;
+    }
+
+    public void updateSize(String s){
+        Dimensions dim;
+        switch (s) {
+            case "1920x1080" -> dim = Dimensions.FULLHD;
+            case "1440x920" -> dim = Dimensions.WIDESCREEN;
+            case "1080x720" -> dim = Dimensions.HD;
+            default -> dim = null;
+        };
+        if (dim != null) updateSize(dim);
     }
 
     public void updateSize(Dimensions dimension){

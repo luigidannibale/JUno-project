@@ -8,12 +8,15 @@ public class AudioManager {
     static final String pathAudio = "resources/audio/";
 
     Clip clip;
+    FloatControl floatControl;
+    int volume;
 
     public void setAudio(String filename) {
         try {
             AudioInputStream stream = AudioSystem.getAudioInputStream(new File(pathAudio + filename));
             clip = AudioSystem.getClip();
             clip.open(stream);
+            floatControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         }
         catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored){
 
@@ -32,8 +35,9 @@ public class AudioManager {
         clip.stop();
     }
 
-    public void playMusic(String filename){
+    public void playMusic(String filename, int volume){
         setAudio(filename);
+        setVolume(volume);
         play();
         loop();
     }
@@ -44,7 +48,11 @@ public class AudioManager {
     }
 
     public void setVolume(int value){
-        FloatControl floatControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        floatControl.setValue(value);
+        if (floatControl != null) floatControl.setValue(value);
+        volume = value;
+    }
+
+    public int getVolume(){
+        return volume;
     }
 }
