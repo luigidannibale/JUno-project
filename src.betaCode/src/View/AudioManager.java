@@ -4,92 +4,47 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 
-public class AudioManager
-{
-    private static AudioManager instance;
-    private static Clip backgroundMusic;
-    private static Clip effect;
-    private static FloatControl backgroundVolume;
-    private static FloatControl effectVolume;
-    private static final float offset = -20.0f;
-    private static final float maxVolume = 20.0f;
+public class AudioManager {
+    static final String pathAudio = "resources/audio/";
 
-    private static final String pathAudio = "resources/audio/";
+    Clip clip;
 
-    private AudioManager(){}
-    public static AudioManager getInstance()
-    {
-        if (instance == null) instance = new AudioManager();
-        return instance;
-    }
-
-    private void startAudio(Clip clip, FloatControl floatControl, String filename)
-    {
-        try
-        {
-            /*InputStream in = new FileInputStream(filename);
-            AudioStream sound = new AudioStream(in);
-            AudioPlayer.player.start(sound);*/
-            if (clip != null && clip.isRunning()) clip.stop();
-
+    public void setAudio(String filename) {
+        try {
             AudioInputStream stream = AudioSystem.getAudioInputStream(new File(pathAudio + filename));
             clip = AudioSystem.getClip();
             clip.open(stream);
-            floatControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            //floatControl.setValue(offset); // Reduce volume by offset decibels.
-            //System.out.println(floatControl.getMaximum());
-            //System.out.println(floatControl.getMinimum());
-            backgroundVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            effectVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            setVolume(floatControl, 50);
-            clip.start();
         }
-        catch (IOException | UnsupportedAudioFileException | LineUnavailableException e1) { e1.printStackTrace(); }
+        catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored){
+
+        }
     }
 
-    private void setVolume2(FloatControl floatControl, double volume){
-        floatControl.setValue((float) volume + offset);
+    public void play(){
+        clip.start();
     }
 
-    private void setVolume(FloatControl floatControl, int perc){
-        var volume = maxVolume * perc / 100 + offset;
-        //System.out.println(volume);
-        floatControl.setValue(volume);
-
+    public void loop(){
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
-    public void playBackroundMusic(String filename){
-        startAudio(backgroundMusic, backgroundVolume, filename);
+    public void stop(){
+        clip.stop();
     }
-        /*try {
-            if (backgroundMusic != null && backgroundMusic.isRunning()) backgroundMusic.stop();
 
-            AudioInputStream stream = AudioSystem.getAudioInputStream(new File(filename));
-            backgroundMusic = AudioSystem.getClip();
-            backgroundMusic.open(stream);
-            backgroundVolume = (FloatControl) backgroundMusic.getControl(FloatControl.Type.MASTER_GAIN);
-            backgroundVolume.setValue(-20.0f); // Reduce volume by 20 decibels.
-            backgroundMusic.start();
-        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e1) {
-            e1.printStackTrace();
-        }*/
+    public void playMusic(String filename){
+        setAudio(filename);
+        play();
+        loop();
+    }
+
     public void playEffect(String filename){
-        startAudio(effect, effectVolume, filename);
+        setAudio(filename);
+        play();
     }
 
-    public void setBackgroundVolume2(double volume){
-        setVolume2(backgroundVolume, volume);
-    }
-
-    public void setBackgroundVolume(int perc){
-        setVolume(backgroundVolume, perc);
-    }
-
-    public void setEffectVolume2(double volume){
-        setVolume2(effectVolume, volume);
-    }
-
-    public void setEffectVolume(int perc){
-        setVolume(effectVolume, perc);
+    public void setVolume(int value){
+        FloatControl floatControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        floatControl.setValue(value);
     }
 }

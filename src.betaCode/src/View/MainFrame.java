@@ -35,6 +35,8 @@ public class MainFrame extends JFrame {
     private final String pathImages = "resources/images/";
     private Image i = getImageIcon("MainFrame/background.png").getImage();
 
+    private AudioManager backMusic;
+
     public MainFrame()
     {
         super("J Uno");
@@ -54,9 +56,9 @@ public class MainFrame extends JFrame {
 
         InitializeComponents();
         setVisible(true);
-
         //debug
-        //AudioManager.getInstance().playBackroundMusic("rick roll.wav");
+        backMusic = new AudioManager();
+        backMusic.playMusic("rick roll.wav");
 
         // devo fare i test non posso perdere tempo a chiudere j dialogs di conferma
         /*addWindowListener(new WindowAdapter()
