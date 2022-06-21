@@ -5,13 +5,14 @@ import java.io.*;
 public class Config {
 
     MainFrame mf;
+    final static String fileName = "config.txt";
 
     public Config(MainFrame mf){
         this.mf = mf;
     }
 
     public void saveConfig(){
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter("config.txt"))){
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))){
 
             //Screen Dimension
             MainFrame.Dimensions dim = mf.getDimension();
@@ -32,7 +33,7 @@ public class Config {
     }
 
     public void loadConfig(){
-        try(BufferedReader br = new BufferedReader(new FileReader("config.txt"))){
+        try(BufferedReader br = new BufferedReader(new FileReader(fileName))){
 
             //Screen dimension
             String line = br.readLine();

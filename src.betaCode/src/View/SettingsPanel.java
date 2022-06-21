@@ -60,7 +60,9 @@ public class SettingsPanel extends ResizablePanel
             public void mouseClicked(MouseEvent e) {
                 mainFrame.updateSize(dimesionChanges);
                 mainFrame.backMusic.setVolume(musicVolumeSlider.getValue());
+                mainFrame.backMusic.setFloatControlVolume();
                 mainFrame.soundEffects.setVolume(effectsVolumeSlider.getValue());
+                mainFrame.soundEffects.setFloatControlVolume();
                 //AudioManager.getInstance().setEffectVolume((effectsVolumeSlider.getValue()));
             }
         });

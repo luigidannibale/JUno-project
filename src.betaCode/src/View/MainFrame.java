@@ -44,6 +44,7 @@ public class MainFrame extends JFrame {
     public AudioManager soundEffects;
 
     private Config config;
+    private ImageBackground background;
 
     public MainFrame()
     {
@@ -54,7 +55,7 @@ public class MainFrame extends JFrame {
         config = new Config(this);
         config.loadConfig();
 
-        ImageBackground background = new ImageBackground(getImageIcon("MainFrame/background.png").getImage());
+        background = new ImageBackground(getImageIcon("MainFrame/background.png").getImage());
         background.setSize(currentDimension.getDimension());
         setContentPane(background);
 
@@ -105,38 +106,6 @@ public class MainFrame extends JFrame {
 
     private void InitializeComponents()
     {
-        /*
-        JPanel p = new JPanel();
-        Button b2 = new Button("2");
-        b2.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                updateSize(Dimensions.HD);
-            }
-        });
-        Button b3 = new Button("3");
-        b3.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                updateSize(Dimensions.WIDESCREEN);
-            }
-        });
-        Button b4 = new Button("4");
-        b4.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                updateSize(Dimensions.FULLHD);
-            }
-        });
-        //p.add(new JLabel("Per dimensionare il frame"));
-
-        p.add(b2);
-        p.add(b3);
-        p.add(b4);
-        p.setBackground(Color.PINK);
-        add(p);*/
-
-
         newGamePanel = new GamePanel(this);
         newGamePanel.setVisible(false);
 
@@ -153,6 +122,10 @@ public class MainFrame extends JFrame {
 
     public StartingMenuPanel getStartingPanel() {
         return startingPanel;
+    }
+
+    public void setGameScreen(boolean control){
+        setContentPane(control ? newGamePanel : background);
     }
 
     public void updateSize(String s){

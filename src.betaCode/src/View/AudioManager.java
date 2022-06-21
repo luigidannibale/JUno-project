@@ -37,24 +37,27 @@ public class AudioManager {
 
     public void playMusic(String filename){
         setAudio(filename);
-        setVolume(volume);
+        setFloatControlVolume();
         play();
         loop();
     }
 
     public void playEffect(String filename){
         setAudio(filename);
-        setVolume(volume);
+        setFloatControlVolume();
         play();
     }
 
-    //volume minimo -80, volume massimo 6
     public void setVolume(int value){
         volume = value;
-        System.out.println("in " + value);
-        value = (value * 86 / 100) - 80;
-        System.out.println("fin " + value);
-        if (floatControl != null) floatControl.setValue(value);
+    }
+
+    //volume minimo -80, volume massimo 6
+    public void setFloatControlVolume(){
+        if (floatControl == null) return;
+
+        int value = (volume * 86 / 100) - 80;
+        floatControl.setValue(value);
     }
 
     public int getActualVolume(){

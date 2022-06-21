@@ -34,19 +34,23 @@ public class StartingMenuPanel extends ResizablePanel
                 new ImageComponent(imagePath + "Settings", ImageComponent.Size.BIG),
                 new ImageComponent(imagePath + "Quit", ImageComponent.Size.BIG)
         };
-        StartingMenuPanel current = this;
+
+        //NewGamePanel
         icons[0].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 changePanel(panels[0]);
+                mainFrame.setGameScreen(true);
             }
         });
+        //SettingPanel
         icons[1].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 changePanel(panels[1]);
             }
         });
+        //Quit
         icons[2].addMouseListener(new MouseAdapter() { // Quit button
             @Override
             public void mouseClicked(MouseEvent e) {
