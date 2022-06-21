@@ -37,9 +37,9 @@ public class ResizablePanel extends JPanel {
                 ImageComponent.Size toSize;
 
                 switch (parentSize){
-                    case FULLHD     -> {toSize = ImageComponent.Size.BIG;}
-                    case WIDESCREEN -> {toSize = ImageComponent.Size.MEDIUM;}
-                    default         -> {toSize = ImageComponent.Size.SMALL;}
+                    case FULLHD     -> toSize = ImageComponent.Size.BIG;
+                    case WIDESCREEN -> toSize = ImageComponent.Size.MEDIUM;
+                    default         -> toSize = ImageComponent.Size.SMALL;
                 }
 
                 updateSize(new Dimension(percentage.apply(parentSize.getDimension().getWidth(), Percentages.get(parentSize)[0]),

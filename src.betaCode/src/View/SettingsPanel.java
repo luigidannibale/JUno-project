@@ -6,6 +6,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class SettingsPanel extends ResizablePanel
@@ -36,8 +38,7 @@ public class SettingsPanel extends ResizablePanel
         setVisible(true);
     }
 
-    private void InitializeComponents()
-    {
+    private void InitializeComponents(){
         //Components
         JLabel effectsLabel = new JLabel(new ImageIcon(imagePath+"Effectsvolumeon.png"));
         JLabel musicLabel = new JLabel(new ImageIcon(imagePath+"Musicvolume.png"));
@@ -46,10 +47,9 @@ public class SettingsPanel extends ResizablePanel
         JLabel saveButton = new JLabel(new ImageIcon(imagePath+"save.png"));
         JLabel closeButton = new JLabel(new ImageIcon(imagePath+"discard.png"));
 
-        VolumeSlider effectsVolumeSlider = new VolumeSlider();
-        effectsVolumeSlider.setValue(mainFrame.soundEffects.getVolume());
-        VolumeSlider musicVolumeSlider = new VolumeSlider();
-        musicVolumeSlider.setValue(mainFrame.backMusic.getVolume());
+        VolumeSlider effectsVolumeSlider = new VolumeSlider(mainFrame.soundEffects.getVolume());
+        effectsVolumeSlider.setChangebleIcon(effectsLabel, new String[] {"Effectsvolumeoff.png", "Effectsvolumelow.png", "Effectsvolumeon.png"});
+        VolumeSlider musicVolumeSlider = new VolumeSlider(mainFrame.backMusic.getVolume());
 
         JComboBox<MainFrame.Dimensions> combo = new JComboBox<>(MainFrame.Dimensions.values());
         combo.setSelectedItem(mainFrame.getDimension());
