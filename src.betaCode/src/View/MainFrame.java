@@ -71,7 +71,7 @@ public class MainFrame extends JFrame {
         setVisible(true);
 
         //debug
-        backMusic.playMusic("rick roll.wav", -20);
+        backMusic.playMusic("rick roll.wav", 50);
         soundEffects.playEffect("deck shuffle.wav");
 
         // devo fare i test non posso perdere tempo a chiudere j dialogs di conferma

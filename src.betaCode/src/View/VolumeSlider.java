@@ -30,4 +30,8 @@ public class VolumeSlider extends JProgressBar {
         });
     }
 
+    public void setValue(int value){
+        super.setValue(value);
+    }
+
 }

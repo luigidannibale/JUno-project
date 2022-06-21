@@ -47,12 +47,20 @@ public class AudioManager {
         play();
     }
 
+    //volume minimo -80, volume massimo 6
     public void setVolume(int value){
+        System.out.println("in " + value);
+        value = (value * 86 / 100) - 80;
+        System.out.println("fin " + value);
         if (floatControl != null) floatControl.setValue(value);
         volume = value;
     }
 
-    public int getVolume(){
+    public int getActualVolume(){
         return volume;
+    }
+
+    public int getVolume(){
+        return (volume + 80) * 100 / 86;
     }
 }

@@ -39,15 +39,17 @@ public class SettingsPanel extends ResizablePanel
     private void InitializeComponents()
     {
         //Components
-        JLabel imm = new JLabel(new ImageIcon(imagePath+"Effectsvolumeon.png"));
-        JLabel imm2 = new JLabel(new ImageIcon(imagePath+"Musicvolume.png"));
-        JLabel imm3= new JLabel(new ImageIcon(imagePath+"Screensize.png"));
+        JLabel effectsLabel = new JLabel(new ImageIcon(imagePath+"Effectsvolumeon.png"));
+        JLabel musicLabel = new JLabel(new ImageIcon(imagePath+"Musicvolume.png"));
+        JLabel screenLabel = new JLabel(new ImageIcon(imagePath+"Screensize.png"));
 
         JLabel saveButton = new JLabel(new ImageIcon(imagePath+"save.png"));
         JLabel closeButton = new JLabel(new ImageIcon(imagePath+"discard.png"));
 
         VolumeSlider effectsVolumeSlider = new VolumeSlider();
+        effectsVolumeSlider.setValue(mainFrame.soundEffects.getVolume());
         VolumeSlider musicVolumeSlider = new VolumeSlider();
+        musicVolumeSlider.setValue(mainFrame.backMusic.getVolume());
 
         JComboBox<MainFrame.Dimensions> combo = new JComboBox<>(MainFrame.Dimensions.values());
         combo.setSelectedItem(mainFrame.getDimension());
@@ -57,7 +59,8 @@ public class SettingsPanel extends ResizablePanel
             @Override
             public void mouseClicked(MouseEvent e) {
                 mainFrame.updateSize(dimesionChanges);
-                System.out.println(musicVolumeSlider.getValue());
+                mainFrame.backMusic.setVolume(musicVolumeSlider.getValue());
+                mainFrame.soundEffects.setVolume(effectsVolumeSlider.getValue());
                 //AudioManager.getInstance().setEffectVolume((effectsVolumeSlider.getValue()));
             }
         });
@@ -78,25 +81,25 @@ public class SettingsPanel extends ResizablePanel
         //------------First line
         gbc.gridx = 0;      gbc.gridy = 0;
         gbc.weightx = 0.2;  gbc.weighty = 0.5;
-        add(imm, gbc);
+        add(effectsLabel, gbc);
 
         gbc.gridx = 1;      gbc.gridy = 0;
         gbc.weightx = 0.1;  gbc.weighty = 0.5;
-        add(musicVolumeSlider, gbc);
+        add(effectsVolumeSlider, gbc);
 
         //------------Second line
         gbc.gridx = 0;      gbc.gridy = 1;
         gbc.weightx = 0.2;  gbc.weighty = 0.5;
-        add(imm2, gbc);
+        add(musicLabel, gbc);
 
         gbc.gridx = 1;      gbc.gridy = 1;
         gbc.weightx = 0.1;  gbc.weighty = 0.5;
-        add(effectsVolumeSlider, gbc);
+        add(musicVolumeSlider, gbc);
 
         //------------Third line
         gbc.gridx = 0;      gbc.gridy = 2;
         gbc.weightx = 0.2;  gbc.weighty = 0.5;
-        add(imm3, gbc);
+        add(screenLabel, gbc);
 
         gbc.gridx = 1;      gbc.gridy = 2;
         gbc.weightx = 0.1;  gbc.weighty = 0.5;
