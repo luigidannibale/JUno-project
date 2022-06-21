@@ -38,7 +38,6 @@ public class MainFrame extends JFrame {
     private Dimensions currentDimension = Dimensions.WIDESCREEN;
 
     private final String pathImages = "resources/images/";
-    private Image i = getImageIcon("MainFrame/background.png").getImage();
 
     public AudioManager backMusic;
     public AudioManager soundEffects;
@@ -67,10 +66,6 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE); //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setIconImage(getImageIcon("icon2.png").getImage());
 
-        //debug
-        backMusic.playMusic("rick roll.wav");
-        soundEffects.playEffect("deck shuffle.wav");
-
         // devo fare i test non posso perdere tempo a chiudere j dialogs di conferma
         addWindowListener(new WindowAdapter()
         {
@@ -95,9 +90,14 @@ public class MainFrame extends JFrame {
                 System.exit(0);
             }
         });
-
         InitializeComponents();
-        setVisible(true);
+    }
+
+    public void setVisibile(){
+        super.setVisible(true);
+
+        backMusic.playMusic("rick roll.wav");
+        soundEffects.playEffect("deck shuffle.wav");
     }
 
     private ImageIcon getImageIcon(String filename){

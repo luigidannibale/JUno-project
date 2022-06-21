@@ -28,6 +28,10 @@ public class UnoGameTable {
 
     }
 
+    public void setVisible(){
+        view.setVisibile();
+    }
+
     public void startGame() {
         model.startGame();
     }

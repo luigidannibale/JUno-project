@@ -7,6 +7,8 @@ import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.UnoBasicGame;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.Random;
 
 public class Juno {
@@ -24,8 +26,26 @@ public class Juno {
         //UnoGameTable uno = new UnoGameTable(new UnoBasicGame(new Player[] {gigi, d, w, wa}));
         //uno.startGame();
 
+        var g = new JWindow();
+        g.getContentPane().add(new JLabel(){
+            public void paint(Graphics g){
+                super.paint(g);
+                g.drawImage((new ImageIcon("resources/images/icon3.png")).getImage(), 0,0, 550, 487, null);
+            }
+        }, SwingConstants.CENTER);
+        g.setSize(new Dimension(550,487));
+        g.setBackground(new Color(0,0,0,0));
+        g.setLocationRelativeTo(null);
+        g.setVisible(true);
         table = new UnoGameTable(new UnoBasicGame(new Player[]{gigi,d,w,wa}));
-
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        g.setVisible(false);
+        table.setVisible();
+        g.dispose();
     }
 
 
