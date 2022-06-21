@@ -36,6 +36,7 @@ public class Config {
 
             //Screen dimension
             String line = br.readLine();
+            if (line == null) return;
             mf.updateSize(line);
 
             //Music volume

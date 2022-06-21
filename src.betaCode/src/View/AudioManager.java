@@ -9,7 +9,7 @@ public class AudioManager {
 
     Clip clip;
     FloatControl floatControl;
-    int volume;
+    Integer volume = 50;
 
     public void setAudio(String filename) {
         try {
@@ -35,7 +35,7 @@ public class AudioManager {
         clip.stop();
     }
 
-    public void playMusic(String filename, int volume){
+    public void playMusic(String filename){
         setAudio(filename);
         setVolume(volume);
         play();
@@ -44,23 +44,24 @@ public class AudioManager {
 
     public void playEffect(String filename){
         setAudio(filename);
+        setVolume(volume);
         play();
     }
 
     //volume minimo -80, volume massimo 6
     public void setVolume(int value){
+        volume = value;
         System.out.println("in " + value);
         value = (value * 86 / 100) - 80;
         System.out.println("fin " + value);
         if (floatControl != null) floatControl.setValue(value);
-        volume = value;
     }
 
     public int getActualVolume(){
-        return volume;
+        return (volume + 80) * 100 / 86;
     }
 
     public int getVolume(){
-        return (volume + 80) * 100 / 86;
+        return volume;
     }
 }

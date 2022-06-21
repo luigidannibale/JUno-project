@@ -66,12 +66,8 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE); //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setIconImage(getImageIcon("icon2.png").getImage());
 
-
-        InitializeComponents();
-        setVisible(true);
-
         //debug
-        backMusic.playMusic("rick roll.wav", 50);
+        backMusic.playMusic("rick roll.wav");
         soundEffects.playEffect("deck shuffle.wav");
 
         // devo fare i test non posso perdere tempo a chiudere j dialogs di conferma
@@ -98,6 +94,9 @@ public class MainFrame extends JFrame {
                 System.exit(0);
             }
         });
+
+        InitializeComponents();
+        setVisible(true);
     }
 
     private ImageIcon getImageIcon(String filename){
