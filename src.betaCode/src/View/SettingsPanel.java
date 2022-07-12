@@ -30,7 +30,7 @@ public class SettingsPanel extends ResizablePanel
         }};
         offset = 6;
         addScalingListener();
-        setOpaque(true);
+        setOpaque(false);
 
         dimesionChanges = mainFrame.getDimension();
 
@@ -115,6 +115,14 @@ public class SettingsPanel extends ResizablePanel
         gbc.gridx = 2;      gbc.gridy = 3;
         gbc.weightx = 0.05; gbc.weighty = 0.1;
         add(closeButton, gbc);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Color verde = new Color(0, 231, 172);
+        g.setColor(verde);
+        g.fillRoundRect(0, 0, panelWidth, panelHeight, 15, 15);
     }
 }
 

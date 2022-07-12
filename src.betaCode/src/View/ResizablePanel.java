@@ -77,7 +77,7 @@ public class ResizablePanel extends JPanel {
     protected void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        g.drawImage(background, 0, 0, panelWidth, panelHeight, null);
+        //g.drawImage(background, 0, 0, panelWidth, panelHeight, null);
     }
 
     @Override
