@@ -11,9 +11,10 @@ import java.util.HashMap;
 public class StartingMenuPanel extends ResizablePanel
 {
     private static final String imagePath = "resources/images/MainFrame/StartingMenuPanel/";
+
     public StartingMenuPanel(JPanel[] panels,MainFrame mainFrame)
     {
-        super(new ImageIcon(imagePath+"background.png").getImage(),mainFrame);
+        super(mainFrame);
         setLayout(new BorderLayout());
         Percentages = new HashMap<>(){{
             put(MainFrame.Dimensions.FULLHD, new Double[]{0.25,0.45});

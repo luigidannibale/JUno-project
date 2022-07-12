@@ -20,7 +20,7 @@ public class SettingsPanel extends ResizablePanel
 
     public SettingsPanel(MainFrame mainFrame)
     {
-        super(new ImageIcon(imagePath+"background.png").getImage(),mainFrame);
+        super(mainFrame);
         //setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         setLayout(new GridBagLayout());
         super.Percentages = new HashMap<>(){{
