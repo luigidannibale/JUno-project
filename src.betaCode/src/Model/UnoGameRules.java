@@ -1,57 +1,39 @@
 package Model;
 
+import Model.Cards.Card;
 import Model.Enumerations.CardValue;
 
 import java.util.HashMap;
 
-public class UnoGameRules {
+public abstract class UnoGameRules {
 
-    HashMap<CardValue, Integer> cardsDistribution;
-    boolean stackableActionCards;
-    int numberOfPlayableCards;
-    int numberOfCardsPerPlayer;
-
-    public UnoGameRules()
-    {
-        cardsDistribution = Deck.classicRules;
-        stackableActionCards = false;
-        numberOfPlayableCards = 1;
-        numberOfCardsPerPlayer = 7;
-
-    }
+    protected HashMap<CardValue, Integer> cardsDistribution;
+    protected boolean stackableActionCards;
+    protected int numberOfPlayableCards;
+    protected int numberOfCardsPerPlayer;
 
 
     public int getNumberOfCardsPerPlayer() {
         return numberOfCardsPerPlayer;
     }
 
-    public void setNumberOfCardsPerPlayer(int numberOfCardsPerPlayer) {
-        this.numberOfCardsPerPlayer = numberOfCardsPerPlayer;
-    }
-
     public HashMap<CardValue, Integer> getCardsDistribution() {
         return cardsDistribution;
-    }
-
-    public void setCardsDistribution(HashMap<CardValue, Integer> cardsDistribution) {
-        this.cardsDistribution = cardsDistribution;
     }
 
     public boolean isStackableActionCards() {
         return stackableActionCards;
     }
 
-    public void setStackableActionCards(boolean stackableActionCards) {
-        this.stackableActionCards = stackableActionCards;
-    }
-
     public int getNumberOfPlayableCards() {
         return numberOfPlayableCards;
     }
 
-    public void setNumberOfPlayableCards(int numberOfPlayableCards) {
-        this.numberOfPlayableCards = numberOfPlayableCards;
-    }
+    public abstract Card[] getPlayableCards(Card[] playerHand, Card discardsPick);
+    //public abstract void playCard(); //da vedere se e come fare
+
+
+
 
 
 }

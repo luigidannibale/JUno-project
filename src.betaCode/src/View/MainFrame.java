@@ -96,8 +96,8 @@ public class MainFrame extends JFrame {
     public void setVisibile(){
         super.setVisible(true);
 
-        backMusic.playMusic("rick roll.wav");
-        soundEffects.playEffect("deck shuffle.wav");
+        //backMusic.playMusic("rick roll.wav");
+        //soundEffects.playEffect("deck shuffle.wav");
     }
 
     private ImageIcon getImageIcon(String filename){
@@ -132,11 +132,10 @@ public class MainFrame extends JFrame {
         Dimensions dim;
         switch (s) {
             case "1920x1080" -> dim = Dimensions.FULLHD;
-            case "1440x920" -> dim = Dimensions.WIDESCREEN;
             case "1080x720" -> dim = Dimensions.HD;
-            default -> dim = null;
+            default -> dim = Dimensions.WIDESCREEN;
         };
-        if (dim != null) updateSize(dim);
+        updateSize(dim);
     }
 
     public void updateSize(Dimensions dimension){

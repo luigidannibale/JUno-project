@@ -23,9 +23,6 @@ public class UnoGameTable {
             view.setVisible(true);
             view.setVisible(false);
         }*/
-
-
-
     }
 
     public void setVisible(){
