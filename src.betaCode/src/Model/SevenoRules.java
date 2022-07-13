@@ -5,25 +5,21 @@ import Model.Enumerations.CardValue;
 
 import java.util.HashMap;
 
-public class MemeRules extends UnoGameRules{
+public class SevenoRules extends UnoGameRules{
 
-    public MemeRules(){
+    public SevenoRules(){
         cardsDistribution = Deck.classicRules;
         cardsDistribution.putAll(new HashMap<>(){{
-            put(CardValue.SKIP,4);
-            put(CardValue.DRAW,4);
-            put(CardValue.REVERSE,4);
-            put(CardValue.WILD,4);
-            put(CardValue.WILD_DRAW,8);
+            put(CardValue.ZERO,2);
+            put(CardValue.SEVEN,3);
         }});
-        stackableCards = true;
-        numberOfPlayableCards = 5;
-        numberOfCardsPerPlayer = 11;
+        stackableCards = false;
+        numberOfPlayableCards = 1;
+        numberOfCardsPerPlayer = 7;
     }
 
     @Override
     public Card[] getPlayableCards(Card[] playerPlayableHand, Card discardsPick) {
-
         return new Card[0];
     }
 }

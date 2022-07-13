@@ -47,7 +47,7 @@ public class UnoBasicGame extends UnoGame{
     {
         List<Card> playableCards = super.getPLayableCards();
         if(playableCards.stream().anyMatch(card -> card.getColor()!= CardColor.WILD) && playableCards.stream().anyMatch(card -> card.getColor()==CardColor.WILD))
-        {//if there is at least one not iwld card and one wild card all the wild cards are not playables
+        {//if there is at least one not wild card and one wild card all the wild cards are not playables
             playableCards = playableCards.stream().filter(card -> card.getColor()!=CardColor.WILD).toList();
         }
         return playableCards;

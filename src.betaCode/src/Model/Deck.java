@@ -7,6 +7,23 @@ import Model.Enumerations.CardValue;
 import java.util.*;
 
 public class Deck {
+    /**
+     * creates a classic deck, with 108 cards, described in data organization
+     *
+     * -4 wild
+     * -4 wild draw
+     * then for each color:
+     *   -1 zero card
+     *   -2 cards for each value 1 to 9
+     *   -2 card draw
+     *   -2 card skip
+     *   -2 card reverse
+     * */
+    public Deck() {
+        deck = new Stack<>();
+        createDeck(classicRules);
+        shuffle();
+    }
     Stack<Card> deck;
     public static final HashMap<CardValue,Integer> classicRules = new HashMap<>(){
         {
@@ -26,23 +43,6 @@ public class Deck {
             put(CardValue.WILD,4);
             put(CardValue.WILD_DRAW,4);
         }};
-    /**
-     * creates a classic deck, with 108 cards, described in data organization
-     *
-     * -4 wild
-     * -4 wild draw
-     * then for each color:
-     *   -1 zero card
-     *   -2 cards for each value 1 to 9
-     *   -2 card draw
-     *   -2 card skip
-     *   -2 card reverse
-     * */
-    public Deck() {
-        deck = new Stack<>();
-        createDeck(classicRules);
-        shuffle();
-    }
 
     /**
      *
