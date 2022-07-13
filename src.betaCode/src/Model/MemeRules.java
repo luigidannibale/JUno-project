@@ -4,6 +4,7 @@ import Model.Cards.Card;
 import Model.Enumerations.CardValue;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class MemeRules extends UnoGameRules{
 
@@ -22,8 +23,8 @@ public class MemeRules extends UnoGameRules{
     }
 
     @Override
-    public Card[] getPlayableCards(Card[] playerPlayableHand, Card discardsPick) {
+    public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick) {
 
-        return new Card[0];
+        return playerPlayableHand;
     }
 }

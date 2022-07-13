@@ -42,7 +42,7 @@ public class UnoBasicGame extends UnoGame{
         discards.push(card);
         cardActionPerformance(card);
     }
-    @Override
+    /*@Override
     public List<Card> getPLayableCards()
     {
         List<Card> playableCards = super.getPLayableCards();
@@ -51,5 +51,5 @@ public class UnoBasicGame extends UnoGame{
             playableCards = playableCards.stream().filter(card -> card.getColor()!=CardColor.WILD).toList();
         }
         return playableCards;
-    }
+    }*/
 }

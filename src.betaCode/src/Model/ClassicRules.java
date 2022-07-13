@@ -17,12 +17,11 @@ public class ClassicRules extends UnoGameRules{
     }
 
     @Override
-    public Card[] getPlayableCards(Card[] playerPlayableHand, Card discardsPick) {
-        //return playerPlayableHand;
-        //List<Card> playableCards = Arrays.stream(playerPlayableHand).toList();
-        if(Arrays.stream(playerPlayableHand).anyMatch(card -> card.getColor()!= CardColor.WILD) && Arrays.stream(playerPlayableHand).anyMatch(card -> card.getColor()==CardColor.WILD))
+    public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick) {
+
+        if(playerPlayableHand.stream().anyMatch(card -> card.getColor()!= CardColor.WILD) && playerPlayableHand.stream().anyMatch(card -> card.getColor()==CardColor.WILD))
         {//if there is at least one not wild card and one wild card all the wild cards are not playables
-            playerPlayableHand = (Card[]) Arrays.stream(playerPlayableHand).filter(card -> card.getColor()!=CardColor.WILD).toArray();
+            playerPlayableHand = playerPlayableHand.stream().filter(card -> card.getColor()!=CardColor.WILD).toList();
         }
         return playerPlayableHand;
     }

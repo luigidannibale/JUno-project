@@ -4,6 +4,7 @@ import Model.Cards.Card;
 import Model.Enumerations.CardValue;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class SevenoRules extends UnoGameRules{
 
@@ -19,7 +20,7 @@ public class SevenoRules extends UnoGameRules{
     }
 
     @Override
-    public Card[] getPlayableCards(Card[] playerPlayableHand, Card discardsPick) {
-        return new Card[0];
+    public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick) {
+        return playerPlayableHand;
     }
 }

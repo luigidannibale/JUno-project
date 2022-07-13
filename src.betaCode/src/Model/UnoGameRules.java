@@ -4,6 +4,7 @@ import Model.Cards.Card;
 import Model.Enumerations.CardValue;
 
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class UnoGameRules {
 
@@ -29,7 +30,7 @@ public abstract class UnoGameRules {
         return numberOfPlayableCards;
     }
 
-    public abstract Card[] getPlayableCards(Card[] playerHand, Card discardsPick);
+    public abstract List<Card> getPlayableCards(List<Card> playerHand, Card discardsPick);
     //public abstract void playCard(); //da vedere se e come fare
 
 
