@@ -11,9 +11,10 @@ import java.util.HashMap;
 public class StartingMenuPanel extends ResizablePanel
 {
     private static final String imagePath = "resources/images/MainFrame/StartingMenuPanel/";
+
     public StartingMenuPanel(JPanel[] panels,MainFrame mainFrame)
     {
-        super(new ImageIcon(imagePath+"background.png").getImage(),mainFrame);
+        super(mainFrame);
         setLayout(new BorderLayout());
         Percentages = new HashMap<>(){{
             put(MainFrame.Dimensions.FULLHD, new Double[]{0.25,0.45});
@@ -22,7 +23,7 @@ public class StartingMenuPanel extends ResizablePanel
         }};
         offset = 6;
         addScalingListener();
-
+        setOpaque(false);
         InitializeComponents(panels);
         setVisible(true);
     }
@@ -75,5 +76,17 @@ public class StartingMenuPanel extends ResizablePanel
         }));
     }
 
-
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        var off = 20;
+        Color bluchiaro = new Color(0, 114, 187);
+        Color bluscuro = new Color(7, 71, 113);
+        var angle = 15;
+        g.setColor(bluscuro);
+        //g.fillRect();
+        g.fillRoundRect(0, 0, panelWidth, panelHeight, angle, angle);
+        g.setColor(bluchiaro);
+        g.fillRect(off, off, panelWidth - off * 2, panelHeight - off * 2);
+    }
 }

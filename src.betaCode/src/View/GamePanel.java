@@ -19,7 +19,7 @@ public class GamePanel extends ResizablePanel{
     private static final String imagePath = "resources/images/MainFrame/GamePanel/";
 
     public GamePanel(MainFrame mainFrame){
-        super(new ImageIcon(imagePath+"background.png").getImage(), mainFrame);
+        super(mainFrame);
 
         setLayout(new BorderLayout());
         Percentages = new HashMap<>(){{
@@ -86,6 +86,14 @@ public class GamePanel extends ResizablePanel{
         deckPanel.add(g);
 
         add(deckPanel, BorderLayout.CENTER);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Color verde = new Color(14, 209, 69);
+        g.setColor(verde);
+        g.fillRect(0,0, panelWidth, panelHeight);
     }
 
     public class CardImage extends JLabel{

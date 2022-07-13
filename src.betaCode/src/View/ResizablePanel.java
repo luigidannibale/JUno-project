@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 public class ResizablePanel extends JPanel {
-    protected Image background;
+    //protected Image background;
     protected MainFrame mainFrame;
     protected int panelWidth, panelHeight;
     protected Map<MainFrame.Dimensions,Double[]> Percentages;
@@ -19,14 +19,16 @@ public class ResizablePanel extends JPanel {
 
     public static final BiFunction<Double, Double, Integer> percentage = (num, p) -> ((int) (num * p));
 
-    public ResizablePanel(Image background,MainFrame mainFrame)
+    //public ResizablePanel(Image background,MainFrame mainFrame)
+    public ResizablePanel(MainFrame mainFrame)
     {
-        this.background = background;
+        //this.background = background;
         this.mainFrame = mainFrame;
         panelWidth = 10;
         panelHeight = 10;
     }
 
+    // volendo si puo eliminare il metodo
     void addScalingListener()
     {
         addComponentListener(new ComponentAdapter() {
@@ -77,7 +79,7 @@ public class ResizablePanel extends JPanel {
     protected void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        g.drawImage(background, 0, 0, panelWidth, panelHeight, null);
+        //g.drawImage(background, 0, 0, panelWidth, panelHeight, null);
     }
 
     @Override
