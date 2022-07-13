@@ -11,7 +11,7 @@ public class UnoBasicGame extends UnoGame{
 
     public UnoBasicGame(Player[] players)
     {
-        super(players,new UnoGameRules());
+        super(players,new ClassicRules());
     }
 
     public void gamePlay(){
