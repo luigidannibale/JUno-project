@@ -7,7 +7,7 @@ public class ClassicRules extends UnoGameRules{
     public ClassicRules()
     {
         cardsDistribution = Deck.classicRules;
-        stackableActionCards = false;
+        stackableCards = false;
         numberOfPlayableCards = 1;
         numberOfCardsPerPlayer = 7;
     }

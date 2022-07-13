@@ -28,7 +28,7 @@ public class MemeRules extends UnoGameRules{
                 put(CardValue.WILD_DRAW,8);
             }};
 
-        stackableActionCards = true;
+        stackableCards = true;
         numberOfPlayableCards = 5;
         numberOfCardsPerPlayer = 11;
     }

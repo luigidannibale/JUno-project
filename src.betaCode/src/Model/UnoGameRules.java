@@ -8,7 +8,7 @@ import java.util.HashMap;
 public abstract class UnoGameRules {
 
     protected HashMap<CardValue, Integer> cardsDistribution;
-    protected boolean stackableActionCards;
+    protected boolean stackableCards;
     protected int numberOfPlayableCards;
     protected int numberOfCardsPerPlayer;
 
@@ -21,8 +21,8 @@ public abstract class UnoGameRules {
         return cardsDistribution;
     }
 
-    public boolean isStackableActionCards() {
-        return stackableActionCards;
+    public boolean isStackableCards() {
+        return stackableCards;
     }
 
     public int getNumberOfPlayableCards() {
