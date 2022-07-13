@@ -40,7 +40,7 @@ public class StartingMenuPanel extends ResizablePanel
         icons[0].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                changePanel(panels[0]);
+                //changePanel(panels[0]);
                 mainFrame.setGameScreen(true);
             }
         });

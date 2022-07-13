@@ -43,7 +43,7 @@ public class MainFrame extends JFrame {
     public AudioManager soundEffects;
 
     private Config config;
-    private ImageBackground background;
+    private Image background;
 
     public MainFrame()
     {
@@ -54,9 +54,7 @@ public class MainFrame extends JFrame {
         config = new Config(this);
         config.loadConfig();
 
-        background = new ImageBackground(getImageIcon("MainFrame/background.png").getImage());
-        background.setSize(currentDimension.getDimension());
-        setContentPane(background);
+        background = getImageIcon("MainFrame/background.png").getImage();
 
         setLayout(new GridBagLayout());
         setSize(currentDimension.getDimension());
@@ -125,7 +123,9 @@ public class MainFrame extends JFrame {
     }
 
     public void setGameScreen(boolean control){
-        setContentPane(control ? newGamePanel : background);
+        //setContentPane(control ? newGamePanel : background);
+        newGamePanel.setVisible(true);
+        setContentPane(newGamePanel);
     }
 
     public void updateSize(String s){
@@ -148,4 +148,11 @@ public class MainFrame extends JFrame {
         return currentDimension;
     }
 
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        int width = (int)currentDimension.getDimension().getWidth();
+        int height = (int)currentDimension.getDimension().getHeight();
+        g.drawImage(background, 0, 0, width, height, this);
+    }
 }
