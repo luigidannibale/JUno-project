@@ -25,7 +25,6 @@ public class StartingMenuPanel extends ResizablePanel
         addScalingListener();
         setOpaque(false);
         InitializeComponents(panels);
-        setVisible(true);
     }
 
     private void InitializeComponents(JPanel[] panels)

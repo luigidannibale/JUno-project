@@ -55,6 +55,15 @@ public class MainFrame extends JFrame {
         config.loadConfig();
 
         background = getImageIcon("MainFrame/background.png").getImage();
+        setContentPane(new JPanel(){
+            @Override
+            public void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                int width = (int)currentDimension.getDimension().getWidth();
+                int height = (int)currentDimension.getDimension().getHeight();
+                g.drawImage(background, 0, 0, width, height, this);
+            }
+        });
 
         setLayout(new GridBagLayout());
         setSize(currentDimension.getDimension());
@@ -148,11 +157,5 @@ public class MainFrame extends JFrame {
         return currentDimension;
     }
 
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        int width = (int)currentDimension.getDimension().getWidth();
-        int height = (int)currentDimension.getDimension().getHeight();
-        g.drawImage(background, 0, 0, width, height, this);
-    }
+
 }

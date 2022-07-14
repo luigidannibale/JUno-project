@@ -31,11 +31,8 @@ public class SettingsPanel extends ResizablePanel
         offset = 6;
         addScalingListener();
         setOpaque(false);
-
         dimesionChanges = mainFrame.getDimension();
-
         InitializeComponents();
-        setVisible(true);
     }
 
     private void InitializeComponents(){
