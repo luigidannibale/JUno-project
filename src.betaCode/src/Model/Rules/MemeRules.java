@@ -1,6 +1,7 @@
-package Model;
+package Model.Rules;
 
 import Model.Cards.Card;
+import Model.Deck;
 import Model.Enumerations.CardValue;
 
 import java.util.HashMap;

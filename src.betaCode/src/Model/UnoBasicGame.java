@@ -1,9 +1,9 @@
 package Model;
 
 import Model.Cards.Card;
-import Model.Enumerations.CardColor;
 import Model.Player.AIPlayer;
 import Model.Player.Player;
+import Model.Rules.ClassicRules;
 
 import java.util.List;
 

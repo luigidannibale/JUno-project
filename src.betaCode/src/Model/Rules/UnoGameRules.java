@@ -1,4 +1,4 @@
-package Model;
+package Model.Rules;
 
 import Model.Cards.Card;
 import Model.Enumerations.CardValue;

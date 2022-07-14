@@ -10,6 +10,7 @@ import Model.Enumerations.CardValue;
  * @author D'annibale Luigi, Venturini Daniele
  */
 public class TurnManager{
+    private int numberOfPlayers = 4;
     private int player;
     private Card card;
 
@@ -30,7 +31,7 @@ public class TurnManager{
      *
      * @return nextPlayer: prvides the next player index
      */
-    public int next(){ return ++player == 4 ? 0 : ++player; }
+    public int next(){ return ++player == numberOfPlayers ? 0 : ++player; }
 
     /**
      *
