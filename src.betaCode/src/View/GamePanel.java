@@ -34,7 +34,6 @@ public class GamePanel extends ResizablePanel{
         setBackground(Color.GREEN);
 
         InitializeComponents();
-        setVisible(true);
     }
 
     private void InitializeComponents(){

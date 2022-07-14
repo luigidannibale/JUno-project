@@ -35,6 +35,7 @@ public class MainFrame extends JFrame {
     private JPanel newGamePanel;
     private SettingsPanel settingsPanel;
     private StartingMenuPanel startingPanel;
+    private GameChoicePanel gameChoicePanel;
     private Dimensions currentDimension = Dimensions.WIDESCREEN;
 
     private final String pathImages = "resources/images/";
@@ -113,18 +114,21 @@ public class MainFrame extends JFrame {
 
     private void InitializeComponents()
     {
+        gameChoicePanel = new GameChoicePanel(this);
+        gameChoicePanel.setVisible(false);
+
         newGamePanel = new GamePanel(this);
         newGamePanel.setVisible(false);
 
         settingsPanel = new SettingsPanel(this);
         settingsPanel.setVisible(false);
 
-        startingPanel = new StartingMenuPanel(new JPanel[]{newGamePanel,settingsPanel,startingPanel},this);
+        startingPanel = new StartingMenuPanel(new JPanel[]{gameChoicePanel,settingsPanel,startingPanel},this);
 
+        add(gameChoicePanel);
         add(newGamePanel);
         add(settingsPanel);
         add(startingPanel);
-
     }
 
     public StartingMenuPanel getStartingPanel() {
