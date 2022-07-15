@@ -9,6 +9,7 @@ import Model.Enumerations.CardValue;
 import Model.Interfaces.SkipAction;
 import Model.Interfaces.WildAction;
 import Model.Player.Player;
+import Model.Rules.UnoGameRules;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +39,7 @@ public abstract class UnoGame extends Observable {
         win = false;
         deck.shuffle();
         //Distributing cards to each player
-        IntStream.range(0, ruleManager.numberOfCardsPerPlayer).forEach(i -> Arrays.stream(players).forEach(p -> p.drawCard(deck.draw())));
+        IntStream.range(0, ruleManager.getNumberOfCardsPerPlayer()).forEach(i -> Arrays.stream(players).forEach(p -> p.drawCard(deck.draw())));
 
         //While the first card put on the ground is a wild four it's re-put in the deck, the deck is shuffled, and it is put the first card of the deck on the ground
         while(deck.peek().getValue() == CardValue.WILD_DRAW){ deck.shuffle(); }
