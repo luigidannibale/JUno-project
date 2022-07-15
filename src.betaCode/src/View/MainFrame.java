@@ -31,6 +31,12 @@ public class MainFrame extends JFrame {
             return width + "x" + height;
         }
     }
+    public enum Panels{
+        STARTMENU,
+        SETTINGS,
+        GAMECHOICE,
+        GAME
+    }
 
     private JPanel newGamePanel;
     private SettingsPanel settingsPanel;
@@ -123,7 +129,7 @@ public class MainFrame extends JFrame {
         settingsPanel = new SettingsPanel(this);
         settingsPanel.setVisible(false);
 
-        startingPanel = new StartingMenuPanel(new JPanel[]{gameChoicePanel,settingsPanel,startingPanel},this);
+        startingPanel = new StartingMenuPanel(this);
 
         add(gameChoicePanel);
         add(newGamePanel);
@@ -131,8 +137,13 @@ public class MainFrame extends JFrame {
         add(startingPanel);
     }
 
-    public StartingMenuPanel getStartingPanel() {
-        return startingPanel;
+    public void SetPanelVisible(Panels panel){
+        switch (panel){
+            case STARTMENU -> startingPanel.setVisible(true);
+            case SETTINGS -> settingsPanel.setVisible(true);
+            case GAMECHOICE -> gameChoicePanel.setVisible(true);
+            case GAME -> newGamePanel.setVisible(true);
+        }
     }
 
     public void setGameScreen(boolean control){

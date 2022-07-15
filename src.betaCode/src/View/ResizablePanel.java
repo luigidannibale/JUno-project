@@ -62,19 +62,6 @@ public class ResizablePanel extends JPanel {
         if (icons != null) Arrays.stream(icons).forEach(icon -> icon.setIcon(size));
     }
 
-    /**
-     *
-     * @param panel: the panel that is shown istead of the current
-     */
-
-    protected void changePanel(JPanel panel){
-        if (panel != null && panel.isValid())
-        {
-            panel.setVisible(true);
-            this.setVisible(false);
-        }
-    }
-
     @Override
     public Dimension getPreferredSize() { return (new Dimension(panelWidth, panelHeight)); }
 

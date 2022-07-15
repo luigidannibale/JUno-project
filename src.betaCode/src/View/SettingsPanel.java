@@ -66,7 +66,8 @@ public class SettingsPanel extends ResizablePanel
         closeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                changePanel(mainFrame.getStartingPanel());
+                mainFrame.SetPanelVisible(MainFrame.Panels.STARTMENU);
+                setVisible(false);
             }
         });
         combo.addItemListener(new ItemListener() {

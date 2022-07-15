@@ -12,7 +12,7 @@ public class StartingMenuPanel extends ResizablePanel
 {
     private static final String imagePath = "resources/images/MainFrame/StartingMenuPanel/";
 
-    public StartingMenuPanel(JPanel[] panels,MainFrame mainFrame)
+    public StartingMenuPanel(MainFrame mainFrame)
     {
         super(mainFrame);
         setLayout(new BorderLayout());
@@ -24,10 +24,10 @@ public class StartingMenuPanel extends ResizablePanel
         offset = 6;
         addScalingListener();
         setOpaque(false);
-        InitializeComponents(panels);
+        InitializeComponents();
     }
 
-    private void InitializeComponents(JPanel[] panels)
+    private void InitializeComponents()
     {
         icons = new ImageComponent[]{
                 new ImageComponent(imagePath + "Startgame", ImageComponent.Size.BIG),
@@ -35,19 +35,20 @@ public class StartingMenuPanel extends ResizablePanel
                 new ImageComponent(imagePath + "Quit", ImageComponent.Size.BIG)
         };
 
-        //NewGamePanel
+        //GameChoicePanel
         icons[0].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                changePanel(panels[0]);
-                //mainFrame.setGameScreen(true);
+                mainFrame.SetPanelVisible(MainFrame.Panels.GAMECHOICE);
+                setVisible(false);
             }
         });
         //SettingPanel
         icons[1].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                changePanel(panels[1]);
+                mainFrame.SetPanelVisible(MainFrame.Panels.SETTINGS);
+                setVisible(false);
             }
         });
         //Quit
