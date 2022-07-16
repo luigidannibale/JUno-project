@@ -25,7 +25,7 @@ public class GameChoicePanel extends ResizablePanel{
         InitializeComponents();
     }
 
-    private static final String path = "resources/images/";
+    private static final String path = "resources/images/MainFrame/GameChoicePanel/";
 
     void InitializeComponents(){
         //Components
@@ -34,9 +34,9 @@ public class GameChoicePanel extends ResizablePanel{
         ImageComponent2 memeGame = new ImageComponent2("", ImageComponent2.Size.SMALL);
         ImageComponent2 sevenoGame = new ImageComponent2("", ImageComponent2.Size.SMALL);
         */
-        ImageComponent3 basicGame = new ImageComponent3(path + "ClassicRules.gif");
-        ImageComponent3 memeGame = new ImageComponent3(path + "SeriousRules.gif");
-        ImageComponent3 sevenoGame = new ImageComponent3(path + "SevenO.gif");
+        ImageComponent3 basicGame = new ImageComponent3(path + "ClassicRules");
+        ImageComponent3 memeGame = new ImageComponent3(path + "SeriousRules");
+        ImageComponent3 sevenoGame = new ImageComponent3(path + "SevenO");
 
         JLabel indietro = new JLabel("CLICCA QUI PER SCAPPARE DAI CALABRESI");
 
