@@ -46,23 +46,28 @@ public abstract class UnoGame extends Observable {
 
         discards.push(deck.draw());
         turnManager = new TurnManager(discards.peek());
-        cardActionPerformance(discards.peek());
+        //ruleManager.cardActionPerformance(discards.peek());
     }
 
-    public List<Card> getPLayableCards() { return players[turnManager.getPlayer()].getPlayableCards(turnManager.getCard()); }
+    public List<Card> getPLayableCards() {
+        return ruleManager.getPlayableCards(players[turnManager.getPlayer()].getPlayableCards(turnManager.getLastCardPlayed()),turnManager.getLastCardPlayed());
 
+    }
+
+    /*
     public void cardActionPerformance(Card card)
     {
-        if (turnManager.getCard() instanceof WildAction && turnManager.getCard().getColor() == CardColor.WILD) {
-            CardColor c = ((WildAction) turnManager.getCard()).changeColor();
-            turnManager.updateCard(CardBuilder.createFlowCard(c,CardValue.WILD));
+        if (turnManager.getLastCardPlayed() instanceof WildAction && turnManager.getLastCardPlayed().getColor() == CardColor.WILD) {
+            CardColor c = ((WildAction) turnManager.getLastCardPlayed()).changeColor();
+            turnManager.updateLastCardPlayed(CardBuilder.createFlowCard(c,CardValue.WILD));
         }
-        if(turnManager.getCard() instanceof DrawCard)
-            ((DrawCard) turnManager.getCard()).drawCards(turnManager,players,deck);
-        else if(turnManager.getCard() instanceof ReverseCard)
-            ((ReverseCard) turnManager.getCard()).reverse(turnManager, players);
-        if(turnManager.getCard() instanceof SkipAction)
-            ((SkipAction) turnManager.getCard()).skipTurn(turnManager);
+        if(turnManager.getLastCardPlayed() instanceof DrawCard)
+            ((DrawCard) turnManager.getLastCardPlayed()).drawCards(turnManager,players,deck);
+
+        else if(turnManager.getLastCardPlayed() instanceof ReverseCard)
+            ((ReverseCard) turnManager.getLastCardPlayed()).reverse(turnManager, players);
+        if(turnManager.getLastCardPlayed() instanceof SkipAction)
+            ((SkipAction) turnManager.getLastCardPlayed()).skipTurn(turnManager);
         /*
         switch (card.getValue()){
             case REVERSE -> ((ReverseCard) card).reverse(turnManager,players); //if discard discard.peek == reverse -> il primo gioca e poi cambia giro
@@ -82,7 +87,7 @@ public abstract class UnoGame extends Observable {
                 turnManager.updateCard(new Card(c,CardValue.WILD));
             }
             default -> {}
-        }*/
-    }
+        }
+    }*/
 }
 

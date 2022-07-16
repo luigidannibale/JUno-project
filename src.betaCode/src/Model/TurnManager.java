@@ -12,14 +12,14 @@ import Model.Enumerations.CardValue;
 public class TurnManager{
     private int numberOfPlayers = 4;
     private int player;
-    private Card card;
+    private Card lastCardPlayed;
 
     /**
      * Builds a TurnManager
-     * @param card: the first card of the discards stack
+     * @param lastPlayed: the first card of the discards stack
      */
-    public TurnManager(Card card){
-        this.card = card;
+    public TurnManager(Card lastPlayed){
+        this.lastCardPlayed = lastPlayed;
     }
 
     /**
@@ -51,18 +51,18 @@ public class TurnManager{
      * @return card: returns the last card played, more precisely a card which has the value of that card and the color (that can be either the same of the card or
      * the one chosen after a wild card)
      */
-    public Card getCard(){return card;}
+    public Card getLastCardPlayed(){return lastCardPlayed;}
 
     /**
      *
-     * @param card: the card that has been played
+     * @param lastPlayed: the card that has been played
      */
-    public void updateCard(Card card){this.card = card;}
+    public void updateLastCardPlayed(Card lastPlayed){this.lastCardPlayed = lastPlayed;}
 
     /**
      *
      * @param value : the value of the last card played
      * @param color : the color of the last card played (or the color that has been chosen after a wild)
      */
-    public void UpdateCard(CardValue value, CardColor color){ updateCard(new Card(color,value)); }
+    public void updateLastCardPlayed(CardValue value, CardColor color){ updateLastCardPlayed(new Card(color,value)); }
 }

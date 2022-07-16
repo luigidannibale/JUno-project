@@ -1,6 +1,5 @@
 package View;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -39,7 +38,7 @@ public class StartingMenuPanel extends ResizablePanel
         icons[0].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.SetPanelVisible(MainFrame.Panels.GAMECHOICE);
+                mainFrame.SetVisiblePanel(MainFrame.Panels.GAMECHOICE);
                 setVisible(false);
             }
         });
@@ -47,7 +46,7 @@ public class StartingMenuPanel extends ResizablePanel
         icons[1].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.SetPanelVisible(MainFrame.Panels.SETTINGS);
+                mainFrame.SetVisiblePanel(MainFrame.Panels.SETTINGS);
                 setVisible(false);
             }
         });

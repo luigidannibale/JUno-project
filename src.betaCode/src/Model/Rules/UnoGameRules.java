@@ -1,7 +1,10 @@
 package Model.Rules;
 
 import Model.Cards.Card;
+import Model.Deck;
 import Model.Enumerations.CardValue;
+import Model.Player.Player;
+import Model.TurnManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +34,7 @@ public abstract class UnoGameRules {
     }
 
     public abstract List<Card> getPlayableCards(List<Card> playerHand, Card discardsPick);
-    //public abstract void playCard(); //da vedere se e come fare
+    public abstract void cardActionPerformance(TurnManager turnManager, Card cardToPlay,Player[] players, Deck deck);
 
 
 

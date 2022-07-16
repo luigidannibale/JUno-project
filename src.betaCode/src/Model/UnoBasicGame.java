@@ -17,7 +17,7 @@ public class UnoBasicGame extends UnoGame{
     public void gamePlay(){
         while(!win){
             Player player = players[turnManager.getPlayer()];
-            Card lastCard = turnManager.getCard();
+            Card lastCard = turnManager.getLastCardPlayed();
             List<Card> playableCards = player.getPlayableCards(lastCard);
 
             if (playableCards.size() == 0)
@@ -30,7 +30,7 @@ public class UnoBasicGame extends UnoGame{
             if (player instanceof AIPlayer) cardToPlay = playableCards.get(0);
 
             discards.push(cardToPlay);
-            turnManager.updateCard(cardToPlay);
+            turnManager.updateLastCardPlayed(cardToPlay);
 
             win = players[turnManager.getPlayer()].getHand().empty() ;
             turnManager.passTurn();
@@ -40,7 +40,7 @@ public class UnoBasicGame extends UnoGame{
     {
         this.players[player].playCard(card);
         discards.push(card);
-        cardActionPerformance(card);
+        //ruleManager.cardActionPerformance(card);
     }
     /*@Override
     public List<Card> getPLayableCards()

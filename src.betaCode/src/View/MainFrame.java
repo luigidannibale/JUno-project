@@ -1,9 +1,6 @@
 package View;
 
-import com.sun.tools.javac.Main;
-
 import javax.swing.*;
-import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -31,6 +28,7 @@ public class MainFrame extends JFrame {
             return width + "x" + height;
         }
     }
+
     public enum Panels{
         STARTMENU,
         SETTINGS,
@@ -137,7 +135,7 @@ public class MainFrame extends JFrame {
         add(startingPanel);
     }
 
-    public void SetPanelVisible(Panels panel){
+    public void SetVisiblePanel(Panels panel){
         switch (panel){
             case STARTMENU -> startingPanel.setVisible(true);
             case SETTINGS -> settingsPanel.setVisible(true);

@@ -6,8 +6,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
 public class SettingsPanel extends ResizablePanel
@@ -66,7 +64,7 @@ public class SettingsPanel extends ResizablePanel
         closeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.SetPanelVisible(MainFrame.Panels.STARTMENU);
+                mainFrame.SetVisiblePanel(MainFrame.Panels.STARTMENU);
                 setVisible(false);
             }
         });

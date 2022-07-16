@@ -3,6 +3,8 @@ package Model.Rules;
 import Model.Cards.Card;
 import Model.Deck;
 import Model.Enumerations.CardValue;
+import Model.Player.Player;
+import Model.TurnManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,5 +25,9 @@ public class SevenoRules extends UnoGameRules{
     @Override
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick) {
         return playerPlayableHand;
+    }
+
+    public void cardActionPerformance(TurnManager turnManager, Card cardToPlay, Player[] players, Deck deck){
+
     }
 }

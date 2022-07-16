@@ -16,18 +16,21 @@ public class ImageComponent2 extends JLabel implements Observer {
     Image image;
     Size size;
 
+    final int offsetX = 50;
+    final int offsetY = 50;
 
     public ImageComponent2(String imagePath, Size size){
         this.size = size;
         image = new ImageIcon(imagePath + ".png").getImage();
         setOpaque(false);
         setPreferredSize(new Dimension(350, 100));
+        setIcon(new ImageIcon(image));
     }
 
     public void paint(Size size){
         if (size == Size.MEDIUM)       paintedImage = image; //to use real image
-        else if (size == Size.SMALL)   paintedImage = image.getScaledInstance(image.getWidth(this)-50, image.getHeight(this)-20, Image.SCALE_SMOOTH);
-        else if (size == Size.BIG)     paintedImage = image.getScaledInstance(image.getWidth(this)+50, image.getHeight(this)+20, Image.SCALE_SMOOTH);
+        else if (size == Size.SMALL)   paintedImage = image.getScaledInstance(image.getWidth(this)-offsetX, image.getHeight(this)-offsetY, Image.SCALE_SMOOTH);
+        else if (size == Size.BIG)     paintedImage = image.getScaledInstance(image.getWidth(this)+offsetX, image.getHeight(this)+offsetY, Image.SCALE_SMOOTH);
         super.setIcon(new ImageIcon(paintedImage));
     }
 
