@@ -22,7 +22,7 @@ public class ImageComponent2 extends JLabel implements Observer {
     public ImageComponent2(String imagePath, Size size){
         this.size = size;
         image = new ImageIcon(imagePath + ".png").getImage();
-        setOpaque(false);
+        //setOpaque(false);
         setPreferredSize(new Dimension(350, 100));
         setIcon(new ImageIcon(image));
     }
@@ -45,7 +45,6 @@ public class ImageComponent2 extends JLabel implements Observer {
     public void update(Observable o, Object arg) {
         if (arg instanceof Size) paint((Size) arg);
     }
-
 
     /*
     public void setIcon(Size size){

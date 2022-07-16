@@ -140,14 +140,11 @@ public class MainFrame extends JFrame {
             case STARTMENU -> startingPanel.setVisible(true);
             case SETTINGS -> settingsPanel.setVisible(true);
             case GAMECHOICE -> gameChoicePanel.setVisible(true);
-            case GAME -> newGamePanel.setVisible(true);
+            case GAME -> {
+                newGamePanel.setVisible(true);
+                setContentPane(newGamePanel);
+            }
         }
-    }
-
-    public void setGameScreen(boolean control){
-        //setContentPane(control ? newGamePanel : background);
-        newGamePanel.setVisible(true);
-        setContentPane(newGamePanel);
     }
 
     public void updateSize(String s){
