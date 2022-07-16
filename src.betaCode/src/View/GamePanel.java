@@ -95,7 +95,7 @@ public class GamePanel extends ResizablePanel{
         g.fillRect(0,0, panelWidth, panelHeight);
     }
 
-    public class CardImage extends JLabel{
+    public class CardImage extends JComponent{
         private static final Image backCard = new ImageIcon("resources/images/Back_card.png").getImage();
         private static final String pathDeck = "resources/images/White_deck/";
         private final Image img;
