@@ -28,6 +28,7 @@ public class ImageComponent3 extends JComponent {
             @Override
             public void mouseEntered(MouseEvent e) {
                 showGif = true;
+                repaint();
             }
 
             @Override
