@@ -21,9 +21,9 @@ public class ImageComponent2 extends JLabel implements Observer {
 
     public ImageComponent2(String imagePath, Size size){
         this.size = size;
-        image = new ImageIcon(imagePath + ".png").getImage();
+        image = new ImageIcon(imagePath).getImage();
         //setOpaque(false);
-        setPreferredSize(new Dimension(350, 100));
+        //setPreferredSize(new Dimension(350, 100));
         setIcon(new ImageIcon(image));
     }
 
