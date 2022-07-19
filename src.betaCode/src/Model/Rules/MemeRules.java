@@ -1,9 +1,6 @@
 package Model.Rules;
 
-import Model.Cards.Card;
-import Model.Cards.CardBuilder;
-import Model.Cards.DrawCard;
-import Model.Cards.ReverseCard;
+import Model.Cards.*;
 import Model.Deck;
 import Model.Enumerations.CardColor;
 import Model.Enumerations.CardValue;
@@ -34,31 +31,45 @@ public class MemeRules extends UnoGameRules{
     @Override
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick) {
         if (discardsPick instanceof SkipAction || discardsPick instanceof WildAction )
-        {
-            switch (discardsPick.getValue())
-            {
-                case WILD_DRAW -> {}
-                case SKIP -> {}
-                case DRAW -> {playerPlayableHand.forEach(card -> card.getValue()==CardValue.DRAW?:playerPlayableHand.remove(card));}
-                default ->{}
-            }
-
-        }
+            playerPlayableHand = playerPlayableHand.stream().filter(card -> card.getValue()==discardsPick.getValue()).toList();
         return playerPlayableHand;
     }
 
     @Override
-    public void cardActionPerformance(TurnManager turnManager, Card card, Player[] players, Deck deck)
+    public void cardActionPerformance(TurnManager turnManager, Player[] players, Deck deck)
     {
-        if (turnManager.getLastCardPlayed() instanceof WildAction && turnManager.getLastCardPlayed().getColor() == CardColor.WILD) {
-            CardColor c = ((WildAction) turnManager.getLastCardPlayed()).changeColor();
+        Card lastCard = turnManager.getLastCardPlayed();
+        if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD &&
+                players[turnManager.next()].getHand().stream().anyMatch(card -> card.getValue()==CardValue.WILD_DRAW)) {
+            //serve per forza lo switch
+            CardColor c = ((WildAction) lastCard).changeColor();
             turnManager.updateLastCardPlayed(CardBuilder.createFlowCard(c, CardValue.WILD));
         }
-        if(turnManager.getLastCardPlayed() instanceof DrawCard)
-            players[turnManager.next()].drawCards(deck.draw(((DrawCard) turnManager.getLastCardPlayed()).getNumberOfCardsToDraw()));
-        else if(turnManager.getLastCardPlayed() instanceof ReverseCard)
-            ((ReverseCard) turnManager.getLastCardPlayed()).reverse(turnManager, players);
-        if(turnManager.getLastCardPlayed() instanceof SkipAction)
-            ((SkipAction) turnManager.getLastCardPlayed()).skipTurn(turnManager);
+        if(lastCard instanceof DrawCard)
+            players[turnManager.next()].drawCards(deck.draw(((DrawCard) lastCard).getNumberOfCardsToDraw()));
+        else if(lastCard instanceof ReverseCard)
+            ((ReverseCard) lastCard).reverse(turnManager, players);
+        if(lastCard instanceof SkipAction)
+            ((SkipAction) lastCard).skipTurn(turnManager);
+
+        switch (lastCard.getValue()){
+            case REVERSE -> ((ReverseCard) lastCard).reverse(turnManager,players); //if discard discard.peek == reverse -> il primo gioca e poi cambia giro
+            case DRAW -> {//if discard discard.peek == draw -> il primo pesca due carte
+                players[turnManager.getPlayer()].drawCards(deck.draw(2));
+                ((DrawCard) lastCard).skipTurn(turnManager);
+            }
+            case SKIP -> ((SkipCard) lastCard).skipTurn(turnManager); //if discard discard.peek == skip -> il primo viene skippato
+            case WILD -> {//if discard discard.peek == wild -> il primo sceglie il colore
+                CardColor c = ((WildCard) lastCard).changeColor();
+                turnManager.updateLastCardPlayed(CardValue.WILD,c);
+            }
+            case WILD_DRAW -> {
+                players[turnManager.getPlayer()].drawCards(deck.draw(4));
+                ((DrawCard) lastCard).skipTurn(turnManager);
+                CardColor c = ((DrawCard) lastCard).changeColor();
+                turnManager.updateLastCardPlayed(CardValue.WILD,c);
+            }
+            default -> {}
+        }
     };
 }

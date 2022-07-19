@@ -27,7 +27,8 @@ public class SevenoRules extends UnoGameRules{
         return playerPlayableHand;
     }
 
-    public void cardActionPerformance(TurnManager turnManager, Card cardToPlay, Player[] players, Deck deck){
+    @Override
+    public void cardActionPerformance(TurnManager turnManager, Player[] players, Deck deck){
 
     }
 }

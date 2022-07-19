@@ -35,18 +35,19 @@ public class ClassicRules extends UnoGameRules{
     }
 
     @Override
-    public void cardActionPerformance(TurnManager turnManager, Card card, Player[] players, Deck deck)
+    public void cardActionPerformance(TurnManager turnManager, Player[] players, Deck deck)
     {
-        if (turnManager.getLastCardPlayed() instanceof WildAction && turnManager.getLastCardPlayed().getColor() == CardColor.WILD) {
-            CardColor c = ((WildAction) turnManager.getLastCardPlayed()).changeColor();
+        Card lastCard = turnManager.getLastCardPlayed();
+        if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD) {
+            CardColor c = ((WildAction) lastCard).changeColor();
             turnManager.updateLastCardPlayed(CardBuilder.createFlowCard(c, CardValue.WILD));
         }
-        if(turnManager.getLastCardPlayed() instanceof DrawCard)
-            players[turnManager.next()].drawCards(deck.draw(((DrawCard) turnManager.getLastCardPlayed()).getNumberOfCardsToDraw()));
-        else if(turnManager.getLastCardPlayed() instanceof ReverseCard)
-            ((ReverseCard) turnManager.getLastCardPlayed()).reverse(turnManager, players);
-        if(turnManager.getLastCardPlayed() instanceof SkipAction)
-            ((SkipAction) turnManager.getLastCardPlayed()).skipTurn(turnManager);
+        if(lastCard instanceof DrawCard)
+            players[turnManager.next()].drawCards(deck.draw(((DrawCard) lastCard).getNumberOfCardsToDraw()));
+        else if(lastCard instanceof ReverseCard)
+            ((ReverseCard) lastCard).reverse(turnManager, players);
+        if(lastCard instanceof SkipAction)
+            ((SkipAction) lastCard).skipTurn(turnManager);
     };
 
 }

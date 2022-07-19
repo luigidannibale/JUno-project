@@ -1,8 +1,14 @@
 package Model.Rules;
 
 import Model.Cards.Card;
+import Model.Cards.CardBuilder;
+import Model.Cards.DrawCard;
+import Model.Cards.ReverseCard;
 import Model.Deck;
+import Model.Enumerations.CardColor;
 import Model.Enumerations.CardValue;
+import Model.Interfaces.SkipAction;
+import Model.Interfaces.WildAction;
 import Model.Player.Player;
 import Model.TurnManager;
 
@@ -34,7 +40,12 @@ public abstract class UnoGameRules {
     }
 
     public abstract List<Card> getPlayableCards(List<Card> playerHand, Card discardsPick);
-    public abstract void cardActionPerformance(TurnManager turnManager, Card cardToPlay,Player[] players, Deck deck);
+    public abstract void cardActionPerformance(TurnManager turnManager,Player[] players, Deck deck);
+
+    protected void performDrawAction(Player player, int cardsToDraw, Deck deck)
+    {
+        player.drawCards(deck.draw(cardsToDraw));
+    }
 
 
 

@@ -93,6 +93,13 @@ public class GamePanel extends ResizablePanel{
         Color verde = new Color(14, 209, 69);
         g.setColor(verde);
         g.fillRect(0,0, panelWidth, panelHeight);
+
+        //le carte devono essere immagini e non jcomponent cosi posso disegnarli
+
+        //var spazio_per_carte = player.numCarte * carta.width - 50; //(numero fisso?)
+        //var inizio_carte_x = (panelWidth - spazio_per_carte) / 2;
+        //var inizio_carte_y = (panelHeight - spazio_per_carte) / 2;
+        //var spazio_tra_carte = spazio_per_carte / player.numCarte;
     }
 
     public class CardImage extends JComponent{
