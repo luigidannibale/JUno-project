@@ -48,7 +48,7 @@ public class GameChoicePanel extends ResizablePanel{
             @Override
             public void mouseClicked(MouseEvent e) {
                 //mainFrame.setVisiblePanel(MainFrame.Panels.GAME);
-                mainFrame.createNewGame();
+                mainFrame.createNewGame(GameMode.CLASSIC);
                 setVisible(false);
             }
         });
@@ -93,16 +93,11 @@ public class GameChoicePanel extends ResizablePanel{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-
         Graphics2D g2 = (Graphics2D)g;
         g2.setColor(new Color(50, 166, 92));
         g2.fillRoundRect(0,0, panelWidth, panelHeight, 15, 15);
         g2.setStroke(new BasicStroke(5));
         g2.setColor(new Color(19, 80, 41));
         g2.drawRoundRect(0,0,panelWidth,panelHeight, 15, 15);
-
-
-
-
     }
 }

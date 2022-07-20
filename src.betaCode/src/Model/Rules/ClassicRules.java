@@ -38,9 +38,12 @@ public class ClassicRules extends UnoGameRules{
     public void cardActionPerformance(TurnManager turnManager, Player[] players, Deck deck)
     {
         Card lastCard = turnManager.getLastCardPlayed();
-        if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD) {
-            CardColor c = ((WildAction) lastCard).changeColor();
-            turnManager.updateLastCardPlayed(CardBuilder.createFlowCard(c, CardValue.WILD));
+
+        if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD)
+        {
+            //color deve essere preso come scelta dell'utente
+            CardColor color = CardColor.RED;
+            ((WildAction) lastCard).changeColor(turnManager, color);
         }
         if(lastCard instanceof DrawCard)
             players[turnManager.next()].drawCards(deck.draw(((DrawCard) lastCard).getNumberOfCardsToDraw()));

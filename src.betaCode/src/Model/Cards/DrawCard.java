@@ -28,6 +28,10 @@ public class DrawCard extends Card implements WildAction, SkipAction {
         this.numberOfCardsToDraw = numberOfCardsToDraw;
     }
 
+    public void performDrawAction(Player player, int cardsToDraw, Deck deck)
+    {
+        player.drawCards(deck.draw(cardsToDraw));
+    }
 
 
 }

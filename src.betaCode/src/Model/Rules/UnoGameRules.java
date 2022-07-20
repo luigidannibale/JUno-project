@@ -42,21 +42,5 @@ public abstract class UnoGameRules {
     public abstract List<Card> getPlayableCards(List<Card> playerHand, Card discardsPick);
     public abstract void cardActionPerformance(TurnManager turnManager,Player[] players, Deck deck);
 
-    protected void performDrawAction(Player player, int cardsToDraw, Deck deck)
-    {
-        player.drawCards(deck.draw(cardsToDraw));
-    }
-    protected void performChangeColorAction(TurnManager turnManager, CardColor color)
-    {
-        turnManager.updateLastCardPlayed(turnManager.getLastCardPlayed().getValue(),color);
-    }
-    protected void performSkipAction(TurnManager turnManager, CardColor color)
-    {
-        turnManager.passTurn();
-    }
-
-
-
-
 
 }

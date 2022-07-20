@@ -14,6 +14,7 @@ import View.MainFrame;
 public class UnoGameTable {
     //UnoGame uno = new tipoDiUno(new Player[] {mario,filippo,marco,gianfranco});
     GamePanel view;
+
     UnoGame model;
 
     //qui dentro ci sono anche la view e tutti i suoi eventi

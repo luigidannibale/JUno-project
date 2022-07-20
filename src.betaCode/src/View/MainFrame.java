@@ -132,7 +132,7 @@ public class MainFrame extends JFrame {
         startingPanel = new StartingMenuPanel(this);
 
         add(gameChoicePanel);
-        //add(newGamePanel);
+        add(newGamePanel);
         add(settingsPanel);
         add(startingPanel);
     }

@@ -1,9 +1,13 @@
 package Model.Interfaces;
 
 import Model.Enumerations.CardColor;
+import Model.TurnManager;
 
 import java.util.Random;
 
 public interface WildAction {
-    default CardColor changeColor() { return CardColor.values()[new Random().nextInt(4)]; }
+    default void changeColor(TurnManager turnManager,CardColor  color)
+    {
+        turnManager.updateLastCardPlayed(turnManager.getLastCardPlayed().getValue(),color);
+    }
 }

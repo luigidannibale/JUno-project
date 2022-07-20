@@ -37,7 +37,7 @@ public class MemeRules extends UnoGameRules{
 
     @Override
     public void cardActionPerformance(TurnManager turnManager, Player[] players, Deck deck)
-    {
+    {   /*
         Card lastCard = turnManager.getLastCardPlayed();
         if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD &&
                 players[turnManager.next()].getHand().stream().anyMatch(card -> card.getValue()==CardValue.WILD_DRAW)) {
@@ -70,6 +70,6 @@ public class MemeRules extends UnoGameRules{
                 turnManager.updateLastCardPlayed(CardValue.WILD,c);
             }
             default -> {}
-        }
-    };
+        }*/
+    }
 }
