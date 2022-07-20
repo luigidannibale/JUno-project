@@ -17,7 +17,7 @@ import java.util.Observable;
 import java.util.Stack;
 import java.util.stream.IntStream;
 
-public abstract class UnoGame extends Observable {
+public class UnoGame extends Observable {
     protected UnoGameRules ruleManager;
     protected TurnManager turnManager;
     protected Deck deck;
@@ -25,7 +25,7 @@ public abstract class UnoGame extends Observable {
     protected Player[] players;
     protected boolean win;
 
-    protected UnoGame(Player[] players, UnoGameRules ruleManager)
+    public UnoGame(Player[] players, UnoGameRules ruleManager)
     {
         this.ruleManager = ruleManager;
         deck = new Deck(ruleManager.getCardsDistribution());

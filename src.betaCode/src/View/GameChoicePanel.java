@@ -1,7 +1,5 @@
 package View;
 
-import Model.Rules.UnoGameRules;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -9,6 +7,11 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 
 public class GameChoicePanel extends ResizablePanel{
+    public enum GameMode{
+        CLASSIC,
+        MEME,
+        SEVENO
+    }
 
     public GameChoicePanel(MainFrame mainFrame) {
         super(mainFrame);
@@ -38,13 +41,14 @@ public class GameChoicePanel extends ResizablePanel{
         ImageComponent3 memeGame = new ImageComponent3(path + "SeriousRules");
         ImageComponent3 sevenoGame = new ImageComponent3(path + "SevenO");
 
-        JLabel indietro = new JLabel("CLICCA QUI PER SCAPPARE DAI CALABRESI");
+        JLabel indietro = new JLabel("CLICCA QUI");
 
         //Listeners
         basicGame.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.SetVisiblePanel(MainFrame.Panels.GAME);
+                //mainFrame.setVisiblePanel(MainFrame.Panels.GAME);
+                mainFrame.createNewGame();
                 setVisible(false);
             }
         });
@@ -52,7 +56,7 @@ public class GameChoicePanel extends ResizablePanel{
         indietro.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.SetVisiblePanel(MainFrame.Panels.STARTMENU);
+                mainFrame.setVisiblePanel(MainFrame.Panels.STARTMENU);
                 setVisible(false);
             }
         });
@@ -62,7 +66,7 @@ public class GameChoicePanel extends ResizablePanel{
 
         //------------Center
         gbc.gridx = 1;      gbc.gridy = 0;
-        gbc.weightx = 0.1;  gbc.weighty = 0.5;
+        gbc.weightx = 0.15;  gbc.weighty = 0.5;
         add(basicGame, gbc);
         //add(basicGame, BorderLayout.CENTER);
 
@@ -74,13 +78,13 @@ public class GameChoicePanel extends ResizablePanel{
 
         //------------Right
         gbc.gridx = 2;      gbc.gridy = 0;
-        gbc.weightx = 0.05;  gbc.weighty = 0.5;
+        gbc.weightx = 0.15;  gbc.weighty = 0.5;
         add(sevenoGame, gbc);
         //add(basicGame2, BorderLayout.LINE_END);
 
         //------------Scappa
         gbc.gridx = 2;      gbc.gridy = 1;
-        gbc.weightx = 0.1;  gbc.weighty = 0.1;
+        gbc.weightx = 0.15;  gbc.weighty = 0.1;
         add(indietro, gbc);
         //add(indietro, BorderLayout.PAGE_END);
     }

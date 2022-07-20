@@ -1,5 +1,7 @@
 package View;
 
+import Controller.UnoGameTable;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -130,20 +132,22 @@ public class MainFrame extends JFrame {
         startingPanel = new StartingMenuPanel(this);
 
         add(gameChoicePanel);
-        add(newGamePanel);
+        //add(newGamePanel);
         add(settingsPanel);
         add(startingPanel);
     }
 
-    public void SetVisiblePanel(Panels panel){
+    public void createNewGame(GameChoicePanel.GameMode gameMode){
+        UnoGameTable game = new UnoGameTable((GamePanel) newGamePanel, gameMode);
+        setVisiblePanel(Panels.GAME);
+    }
+
+    public void setVisiblePanel(Panels panel){
         switch (panel){
             case STARTMENU -> startingPanel.setVisible(true);
             case SETTINGS -> settingsPanel.setVisible(true);
             case GAMECHOICE -> gameChoicePanel.setVisible(true);
-            case GAME -> {
-                newGamePanel.setVisible(true);
-                setContentPane(newGamePanel);
-            }
+            case GAME -> setContentPane(newGamePanel);
         }
     }
 

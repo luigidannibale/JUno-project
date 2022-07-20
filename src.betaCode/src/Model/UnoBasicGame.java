@@ -4,6 +4,7 @@ import Model.Cards.Card;
 import Model.Player.AIPlayer;
 import Model.Player.Player;
 import Model.Rules.ClassicRules;
+import View.GameChoicePanel;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class UnoBasicGame extends UnoGame{
 
     public UnoBasicGame(Player[] players)
     {
-        super(players,new ClassicRules());
+        super(players, null);
     }
 
     public void gamePlay(){

@@ -38,7 +38,7 @@ public class StartingMenuPanel extends ResizablePanel
         icons[0].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.SetVisiblePanel(MainFrame.Panels.GAMECHOICE);
+                mainFrame.setVisiblePanel(MainFrame.Panels.GAMECHOICE);
                 setVisible(false);
             }
         });
@@ -46,7 +46,7 @@ public class StartingMenuPanel extends ResizablePanel
         icons[1].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.SetVisiblePanel(MainFrame.Panels.SETTINGS);
+                mainFrame.setVisiblePanel(MainFrame.Panels.SETTINGS);
                 setVisible(false);
             }
         });

@@ -6,6 +6,7 @@ import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.UnoBasicGame;
+import View.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +14,7 @@ import java.util.Random;
 
 public class Juno {
     public static void main(String[] args){
-        UnoGameTable table;
+        MainFrame table;
 
         //provaDeck();
 
@@ -37,14 +38,14 @@ public class Juno {
         g.setBackground(new Color(0,0,0,0));
         g.setLocationRelativeTo(null);
         g.setVisible(true);
-        table = new UnoGameTable(new UnoBasicGame(new Player[]{gigi,d,w,wa}));
+        table = new MainFrame();
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         g.setVisible(false);
-        table.setVisible();
+        table.setVisible(true);
         g.dispose();
     }
 
