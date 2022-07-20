@@ -46,6 +46,14 @@ public abstract class UnoGameRules {
     {
         player.drawCards(deck.draw(cardsToDraw));
     }
+    protected void performChangeColorAction(TurnManager turnManager, CardColor color)
+    {
+        turnManager.updateLastCardPlayed(turnManager.getLastCardPlayed().getValue(),color);
+    }
+    protected void performSkipAction(TurnManager turnManager, CardColor color)
+    {
+        turnManager.passTurn();
+    }
 
 
 
