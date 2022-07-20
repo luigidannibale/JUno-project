@@ -1,12 +1,10 @@
-import Controller.UnoGameTable;
+import Controller.MainFrameController;
 import Model.Cards.Card;
 import Model.Deck;
 import Model.Enumerations.CardValue;
 import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
-import Model.UnoBasicGame;
-import View.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +12,7 @@ import java.util.Random;
 
 public class Juno {
     public static void main(String[] args){
-        MainFrame table;
+        MainFrameController table;
 
         //provaDeck();
 
@@ -38,14 +36,14 @@ public class Juno {
         g.setBackground(new Color(0,0,0,0));
         g.setLocationRelativeTo(null);
         g.setVisible(true);
-        table = new MainFrame();
+        table = new MainFrameController();
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         g.setVisible(false);
-        table.setVisible(true);
+        table.setVisible();
         g.dispose();
     }
 

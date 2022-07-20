@@ -5,13 +5,11 @@ import Model.Rules.ClassicRules;
 import Model.Rules.MemeRules;
 import Model.Rules.SevenoRules;
 import Model.Rules.UnoGameRules;
-import Model.UnoBasicGame;
 import Model.UnoGame;
 import View.GameChoicePanel;
 import View.GamePanel;
-import View.MainFrame;
 
-public class UnoGameTable {
+public class GamePanelController {
     //UnoGame uno = new tipoDiUno(new Player[] {mario,filippo,marco,gianfranco});
     GamePanel view;
 
@@ -19,7 +17,7 @@ public class UnoGameTable {
 
     //qui dentro ci sono anche la view e tutti i suoi eventi
 
-    public UnoGameTable(GamePanel view, GameChoicePanel.GameMode gameMode)
+    public GamePanelController(GamePanel view, GameChoicePanel.GameMode gameMode)
     {
         this.view = view;
         UnoGameRules rules;

@@ -1,6 +1,6 @@
 package View;
 
-import Controller.UnoGameTable;
+import Controller.GamePanelController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -107,12 +107,7 @@ public class MainFrame extends JFrame {
         InitializeComponents();
     }
 
-    public void setVisibile(){
-        super.setVisible(true);
 
-        //backMusic.playMusic("rick roll.wav");
-        //soundEffects.playEffect("deck shuffle.wav");
-    }
 
     private ImageIcon getImageIcon(String filename){
         return new ImageIcon(pathImages + filename);
@@ -138,7 +133,7 @@ public class MainFrame extends JFrame {
     }
 
     public void createNewGame(GameChoicePanel.GameMode gameMode){
-        UnoGameTable game = new UnoGameTable((GamePanel) newGamePanel, gameMode);
+        GamePanelController game = new GamePanelController((GamePanel) newGamePanel, gameMode);
         setVisiblePanel(Panels.GAME);
     }
 
@@ -157,7 +152,7 @@ public class MainFrame extends JFrame {
             case "1920x1080" -> dim = Dimensions.FULLHD;
             case "1080x720" -> dim = Dimensions.HD;
             default -> dim = Dimensions.WIDESCREEN;
-        };
+        }
         updateSize(dim);
     }
 
