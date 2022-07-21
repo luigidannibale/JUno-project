@@ -15,11 +15,16 @@ public class StartingMenuPanel extends ResizablePanel
     {
         super(mainFrame);
         setLayout(new BorderLayout());
+        /*
         Percentages = new HashMap<>(){{
             put(MainFrame.Dimensions.FULLHD, new Double[]{0.25,0.45});
             put(MainFrame.Dimensions.WIDESCREEN, new Double[]{0.27,0.45});
             put(MainFrame.Dimensions.HD, new Double[]{0.33,0.55});
         }};
+
+         */
+        percentX = 0.28;
+        percentY = 0.48;
         offset = 6;
         addScalingListener();
         setOpaque(false);

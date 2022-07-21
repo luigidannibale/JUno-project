@@ -17,11 +17,16 @@ public class GameChoicePanel extends ResizablePanel{
         super(mainFrame);
         setLayout(new GridBagLayout());
         //setLayout(new BorderLayout());
+        /*
         super.Percentages = new HashMap<>(){{
             put(MainFrame.Dimensions.FULLHD, new Double[]{0.60,0.65});
             put(MainFrame.Dimensions.WIDESCREEN, new Double[]{0.75,0.60});
             put(MainFrame.Dimensions.HD, new Double[]{0.65,0.60});
         }};
+
+         */
+        percentX = 0.65;
+        percentY = 0.62;
         offset = 6;
         addScalingListener();
         setOpaque(false);

@@ -13,7 +13,10 @@ public class ResizablePanel extends JPanel {
     //protected Image background;
     protected MainFrame mainFrame;
     protected int panelWidth, panelHeight;
-    protected Map<MainFrame.Dimensions,Double[]> Percentages;
+    //protected Map<MainFrame.Dimensions,Double[]> Percentages;
+    protected double percentX;
+    protected double percentY;
+
     protected int offset;
     protected ImageComponent[] icons;
 
@@ -44,9 +47,18 @@ public class ResizablePanel extends JPanel {
                     default         -> toSize = ImageComponent.Size.SMALL;
                 }
 
+                /*
                 updateSize(new Dimension(percentage.apply(parentSize.getDimension().getWidth(), Percentages.get(parentSize)[0]),
                                          percentage.apply(parentSize.getDimension().getHeight(), Percentages.get(parentSize)[1])),
                                          toSize);
+
+                 */
+
+                updateSize(new Dimension(percentage.apply(parentSize.getDimension().getWidth(), percentX),
+                                         percentage.apply(parentSize.getDimension().getHeight(), percentY)),
+                                         toSize);
+
+
             }
         });
     }
