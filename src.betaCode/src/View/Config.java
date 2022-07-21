@@ -1,30 +1,32 @@
 package View;
 
+import Controller.MainFrameController;
+
 import java.io.*;
 
 public class Config {
 
-    MainFrame mf;
+    MainFrameController mfc;
     final static String fileName = "config.txt";
 
-    public Config(MainFrame mf){
-        this.mf = mf;
+    public Config(MainFrameController mfc){
+        this.mfc = mfc;
     }
 
     public void saveConfig(){
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))){
 
             //Screen Dimension
-            MainFrame.Dimensions dim = mf.getDimension();
+            MainFrame.Dimensions dim = mfc.getCurrentDimension();
             bw.write(dim.toString());
             bw.newLine();
 
             //Music volume
-            bw.write(String.valueOf(mf.backMusic.getVolume()));
+            bw.write(String.valueOf(mfc.backMusic.getVolume()));
             bw.newLine();
 
             //Effects volume
-            bw.write(String.valueOf(mf.soundEffects.getVolume()));
+            bw.write(String.valueOf(mfc.soundEffects.getVolume()));
             bw.newLine();
         }
         catch (IOException e) {
@@ -38,15 +40,15 @@ public class Config {
             //Screen dimension
             String line = br.readLine();
             if (line == null) return;
-            mf.updateSize(line);
+            mfc.updateSize(line);
 
             //Music volume
             line = br.readLine();
-            mf.backMusic.setVolume(Integer.parseInt(line));
+            mfc.backMusic.setVolume(Integer.parseInt(line));
 
             //Effects volume
             line = br.readLine();
-            mf.soundEffects.setVolume(Integer.parseInt(line));
+            mfc.soundEffects.setVolume(Integer.parseInt(line));
 
         } catch (IOException e){
             e.printStackTrace();

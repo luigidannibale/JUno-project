@@ -35,7 +35,7 @@ public class ResizablePanel extends JPanel {
 
             @Override
             public void componentMoved(ComponentEvent e) {
-                MainFrame.Dimensions parentSize = mainFrame.getDimension();
+                MainFrame.Dimensions parentSize = mainFrame.getCurrentDimension();
                 ImageComponent.Size toSize;
 
                 switch (parentSize){

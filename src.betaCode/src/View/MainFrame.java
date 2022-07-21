@@ -49,17 +49,11 @@ public class MainFrame extends JFrame {
     public AudioManager backMusic;
     public AudioManager soundEffects;
 
-    private Config config;
     private Image background;
 
     public MainFrame()
     {
         super("J Uno");
-        backMusic = new AudioManager();
-        soundEffects = new AudioManager();
-
-        config = new Config(this);
-        config.loadConfig();
 
         background = getImageIcon("MainFrame/background.png").getImage();
         setContentPane(new JPanel(){
@@ -81,29 +75,7 @@ public class MainFrame extends JFrame {
         setIconImage(getImageIcon("icon2.png").getImage());
 
         // devo fare i test non posso perdere tempo a chiudere j dialogs di conferma
-        addWindowListener(new WindowAdapter()
-        {
-            @Override
-            public void windowClosing(WindowEvent e)
-            {
-                config.saveConfig();
-                /*
-                UIManager.put("OptionPane.background", new ColorUIResource(255,255,255));
-                UIManager.put("Panel.background", new ColorUIResource(255,255,255));
-                String[] options = new String[]{"Yes", "No"};
-                int confirm = JOptionPane.showOptionDialog(
-                        null,
-                        "Do you REALLY want to exit?",
-                        "Probably you just miss-clicked",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE,
-                        getImageIcon("block.png"),
-                        options, options[1]);
-                if (confirm == JOptionPane.YES_OPTION) System.exit(0);
-                */
-                System.exit(0);
-            }
-        });
+
         InitializeComponents();
     }
 
@@ -146,24 +118,19 @@ public class MainFrame extends JFrame {
         }
     }
 
-    public void updateSize(String s){
-        Dimensions dim;
-        switch (s) {
-            case "1920x1080" -> dim = Dimensions.FULLHD;
-            case "1080x720" -> dim = Dimensions.HD;
-            default -> dim = Dimensions.WIDESCREEN;
-        }
-        updateSize(dim);
-    }
-
+    //da cancellare
     public void updateSize(Dimensions dimension){
         currentDimension = dimension;
         setSize(dimension.getDimension());
         setLocationRelativeTo(null);
     }
 
-    public Dimensions getDimension(){
+    public Dimensions getCurrentDimension(){
         return currentDimension;
+    }
+
+    public void setCurrentDimension(Dimensions dimensions){
+        currentDimension = dimensions;
     }
 
 

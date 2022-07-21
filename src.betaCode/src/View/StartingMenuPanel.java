@@ -34,45 +34,29 @@ public class StartingMenuPanel extends ResizablePanel
                 new ImageComponent(imagePath + "Quit", ImageComponent.Size.BIG)
         };
 
-        //GameChoicePanel
-        icons[0].addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                mainFrame.setVisiblePanel(MainFrame.Panels.GAMECHOICE);
-                setVisible(false);
-            }
-        });
-        //SettingPanel
-        icons[1].addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                mainFrame.setVisiblePanel(MainFrame.Panels.SETTINGS);
-                setVisible(false);
-            }
-        });
-        //Quit
-        icons[2].addMouseListener(new MouseAdapter() { // Quit button
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-                try //If the parent has a listener that manages the window closing it links that event, if an exception is generated the frame just get closed
-                {
-                    ((WindowAdapter) ((Arrays.stream(mainFrame.getWindowListeners()).toArray())[0])).windowClosing(null);
-                }
-                catch(Exception ex) { mainFrame.dispose(); }
-            }
-        });
-
         add(icons[0], BorderLayout.NORTH);
         add(icons[1], BorderLayout.CENTER);
         add(icons[2], BorderLayout.SOUTH);
 
+        /*
         Arrays.stream(icons).forEach(op -> op.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) { op.scaleUpIcon(); }
             @Override
             public void mouseExited(MouseEvent e)  { op.resetIcon(); }
-        }));
+        }));*/
+    }
+
+    public ImageComponent getGameChoiceIcon(){
+        return icons[0];
+    }
+
+    public ImageComponent getSettingIcon(){
+        return icons[1];
+    }
+
+    public ImageComponent getQuitIcon(){
+        return icons[2];
     }
 
     @Override

@@ -12,9 +12,11 @@ public class SettingsPanel extends ResizablePanel
 {
     private static final String imagePath = "resources/images/MainFrame/SettingsPanel/";
 
-    private float effectVolumeChanges;
-    private float musicVolumeChanges;
-    private MainFrame.Dimensions dimesionChanges;
+    JComboBox<MainFrame.Dimensions> combo;
+    JLabel saveButton;
+    JLabel closeButton;
+    VolumeSlider effectsVolumeSlider;
+    VolumeSlider musicVolumeSlider;
 
     public SettingsPanel(MainFrame mainFrame)
     {
@@ -29,7 +31,6 @@ public class SettingsPanel extends ResizablePanel
         offset = 6;
         addScalingListener();
         setOpaque(false);
-        dimesionChanges = mainFrame.getDimension();
         InitializeComponents();
     }
 
@@ -39,39 +40,14 @@ public class SettingsPanel extends ResizablePanel
         JLabel musicLabel = new JLabel(new ImageIcon(imagePath+"Musicvolume.png"));
         JLabel screenLabel = new JLabel(new ImageIcon(imagePath+"Screensize.png"));
 
-        JLabel saveButton = new JLabel(new ImageIcon(imagePath+"save.png"));
-        JLabel closeButton = new JLabel(new ImageIcon(imagePath+"discard.png"));
+        saveButton = new JLabel(new ImageIcon(imagePath+"save.png"));
+        closeButton = new JLabel(new ImageIcon(imagePath+"discard.png"));
 
-        VolumeSlider effectsVolumeSlider = new VolumeSlider(mainFrame.soundEffects.getVolume());
+        effectsVolumeSlider = new VolumeSlider(mainFrame.soundEffects.getVolume());
         effectsVolumeSlider.setChangebleIcon(effectsLabel, new String[] {"Effectsvolumeoff.png", "Effectsvolumelow.png", "Effectsvolumeon.png"});
-        VolumeSlider musicVolumeSlider = new VolumeSlider(mainFrame.backMusic.getVolume());
+        musicVolumeSlider = new VolumeSlider(mainFrame.backMusic.getVolume());
 
-        JComboBox<MainFrame.Dimensions> combo = new JComboBox<>(MainFrame.Dimensions.values());
-        combo.setSelectedItem(mainFrame.getDimension());
-
-        //Listener
-        saveButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                mainFrame.updateSize(dimesionChanges);
-                mainFrame.backMusic.setVolume(musicVolumeSlider.getValue());
-                mainFrame.backMusic.setFloatControlVolume();
-                mainFrame.soundEffects.setVolume(effectsVolumeSlider.getValue());
-                mainFrame.soundEffects.setFloatControlVolume();
-                //AudioManager.getInstance().setEffectVolume((effectsVolumeSlider.getValue()));
-            }
-        });
-        closeButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                mainFrame.setVisiblePanel(MainFrame.Panels.STARTMENU);
-                setVisible(false);
-            }
-        });
-        combo.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) { dimesionChanges = (MainFrame.Dimensions) e.getItem();}
-        });
+        combo = new JComboBox<>(MainFrame.Dimensions.values());
 
         //Layout
         GridBagConstraints gbc = new GridBagConstraints();
@@ -111,6 +87,26 @@ public class SettingsPanel extends ResizablePanel
         gbc.gridx = 2;      gbc.gridy = 3;
         gbc.weightx = 0.05; gbc.weighty = 0.1;
         add(closeButton, gbc);
+    }
+
+    public JComboBox<MainFrame.Dimensions> getCombobox(){
+        return combo;
+    }
+
+    public JLabel getSaveButton(){
+        return saveButton;
+    }
+
+    public JLabel getCloseButton(){
+        return closeButton;
+    }
+
+    public VolumeSlider getEffectsVolumeSlider(){
+        return effectsVolumeSlider;
+    }
+
+    public VolumeSlider getMusicVolumeSlider(){
+        return musicVolumeSlider;
     }
 
     @Override
