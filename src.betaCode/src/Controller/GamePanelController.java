@@ -17,9 +17,9 @@ public class GamePanelController {
 
     //qui dentro ci sono anche la view e tutti i suoi eventi
 
-    public GamePanelController(GamePanel view, GameChoicePanel.GameMode gameMode)
+    public GamePanelController(GameChoiceController.GameMode gameMode)
     {
-        this.view = view;
+        this.view = new GamePanel();
         UnoGameRules rules;
         switch (gameMode){
             case MEME -> rules = new MemeRules();
@@ -38,6 +38,10 @@ public class GamePanelController {
             view.setVisible(true);
             view.setVisible(false);
         }*/
+    }
+
+    public GamePanel getView() {
+        return view;
     }
 
     public void startGame() {

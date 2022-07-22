@@ -1,6 +1,9 @@
 package View;
 
+import Controller.GameChoiceController;
 import Controller.GamePanelController;
+import Controller.SettingsController;
+import Controller.StartingMenuController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,9 +41,11 @@ public class MainFrame extends JFrame {
         GAME
     }
 
-    private JPanel newGamePanel;
-    private SettingsPanel settingsPanel;
-    private StartingMenuPanel startingPanel;
+    private GamePanel newGamePanel;
+    //private SettingsPanel settingsPanel;
+    private SettingsController settingsController;
+    //private StartingMenuPanel startingPanel;
+    private StartingMenuController startingMenuController;
     private GameChoicePanel gameChoicePanel;
     private Dimensions currentDimension = Dimensions.WIDESCREEN;
 
@@ -74,8 +79,6 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE); //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setIconImage(getImageIcon("icon2.png").getImage());
 
-        // devo fare i test non posso perdere tempo a chiudere j dialogs di conferma
-
         InitializeComponents();
     }
 
@@ -87,32 +90,34 @@ public class MainFrame extends JFrame {
 
     private void InitializeComponents()
     {
-        gameChoicePanel = new GameChoicePanel(this);
-        gameChoicePanel.setVisible(false);
+        //gameChoicePanel = new GameChoicePanel(this);
+        //gameChoicePanel.setVisible(false);
 
-        newGamePanel = new GamePanel(this);
-        newGamePanel.setVisible(false);
+        //newGamePanel = new GamePanel(this);
+        //newGamePanel.setVisible(false);
 
-        settingsPanel = new SettingsPanel(this);
-        settingsPanel.setVisible(false);
+        //settingsPanel = new SettingsPanel(this);
+        //settingsPanel.setVisible(false);
 
-        startingPanel = new StartingMenuPanel(this);
+        //startingPanel = new StartingMenuPanel(this);
+        //startingMenuController = new StartingMenuController(this);
 
-        add(gameChoicePanel);
-        add(newGamePanel);
-        add(settingsPanel);
-        add(startingPanel);
+        //add(gameChoicePanel);
+        //add(newGamePanel);
+        //add(settingsPanel);
+        //add(startingPanel);
+        //add(startingMenuController.getView());
     }
 
-    public void createNewGame(GameChoicePanel.GameMode gameMode){
-        GamePanelController game = new GamePanelController((GamePanel) newGamePanel, gameMode);
+    public void createNewGame(GameChoiceController.GameMode gameMode){
+        GamePanelController game = new GamePanelController(gameMode);
         setVisiblePanel(Panels.GAME);
     }
 
     public void setVisiblePanel(Panels panel){
         switch (panel){
-            case STARTMENU -> startingPanel.setVisible(true);
-            case SETTINGS -> settingsPanel.setVisible(true);
+            case STARTMENU -> startingMenuController.setVisible(true);
+            case SETTINGS -> settingsController.setVisible(true);
             case GAMECHOICE -> gameChoicePanel.setVisible(true);
             case GAME -> setContentPane(newGamePanel);
         }

@@ -7,11 +7,13 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 
 public class GameChoicePanel extends ResizablePanel{
-    public enum GameMode{
-        CLASSIC,
-        MEME,
-        SEVENO
-    }
+
+
+    ImageComponent3 basicGame;
+    ImageComponent3 memeGame;
+    ImageComponent3 sevenoGame;
+
+    JLabel indietro;
 
     public GameChoicePanel(MainFrame mainFrame) {
         super(mainFrame);
@@ -42,29 +44,11 @@ public class GameChoicePanel extends ResizablePanel{
         ImageComponent2 memeGame = new ImageComponent2("", ImageComponent2.Size.SMALL);
         ImageComponent2 sevenoGame = new ImageComponent2("", ImageComponent2.Size.SMALL);
         */
-        ImageComponent3 basicGame = new ImageComponent3(path + "ClassicRules");
-        ImageComponent3 memeGame = new ImageComponent3(path + "SeriousRules");
-        ImageComponent3 sevenoGame = new ImageComponent3(path + "SevenO");
+        basicGame = new ImageComponent3(path + "ClassicRules");
+        memeGame = new ImageComponent3(path + "SeriousRules");
+        sevenoGame = new ImageComponent3(path + "SevenO");
 
-        JLabel indietro = new JLabel("CLICCA QUI");
-
-        //Listeners
-        basicGame.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                //mainFrame.setVisiblePanel(MainFrame.Panels.GAME);
-                mainFrame.createNewGame(GameMode.CLASSIC);
-                setVisible(false);
-            }
-        });
-
-        indietro.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                mainFrame.setVisiblePanel(MainFrame.Panels.STARTMENU);
-                setVisible(false);
-            }
-        });
+        indietro = new JLabel("CLICCA QUI");
 
         //Layout
         GridBagConstraints gbc = new GridBagConstraints();
@@ -92,6 +76,22 @@ public class GameChoicePanel extends ResizablePanel{
         gbc.weightx = 0.15;  gbc.weighty = 0.1;
         add(indietro, gbc);
         //add(indietro, BorderLayout.PAGE_END);
+    }
+
+    public ImageComponent3 getBasicGame(){
+        return basicGame;
+    }
+
+    public ImageComponent3 getMemeGame(){
+        return memeGame;
+    }
+
+    public ImageComponent3 getSevenoGame(){
+        return sevenoGame;
+    }
+
+    public JLabel getIndietro(){
+        return indietro;
     }
 
     @Override

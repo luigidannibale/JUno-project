@@ -2,6 +2,7 @@ package Controller;
 
 import View.AudioManager;
 import View.Config;
+import View.GamePanel;
 import View.MainFrame;
 
 import java.awt.*;
@@ -15,7 +16,12 @@ public class MainFrameController {
     public AudioManager backMusic;
     public AudioManager soundEffects;
 
-    private Config config;
+    Config config;
+
+    StartingMenuController startingMenuController;
+    SettingsController settingsController;
+    GameChoiceController gameChoiceController;
+    GamePanelController gameController;
 
     public MainFrameController(){
         view = new MainFrame();
@@ -25,6 +31,20 @@ public class MainFrameController {
 
         config = new Config(this);
         config.loadConfig();
+
+        startingMenuController = new StartingMenuController(view, this);
+
+        settingsController = new SettingsController(view);
+        settingsController.setVisible(false);
+
+        gameChoiceController = new GameChoiceController(view);
+        gameChoiceController.setVisible(false);
+
+        //gameController = new GamePanelController(view);
+
+        view.add(startingMenuController.getView());
+        view.add(settingsController.getView());
+        view.add(gameChoiceController.getView());
 
         view.addWindowListener(new WindowAdapter()
         {
@@ -53,6 +73,23 @@ public class MainFrameController {
 
     public void setVisible(){
         view.setVisible(true);
+    }
+
+    public void setVisiblePanel(MainFrame.Panels panel){
+        switch (panel){
+            case STARTMENU -> startingMenuController.setVisible(true);
+            case SETTINGS -> settingsController.setVisible(true);
+            case GAMECHOICE -> gameChoiceController.setVisible(true);
+            case GAME -> {
+                view.add(gameController.getView());
+                view.setContentPane(gameController.getView());
+            }
+        }
+    }
+
+    public void createNewGame(GameChoiceController.GameMode gameMode){
+        GamePanelController game = new GamePanelController(gameMode);
+        setVisiblePanel(MainFrame.Panels.GAME);
     }
 
     public void updateSize(String s){

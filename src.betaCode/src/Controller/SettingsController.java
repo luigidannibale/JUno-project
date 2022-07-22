@@ -43,4 +43,12 @@ public class SettingsController {
             public void itemStateChanged(ItemEvent e) { dimesionChanges = (MainFrame.Dimensions) e.getItem();}
         });
     }
+
+    public void setVisible(boolean visible){
+        view.setVisible(visible);
+    }
+
+    public SettingsPanel getView() {
+        return view;
+    }
 }

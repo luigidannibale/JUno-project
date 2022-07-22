@@ -14,12 +14,11 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class GamePanel extends ResizablePanel{
+public class GamePanel extends JPanel{
 
     private static final String imagePath = "resources/images/MainFrame/GamePanel/";
 
-    public GamePanel(MainFrame mainFrame){
-        super(mainFrame);
+    public GamePanel(){
 
         setLayout(new BorderLayout());
         /*
@@ -30,10 +29,13 @@ public class GamePanel extends ResizablePanel{
         }};
 
          */
+        /*
         percentX = 1;
         percentY = 1;
         offset = 0;
         addScalingListener();
+
+         */
         setOpaque(true);
         //debug
         setBackground(Color.GREEN);
@@ -97,7 +99,7 @@ public class GamePanel extends ResizablePanel{
         super.paintComponent(g);
         Color verde = new Color(14, 209, 69);
         g.setColor(verde);
-        g.fillRect(0,0, panelWidth, panelHeight);
+        g.fillRect(0,0, getWidth(), getHeight());
 
         //le carte devono essere immagini e non jcomponent cosi posso disegnarli
 
