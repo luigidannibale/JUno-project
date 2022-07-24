@@ -7,7 +7,7 @@ public class CardBuilder {
 
     public static Card createCard(CardColor color, CardValue value)
     {
-        
+
         if (color == CardColor.WILD && value != CardValue.WILD && value != CardValue.WILD_DRAW ||
                 color != CardColor.WILD && (value == CardValue.WILD || value == CardValue.WILD_DRAW) )
             throw new IllegalArgumentException("this card combo is not accepted");
