@@ -1,5 +1,7 @@
 package View;
 
+import Controller.MainFrameController;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -11,7 +13,7 @@ public class StartingMenuPanel extends ResizablePanel
 {
     private static final String imagePath = "resources/images/MainFrame/StartingMenuPanel/";
 
-    public StartingMenuPanel(MainFrame mainFrame)
+    public StartingMenuPanel(MainFrameController mainFrame)
     {
         super(mainFrame);
         setLayout(new BorderLayout());

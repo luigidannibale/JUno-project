@@ -1,5 +1,7 @@
 package View;
 
+import Controller.MainFrameController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -15,7 +17,7 @@ public class GameChoicePanel extends ResizablePanel{
 
     JLabel indietro;
 
-    public GameChoicePanel(MainFrame mainFrame) {
+    public GameChoicePanel(MainFrameController mainFrame) {
         super(mainFrame);
         setLayout(new GridBagLayout());
         //setLayout(new BorderLayout());

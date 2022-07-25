@@ -1,5 +1,7 @@
 package View;
 
+import Controller.MainFrameController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
@@ -18,7 +20,7 @@ public class SettingsPanel extends ResizablePanel
     VolumeSlider effectsVolumeSlider;
     VolumeSlider musicVolumeSlider;
 
-    public SettingsPanel(MainFrame mainFrame)
+    public SettingsPanel(MainFrameController mainFrame)
     {
         super(mainFrame);
         //setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));

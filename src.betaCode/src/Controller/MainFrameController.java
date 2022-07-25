@@ -32,12 +32,12 @@ public class MainFrameController {
         config = new Config(this);
         config.loadConfig();
 
-        startingMenuController = new StartingMenuController(view, this);
+        startingMenuController = new StartingMenuController(this);
 
-        settingsController = new SettingsController(view);
+        settingsController = new SettingsController(this);
         settingsController.setVisible(false);
 
-        gameChoiceController = new GameChoiceController(view);
+        gameChoiceController = new GameChoiceController(this);
         gameChoiceController.setVisible(false);
 
         //gameController = new GamePanelController(view);
@@ -81,14 +81,16 @@ public class MainFrameController {
             case SETTINGS -> settingsController.setVisible(true);
             case GAMECHOICE -> gameChoiceController.setVisible(true);
             case GAME -> {
+                gameController.getView().setSize(view.getSize());
                 view.add(gameController.getView());
                 view.setContentPane(gameController.getView());
+                view.pack();
             }
         }
     }
 
     public void createNewGame(GameChoiceController.GameMode gameMode){
-        GamePanelController game = new GamePanelController(gameMode);
+        gameController = new GamePanelController(gameMode);
         setVisiblePanel(MainFrame.Panels.GAME);
     }
 
@@ -106,6 +108,15 @@ public class MainFrameController {
         view.setCurrentDimension(dimension);
         view.setSize(dimension.getDimension());
         view.setLocationRelativeTo(null);
+    }
+
+    public void closeWindow(){
+        try //If the parent has a listener that manages the window closing it links that event, if an exception is generated the frame just get closed
+        {
+            //((WindowAdapter) ((Arrays.stream(mf.getWindowListeners()).toArray())[0])).windowClosing(null);
+            view.dispatchEvent(new WindowEvent(view, WindowEvent.WINDOW_CLOSING));
+        }
+        catch(Exception ex) { view.dispose(); }
     }
 
     public MainFrame.Dimensions getCurrentDimension(){return view.getCurrentDimension();}

@@ -14,7 +14,7 @@ public class SettingsController {
 
     MainFrame.Dimensions dimesionChanges;
 
-    public SettingsController(MainFrame mainFrame){
+    public SettingsController(MainFrameController mainFrame){
         view = new SettingsPanel(mainFrame);
 
         dimesionChanges = mainFrame.getCurrentDimension();

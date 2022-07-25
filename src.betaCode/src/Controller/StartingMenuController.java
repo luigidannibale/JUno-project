@@ -13,8 +13,8 @@ public class StartingMenuController {
 
     StartingMenuPanel view;
 
-    public StartingMenuController(MainFrame mf, MainFrameController mfc){
-        view = new StartingMenuPanel(mf);
+    public StartingMenuController(MainFrameController mfc){
+        view = new StartingMenuPanel(mfc);
 
         view.getGameChoiceIcon().addMouseListener(new MouseAdapter() {
             @Override
@@ -36,13 +36,7 @@ public class StartingMenuController {
         view.getQuitIcon().addMouseListener(new MouseAdapter() { // Quit button
             @Override
             public void mouseClicked(MouseEvent e) {
-
-                try //If the parent has a listener that manages the window closing it links that event, if an exception is generated the frame just get closed
-                {
-                    //((WindowAdapter) ((Arrays.stream(mf.getWindowListeners()).toArray())[0])).windowClosing(null);
-                    mf.dispatchEvent(new WindowEvent(mf, WindowEvent.WINDOW_CLOSING));
-                }
-                catch(Exception ex) { mf.dispose(); }
+                mfc.closeWindow();
             }
         });
     }

@@ -1,5 +1,7 @@
 package View;
 
+import Controller.MainFrameController;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -11,7 +13,7 @@ import java.util.function.BiFunction;
 
 public class ResizablePanel extends JPanel {
     //protected Image background;
-    protected MainFrame mainFrame;
+    protected MainFrameController mainFrame;
     protected int panelWidth, panelHeight;
     //protected Map<MainFrame.Dimensions,Double[]> Percentages;
     protected double percentX;
@@ -23,7 +25,7 @@ public class ResizablePanel extends JPanel {
     public static final BiFunction<Double, Double, Integer> percentage = (num, p) -> ((int) (num * p));
 
     //public ResizablePanel(Image background,MainFrame mainFrame)
-    public ResizablePanel(MainFrame mainFrame)
+    public ResizablePanel(MainFrameController mainFrame)
     {
         //this.background = background;
         this.mainFrame = mainFrame;

@@ -15,7 +15,7 @@ public class GameChoiceController {
 
     GameChoicePanel view;
 
-    public GameChoiceController(MainFrame mainFrame){
+    public GameChoiceController(MainFrameController mainFrame){
         view = new GameChoicePanel(mainFrame);
 
         view.getBasicGame().addMouseListener(new MouseAdapter() {
@@ -49,7 +49,7 @@ public class GameChoiceController {
         });
     }
 
-    private void createNewGame(MainFrame mainFrame, GameMode gameMode){
+    private void createNewGame(MainFrameController mainFrame, GameMode gameMode){
         mainFrame.createNewGame(gameMode);
         view.setVisible(false);
     }
