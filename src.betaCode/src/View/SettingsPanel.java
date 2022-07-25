@@ -50,9 +50,9 @@ public class SettingsPanel extends ResizablePanel
         saveButton = new JLabel(new ImageIcon(imagePath+"save.png"));
         closeButton = new JLabel(new ImageIcon(imagePath+"discard.png"));
 
-        //effectsVolumeSlider = new VolumeSlider(mainFrame.soundEffects.getVolume());
-        //effectsVolumeSlider.setChangebleIcon(effectsLabel, new String[] {"Effectsvolumeoff.png", "Effectsvolumelow.png", "Effectsvolumeon.png"});
-        //musicVolumeSlider = new VolumeSlider(mainFrame.backMusic.getVolume());
+        effectsVolumeSlider = new VolumeSlider(mainFrame.soundEffects.getVolume());
+        effectsVolumeSlider.setChangebleIcon(effectsLabel, new String[] {"Effectsvolumeoff.png", "Effectsvolumelow.png", "Effectsvolumeon.png"});
+        musicVolumeSlider = new VolumeSlider(mainFrame.backMusic.getVolume());
 
         combo = new JComboBox<>(MainFrame.Dimensions.values());
 
@@ -66,7 +66,7 @@ public class SettingsPanel extends ResizablePanel
 
         gbc.gridx = 1;      gbc.gridy = 0;
         gbc.weightx = 0.1;  gbc.weighty = 0.5;
-        //add(effectsVolumeSlider, gbc);
+        add(effectsVolumeSlider, gbc);
 
         //------------Second line
         gbc.gridx = 0;      gbc.gridy = 1;
@@ -75,7 +75,7 @@ public class SettingsPanel extends ResizablePanel
 
         gbc.gridx = 1;      gbc.gridy = 1;
         gbc.weightx = 0.1;  gbc.weighty = 0.5;
-        //add(musicVolumeSlider, gbc);
+        add(musicVolumeSlider, gbc);
 
         //------------Third line
         gbc.gridx = 0;      gbc.gridy = 2;
