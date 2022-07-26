@@ -5,6 +5,8 @@ import View.Config;
 import View.GamePanel;
 import View.MainFrame;
 
+import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -51,26 +53,27 @@ public class MainFrameController {
             @Override
             public void windowClosing(WindowEvent e)
             {
+
                 config.saveConfig();
-                /*
-                UIManager.put("OptionPane.background", new ColorUIResource(255,255,255));
-                UIManager.put("Panel.background", new ColorUIResource(255,255,255));
-                String[] options = new String[]{"Yes", "No"};
-                int confirm = JOptionPane.showOptionDialog(
-                        null,
-                        "Do you REALLY want to exit?",
-                        "Probably you just miss-clicked",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE,
-                        getImageIcon("block.png"),
-                        options, options[1]);
-                if (confirm == JOptionPane.YES_OPTION) System.exit(0);
-                */
                 System.exit(0);
             }
         });
     }
-
+    private void confirmDispose()
+    {
+        UIManager.put("OptionPane.background", new ColorUIResource(255,255,255));
+        UIManager.put("Panel.background", new ColorUIResource(255,255,255));
+        String[] options = new String[]{"Yes", "No"};
+        int confirm = JOptionPane.showOptionDialog(
+                null,
+                "Do you REALLY want to exit?",
+                "Probably you just miss-clicked",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                getImageIcon("block.png"),
+                options, options[1]);
+        if (confirm == JOptionPane.YES_OPTION) System.exit(0);
+    }
     public void setVisible(){
         view.setVisible(true);
     }
