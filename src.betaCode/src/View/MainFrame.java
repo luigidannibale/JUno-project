@@ -13,6 +13,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame {
+    private final String pathImages = "resources/images/MainFrame/MainframeDesignElements/";
     public enum Dimensions{
         FULLHD(new Dimension(1920,1080)),
         WIDESCREEN(new Dimension(1440,920)),
@@ -37,16 +38,12 @@ public class MainFrame extends JFrame {
     }
 
     private Dimensions currentDimension = Dimensions.WIDESCREEN;
-
-    private final String pathImages = "resources/images/";
-
     private Image background;
-
     public MainFrame()
     {
         super("J Uno");
 
-        background = getImageIcon("MainFrame/background.png").getImage();
+        background = getImageIcon("background.png").getImage();
         setContentPane(new JPanel(){
             @Override
             public void paintComponent(Graphics g) {
@@ -58,39 +55,21 @@ public class MainFrame extends JFrame {
         });
 
         setLayout(new GridBagLayout());
+        //setLayout(new BorderLayout());
         setSize(currentDimension.getDimension());
         setPreferredSize(currentDimension.getDimension());
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE); //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setIconImage(getImageIcon("icon2.png").getImage());
-
-        ProfilePanel pp = new ProfilePanel();
-        GridBagConstraints gbc =  new GridBagConstraints();
-
-        gbc.anchor = GridBagConstraints.FIRST_LINE_END;
-        pp.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                System.out.println("ENTRATO");
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                System.out.println("USCITO");
-            }
-        });
-        add(pp, gbc);
     }
 
     private ImageIcon getImageIcon(String filename){
         return new ImageIcon(pathImages + filename);
     }
-
     public Dimensions getCurrentDimension(){
         return currentDimension;
     }
-
     public void setCurrentDimension(Dimensions dimensions){
         currentDimension = dimensions;
     }

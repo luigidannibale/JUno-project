@@ -1,18 +1,17 @@
 package Controller;
 
-import View.AudioManager;
-import View.Config;
-import View.GamePanel;
-import View.MainFrame;
+import View.*;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class MainFrameController {
-
+    private final String pathImages = "resources/images/MainFrame/MainframeDesignElements/";
     public enum Panels{
         STARTMENU,
         SETTINGS,
@@ -51,22 +50,48 @@ public class MainFrameController {
 
         //gameController = new GamePanelController(view);
 
-        view.add(startingMenuController.getView());
-        view.add(settingsController.getView());
-        view.add(gameChoiceController.getView());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+
+        view.add(startingMenuController.getView(), gbc);
+        view.add(settingsController.getView(), gbc);
+        view.add(gameChoiceController.getView(), gbc);
 
         view.addWindowListener(new WindowAdapter()
         {
             @Override
             public void windowClosing(WindowEvent e)
             {
-
-                config.saveConfig();
-                System.exit(0);
+                if(confirmDispose())
+                {
+                    config.saveConfig();
+                    System.exit(0);
+                }
             }
         });
+
+        ProfilePanel pp = new ProfilePanel();
+
+        gbc.anchor = GridBagConstraints.FIRST_LINE_END;
+        gbc.weightx = 0.1;
+        gbc.weighty = 0.1;
+        pp.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                System.out.println("ENTRATO");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                System.out.println("USCITO");
+            }
+        });
+        view.add(pp, gbc);
     }
-    private void confirmDispose()
+    private boolean confirmDispose()
     {
         UIManager.put("OptionPane.background", new ColorUIResource(255,255,255));
         UIManager.put("Panel.background", new ColorUIResource(255,255,255));
@@ -77,9 +102,9 @@ public class MainFrameController {
                 "Probably you just miss-clicked",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                getImageIcon("block.png"),
+                new ImageIcon(pathImages + "block.png"),
                 options, options[1]);
-        if (confirm == JOptionPane.YES_OPTION) System.exit(0);
+        return confirm == JOptionPane.YES_OPTION;
     }
     public void setVisible(){
         view.setVisible(true);

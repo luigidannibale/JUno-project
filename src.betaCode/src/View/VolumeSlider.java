@@ -14,7 +14,6 @@ public class VolumeSlider extends JProgressBar {
     public VolumeSlider(int value)
     {
         setSize(200,20);
-        //slider.setSize(new Dimension(200, 20));
         setValue(value);
         setPreferredSize(new Dimension(200, 20));
         setMinimumSize(new Dimension(200, 20));

@@ -7,6 +7,7 @@ public class ProfilePanel extends JPanel {
 
     public ProfilePanel(){
         setSize(200, 150);
+        setPreferredSize(new Dimension(200,150));
     }
 
 
