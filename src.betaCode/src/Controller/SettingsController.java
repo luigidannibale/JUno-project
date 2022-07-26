@@ -33,7 +33,7 @@ public class SettingsController {
         view.getCloseButton().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.setVisiblePanel(MainFrame.Panels.STARTMENU);
+                mainFrame.setVisiblePanel(MainFrameController.Panels.STARTMENU);
                 view.setVisible(false);
             }
         });

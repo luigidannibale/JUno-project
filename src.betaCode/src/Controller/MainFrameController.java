@@ -11,6 +11,13 @@ import java.awt.event.WindowEvent;
 
 public class MainFrameController {
 
+    public enum Panels{
+        STARTMENU,
+        SETTINGS,
+        GAMECHOICE,
+        GAME
+    }
+
     MainFrame view;
 
     public AudioManager backMusic;
@@ -75,7 +82,7 @@ public class MainFrameController {
         view.setVisible(true);
     }
 
-    public void setVisiblePanel(MainFrame.Panels panel){
+    public void setVisiblePanel(MainFrameController.Panels panel){
         switch (panel){
             case STARTMENU -> startingMenuController.setVisible(true);
             case SETTINGS -> settingsController.setVisible(true);
@@ -91,7 +98,7 @@ public class MainFrameController {
 
     public void createNewGame(GameChoiceController.GameMode gameMode){
         gameController = new GamePanelController(gameMode);
-        setVisiblePanel(MainFrame.Panels.GAME);
+        setVisiblePanel(MainFrameController.Panels.GAME);
     }
 
     public void updateSize(String s){
