@@ -19,7 +19,7 @@ public class StartingMenuController {
         view.getGameChoiceIcon().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mfc.setVisiblePanel(MainFrame.Panels.GAMECHOICE);
+                mfc.setVisiblePanel(MainFrameController.Panels.GAMECHOICE);
                 view.setVisible(false);
             }
         });
@@ -28,7 +28,7 @@ public class StartingMenuController {
         view.getSettingIcon().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mfc.setVisiblePanel(MainFrame.Panels.SETTINGS);
+                mfc.setVisiblePanel(MainFrameController.Panels.SETTINGS);
                 view.setVisible(false);
             }
         });

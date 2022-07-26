@@ -7,6 +7,8 @@ import Controller.StartingMenuController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -34,25 +36,9 @@ public class MainFrame extends JFrame {
         }
     }
 
-    public enum Panels{
-        STARTMENU,
-        SETTINGS,
-        GAMECHOICE,
-        GAME
-    }
-
-    private GamePanel newGamePanel;
-    //private SettingsPanel settingsPanel;
-    private SettingsController settingsController;
-    //private StartingMenuPanel startingPanel;
-    private StartingMenuController startingMenuController;
-    private GameChoicePanel gameChoicePanel;
     private Dimensions currentDimension = Dimensions.WIDESCREEN;
 
     private final String pathImages = "resources/images/";
-
-    public AudioManager backMusic;
-    public AudioManager soundEffects;
 
     private Image background;
 
@@ -79,55 +65,26 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE); //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setIconImage(getImageIcon("icon2.png").getImage());
 
-        InitializeComponents();
+        ProfilePanel pp = new ProfilePanel();
+        GridBagConstraints gbc =  new GridBagConstraints();
+
+        gbc.anchor = GridBagConstraints.FIRST_LINE_END;
+        pp.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                System.out.println("ENTRATO");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                System.out.println("USCITO");
+            }
+        });
+        add(pp, gbc);
     }
-
-
 
     private ImageIcon getImageIcon(String filename){
         return new ImageIcon(pathImages + filename);
-    }
-
-    private void InitializeComponents()
-    {
-        //gameChoicePanel = new GameChoicePanel(this);
-        //gameChoicePanel.setVisible(false);
-
-        //newGamePanel = new GamePanel(this);
-        //newGamePanel.setVisible(false);
-
-        //settingsPanel = new SettingsPanel(this);
-        //settingsPanel.setVisible(false);
-
-        //startingPanel = new StartingMenuPanel(this);
-        //startingMenuController = new StartingMenuController(this);
-
-        //add(gameChoicePanel);
-        //add(newGamePanel);
-        //add(settingsPanel);
-        //add(startingPanel);
-        //add(startingMenuController.getView());
-    }
-
-    public void createNewGame(GameChoiceController.GameMode gameMode){
-        GamePanelController game = new GamePanelController(gameMode);
-        setVisiblePanel(Panels.GAME);
-    }
-
-    public void setVisiblePanel(Panels panel){
-        switch (panel){
-            case STARTMENU -> startingMenuController.setVisible(true);
-            case SETTINGS -> settingsController.setVisible(true);
-            case GAMECHOICE -> gameChoicePanel.setVisible(true);
-            case GAME -> setContentPane(newGamePanel);
-        }
-    }
-
-    //da cancellare
-    public void updateSize(Dimensions dimension){
-        currentDimension = dimension;
-        setSize(dimension.getDimension());
-        setLocationRelativeTo(null);
     }
 
     public Dimensions getCurrentDimension(){
@@ -137,6 +94,4 @@ public class MainFrame extends JFrame {
     public void setCurrentDimension(Dimensions dimensions){
         currentDimension = dimensions;
     }
-
-
 }
