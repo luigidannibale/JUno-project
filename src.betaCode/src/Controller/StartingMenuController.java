@@ -15,6 +15,7 @@ public class StartingMenuController {
 
     public StartingMenuController(MainFrameController mfc){
         view = new StartingMenuPanel(mfc);
+        //view.setSize();
 
         view.getGameChoiceIcon().addMouseListener(new MouseAdapter() {
             @Override

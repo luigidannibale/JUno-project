@@ -73,6 +73,7 @@ public class MainFrameController {
                     config.saveConfig();
                     System.exit(0);
                 }
+
             }
         });
         ProfilePanel pp = new ProfilePanel();
@@ -93,7 +94,7 @@ public class MainFrameController {
                 JOptionPane.QUESTION_MESSAGE,
                 new ImageIcon(pathImages + "block.png"),
                 options, options[1]);
-        return confirm == JOptionPane.YES_OPTION;
+        return (confirm == JOptionPane.YES_OPTION);
     }
     public void setVisible(){
         view.setVisible(true);
@@ -118,7 +119,7 @@ public class MainFrameController {
         setVisiblePanel(MainFrameController.Panels.GAME);
     }
 
-    public void updateSize(String s){
+    /*public void updateSize(String s){
         MainFrame.Dimensions dim;
         switch (s) {
             case "1920x1080" -> dim = MainFrame.Dimensions.FULLHD;
@@ -132,7 +133,7 @@ public class MainFrameController {
         view.setCurrentDimension(dimension);
         view.setSize(dimension.getDimension());
         view.setLocationRelativeTo(null);
-    }
+    }*/
 
     public void closeWindow(){
         try //If the parent has a listener that manages the window closing it links that event, if an exception is generated the frame just get closed
@@ -140,8 +141,10 @@ public class MainFrameController {
             //((WindowAdapter) ((Arrays.stream(mf.getWindowListeners()).toArray())[0])).windowClosing(null);
             view.dispatchEvent(new WindowEvent(view, WindowEvent.WINDOW_CLOSING));
         }
-        catch(Exception ex) { view.dispose(); }
+        catch(Exception ex) {
+
+            view.dispose(); }
     }
 
-    public MainFrame.Dimensions getCurrentDimension(){return view.getCurrentDimension();}
+    //public MainFrame.Dimensions getCurrentDimension(){return view.getDimension();}
 }

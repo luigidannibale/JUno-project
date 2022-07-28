@@ -24,11 +24,11 @@ public class StartingMenuPanel extends ResizablePanel
             put(MainFrame.Dimensions.HD, new Double[]{0.33,0.55});
         }};
 
-         */
-        percentX = 0.28;
-        percentY = 0.48;
+*/
+        /*percentX = 0.28;
+        percentY = 0.48;*/
         offset = 6;
-        addScalingListener();
+        //addScalingListener();
         setOpaque(false);
         InitializeComponents();
     }
@@ -36,9 +36,9 @@ public class StartingMenuPanel extends ResizablePanel
     private void InitializeComponents()
     {
         icons = new ImageComponent[]{
-                new ImageComponent(imagePath + "Startgame", ImageComponent.Size.BIG),
-                new ImageComponent(imagePath + "Settings", ImageComponent.Size.BIG),
-                new ImageComponent(imagePath + "Quit", ImageComponent.Size.BIG)
+                new ImageComponent(imagePath + "Startgame"),
+                new ImageComponent(imagePath + "Settings"),
+                new ImageComponent(imagePath + "Quit")
         };
 
         add(icons[0], BorderLayout.NORTH);

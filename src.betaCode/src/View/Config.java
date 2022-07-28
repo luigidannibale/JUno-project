@@ -16,10 +16,12 @@ public class Config {
     public void saveConfig(){
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))){
 
+            /*
             //Screen Dimension
             MainFrame.Dimensions dim = mfc.getCurrentDimension();
             bw.write(dim.toString());
             bw.newLine();
+             */
 
             //Music volume
             bw.write(String.valueOf(mfc.backMusic.getVolume()));
@@ -37,13 +39,15 @@ public class Config {
     public void loadConfig(){
         try(BufferedReader br = new BufferedReader(new FileReader(fileName))){
 
+            /*
             //Screen dimension
             String line = br.readLine();
             if (line == null) return;
             mfc.updateSize(line);
+             */
 
             //Music volume
-            line = br.readLine();
+            String line = br.readLine();
             mfc.backMusic.setVolume(Integer.parseInt(line));
 
             //Effects volume

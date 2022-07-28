@@ -16,23 +16,26 @@ public class ResizablePanel extends JPanel {
     protected MainFrameController mainFrame;
     protected int panelWidth, panelHeight;
     //protected Map<MainFrame.Dimensions,Double[]> Percentages;
-    protected double percentX;
-    protected double percentY;
+    /*protected double percentX;
+    protected double percentY;*/
 
     protected int offset;
     protected ImageComponent[] icons;
 
-    public static final BiFunction<Double, Double, Integer> percentage = (num, p) -> ((int) (num * p));
+    //public static final BiFunction<Double, Double, Integer> percentage = (num, p) -> ((int) (num * p));
 
     //public ResizablePanel(Image background,MainFrame mainFrame)
     public ResizablePanel(MainFrameController mainFrame)
     {
         //this.background = background;
         this.mainFrame = mainFrame;
-        panelWidth = 10;
-        panelHeight = 10;
+        panelWidth = 780;
+        panelHeight = 480;
     }
+    @Override
+    public Dimension getPreferredSize() { return (new Dimension(panelWidth, panelHeight)); }
 
+    /*
     // volendo si puo eliminare il metodo
     void addScalingListener()
     {
@@ -49,12 +52,12 @@ public class ResizablePanel extends JPanel {
                     default         -> toSize = ImageComponent.Size.SMALL;
                 }
 
-                /*
-                updateSize(new Dimension(percentage.apply(parentSize.getDimension().getWidth(), Percentages.get(parentSize)[0]),
-                                         percentage.apply(parentSize.getDimension().getHeight(), Percentages.get(parentSize)[1])),
-                                         toSize);
 
-                 */
+                //updateSize(new Dimension(percentage.apply(parentSize.getDimension().getWidth(), Percentages.get(parentSize)[0]),
+                //                         percentage.apply(parentSize.getDimension().getHeight(), Percentages.get(parentSize)[1])),
+                //                         toSize);
+
+
 
                 updateSize(new Dimension(percentage.apply(parentSize.getDimension().getWidth(), percentX),
                                          percentage.apply(parentSize.getDimension().getHeight(), percentY)),
@@ -64,7 +67,9 @@ public class ResizablePanel extends JPanel {
             }
         });
     }
+    */
 
+    /*
     public void updateSize(Dimension dimension, ImageComponent.Size size)
     {
         panelHeight = (int) dimension.getHeight();
@@ -74,9 +79,8 @@ public class ResizablePanel extends JPanel {
         int offsetpx = panelHeight*offset/100;
         setBorder(new EmptyBorder(offsetpx,offsetpx,offsetpx,offsetpx));
         if (icons != null) Arrays.stream(icons).forEach(icon -> icon.setIcon(size));
-    }
+    }*/
 
-    @Override
-    public Dimension getPreferredSize() { return (new Dimension(panelWidth, panelHeight)); }
+
 
 }

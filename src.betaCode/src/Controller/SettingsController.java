@@ -12,17 +12,17 @@ public class SettingsController {
 
     SettingsPanel view;
 
-    MainFrame.Dimensions dimesionChanges;
+    //MainFrame.Dimensions dimesionChanges;
 
     public SettingsController(MainFrameController mainFrame){
         view = new SettingsPanel(mainFrame);
 
-        dimesionChanges = mainFrame.getCurrentDimension();
+        //dimesionChanges = mainFrame.getCurrentDimension();
 
         view.getSaveButton().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.updateSize(dimesionChanges);
+                //mainFrame.updateSize(dimesionChanges);
                 mainFrame.backMusic.setVolume(view.getMusicVolumeSlider().getValue());
                 mainFrame.backMusic.setFloatControlVolume();
                 mainFrame.soundEffects.setVolume(view.getEffectsVolumeSlider().getValue());
@@ -37,11 +37,14 @@ public class SettingsController {
                 view.setVisible(false);
             }
         });
+        /*
         view.getCombobox().setSelectedItem(mainFrame.getCurrentDimension());
         view.getCombobox().addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) { dimesionChanges = (MainFrame.Dimensions) e.getItem();}
         });
+
+         */
     }
 
     public void setVisible(boolean visible){

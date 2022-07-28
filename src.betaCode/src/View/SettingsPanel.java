@@ -14,7 +14,7 @@ public class SettingsPanel extends ResizablePanel
 {
     private static final String imagePath = "resources/images/MainFrame/SettingsPanel/";
 
-    JComboBox<MainFrame.Dimensions> combo;
+    //JComboBox<MainFrame.Dimensions> combo;
     JLabel saveButton;
     JLabel closeButton;
     VolumeSlider effectsVolumeSlider;
@@ -33,10 +33,10 @@ public class SettingsPanel extends ResizablePanel
         }};
 
          */
-        percentX = 0.62;
-        percentY = 0.57;
+        /*percentX = 0.62;
+        percentY = 0.57;*/
         offset = 6;
-        addScalingListener();
+        //addScalingListener();
         setOpaque(false);
         InitializeComponents();
     }
@@ -54,7 +54,7 @@ public class SettingsPanel extends ResizablePanel
         effectsVolumeSlider.setChangebleIcon(effectsLabel, new String[] {"Effectsvolumeoff.png", "Effectsvolumelow.png", "Effectsvolumeon.png"});
         musicVolumeSlider = new VolumeSlider(mainFrame.backMusic.getVolume());
 
-        combo = new JComboBox<>(MainFrame.Dimensions.values());
+        //combo = new JComboBox<>(MainFrame.Dimensions.values());
 
         //Layout
         GridBagConstraints gbc = new GridBagConstraints();
@@ -82,9 +82,9 @@ public class SettingsPanel extends ResizablePanel
         gbc.weightx = 0.2;  gbc.weighty = 0.5;
         add(screenLabel, gbc);
 
-        gbc.gridx = 1;      gbc.gridy = 2;
+        /*gbc.gridx = 1;      gbc.gridy = 2;
         gbc.weightx = 0.1;  gbc.weighty = 0.5;
-        add(combo, gbc);
+        add(combo, gbc);*/
 
         //------------Fourth line
         gbc.gridx = 1;      gbc.gridy = 3;
@@ -95,10 +95,10 @@ public class SettingsPanel extends ResizablePanel
         gbc.weightx = 0.05; gbc.weighty = 0.1;
         add(closeButton, gbc);
     }
-
+    /*
     public JComboBox<MainFrame.Dimensions> getCombobox(){
         return combo;
-    }
+    }*/
 
     public JLabel getSaveButton(){
         return saveButton;

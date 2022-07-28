@@ -28,11 +28,13 @@ public class GameChoicePanel extends ResizablePanel{
             put(MainFrame.Dimensions.HD, new Double[]{0.65,0.60});
         }};
 
-         */
+
         percentX = 0.65;
         percentY = 0.62;
+         */
+
         offset = 6;
-        addScalingListener();
+        //addScalingListener();
         setOpaque(false);
         InitializeComponents();
     }

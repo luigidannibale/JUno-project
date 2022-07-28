@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class ImageComponent extends JLabel
 {
-    public enum Size{
+    /*public enum Size{
         SMALL(48),
         MEDIUM(56),
         BIG(64);
@@ -16,39 +16,37 @@ public class ImageComponent extends JLabel
         int getIntSize() { return size; }
         public int getBigger()  { return size == 48 ? 56:  64; }
         public int getSmaller() { return size == 64 ? 56 : 48; }
-    }
+    }*/
 
     private final String imagePath;
-    private Size size;
+    //private Size size;
 
-    public ImageComponent(String imagePath, Size size)
+    public ImageComponent(String imagePath)
     {
         this.imagePath = imagePath;
-        this.size = size;
-        setIcon(getImageIcon(size.getIntSize()));
+        setIcon(getImageIcon());
         setPreferredSize(new Dimension(350, 100));
     }
 
     public void resetIcon()
     {
-        setIcon(getImageIcon(size.getIntSize()));
+        setIcon(getImageIcon());
     }
-    public void setIcon(Size s)
+    public void setIcon()
     {
-        size = s;
-        setIcon(getImageIcon(size.getIntSize()));
+        setIcon(getImageIcon());
     }
     public void setBiggerIcon()
     {
-        setIcon(getImageIcon(size.getBigger()));
+        setIcon(getImageIcon());
     }
     public void setSmallerIcon()
     {
-        setIcon(getImageIcon(size.getSmaller()));
+        setIcon(getImageIcon());
     }
 
-    public ImageIcon getImageIcon(int size){
-        return new ImageIcon(imagePath + size + ".png");
+    public ImageIcon getImageIcon(){
+        return new ImageIcon(imagePath + ".png");
     }
 
     public void scaleUpIcon()
