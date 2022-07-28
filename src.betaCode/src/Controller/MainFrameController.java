@@ -4,9 +4,6 @@ import View.*;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -49,16 +46,22 @@ public class MainFrameController {
         gameChoiceController.setVisible(false);
 
         //gameController = new GamePanelController(view);
-
+/*
         GridBagConstraints gbc = new GridBagConstraints();
 
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.weightx = 1;
         gbc.weighty = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gbc.gridheight = 2;
 
         view.add(startingMenuController.getView(), gbc);
         view.add(settingsController.getView(), gbc);
         view.add(gameChoiceController.getView(), gbc);
+ */
+        view.addCenteredPanels(startingMenuController.getView(), settingsController.getView(), gameChoiceController.getView());
 
         view.addWindowListener(new WindowAdapter()
         {
@@ -72,25 +75,11 @@ public class MainFrameController {
                 }
             }
         });
-
         ProfilePanel pp = new ProfilePanel();
 
-        gbc.anchor = GridBagConstraints.FIRST_LINE_END;
-        gbc.weightx = 0.1;
-        gbc.weighty = 0.1;
-        pp.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                System.out.println("ENTRATO");
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                System.out.println("USCITO");
-            }
-        });
-        view.add(pp, gbc);
+        view.addProfilePanel(pp);
     }
+
     private boolean confirmDispose()
     {
         UIManager.put("OptionPane.background", new ColorUIResource(255,255,255));

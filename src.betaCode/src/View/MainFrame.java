@@ -1,16 +1,8 @@
 package View;
 
-import Controller.GameChoiceController;
-import Controller.GamePanelController;
-import Controller.SettingsController;
-import Controller.StartingMenuController;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.util.Arrays;
 
 public class MainFrame extends JFrame {
     private final String pathImages = "resources/images/MainFrame/MainframeDesignElements/";
@@ -39,6 +31,8 @@ public class MainFrame extends JFrame {
 
     private Dimensions currentDimension = Dimensions.WIDESCREEN;
     private Image background;
+    private GridBagConstraints gbc;
+
     public MainFrame()
     {
         super("J Uno");
@@ -62,6 +56,30 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE); //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setIconImage(getImageIcon("icon2.png").getImage());
+
+        gbc = new GridBagConstraints();
+    }
+
+    public void addCenteredPanels(JPanel... panels){
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gbc.gridheight = 2;
+
+        Arrays.stream(panels).forEach(panel -> add(panel, gbc));
+    }
+
+    public void addProfilePanel(ProfilePanel pp){
+        gbc.anchor = GridBagConstraints.FIRST_LINE_END;
+        gbc.weightx = 0.1;
+        gbc.weighty = 0.1;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+
+        add(pp, gbc);
     }
 
     private ImageIcon getImageIcon(String filename){
