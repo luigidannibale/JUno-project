@@ -8,10 +8,8 @@ import java.awt.*;
 public class ProfilePanel extends ResizablePanel {
 
     public ProfilePanel(MainFrameController mfc){
-        super(mfc);
-        setSize(200, 150);
-        setPreferredSize(new Dimension(200,150));
-        super.imagePath = "images/MainFrame/StartingMenuPanel/ProfilePanel/";
+        super(200, 150, 0);
+        imagePath = "images/MainFrame/StartingMenuPanel/ProfilePanel/";
     }
     private void InitializeComponents()
     {

@@ -17,7 +17,10 @@ public class GameChoicePanel extends ResizablePanel{
     JLabel indietro;
 
     public GameChoicePanel(MainFrameController mainFrame) {
-        super(mainFrame);
+        super(1080, 552, 6);
+
+        imagePath = "resources/images/MainFrame/GameChoicePanel/";
+
         setLayout(new GridBagLayout());
         //setLayout(new BorderLayout());
         /*
@@ -32,13 +35,13 @@ public class GameChoicePanel extends ResizablePanel{
         percentY = 0.62;
          */
 
-        offset = 6;
+        //offset = 6;
         //addScalingListener();
         setOpaque(false);
         InitializeComponents();
     }
 
-    private static final String path = "resources/images/MainFrame/GameChoicePanel/";
+    //private static final String path = "resources/images/MainFrame/GameChoicePanel/";
 
     void InitializeComponents(){
         //Components
@@ -49,9 +52,9 @@ public class GameChoicePanel extends ResizablePanel{
         */
         //basicGame = new ImageComponent(path + "ClassicRules",GIF);
         //basicGame.AddSclingOnHoveringGif();
-        basicGame = new GifComponent(path + "ClassicRules");
-        memeGame = new GifComponent(path + "SeriousRules");
-        sevenoGame = new GifComponent(path + "SevenO");
+        basicGame = new GifComponent(imagePath + "ClassicRules");
+        memeGame = new GifComponent(imagePath + "SeriousRules");
+        sevenoGame = new GifComponent(imagePath + "SevenO");
 
         indietro = new JLabel("CLICCA QUI");
 

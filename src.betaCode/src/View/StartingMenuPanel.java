@@ -17,9 +17,9 @@ public class StartingMenuPanel extends ResizablePanel
 
     public StartingMenuPanel(MainFrameController mainFrame)
     {
-        super(mainFrame);
+        super(480, 500, 6);
         setLayout(new BorderLayout());
-        super.imagePath = "resources/images/MainFrame/StartingMenuPanel/";
+        imagePath = "resources/images/MainFrame/StartingMenuPanel/";
         /*
         Percentages = new HashMap<>(){{
             put(MainFrame.Dimensions.FULLHD, new Double[]{0.25,0.45});
@@ -30,7 +30,7 @@ public class StartingMenuPanel extends ResizablePanel
 */
         /*percentX = 0.28;
         percentY = 0.48;*/
-        offset = 6;
+        //offset = 6;
         //addScalingListener();
         setOpaque(false);
         InitializeComponents();
@@ -48,14 +48,6 @@ public class StartingMenuPanel extends ResizablePanel
         add(icons[0], BorderLayout.NORTH);
         add(icons[1], BorderLayout.CENTER);
         add(icons[2], BorderLayout.SOUTH);
-
-        /*
-        Arrays.stream(icons).forEach(op -> op.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) { op.scaleUpIcon(); }
-            @Override
-            public void mouseExited(MouseEvent e)  { op.resetIcon(); }
-        }));*/
     }
 
     public ImageComponent getGameChoiceIcon(){
@@ -78,7 +70,6 @@ public class StartingMenuPanel extends ResizablePanel
         Color bluscuro = new Color(7, 71, 113);
         var angle = 15;
         g.setColor(bluscuro);
-        //g.fillRect();
         g.fillRoundRect(0, 0, panelWidth, panelHeight, angle, angle);
         g.setColor(bluchiaro);
         g.fillRect(off, off, panelWidth - off * 2, panelHeight - off * 2);

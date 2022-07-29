@@ -97,8 +97,6 @@ public class MainFrame extends JFrame {
         gbc.gridx = 0;      gbc.gridy = 2;
         gbc.gridwidth = 2;  gbc.gridheight = 3;
         Arrays.stream(panels).forEach(panel -> add(panel, gbc));
-        Arrays.stream(panels).forEach(Component::repaint);
-        Arrays.stream(panels).forEach(panel -> System.out.println(panel.getSize() + "----" + panel.getPreferredSize()));
     }
 
     public void addProfilePanel(ProfilePanel pp){

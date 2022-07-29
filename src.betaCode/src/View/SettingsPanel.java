@@ -22,7 +22,9 @@ public class SettingsPanel extends ResizablePanel
 
     public SettingsPanel(MainFrameController mainFrame)
     {
-        super(mainFrame);
+        super(1008, 506, 6);
+        this.mainFrame = mainFrame;
+
         //setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         setLayout(new GridBagLayout());
         /*
@@ -35,7 +37,7 @@ public class SettingsPanel extends ResizablePanel
          */
         /*percentX = 0.62;
         percentY = 0.57;*/
-        offset = 6;
+        //offset = 6;
         //addScalingListener();
         setOpaque(false);
         InitializeComponents();
@@ -43,9 +45,12 @@ public class SettingsPanel extends ResizablePanel
 
     private void InitializeComponents(){
         //Components
-        JLabel effectsLabel = new JLabel(new ImageIcon(imagePath+"Effectsvolumeon.png"));
-        JLabel musicLabel = new JLabel(new ImageIcon(imagePath+"Musicvolume.png"));
-        JLabel screenLabel = new JLabel(new ImageIcon(imagePath+"Screensize.png"));
+        //JLabel effectsLabel = new JLabel(new ImageIcon(imagePath+"Effectsvolumeon.png"));
+        ImageComponent effectsLabel = new ImageComponent(imagePath+"Effectsvolumeon.png");
+        //JLabel musicLabel = new JLabel(new ImageIcon(imagePath+"Musicvolume.png"));
+        ImageComponent musicLabel = new ImageComponent(imagePath+"Musicvolume.png");
+        //JLabel screenLabel = new JLabel(new ImageIcon(imagePath+"Screensize.png"));
+        //ImageComponent screenLabel = new ImageComponent(imagePath+"Screensize.png");
 
         saveButton = new JLabel(new ImageIcon(imagePath+"save.png"));
         closeButton = new JLabel(new ImageIcon(imagePath+"discard.png"));
@@ -78,11 +83,14 @@ public class SettingsPanel extends ResizablePanel
         add(musicVolumeSlider, gbc);
 
         //------------Third line
+        /*
         gbc.gridx = 0;      gbc.gridy = 2;
         gbc.weightx = 0.2;  gbc.weighty = 0.5;
         add(screenLabel, gbc);
 
-        /*gbc.gridx = 1;      gbc.gridy = 2;
+
+
+        gbc.gridx = 1;      gbc.gridy = 2;
         gbc.weightx = 0.1;  gbc.weighty = 0.5;
         add(combo, gbc);*/
 

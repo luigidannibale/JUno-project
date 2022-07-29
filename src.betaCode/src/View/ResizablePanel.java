@@ -1,6 +1,7 @@
 package View;
 import Controller.MainFrameController;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 public class ResizablePanel extends JPanel {
     protected MainFrameController mainFrame;
@@ -11,13 +12,16 @@ public class ResizablePanel extends JPanel {
 
 
     // perche dare il controller alla view?
-    public ResizablePanel(MainFrameController mainFrame)
+    public ResizablePanel(int panelWidth, int panelHeight, int offset)
     {
-        this.mainFrame = mainFrame;
-        panelWidth = 780;
-        panelHeight = 480;
+        this.panelWidth = panelWidth;
+        this.panelHeight = panelHeight;
         setSize(panelWidth, panelHeight);
+
+        int offsetpx = panelHeight*offset/100;
+        setBorder(new EmptyBorder(offsetpx,offsetpx,offsetpx,offsetpx));
     }
+
     @Override
     public Dimension getPreferredSize() { return (new Dimension(panelWidth, panelHeight)); }
 }
