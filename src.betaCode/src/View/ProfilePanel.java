@@ -1,15 +1,31 @@
 package View;
 
+import Controller.MainFrameController;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class ProfilePanel extends JPanel {
+public class ProfilePanel extends ResizablePanel {
 
-    public ProfilePanel(){
+    public ProfilePanel(MainFrameController mfc){
+        super(mfc);
         setSize(200, 150);
         setPreferredSize(new Dimension(200,150));
+        super.imagePath = "images/MainFrame/StartingMenuPanel/ProfilePanel/";
     }
-
+    private void InitializeComponents()
+    {
+        icons = new ImageComponent[]{
+                new ImageComponent(imagePath + "1"),
+                new ImageComponent(imagePath + "2"),
+                new ImageComponent(imagePath + "3"),
+                new ImageComponent(imagePath + "4")
+        };
+        add(icons[0]);
+        add(icons[1]);
+        add(icons[2]);
+        add(icons[3]);
+    }
 
     @Override
     protected void paintComponent(Graphics g) {

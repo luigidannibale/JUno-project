@@ -9,14 +9,17 @@ import java.awt.event.WindowAdapter;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static View.ImageComponent.Formats.PNG;
+
 public class StartingMenuPanel extends ResizablePanel
 {
-    private static final String imagePath = "resources/images/MainFrame/StartingMenuPanel/";
+
 
     public StartingMenuPanel(MainFrameController mainFrame)
     {
         super(mainFrame);
         setLayout(new BorderLayout());
+        super.imagePath = "resources/images/MainFrame/StartingMenuPanel/";
         /*
         Percentages = new HashMap<>(){{
             put(MainFrame.Dimensions.FULLHD, new Double[]{0.25,0.45});
@@ -31,14 +34,15 @@ public class StartingMenuPanel extends ResizablePanel
         //addScalingListener();
         setOpaque(false);
         InitializeComponents();
+
     }
 
     private void InitializeComponents()
     {
         icons = new ImageComponent[]{
-                new ImageComponent(imagePath + "Startgame"),
-                new ImageComponent(imagePath + "Settings"),
-                new ImageComponent(imagePath + "Quit")
+                new ImageComponent(imagePath + "Startgame"+".png"),
+                new ImageComponent(imagePath + "Settings"+".png"),
+                new ImageComponent(imagePath + "Quit"+".png")
         };
 
         add(icons[0], BorderLayout.NORTH);

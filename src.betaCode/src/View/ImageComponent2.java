@@ -5,6 +5,7 @@ import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
 
+@Deprecated
 public class ImageComponent2 extends JLabel implements Observer {
     public enum Size{
         SMALL,

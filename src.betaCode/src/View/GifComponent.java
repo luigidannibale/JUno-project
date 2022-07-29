@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class ImageComponent3 extends JComponent {
+public class GifComponent extends JComponent {
 
     Image gif;
     Image png;
@@ -14,7 +14,7 @@ public class ImageComponent3 extends JComponent {
 
     boolean showGif = false;
 
-    public ImageComponent3(String path){
+    public GifComponent(String path){
         gif = new ImageIcon(path + ".gif").getImage();
         png = new ImageIcon(path + ".png").getImage();
         //width = icon.getWidth(null);

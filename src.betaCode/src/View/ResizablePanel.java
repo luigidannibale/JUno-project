@@ -1,41 +1,32 @@
 package View;
-
 import Controller.MainFrameController;
-
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.function.BiFunction;
-
 public class ResizablePanel extends JPanel {
-    //protected Image background;
     protected MainFrameController mainFrame;
     protected int panelWidth, panelHeight;
-    //protected Map<MainFrame.Dimensions,Double[]> Percentages;
-    /*protected double percentX;
-    protected double percentY;*/
-
+    protected String imagePath ;
     protected int offset;
     protected ImageComponent[] icons;
 
-    //public static final BiFunction<Double, Double, Integer> percentage = (num, p) -> ((int) (num * p));
 
-    //public ResizablePanel(Image background,MainFrame mainFrame)
+    // perche dare il controller alla view?
     public ResizablePanel(MainFrameController mainFrame)
     {
-        //this.background = background;
         this.mainFrame = mainFrame;
         panelWidth = 780;
         panelHeight = 480;
+        setSize(panelWidth, panelHeight);
     }
     @Override
     public Dimension getPreferredSize() { return (new Dimension(panelWidth, panelHeight)); }
+}
 
     /*
+
+        //protected Map<MainFrame.Dimensions,Double[]> Percentages;
+    protected double percentX;
+    protected double percentY;
     // volendo si puo eliminare il metodo
     void addScalingListener()
     {
@@ -75,7 +66,7 @@ public class ResizablePanel extends JPanel {
         panelHeight = (int) dimension.getHeight();
         panelWidth = (int) dimension.getWidth();
         setSize(dimension);
-        
+
         int offsetpx = panelHeight*offset/100;
         setBorder(new EmptyBorder(offsetpx,offsetpx,offsetpx,offsetpx));
         if (icons != null) Arrays.stream(icons).forEach(icon -> icon.setIcon(size));
@@ -83,4 +74,4 @@ public class ResizablePanel extends JPanel {
 
 
 
-}
+

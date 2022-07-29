@@ -4,16 +4,15 @@ import Controller.MainFrameController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.HashMap;
+
+import static View.ImageComponent.Formats.GIF;
 
 public class GameChoicePanel extends ResizablePanel{
 
 
-    ImageComponent3 basicGame;
-    ImageComponent3 memeGame;
-    ImageComponent3 sevenoGame;
+    GifComponent basicGame;
+    GifComponent memeGame;
+    GifComponent sevenoGame;
 
     JLabel indietro;
 
@@ -48,9 +47,11 @@ public class GameChoicePanel extends ResizablePanel{
         ImageComponent2 memeGame = new ImageComponent2("", ImageComponent2.Size.SMALL);
         ImageComponent2 sevenoGame = new ImageComponent2("", ImageComponent2.Size.SMALL);
         */
-        basicGame = new ImageComponent3(path + "ClassicRules");
-        memeGame = new ImageComponent3(path + "SeriousRules");
-        sevenoGame = new ImageComponent3(path + "SevenO");
+        //basicGame = new ImageComponent(path + "ClassicRules",GIF);
+        //basicGame.AddSclingOnHoveringGif();
+        basicGame = new GifComponent(path + "ClassicRules");
+        memeGame = new GifComponent(path + "SeriousRules");
+        sevenoGame = new GifComponent(path + "SevenO");
 
         indietro = new JLabel("CLICCA QUI");
 
@@ -82,15 +83,15 @@ public class GameChoicePanel extends ResizablePanel{
         //add(indietro, BorderLayout.PAGE_END);
     }
 
-    public ImageComponent3 getBasicGame(){
+    public GifComponent getBasicGame(){
         return basicGame;
     }
 
-    public ImageComponent3 getMemeGame(){
+    public GifComponent getMemeGame(){
         return memeGame;
     }
 
-    public ImageComponent3 getSevenoGame(){
+    public GifComponent getSevenoGame(){
         return sevenoGame;
     }
 

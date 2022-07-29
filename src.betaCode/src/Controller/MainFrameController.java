@@ -76,7 +76,7 @@ public class MainFrameController {
 
             }
         });
-        ProfilePanel pp = new ProfilePanel();
+        ProfilePanel pp = new ProfilePanel(this);
 
         view.addProfilePanel(pp);
     }

@@ -1,5 +1,6 @@
 package Controller;
 
+import View.ImageComponent;
 import View.MainFrame;
 import View.StartingMenuPanel;
 
@@ -24,6 +25,8 @@ public class StartingMenuController {
                 view.setVisible(false);
             }
         });
+
+
 
         //SettingPanel
         view.getSettingIcon().addMouseListener(new MouseAdapter() {

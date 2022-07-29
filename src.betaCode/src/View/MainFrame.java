@@ -65,9 +65,10 @@ public class MainFrame extends JFrame {
 
         gbc = new GridBagConstraints();
 
+        /*
         JPanel titleBar = new JPanel();
         titleBar.setBackground(Color.red);
-        titleBar.setSize(1440, 920);
+       /* titleBar.setSize(1440, 920);
         titleBar.setPreferredSize(new Dimension(1440, 920));
 
         titleBar.addMouseListener(new MouseAdapter() {
@@ -85,6 +86,9 @@ public class MainFrame extends JFrame {
         gbc.gridwidth = 2;
 
         add(titleBar, gbc);
+
+         */
+
     }
 
     public void addCenteredPanels(JPanel... panels){
@@ -93,6 +97,8 @@ public class MainFrame extends JFrame {
         gbc.gridx = 0;      gbc.gridy = 2;
         gbc.gridwidth = 2;  gbc.gridheight = 3;
         Arrays.stream(panels).forEach(panel -> add(panel, gbc));
+        Arrays.stream(panels).forEach(Component::repaint);
+        Arrays.stream(panels).forEach(panel -> System.out.println(panel.getSize() + "----" + panel.getPreferredSize()));
     }
 
     public void addProfilePanel(ProfilePanel pp){
