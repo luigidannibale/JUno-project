@@ -46,9 +46,9 @@ public class SettingsPanel extends ResizablePanel
     private void InitializeComponents(){
         //Components
         //JLabel effectsLabel = new JLabel(new ImageIcon(imagePath+"Effectsvolumeon.png"));
-        ImageComponent effectsLabel = new ImageComponent(imagePath+"Effectsvolumeon.png");
+        ImageComponent effectsLabel = new ImageComponent(imagePath+"Effectsvolumeon.png", -1, -1, false);
         //JLabel musicLabel = new JLabel(new ImageIcon(imagePath+"Musicvolume.png"));
-        ImageComponent musicLabel = new ImageComponent(imagePath+"Musicvolume.png");
+        ImageComponent musicLabel = new ImageComponent(imagePath+"Musicvolume.png", -1, -1, false);
         //JLabel screenLabel = new JLabel(new ImageIcon(imagePath+"Screensize.png"));
         //ImageComponent screenLabel = new ImageComponent(imagePath+"Screensize.png");
 

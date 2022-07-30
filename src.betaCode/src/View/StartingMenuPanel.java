@@ -9,8 +9,6 @@ import java.awt.event.WindowAdapter;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static View.ImageComponent.Formats.PNG;
-
 public class StartingMenuPanel extends ResizablePanel
 {
 
@@ -40,9 +38,9 @@ public class StartingMenuPanel extends ResizablePanel
     private void InitializeComponents()
     {
         icons = new ImageComponent[]{
-                new ImageComponent(imagePath + "Startgame"+".png"),
-                new ImageComponent(imagePath + "Settings"+".png"),
-                new ImageComponent(imagePath + "Quit"+".png")
+                new ImageComponent(imagePath + "Startgame.png"),
+                new ImageComponent(imagePath + "Settings.png"),
+                new ImageComponent(imagePath + "Quit.png")
         };
 
         add(icons[0], BorderLayout.NORTH);

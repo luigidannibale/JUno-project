@@ -1,49 +1,34 @@
 package View;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class GifComponent extends JComponent {
+public class GifComponent extends ImageComponent{
 
-    Image gif;
-    Image png;
-    int width;
-    int height;
+    private ImageIcon gif;
 
-    boolean showGif = false;
+    public GifComponent(String imagePath)
+    {
+        this(imagePath,-1,-1);
+    }
 
-    public GifComponent(String path){
-        gif = new ImageIcon(path + ".gif").getImage();
-        png = new ImageIcon(path + ".png").getImage();
-        //width = icon.getWidth(null);
-        //height = icon.getHeight(null);
-        width = 150;
-        height = 225;
-        setSize(width, height);
-        setPreferredSize(new Dimension(width, height));
+    public GifComponent(String imagePath, int width, int height){
+        super(imagePath + ".png", width, height, false);
+
+        //gif = new ImageIcon(imagePath + ".gif");
+        gif = ScaleImage(imagePath + ".gif", width, height);
 
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                showGif = true;
-                repaint();
+                setIcon(gif);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                showGif = false;
+                setIcon(icona);
             }
         });
     }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(showGif ? gif : png, 0, 0, width, height, this);
-    }
-
-    @Override
-    public Dimension getPreferredSize() { return (new Dimension(width, height)); }
 }

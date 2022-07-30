@@ -65,20 +65,20 @@ public class MainFrame extends JFrame {
 
         gbc = new GridBagConstraints();
 
-        /*
+
         JPanel titleBar = new JPanel();
         titleBar.setBackground(Color.red);
-       /* titleBar.setSize(1440, 920);
-        titleBar.setPreferredSize(new Dimension(1440, 920));
+        titleBar.setSize(1440, 100);
+        titleBar.setPreferredSize(new Dimension(1440, 100));
 
         titleBar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                System.out.println("SONO QUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                System.out.println("SIMONAAAAAAAAAAAAAAAAAAA");
             }
         });
 
-        gbc.anchor = GridBagConstraints.PAGE_START;
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         gbc.weightx = 1;
         gbc.weighty = 0.1;
         gbc.gridx = 0;
@@ -87,7 +87,7 @@ public class MainFrame extends JFrame {
 
         add(titleBar, gbc);
 
-         */
+
 
     }
 

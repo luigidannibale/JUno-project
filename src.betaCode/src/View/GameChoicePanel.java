@@ -5,14 +5,13 @@ import Controller.MainFrameController;
 import javax.swing.*;
 import java.awt.*;
 
-import static View.ImageComponent.Formats.GIF;
 
 public class GameChoicePanel extends ResizablePanel{
 
+    //ImageComponent basicGame;
 
-    GifComponent basicGame;
-    GifComponent memeGame;
-    GifComponent sevenoGame;
+    GifComponent basicGame,memeGame, sevenoGame;
+
 
     JLabel indietro;
 
@@ -50,11 +49,12 @@ public class GameChoicePanel extends ResizablePanel{
         ImageComponent2 memeGame = new ImageComponent2("", ImageComponent2.Size.SMALL);
         ImageComponent2 sevenoGame = new ImageComponent2("", ImageComponent2.Size.SMALL);
         */
-        //basicGame = new ImageComponent(path + "ClassicRules",GIF);
+        basicGame = new GifComponent(imagePath + "ClassicRules", 150, 225);
         //basicGame.AddSclingOnHoveringGif();
-        basicGame = new GifComponent(imagePath + "ClassicRules");
-        memeGame = new GifComponent(imagePath + "SeriousRules");
-        sevenoGame = new GifComponent(imagePath + "SevenO");
+        //basicGame = new GifComponent(imagePath + "ClassicRules");
+
+        memeGame = new GifComponent(imagePath + "SeriousRules", 150, 225);
+        sevenoGame = new GifComponent(imagePath + "SevenO", 150, 225);
 
         indietro = new JLabel("CLICCA QUI");
 
