@@ -8,11 +8,15 @@ import java.awt.*;
 public class ProfilePanel extends ResizablePanel {
 
     public ProfilePanel(MainFrameController mfc){
-        super(200, 150, 0);
+        super(200, 100, 0);
         imagePath = "images/MainFrame/StartingMenuPanel/ProfilePanel/";
+
+        setLayout(new GridBagLayout());
+        InitializeComponents();
     }
     private void InitializeComponents()
     {
+        /*
         icons = new ImageComponent[]{
                 new ImageComponent(imagePath + "1"),
                 new ImageComponent(imagePath + "2"),
@@ -23,6 +27,8 @@ public class ProfilePanel extends ResizablePanel {
         add(icons[1]);
         add(icons[2]);
         add(icons[3]);
+         */
+
     }
 
     @Override

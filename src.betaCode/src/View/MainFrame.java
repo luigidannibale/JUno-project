@@ -5,8 +5,7 @@ import Controller.MainFrameController;
 import javax.swing.*;
 import javax.xml.crypto.dsig.spec.DigestMethodParameterSpec;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.Arrays;
 
 public class MainFrame extends JFrame {
@@ -38,6 +37,10 @@ public class MainFrame extends JFrame {
     private Dimension dimension = new Dimension(1440,920);
     private Image background;
     private GridBagConstraints gbc;
+    //private JPanel titleBar;
+
+    //int mouseX;
+    //int mouseY;
 
     public MainFrame()
     {
@@ -60,21 +63,28 @@ public class MainFrame extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        setUndecorated(true);
+        //setUndecorated(true);
         setIconImage(getImageIcon("icon.png").getImage());
 
         gbc = new GridBagConstraints();
 
 
-        JPanel titleBar = new JPanel();
+        /*
+        titleBar = new JPanel(new BorderLayout());
         titleBar.setBackground(Color.red);
-        titleBar.setSize(1440, 100);
-        titleBar.setPreferredSize(new Dimension(1440, 100));
-
+        titleBar.setSize(getWidth(), 40);
+        titleBar.setPreferredSize(new Dimension(getWidth(), 40));
+        titleBar.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                setLocation(getX() + e.getX() - mouseX, getY() + e.getY() - mouseY);
+            }
+        });
         titleBar.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseEntered(MouseEvent e) {
-                System.out.println("SIMONAAAAAAAAAAAAAAAAAAA");
+            public void mousePressed(MouseEvent e) {
+                mouseX = e.getX();
+                mouseY = e.getY();
             }
         });
 
@@ -85,10 +95,19 @@ public class MainFrame extends JFrame {
         gbc.gridy = 0;
         gbc.gridwidth = 2;
 
-        add(titleBar, gbc);
+        //add(titleBar, gbc);
 
+         */
 
-
+        ///debug da cancellare
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
+                    System.exit(42);
+                }
+            }
+        });
     }
 
     public void addCenteredPanels(JPanel... panels){
@@ -100,12 +119,15 @@ public class MainFrame extends JFrame {
     }
 
     public void addProfilePanel(ProfilePanel pp){
+
         gbc.anchor = GridBagConstraints.FIRST_LINE_END;
         gbc.weightx = 0.1;
         gbc.weighty = 0.1;
         gbc.gridx = 1;
         gbc.gridy = 1;
 
+
+        //titleBar.add(pp, BorderLayout.LINE_END);
         add(pp, gbc);
     }
 
