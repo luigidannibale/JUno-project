@@ -9,7 +9,7 @@ public class ProfilePanel extends ResizablePanel {
 
     public ProfilePanel(MainFrameController mfc){
         super(200, 100, 0);
-        imagePath = "images/MainFrame/StartingMenuPanel/ProfilePanel/";
+        imagePath = "resources/images/MainFrame/StartingMenuPanel/ProfilePanel/";
 
         setLayout(new GridBagLayout());
         InitializeComponents();
@@ -28,7 +28,8 @@ public class ProfilePanel extends ResizablePanel {
         add(icons[2]);
         add(icons[3]);
          */
-
+        CircleImage im = new CircleImage(imagePath + "discard.png", 50, 50);
+        add(im);
     }
 
     @Override
