@@ -6,13 +6,17 @@ import Utilities.Utils;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
+import java.util.Map;
 
 public class ProfilePanel extends ResizablePanel {
 
     CircleImage im;
 
     public ProfilePanel(MainFrameController mfc){
-        super(200, 100, 0);
+        super(225, 90, 0);
         imagePath = "resources/images/MainFrame/StartingMenuPanel/ProfilePanel/";
 
         setLayout(new GridBagLayout());
@@ -43,9 +47,34 @@ public class ProfilePanel extends ResizablePanel {
         gbc.weighty = 0.5;
         add(im, gbc);
 
-        JLabel nome = new JLabel("nome");
-        nome.setFont(new Font(nome.getFont().getName(), Font.PLAIN, 20));
+        JLabel nome = new JLabel("Anonymous");
+        nome.setFont(new Font(nome.getFont().getName(), Font.PLAIN, 18));
         nome.setBorder(new EmptyBorder(3,0,0,3));
+        nome.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                //cambia account
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setFont(0);
+                nome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setFont(-1);
+            }
+
+            void setFont(int onOff){
+                Font font = nome.getFont();
+                Map attributes = font.getAttributes();
+                attributes.put(TextAttribute.UNDERLINE, onOff);
+                nome.setFont(font.deriveFont(attributes));
+            }
+
+        });
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridheight = 1;
@@ -53,7 +82,7 @@ public class ProfilePanel extends ResizablePanel {
         gbc.weighty = 0.7;
         add(nome, gbc);
 
-        JLabel livello = new JLabel("livello");
+        JLabel livello = new JLabel("level 1");
         livello.setBorder(new EmptyBorder(0,0,0,3));
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -67,7 +96,7 @@ public class ProfilePanel extends ResizablePanel {
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.weightx = 0.7;
-        gbc.weighty = 0.6;
+        gbc.weighty = 0.9;
         add(xp, gbc);
     }
 
