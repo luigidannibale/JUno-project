@@ -5,6 +5,7 @@ import Model.Enumerations.CardValue;
 import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
+import Utilities.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +30,9 @@ public class Juno {
         g.getContentPane().add(new JLabel(){
             public void paint(Graphics g){
                 super.paint(g);
-                g.drawImage((new ImageIcon("resources/images/icon3.png")).getImage(), 0,0, 550, 487, null);
+                Graphics2D g2 = (Graphics2D)g;
+                Utils.applyQualityRenderingHints(g2);
+                g2.drawImage((new ImageIcon("resources/images/icon3.png")).getImage(), 0,0, 550, 487, null);
             }
         }, SwingConstants.CENTER);
         g.setSize(new Dimension(550,487));

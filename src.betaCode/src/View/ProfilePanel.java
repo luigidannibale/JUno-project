@@ -4,6 +4,7 @@ import Controller.MainFrameController;
 import Utilities.Utils;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class ProfilePanel extends ResizablePanel {
@@ -37,27 +38,41 @@ public class ProfilePanel extends ResizablePanel {
         im = new CircleImage(imagePath + "discard.png", 60, 60);
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridheight = 2 ;
+        gbc.gridheight = 3;
         gbc.weightx = 0.5;
         gbc.weighty = 0.5;
         add(im, gbc);
 
         JLabel nome = new JLabel("nome");
+        nome.setFont(new Font(nome.getFont().getName(), Font.PLAIN, 20));
+        nome.setBorder(new EmptyBorder(3,0,0,3));
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridheight = 1;
-        gbc.weightx = 0.5;
-        gbc.weighty = 0.5;
+        gbc.weightx = 0.7;
+        gbc.weighty = 0.7;
         add(nome, gbc);
 
-        JProgressBar xp = new JProgressBar();
-        xp.setPreferredSize(new Dimension(60, 15));
-        xp.setStringPainted(true);
+        JLabel livello = new JLabel("livello");
+        livello.setBorder(new EmptyBorder(0,0,0,3));
         gbc.gridx = 1;
         gbc.gridy = 1;
-        gbc.weightx = 0.1;
+        gbc.weightx = 0.7;
         gbc.weighty = 0.1;
+        add(livello, gbc);
+
+        JProgressBar xp = new JProgressBar();
+        xp.setPreferredSize(new Dimension(80, 15));
+        xp.setStringPainted(true);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.weightx = 0.7;
+        gbc.weighty = 0.6;
         add(xp, gbc);
+    }
+
+    void DrawLoggedPanel(){
+
     }
 
     @Override
