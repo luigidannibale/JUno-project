@@ -1,11 +1,14 @@
 package View;
 
 import Controller.MainFrameController;
+import Utilities.Utils;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class ProfilePanel extends ResizablePanel {
+
+    CircleImage im;
 
     public ProfilePanel(MainFrameController mfc){
         super(200, 100, 0);
@@ -28,8 +31,33 @@ public class ProfilePanel extends ResizablePanel {
         add(icons[2]);
         add(icons[3]);
          */
-        CircleImage im = new CircleImage(imagePath + "discard.png", 50, 50);
-        add(im);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        im = new CircleImage(imagePath + "discard.png", 60, 60);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridheight = 2 ;
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.5;
+        add(im, gbc);
+
+        JLabel nome = new JLabel("nome");
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridheight = 1;
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.5;
+        add(nome, gbc);
+
+        JProgressBar xp = new JProgressBar();
+        xp.setPreferredSize(new Dimension(60, 15));
+        xp.setStringPainted(true);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.weightx = 0.1;
+        gbc.weighty = 0.1;
+        add(xp, gbc);
     }
 
     @Override
@@ -37,5 +65,12 @@ public class ProfilePanel extends ResizablePanel {
         super.paintComponent(g);
         g.setColor(Color.green);
         g.fillRect(0,0, getWidth(), getHeight());
+
+        Graphics2D g2 = (Graphics2D) g;
+        Utils.applyQualityRenderingHints(g2);
+        int thickness = 2;
+        g2.setStroke(new BasicStroke(thickness));
+        g2.setColor(Color.BLACK);
+        g2.drawOval(im.getX() - thickness, im.getY() - thickness, im.getWidth() + thickness, im.getHeight() + thickness);
     }
 }

@@ -1,9 +1,8 @@
 package View;
 
-import Controller.MainFrameController;
+import Utilities.Utils;
 
 import javax.swing.*;
-import javax.xml.crypto.dsig.spec.DigestMethodParameterSpec;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
@@ -53,7 +52,9 @@ public class MainFrame extends JFrame {
                 super.paintComponent(g);
                 int width = (int)dimension.getWidth();
                 int height = (int)dimension.getHeight();
-                g.drawImage(background, 0, 0, width, height, this);
+                Graphics2D g2 = (Graphics2D)g;
+                Utils.applyQualityRenderingHints(g2);
+                g2.drawImage(background, 0, 0, width, height, this);
             }
         });
 
