@@ -28,8 +28,9 @@ public class Juno {
 
         var g = new JWindow();
         g.getContentPane().add(new JLabel(){
-            public void paint(Graphics g){
-                super.paint(g);
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D)g;
                 Utils.applyQualityRenderingHints(g2);
                 g2.drawImage((new ImageIcon("resources/images/icon3.png")).getImage(), 0,0, 550, 487, null);
