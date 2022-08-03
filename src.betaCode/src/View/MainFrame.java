@@ -4,8 +4,6 @@ import Utilities.Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.Arrays;
 
 public class MainFrame extends JFrame {
     public enum Cards{
@@ -52,25 +50,24 @@ public class MainFrame extends JFrame {
     //int mouseX;
     //int mouseY;
 
-    private JPanel mainPanel;
-    private JPanel settingPanel;
-
-    private JPanel gamePanel;
+    private JPanel mainBackground;
+    private JPanel settingBackground;
+    private JPanel gameBackground;
 
     public MainFrame()
     {
         super("J Uno");
 
-        background = getImageIcon("background.png").getImage();
+        background = Utils.getImage(pathImages + "background.png");
         setContentPane(new JPanel(){
             @Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                int width = (int)dimension.getWidth();
-                int height = (int)dimension.getHeight();
+                //int width = (int)dimension.getWidth();
+                //int height = (int)dimension.getHeight();
                 Graphics2D g2 = (Graphics2D)g;
                 Utils.applyQualityRenderingHints(g2);
-                g2.drawImage(background, 0, 0, width, height, this);
+                g2.drawImage(background, 0, 0, getWidth(), getHeight(), this);
             }
         });
 
@@ -82,7 +79,7 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         //setUndecorated(true);
-        setIconImage(getImageIcon("icon.png").getImage());
+        setIconImage(Utils.getImage(pathImages + "icon.png"));
 
         gbc = new GridBagConstraints();
 
@@ -116,17 +113,17 @@ public class MainFrame extends JFrame {
         //add(titleBar, gbc);
 
          */
-        mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setOpaque(false);
-        add(mainPanel, Cards.MAIN.name());
+        mainBackground = new JPanel(new GridBagLayout());
+        mainBackground.setOpaque(false);
+        add(mainBackground, Cards.MAIN.name());
 
-        settingPanel = new JPanel(new GridBagLayout());
-        settingPanel.setOpaque(false);
-        add(settingPanel, Cards.SETTINGS.name());
+        settingBackground = new JPanel(new GridBagLayout());
+        settingBackground.setOpaque(false);
+        add(settingBackground, Cards.SETTINGS.name());
 
-        gamePanel = new JPanel(new BorderLayout());
-        gamePanel.setOpaque(false);
-        add(gamePanel, Cards.GAME.name());
+        gameBackground = new JPanel(new BorderLayout());
+        gameBackground.setOpaque(false);
+        add(gameBackground, Cards.GAME.name());
     }
 
     public void addCenteredPanels(JPanel... panels){
@@ -137,8 +134,8 @@ public class MainFrame extends JFrame {
         //Arrays.stream(panels).filter(panel -> !(panel instanceof SettingsPanel)).forEach(panel -> mainPanel.add(panel, gbc));
         //Arrays.stream(panels).filter(panel -> panel instanceof SettingsPanel).forEach(panel -> settingPanel.add(panel, gbc));
         for (JPanel panel : panels){
-            if (panel instanceof SettingsPanel) settingPanel.add(panel, gbc);
-            else mainPanel.add(panel, gbc);
+            if (panel instanceof SettingsPanel) settingBackground.add(panel, gbc);
+            else mainBackground.add(panel, gbc);
         }
     }
 
@@ -152,19 +149,15 @@ public class MainFrame extends JFrame {
 
 
         //titleBar.add(pp, BorderLayout.LINE_END);
-        mainPanel.add(pp, gbc);
+        mainBackground.add(pp, gbc);
     }
 
-    public JPanel getMainPanel() {
-        return mainPanel;
+    public JPanel getMainBackground() {
+        return mainBackground;
     }
 
-    public JPanel getGamePanel() {
-        return gamePanel;
-    }
-
-    private ImageIcon getImageIcon(String filename){
-        return new ImageIcon(pathImages + filename);
+    public JPanel getGameBackground() {
+        return gameBackground;
     }
 
     /*
@@ -178,6 +171,7 @@ public class MainFrame extends JFrame {
     public Dimension getDimension(){
         return dimension;
     }
+
     public void setDimension(Dimension dimension){
         this.dimension = dimension;
     }

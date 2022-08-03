@@ -47,11 +47,18 @@ public class UnoGame extends Observable {
         discards.push(deck.draw());
         turnManager = new TurnManager(discards.peek());
         //ruleManager.cardActionPerformance(discards.peek());
+
+        setChanged();
+        notifyObservers();
     }
 
     public List<Card> getPLayableCards() {
         return ruleManager.getPlayableCards(players[turnManager.getPlayer()].getPlayableCards(turnManager.getLastCardPlayed()),turnManager.getLastCardPlayed());
 
+    }
+
+    public Player[] getPlayers(){
+        return players;
     }
 
     /*

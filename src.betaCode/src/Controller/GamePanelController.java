@@ -1,5 +1,7 @@
 package Controller;
 
+import Model.Player.AIPlayer;
+import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.Rules.ClassicRules;
 import Model.Rules.MemeRules;
@@ -25,8 +27,10 @@ public class GamePanelController {
             case SEVENO -> rules = new SevenoRules();
             default -> rules = new ClassicRules();
         }
-        model = new UnoGame(new Player[]{null,null}, rules);
+        model = new UnoGame(new Player[]{new HumanPlayer("Piero"),new AIPlayer("Ai 1"),new AIPlayer("Ai 2"),new AIPlayer("Ai 3")}, rules);
         view = new GamePanel(model);
+
+        model.addObserver(view);
 
         view.setVisible(true);
 
@@ -39,7 +43,7 @@ public class GamePanelController {
             view.setVisible(false);
         }*/
 
-        //model.startGame();
+        model.startGame();
     }
 
     public GamePanel getView() {

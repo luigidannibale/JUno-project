@@ -1,8 +1,11 @@
 package View;
 
+import Model.Cards.Card;
 import Model.Enumerations.CardColor;
 import Model.Enumerations.CardValue;
+import Model.Player.Player;
 import Model.UnoGame;
+import Utilities.Utils;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -21,7 +24,11 @@ public class GamePanel extends JPanel implements Observer {
 
     private static final String imagePath = "resources/images/MainFrame/GamePanel/";
 
+    private final int maxCardsWidth = 1350;
+
     private UnoGame model;
+
+    private Player[] players;
 
     public GamePanel(UnoGame model){
         this.model = model;          //server per prendere dati
@@ -90,8 +97,8 @@ public class GamePanel extends JPanel implements Observer {
         var f = new CardImage(CardColor.WILD, CardValue.WILD);
         var g = new CardImage(CardColor.WILD, CardValue.WILD_DRAW);
 
-        /*
-        panels[0].add(a);
+
+        /*panels[0].add(a);
         deckPanel.add(c);
         deckPanel.add(d);
         deckPanel.add(e);
@@ -99,8 +106,9 @@ public class GamePanel extends JPanel implements Observer {
         deckPanel.add(g);
 
         add(deckPanel, BorderLayout.CENTER);
-
          */
+
+        //add(a);
     }
 
     @Override
@@ -110,6 +118,22 @@ public class GamePanel extends JPanel implements Observer {
         g.setColor(verde);
         g.fillRect(0,0, getWidth(), getHeight());
 
+        Graphics2D g2 = (Graphics2D) g;
+        Utils.applyQualityRenderingHints(g2);
+
+        if (players != null){
+            var player = players[0];
+
+            var spazio_per_carte = Math.min(player.getHand().size() * CardImage.width, maxCardsWidth);
+            var inizio_carte_x = (getWidth() - spazio_per_carte) / 2;
+            var spazio_tra_carte = spazio_per_carte / player.getHand().size();
+
+            for (Card card : player.getHand()) {
+                var image = new CardImage(card.getColor(), card.getValue());
+                g2.drawImage(image.getImage(), inizio_carte_x, getHeight() - CardImage.height, CardImage.width, CardImage.height, null);
+                inizio_carte_x += spazio_tra_carte;
+            }
+        }
         //le carte devono essere immagini e non jcomponent cosi posso disegnarli
 
         //var spazio_per_carte = player.numCarte * carta.width - 50; //(numero fisso?)
@@ -120,53 +144,10 @@ public class GamePanel extends JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        System.out.println("Piero");
 
-    }
-
-    public class CardImage extends JComponent{
-        private static final Image backCard = new ImageIcon("resources/images/Back_card.png").getImage();
-        private static final String pathDeck = "resources/images/White_deck/";
-        private final Image img;
-
-        private boolean covered = false;
-
-        private final int width;
-        private final int height;
-
-        //o ruotiamo tutte le immagini o ruotiamo l'intero panel
-        //che non sarebbe male
-        private int rotation;
-
-        public CardImage(CardColor color, CardValue value){
-            int num = 0 ;
-            if (color != CardColor.WILD) num = color.getIntValue() * 14 + value.ordinal() + 1;
-            else num = value == CardValue.WILD ? 14 : 14 * 5;
-            String numero = String.format("%02d", num) + ".png";
-            System.out.println(pathDeck + numero);
-
-            img = new ImageIcon(pathDeck + numero).getImage();
-            width = img.getWidth(null) * 50 / 100;
-            height = img.getHeight(null) * 50 / 100;
-
-            setPreferredSize(new Dimension(width, height));
-            setSize(new Dimension(width, height));
-            addMouseListener(new MouseAdapter() {
-                //usato mouseReleased perchè a volte il clicked non prendeva
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    covered = !covered;
-                    repaint();
-                }
-            });
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            g.drawImage(covered ? img : backCard, 0, 0, width, height, null);
-        }
-
-        @Override
-        public Dimension getPreferredSize() { return (new Dimension(width, height)); }
+        UnoGame model = (UnoGame)o;
+        this.players = model.getPlayers();
     }
 }
+

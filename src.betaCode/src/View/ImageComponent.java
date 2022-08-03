@@ -1,4 +1,6 @@
 package View;
+import Utilities.Utils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -53,7 +55,7 @@ public class ImageComponent extends JLabel
     };
 
     protected ImageIcon ScaleImage(String imagePath, int width, int height){
-        return new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+        return new ImageIcon(Utils.getImage(imagePath).getScaledInstance(width, height, Image.SCALE_DEFAULT));
     }
 
     /*public void AddSclingOnHoveringGif(){

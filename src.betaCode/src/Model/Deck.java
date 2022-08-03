@@ -50,6 +50,7 @@ public class Deck {
      *                     for each card value it must be specified how many instances of that card the deck has to contain
      *
      */
+
     public Deck(HashMap<CardValue,Integer> numberOfCards)
     {
         if(numberOfCards.size() != 15) throw new IllegalArgumentException("Specify one number for each of the cards value in the deck creation");
@@ -57,6 +58,7 @@ public class Deck {
         createDeck(numberOfCards);
         shuffle();
     }
+
     public void createDeck(HashMap<CardValue,Integer> rules)
     {
         for (CardColor color : CardColor.values())

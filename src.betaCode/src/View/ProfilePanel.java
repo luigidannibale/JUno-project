@@ -13,7 +13,11 @@ import java.util.Map;
 
 public class ProfilePanel extends ResizablePanel {
 
-    CircleImage im;
+    CircleImage profilePicture;
+    JLabel name;
+    JLabel level;
+    JProgressBar xpBar;
+
 
     public ProfilePanel(MainFrameController mfc){
         super(225, 90, 0);
@@ -39,18 +43,18 @@ public class ProfilePanel extends ResizablePanel {
 
         GridBagConstraints gbc = new GridBagConstraints();
 
-        im = new CircleImage(imagePath + "discard.png", 60, 60);
+        profilePicture = new CircleImage(imagePath + "discard.png", 60, 60);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridheight = 3;
         gbc.weightx = 0.5;
         gbc.weighty = 0.5;
-        add(im, gbc);
+        add(profilePicture, gbc);
 
-        JLabel nome = new JLabel("Anonymous");
-        nome.setFont(new Font(nome.getFont().getName(), Font.PLAIN, 18));
-        nome.setBorder(new EmptyBorder(3,0,0,3));
-        nome.addMouseListener(new MouseAdapter() {
+        name = new JLabel("Anonymous");
+        name.setFont(new Font(name.getFont().getName(), Font.PLAIN, 18));
+        name.setBorder(new EmptyBorder(3,0,0,3));
+        name.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //cambia account
@@ -59,7 +63,7 @@ public class ProfilePanel extends ResizablePanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 setFont(0);
-                nome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                name.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
 
             @Override
@@ -68,36 +72,35 @@ public class ProfilePanel extends ResizablePanel {
             }
 
             void setFont(int onOff){
-                Font font = nome.getFont();
+                Font font = name.getFont();
                 Map attributes = font.getAttributes();
                 attributes.put(TextAttribute.UNDERLINE, onOff);
-                nome.setFont(font.deriveFont(attributes));
+                name.setFont(font.deriveFont(attributes));
             }
-
         });
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridheight = 1;
         gbc.weightx = 0.7;
         gbc.weighty = 0.7;
-        add(nome, gbc);
+        add(name, gbc);
 
-        JLabel livello = new JLabel("level 1");
-        livello.setBorder(new EmptyBorder(0,0,0,3));
+        level = new JLabel("level 1");
+        level.setBorder(new EmptyBorder(0,0,0,3));
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 0.7;
         gbc.weighty = 0.1;
-        add(livello, gbc);
+        add(level, gbc);
 
-        JProgressBar xp = new JProgressBar();
-        xp.setPreferredSize(new Dimension(80, 15));
-        xp.setStringPainted(true);
+        xpBar = new JProgressBar();
+        xpBar.setPreferredSize(new Dimension(80, 15));
+        xpBar.setStringPainted(true);
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.weightx = 0.7;
         gbc.weighty = 0.9;
-        add(xp, gbc);
+        add(xpBar, gbc);
     }
 
     void DrawLoggedPanel(){
@@ -115,6 +118,6 @@ public class ProfilePanel extends ResizablePanel {
         int thickness = 2;
         g2.setStroke(new BasicStroke(thickness));
         g2.setColor(Color.BLACK);
-        g2.drawOval(im.getX() - thickness, im.getY() - thickness, im.getWidth() + thickness, im.getHeight() + thickness);
+        g2.drawOval(profilePicture.getX() - thickness, profilePicture.getY() - thickness, profilePicture.getWidth() + thickness, profilePicture.getHeight() + thickness);
     }
 }

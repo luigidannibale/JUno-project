@@ -139,7 +139,10 @@ public class MainFrameController {
                 view.setContentPane(gameController.getView());
                 view.pack();
                  */
-                view.getGamePanel().add(gameController.getView(), BorderLayout.CENTER);
+                view.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                view.getContentPane().repaint();
+                view.getGameBackground().add(gameController.getView(), BorderLayout.CENTER);
+                //view.setUndecorated(true);
                 c1.show(view.getContentPane(), MainFrame.Cards.GAME.name());
             }
         }

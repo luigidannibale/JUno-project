@@ -1,5 +1,6 @@
 package Utilities;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Utils {
@@ -15,6 +16,9 @@ public class Utils {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+    }
 
+    public static Image getImage(String path){
+        return new ImageIcon(path).getImage();
     }
 }
