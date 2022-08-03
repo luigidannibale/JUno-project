@@ -19,14 +19,14 @@ public class GamePanelController {
 
     public GamePanelController(GameChoiceController.GameMode gameMode)
     {
-        this.view = new GamePanel();
         UnoGameRules rules;
         switch (gameMode){
             case MEME -> rules = new MemeRules();
             case SEVENO -> rules = new SevenoRules();
             default -> rules = new ClassicRules();
         }
-        this.model = new UnoGame(new Player[]{null,null}, rules);
+        model = new UnoGame(new Player[]{null,null}, rules);
+        view = new GamePanel(model);
 
         view.setVisible(true);
 
@@ -38,6 +38,8 @@ public class GamePanelController {
             view.setVisible(true);
             view.setVisible(false);
         }*/
+
+        model.startGame();
     }
 
     public GamePanel getView() {

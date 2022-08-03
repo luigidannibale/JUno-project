@@ -2,6 +2,7 @@ package View;
 
 import Model.Enumerations.CardColor;
 import Model.Enumerations.CardValue;
+import Model.UnoGame;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -13,14 +14,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
-public class GamePanel extends JPanel{
+public class GamePanel extends JPanel implements Observer {
 
     private static final String imagePath = "resources/images/MainFrame/GamePanel/";
 
-    public GamePanel(){
+    private UnoGame model;
 
-        setLayout(new BorderLayout());
+    public GamePanel(UnoGame model){
+        this.model = model;          //server per prendere dati
+        //setLayout(new BorderLayout());
         /*
         Percentages = new HashMap<>(){{
             put(MainFrame.Dimensions.FULLHD, new Double[]{0.97, 0.95});
@@ -56,6 +61,7 @@ public class GamePanel extends JPanel{
 
         JPanel rightPlayer = new JPanel();
         JPanel botPlayer = new JPanel();*/
+        /*
         JPanel[] panels = new JPanel[4];
         String[] b = new String[]{BorderLayout.NORTH, BorderLayout.WEST, BorderLayout.EAST, BorderLayout.SOUTH};
         for (int i = 0; i < 4; i++){
@@ -84,6 +90,7 @@ public class GamePanel extends JPanel{
         var f = new CardImage(CardColor.WILD, CardValue.WILD);
         var g = new CardImage(CardColor.WILD, CardValue.WILD_DRAW);
 
+        /*
         panels[0].add(a);
         deckPanel.add(c);
         deckPanel.add(d);
@@ -92,6 +99,8 @@ public class GamePanel extends JPanel{
         deckPanel.add(g);
 
         add(deckPanel, BorderLayout.CENTER);
+
+         */
     }
 
     @Override
@@ -107,6 +116,11 @@ public class GamePanel extends JPanel{
         //var inizio_carte_x = (panelWidth - spazio_per_carte) / 2;
         //var inizio_carte_y = (panelHeight - spazio_per_carte) / 2;
         //var spazio_tra_carte = spazio_per_carte / player.numCarte;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
     }
 
     public class CardImage extends JComponent{
