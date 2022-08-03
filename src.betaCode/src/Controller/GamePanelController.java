@@ -39,7 +39,7 @@ public class GamePanelController {
             view.setVisible(false);
         }*/
 
-        model.startGame();
+        //model.startGame();
     }
 
     public GamePanel getView() {
