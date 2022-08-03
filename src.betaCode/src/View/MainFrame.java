@@ -8,6 +8,17 @@ import java.awt.event.*;
 import java.util.Arrays;
 
 public class MainFrame extends JFrame {
+    public enum Cards{
+        MAIN,
+        SETTINGS,
+        GAME;
+
+        @Override
+        public String toString() {
+            return name();
+        }
+    }
+
     private final String pathImages = "resources/images/MainFrame/MainframeDesignElements/";
     /*public enum Dimensions{
         FULLHD(new Dimension(1920,1080)),
@@ -41,6 +52,11 @@ public class MainFrame extends JFrame {
     //int mouseX;
     //int mouseY;
 
+    private JPanel mainPanel;
+    private JPanel settingPanel;
+
+    private JPanel gamePanel;
+
     public MainFrame()
     {
         super("J Uno");
@@ -58,7 +74,8 @@ public class MainFrame extends JFrame {
             }
         });
 
-        setLayout(new GridBagLayout());
+        //setLayout(new GridBagLayout());
+        setLayout(new CardLayout());
         setSize(dimension);
         setPreferredSize(dimension);
         setResizable(false);
@@ -99,16 +116,17 @@ public class MainFrame extends JFrame {
         //add(titleBar, gbc);
 
          */
+        mainPanel = new JPanel(new GridBagLayout());
+        mainPanel.setOpaque(false);
+        add(mainPanel, Cards.MAIN.name());
 
-        ///debug da cancellare
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
-                    System.exit(42);
-                }
-            }
-        });
+        settingPanel = new JPanel(new GridBagLayout());
+        settingPanel.setOpaque(false);
+        add(settingPanel, Cards.SETTINGS.name());
+
+        gamePanel = new JPanel(new BorderLayout());
+        gamePanel.setOpaque(false);
+        add(gamePanel, Cards.GAME.name());
     }
 
     public void addCenteredPanels(JPanel... panels){
@@ -116,7 +134,12 @@ public class MainFrame extends JFrame {
         gbc.weightx = 1;    gbc.weighty = 1;
         gbc.gridx = 0;      gbc.gridy = 2;
         gbc.gridwidth = 2;  gbc.gridheight = 3;
-        Arrays.stream(panels).forEach(panel -> add(panel, gbc));
+        //Arrays.stream(panels).filter(panel -> !(panel instanceof SettingsPanel)).forEach(panel -> mainPanel.add(panel, gbc));
+        //Arrays.stream(panels).filter(panel -> panel instanceof SettingsPanel).forEach(panel -> settingPanel.add(panel, gbc));
+        for (JPanel panel : panels){
+            if (panel instanceof SettingsPanel) settingPanel.add(panel, gbc);
+            else mainPanel.add(panel, gbc);
+        }
     }
 
     public void addProfilePanel(ProfilePanel pp){
@@ -129,7 +152,15 @@ public class MainFrame extends JFrame {
 
 
         //titleBar.add(pp, BorderLayout.LINE_END);
-        add(pp, gbc);
+        mainPanel.add(pp, gbc);
+    }
+
+    public JPanel getMainPanel() {
+        return mainPanel;
+    }
+
+    public JPanel getGamePanel() {
+        return gamePanel;
     }
 
     private ImageIcon getImageIcon(String filename){

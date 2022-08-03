@@ -26,16 +26,16 @@ public class StartingMenuController {
             }
         });
 
-
-
         //SettingPanel
         view.getSettingIcon().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                mfc.setSettingsReturnPanel();
                 mfc.setVisiblePanel(MainFrameController.Panels.SETTINGS);
                 view.setVisible(false);
             }
         });
+
         //Quit
         view.getQuitIcon().addMouseListener(new MouseAdapter() { // Quit button
             @Override

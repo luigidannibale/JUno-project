@@ -5,10 +5,7 @@ import View.*;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
 public class MainFrameController {
     private final String pathImages = "resources/images/MainFrame/MainframeDesignElements/";
@@ -30,6 +27,8 @@ public class MainFrameController {
     SettingsController settingsController;
     GameChoiceController gameChoiceController;
     GamePanelController gameController;
+
+    Panels currentPanel;
 
     public MainFrameController(){
         view = new MainFrame();
@@ -79,9 +78,23 @@ public class MainFrameController {
 
             }
         });
-        ProfilePanel pp = new ProfilePanel(this);
 
+        ///debug da cancellare
+        view.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
+                    //System.exit(42);
+                    setSettingsReturnPanel();
+                    setVisiblePanel(Panels.SETTINGS);
+                }
+            }
+        });
+
+        ProfilePanel pp = new ProfilePanel(this);
         view.addProfilePanel(pp);
+
+        setVisiblePanel(Panels.STARTMENU);
     }
 
     private boolean confirmDispose()
@@ -99,22 +112,42 @@ public class MainFrameController {
                 options, options[1]);
         return (confirm == JOptionPane.YES_OPTION);
     }
+
     public void setVisible(){
         view.setVisible(true);
     }
 
     public void setVisiblePanel(MainFrameController.Panels panel){
+        CardLayout c1 = (CardLayout) view.getContentPane().getLayout();
         switch (panel){
-            case STARTMENU -> startingMenuController.setVisible(true);
-            case SETTINGS -> settingsController.setVisible(true);
-            case GAMECHOICE -> gameChoiceController.setVisible(true);
+            case STARTMENU -> {
+                startingMenuController.setVisible(true);
+                c1.show(view.getContentPane(), MainFrame.Cards.MAIN.name());
+            }
+            case SETTINGS -> {
+                settingsController.setVisible(true);
+                c1.show(view.getContentPane(), MainFrame.Cards.SETTINGS.name());
+            }
+            case GAMECHOICE -> {
+                gameChoiceController.setVisible(true);
+                c1.show(view.getContentPane(), MainFrame.Cards.MAIN.name());
+            }
             case GAME -> {
+                /*
                 gameController.getView().setSize(view.getSize());
-                view.add(gameController.getView());
+                view.getMainPanel().add(gameController.getView());
                 view.setContentPane(gameController.getView());
                 view.pack();
+                 */
+                view.getGamePanel().add(gameController.getView(), BorderLayout.CENTER);
+                c1.show(view.getContentPane(), MainFrame.Cards.GAME.name());
             }
         }
+        currentPanel = panel;
+    }
+
+    public void setSettingsReturnPanel(){
+        settingsController.setReturnPanel(currentPanel);
     }
 
     public void createNewGame(GameChoiceController.GameMode gameMode){

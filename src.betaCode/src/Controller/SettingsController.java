@@ -10,9 +10,10 @@ import java.awt.event.MouseEvent;
 
 public class SettingsController {
 
-    SettingsPanel view;
+    private SettingsPanel view;
 
     //MainFrame.Dimensions dimesionChanges;
+    private MainFrameController.Panels returnPanel;
 
     public SettingsController(MainFrameController mainFrame){
         view = new SettingsPanel(mainFrame);
@@ -33,7 +34,8 @@ public class SettingsController {
         view.getCloseButton().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.setVisiblePanel(MainFrameController.Panels.STARTMENU);
+                //mainFrame.setVisiblePanel(MainFrameController.Panels.STARTMENU);
+                mainFrame.setVisiblePanel(returnPanel);
                 view.setVisible(false);
             }
         });
@@ -45,6 +47,10 @@ public class SettingsController {
         });
 
          */
+    }
+
+    public void setReturnPanel(MainFrameController.Panels returnPanel) {
+        this.returnPanel = returnPanel;
     }
 
     public void setVisible(boolean visible){
