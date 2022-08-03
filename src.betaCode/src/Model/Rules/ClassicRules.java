@@ -21,7 +21,7 @@ public class ClassicRules extends UnoGameRules{
         cardsDistribution = Deck.classicRules;
         stackableCards = false;
         numberOfPlayableCards = 1;
-        numberOfCardsPerPlayer = 25;
+        numberOfCardsPerPlayer = 7;
     }
 
     @Override

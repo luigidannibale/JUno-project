@@ -15,6 +15,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Observable;
@@ -122,8 +125,10 @@ public class GamePanel extends JPanel implements Observer {
         Utils.applyQualityRenderingHints(g2);
 
         if (players != null){
-            var player = players[0];
+            drawHorizontalHand(players[0], g2, getHeight() - CardImage.height);
+            drawHorizontalHand(players[1], g2, 0);
 
+            /*
             var spazio_per_carte = Math.min(player.getHand().size() * CardImage.width, maxCardsWidth);
             var inizio_carte_x = (getWidth() - spazio_per_carte) / 2;
             var spazio_tra_carte = spazio_per_carte / player.getHand().size();
@@ -133,6 +138,7 @@ public class GamePanel extends JPanel implements Observer {
                 g2.drawImage(image.getImage(), inizio_carte_x, getHeight() - CardImage.height, CardImage.width, CardImage.height, null);
                 inizio_carte_x += spazio_tra_carte;
             }
+             */
         }
         //le carte devono essere immagini e non jcomponent cosi posso disegnarli
 
@@ -140,6 +146,25 @@ public class GamePanel extends JPanel implements Observer {
         //var inizio_carte_x = (panelWidth - spazio_per_carte) / 2;
         //var inizio_carte_y = (panelHeight - spazio_per_carte) / 2;
         //var spazio_tra_carte = spazio_per_carte / player.numCarte;
+    }
+
+    public void drawHorizontalHand(Player player, Graphics2D g2, int y){
+        var spazio_per_carte = Math.min(player.getHand().size() * CardImage.width, maxCardsWidth);
+        var inizio_carte_x = (getWidth() - spazio_per_carte) / 2;
+        var spazio_tra_carte = spazio_per_carte / player.getHand().size();
+
+        for (Card card : player.getHand()) {
+            var image = new CardImage(card.getColor(), card.getValue()).getImage();
+            if (y == 0){
+                AffineTransform tx = AffineTransform.getScaleInstance(-1, -1);
+                tx.translate(-image.getWidth(null), -image.getHeight(null));
+                AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+                var flipped = op.filter(Utils.toBufferedImage(image), null);
+                g2.drawImage(flipped, inizio_carte_x, y, CardImage.width, CardImage.height, null);
+            }
+            g2.drawImage(image, inizio_carte_x, y, CardImage.width, CardImage.height, null);
+            inizio_carte_x += spazio_tra_carte;
+        }
     }
 
     @Override
