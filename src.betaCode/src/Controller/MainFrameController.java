@@ -83,6 +83,7 @@ public class MainFrameController {
         view.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+                System.out.println(e.getComponent());
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
                     //System.exit(42);
                     setSettingsReturnPanel();
@@ -153,7 +154,7 @@ public class MainFrameController {
     }
 
     public void setSettingsReturnPanel(){
-        settingsController.setReturnPanel(currentPanel);
+        if (currentPanel != Panels.SETTINGS) settingsController.setReturnPanel(currentPanel);
     }
 
     public void createNewGame(GameChoiceController.GameMode gameMode){
