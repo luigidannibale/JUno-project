@@ -23,6 +23,12 @@ public class CardImage extends JComponent {
     //che non sarebbe male
     private int rotation;
 
+    public CardImage(){
+        img = backCard;
+        setPreferredSize(new Dimension(width, height));
+        setSize(new Dimension(width, height));
+    }
+
     public CardImage(CardColor color, CardValue value) {
         int num = 0;
         if (color != CardColor.WILD) num = color.getIntValue() * 14 + value.ordinal() + 1;

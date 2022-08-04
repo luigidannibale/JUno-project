@@ -28,6 +28,7 @@ public class GamePanel extends JPanel implements Observer {
     private static final String imagePath = "resources/images/MainFrame/GamePanel/";
 
     private final int maxCardsWidth = 1350;
+    private final int maxCardsHeight = 800;
 
     private UnoGame model;
 
@@ -126,44 +127,64 @@ public class GamePanel extends JPanel implements Observer {
 
         if (players != null){
             drawHorizontalHand(players[0], g2, getHeight() - CardImage.height);
-            drawHorizontalHand(players[1], g2, 0);
+            drawHorizontalHand(players[2], g2, 0);
+            drawVerticalHand(players[1], g2, getWidth() - CardImage.width);
+            drawVerticalHand(players[3], g2, 0);
 
-            /*
-            var spazio_per_carte = Math.min(player.getHand().size() * CardImage.width, maxCardsWidth);
-            var inizio_carte_x = (getWidth() - spazio_per_carte) / 2;
-            var spazio_tra_carte = spazio_per_carte / player.getHand().size();
+            int centerX = getWidth() / 2;
+            int centerY = getHeight() / 2;
 
-            for (Card card : player.getHand()) {
-                var image = new CardImage(card.getColor(), card.getValue());
-                g2.drawImage(image.getImage(), inizio_carte_x, getHeight() - CardImage.height, CardImage.width, CardImage.height, null);
-                inizio_carte_x += spazio_tra_carte;
-            }
-             */
+            var discard = model.getLastCard();
+            g2.drawImage(new CardImage(discard.getColor(), discard.getValue()).getImage(), centerX + 25, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
+            g2.drawImage(new CardImage().getImage(), centerX - 25 - CardImage.width, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
+
+
+            g2.setColor(Color.black);
+            g2.drawLine(centerX - 5, centerY, centerX + 5, centerY);
         }
-        //le carte devono essere immagini e non jcomponent cosi posso disegnarli
+    }
 
-        //var spazio_per_carte = player.numCarte * carta.width - 50; //(numero fisso?)
-        //var inizio_carte_x = (panelWidth - spazio_per_carte) / 2;
-        //var inizio_carte_y = (panelHeight - spazio_per_carte) / 2;
-        //var spazio_tra_carte = spazio_per_carte / player.numCarte;
+    //trying to generalize
+    public void drawHand(Player player, int maxSpace, int fullSpace, Graphics2D g2, int y){
+        int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxSpace);
+        int startX = (fullSpace - cardsSpace) / 2;
+        int cardsWidth = cardsSpace / player.getHand().size();
     }
 
     public void drawHorizontalHand(Player player, Graphics2D g2, int y){
-        var spazio_per_carte = Math.min(player.getHand().size() * CardImage.width, maxCardsWidth);
-        var inizio_carte_x = (getWidth() - spazio_per_carte) / 2;
-        var spazio_tra_carte = spazio_per_carte / player.getHand().size();
+        int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsWidth);
+        int startX = (getWidth() - cardsSpace) / 2;
+        int cardsWidth = cardsSpace / player.getHand().size();
 
         for (Card card : player.getHand()) {
-            var image = new CardImage(card.getColor(), card.getValue()).getImage();
-            if (y == 0){
-                AffineTransform tx = AffineTransform.getScaleInstance(-1, -1);
-                tx.translate(-image.getWidth(null), -image.getHeight(null));
-                AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-                var flipped = op.filter(Utils.toBufferedImage(image), null);
-                g2.drawImage(flipped, inizio_carte_x, y, CardImage.width, CardImage.height, null);
-            }
-            g2.drawImage(image, inizio_carte_x, y, CardImage.width, CardImage.height, null);
-            inizio_carte_x += spazio_tra_carte;
+            var image = new CardImage(card.getColor(), card.getValue());
+            if (y == 0) g2.drawImage(image.getImage(), startX + CardImage.width, y + CardImage.height, -CardImage.width, -CardImage.height, null);
+            else        g2.drawImage(image.getImage(), startX, y, CardImage.width, CardImage.height, null);
+            startX += cardsWidth;
+        }
+    }
+
+    public void drawVerticalHand(Player player, Graphics2D g2, int x){
+        int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsHeight);
+        int startY = (getHeight() - cardsSpace) / 2;
+        int cardsWidth = cardsSpace / player.getHand().size();
+
+        for (Card card : player.getHand()) {
+            var image = new CardImage(card.getColor(), card.getValue());
+
+            /*
+            double rotationRequired = Math.toRadians (x == 0 ? 90 : 270);
+            //int locationX = image.getWidth() / 2;
+            //int locationY = image.getHeight() / 2;
+            AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, image.getWidth(), image.getHeight());
+            AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+
+            g2.drawImage(op.filter(Utils.toBufferedImage(image.getImage()), null), x, startY, CardImage.height, CardImage.width, null);
+             */
+            int rotationRequired = x == 0 ? 90 : 270;
+            g2.drawImage(Utils.rotateImage(image.getImage(), rotationRequired), x, startY, CardImage.width, CardImage.height, null);
+
+            startY += cardsWidth;
         }
     }
 

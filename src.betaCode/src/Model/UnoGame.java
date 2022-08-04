@@ -61,6 +61,14 @@ public class UnoGame extends Observable {
         return players;
     }
 
+    public Deck getDeck() {
+        return deck;
+    }
+
+    public Card getLastCard(){
+        return discards.peek();
+    }
+
     /*
     public void cardActionPerformance(Card card)
     {

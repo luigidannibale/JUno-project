@@ -3,12 +3,16 @@ package View;
 import Controller.MainFrameController;
 import Utilities.Utils;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 public class ProfilePanel extends ResizablePanel {
@@ -71,6 +75,8 @@ public class ProfilePanel extends ResizablePanel {
                 setFont(-1);
             }
 
+            //UNDERLINE 0 = sottolineato
+            //UNDERLINE -1 = non sottolineato
             void setFont(int onOff){
                 Font font = name.getFont();
                 Map attributes = font.getAttributes();
@@ -119,5 +125,57 @@ public class ProfilePanel extends ResizablePanel {
         g2.setStroke(new BasicStroke(thickness));
         g2.setColor(Color.BLACK);
         g2.drawOval(profilePicture.getX() - thickness, profilePicture.getY() - thickness, profilePicture.getWidth() + thickness, profilePicture.getHeight() + thickness);
+    }
+
+    public class CircleImage extends JComponent {
+
+        private Image imm;
+
+        private int width;
+        private int height;
+
+        public CircleImage(String path, int width, int height){
+            this.width = width;
+            this.height = height;
+            setPreferredSize(new Dimension(width, height));
+
+            try {
+                BufferedImage master = ImageIO.read(new File(path));
+                Image scaled = master.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+
+                int diameter = Math.min(width, height);
+                BufferedImage mask = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+                Graphics2D g2d = mask.createGraphics();
+                Utils.applyQualityRenderingHints(g2d);
+
+                g2d.fillOval(0, 0, diameter - 1, diameter - 1);
+                g2d.dispose();
+
+                BufferedImage masked = new BufferedImage(diameter, diameter, BufferedImage.TYPE_INT_ARGB);
+                g2d = masked.createGraphics();
+                Utils.applyQualityRenderingHints(g2d);
+                int x = (diameter - width) / 2;
+                int y = (diameter - height) / 2;
+                g2d.drawImage(scaled, x, y, null);
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_IN));
+                g2d.drawImage(mask, 0, 0, null);
+                g2d.dispose();
+
+                imm = masked;
+                //setIcon(new ImageIcon(masked));
+            }
+            catch (IOException e) {
+                System.out.println("Cannot find image");
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
+            Utils.applyQualityRenderingHints(g2);
+            g2.drawImage(imm, 0, 0, width, height, this);
+        }
     }
 }
