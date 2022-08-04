@@ -1,4 +1,4 @@
-package View;
+package Utilities;
 
 import Controller.MainFrameController;
 

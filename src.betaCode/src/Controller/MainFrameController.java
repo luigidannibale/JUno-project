@@ -1,5 +1,7 @@
 package Controller;
 
+import Utilities.AudioManager;
+import Utilities.Config;
 import View.*;
 
 import javax.swing.*;
@@ -175,6 +177,17 @@ public class MainFrameController {
         setVisiblePanel(Panels.STARTMENU);
     }
 
+    public void closeWindow(){
+        try //If the parent has a listener that manages the window closing it links that event, if an exception is generated the frame just get closed
+        {
+            view.dispatchEvent(new WindowEvent(view, WindowEvent.WINDOW_CLOSING));
+        }
+        catch(Exception ex)
+        {
+            view.dispose();
+        }
+    }
+
     /*public void updateSize(String s){
         MainFrame.Dimensions dim;
         switch (s) {
@@ -190,17 +203,4 @@ public class MainFrameController {
         view.setSize(dimension.getDimension());
         view.setLocationRelativeTo(null);
     }*/
-
-    public void closeWindow(){
-        try //If the parent has a listener that manages the window closing it links that event, if an exception is generated the frame just get closed
-        {
-            //((WindowAdapter) ((Arrays.stream(mf.getWindowListeners()).toArray())[0])).windowClosing(null);
-            view.dispatchEvent(new WindowEvent(view, WindowEvent.WINDOW_CLOSING));
-        }
-        catch(Exception ex) {
-
-            view.dispose(); }
-    }
-
-    //public MainFrame.Dimensions getCurrentDimension(){return view.getDimension();}
 }
