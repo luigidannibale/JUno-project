@@ -1,6 +1,7 @@
 package View;
 
 import Controller.MainFrameController;
+import Utilities.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -108,8 +109,8 @@ public class GameChoicePanel extends ResizablePanel{
 
         Graphics2D g2 = (Graphics2D)g;
         g2.setColor(new Color(50, 166, 92));
-        g2.fillRoundRect(0,0, panelWidth, panelHeight, 15, 15);
-        g2.setStroke(new BasicStroke(5));
+        g2.fillRoundRect(0,0, panelWidth, panelHeight, 50, 50);
+        g2.setStroke(new BasicStroke(10));
         g2.setColor(new Color(19, 80, 41));
         g2.drawRoundRect(0,0,panelWidth,panelHeight, 15, 15);
     }

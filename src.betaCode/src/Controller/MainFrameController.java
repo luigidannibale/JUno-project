@@ -83,7 +83,7 @@ public class MainFrameController {
         view.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                System.out.println(e.getComponent());
+                //System.out.println(e.getComponent());
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
                     //System.exit(42);
                     setSettingsReturnPanel();
@@ -160,6 +160,19 @@ public class MainFrameController {
     public void createNewGame(GameChoiceController.GameMode gameMode){
         gameController = new GamePanelController(gameMode);
         setVisiblePanel(MainFrameController.Panels.GAME);
+    }
+
+    public void quitGame(){
+        view.getGameBackground().remove(gameController.getView());
+        view.dispose();
+        view.setUndecorated(false);
+        view.pack();
+        view.getContentPane().repaint();
+        view.setSize(view.getDimension());
+        view.setLocationRelativeTo(null);
+        view.setVisible(true);
+        //view.setDimension(view.getDimension());
+        setVisiblePanel(Panels.STARTMENU);
     }
 
     /*public void updateSize(String s){

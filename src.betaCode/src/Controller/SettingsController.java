@@ -39,6 +39,13 @@ public class SettingsController {
                 view.setVisible(false);
             }
         });
+
+        view.getQuitButton().addMouseListener((new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                mainFrame.quitGame();
+            }
+        }));
         /*
         view.getCombobox().setSelectedItem(mainFrame.getCurrentDimension());
         view.getCombobox().addItemListener(new ItemListener() {

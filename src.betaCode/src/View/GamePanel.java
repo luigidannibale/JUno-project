@@ -8,20 +8,10 @@ import Model.UnoGame;
 import Utilities.Utils;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.function.Function;
 
 public class GamePanel extends JPanel implements Observer {
 
@@ -36,22 +26,6 @@ public class GamePanel extends JPanel implements Observer {
 
     public GamePanel(UnoGame model){
         this.model = model;          //server per prendere dati
-        //setLayout(new BorderLayout());
-        /*
-        Percentages = new HashMap<>(){{
-            put(MainFrame.Dimensions.FULLHD, new Double[]{0.97, 0.95});
-            put(MainFrame.Dimensions.WIDESCREEN, new Double[]{0.97, 0.95});
-            put(MainFrame.Dimensions.HD, new Double[]{1.0, 1.0});
-        }};
-
-         */
-        /*
-        percentX = 1;
-        percentY = 1;
-        offset = 0;
-        addScalingListener();
-
-         */
         setOpaque(true);
         //debug
         setBackground(Color.GREEN);
@@ -60,59 +34,6 @@ public class GamePanel extends JPanel implements Observer {
     }
 
     private void InitializeComponents(){
-        /*
-        forse quasi meglio creare una classe per i panel dei player
-                        top player
-        left player     deckPanel        right player
-                        bot player --> human player
-         */
-        /*
-        JPanel topPlayer = new JPanel();
-        JPanel leftPlayer = new JPanel();
-
-        JPanel rightPlayer = new JPanel();
-        JPanel botPlayer = new JPanel();*/
-        /*
-        JPanel[] panels = new JPanel[4];
-        String[] b = new String[]{BorderLayout.NORTH, BorderLayout.WEST, BorderLayout.EAST, BorderLayout.SOUTH};
-        for (int i = 0; i < 4; i++){
-            panels[i] = new JPanel();
-            panels[i].setBorder(new LineBorder(Color.BLACK));
-            panels[i].setOpaque(false);
-            add(panels[i], b[i]);
-        }
-
-        JPanel deckPanel = new JPanel();
-        deckPanel.setBorder(new LineBorder(Color.BLACK));
-        deckPanel.setOpaque(false);
-
-
-        //Arrays.stream(panels).forEach(this::add);
-        /*
-        add(topPlayer, BorderLayout.NORTH);
-        add(leftPlayer, BorderLayout.WEST);
-        add(deckPanel, BorderLayout.CENTER);
-        add(rightPlayer, BorderLayout.EAST);
-        add(botPlayer, BorderLayout.SOUTH);*/
-        var a = new CardImage(CardColor.BLUE, CardValue.THREE);
-        var c = new CardImage(CardColor.RED, CardValue.EIGHT);
-        var d = new CardImage(CardColor.GREEN, CardValue.FOUR);
-        var e = new CardImage(CardColor.YELLOW, CardValue.FIVE);
-        var f = new CardImage(CardColor.WILD, CardValue.WILD);
-        var g = new CardImage(CardColor.WILD, CardValue.WILD_DRAW);
-
-
-        /*panels[0].add(a);
-        deckPanel.add(c);
-        deckPanel.add(d);
-        deckPanel.add(e);
-        deckPanel.add(f);
-        deckPanel.add(g);
-
-        add(deckPanel, BorderLayout.CENTER);
-         */
-
-        //add(a);
     }
 
     @Override
@@ -126,22 +47,23 @@ public class GamePanel extends JPanel implements Observer {
         Utils.applyQualityRenderingHints(g2);
 
         if (players != null){
-            drawHorizontalHand(players[0], g2, getHeight() - CardImage.height);
-            drawHorizontalHand(players[2], g2, 0);
-            drawVerticalHand(players[1], g2, getWidth() - CardImage.width);
-            drawVerticalHand(players[3], g2, 0);
+            drawHorizontalHand(players[0], g2, getHeight() - CardImage.height, false);
+            drawHorizontalHand(players[2], g2, 0, true);
+            drawVerticalHand(players[1], g2, getWidth() - CardImage.width, true);
+            drawVerticalHand(players[3], g2, 0, true);
 
             int centerX = getWidth() / 2;
             int centerY = getHeight() / 2;
 
             var discard = model.getLastCard();
             g2.drawImage(new CardImage(discard.getColor(), discard.getValue()).getImage(), centerX + 25, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
-            g2.drawImage(new CardImage().getImage(), centerX - 25 - CardImage.width, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
-
+            g2.drawImage(CardImage.backCard, centerX - 25 - CardImage.width, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
 
             g2.setColor(Color.black);
             g2.drawLine(centerX - 5, centerY, centerX + 5, centerY);
         }
+
+        g2.dispose();
     }
 
     //trying to generalize
@@ -151,33 +73,34 @@ public class GamePanel extends JPanel implements Observer {
         int cardsWidth = cardsSpace / player.getHand().size();
     }
 
-    public void drawHorizontalHand(Player player, Graphics2D g2, int y){
+    Function<CardImage, Image> getCard = CardImage::getImage;
+    Function<CardImage, Image> getBackCard = CardImage::getBackCard;
+
+    private void drawHorizontalHand(Player player, Graphics2D g2, int y, boolean covered){
         int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsWidth);
         int startX = (getWidth() - cardsSpace) / 2;
         int cardsWidth = cardsSpace / player.getHand().size();
 
+        Function<CardImage, Image> drawCard = covered ? getBackCard : getCard;
+
         for (Card card : player.getHand()) {
             var image = new CardImage(card.getColor(), card.getValue());
-            if (y == 0) g2.drawImage(image.getImage(), startX + CardImage.width, y + CardImage.height, -CardImage.width, -CardImage.height, null);
-            else        g2.drawImage(image.getImage(), startX, y, CardImage.width, CardImage.height, null);
+            if (y == 0) g2.drawImage(drawCard.apply(image), startX + CardImage.width, y + CardImage.height, -CardImage.width, -CardImage.height, this);
+            else        g2.drawImage(drawCard.apply(image), startX, y, CardImage.width, CardImage.height, null);
             startX += cardsWidth;
         }
 
-        int labelY = y == 0 ? CardImage.height + 30 : y - 30;
-        g2.setFont(new Font("Digital-7", Font.PLAIN, 25));
-        g2.setColor(Color.black);
-        g2.drawString(player.getName(), startX, labelY);
+        drawNames(player.getName(), startX, y == 0 ? CardImage.height + 30 : y - 30, g2);
     }
 
-    public void drawVerticalHand(Player player, Graphics2D g2, int x){
+    private  void drawVerticalHand(Player player, Graphics2D g2, int x, boolean covered){
         int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsHeight);
         int startY = (getHeight() - cardsSpace) / 2;
         int cardsWidth = cardsSpace / player.getHand().size();
 
-        int labelX = x == 0 ? CardImage.width + 30 : x - 30;
-        g2.setFont(new Font("Digital-7", Font.PLAIN, 25));
-        g2.setColor(Color.black);
-        g2.drawString(player.getName(), labelX, startY);
+        drawNames(player.getName(), x == 0 ? CardImage.width + 30 : x - 30, startY, g2);
+
+        Function<CardImage, Image> drawCard = covered ? getBackCard : getCard;
 
         for (Card card : player.getHand()) {
             var image = new CardImage(card.getColor(), card.getValue());
@@ -192,10 +115,16 @@ public class GamePanel extends JPanel implements Observer {
             g2.drawImage(op.filter(Utils.toBufferedImage(image.getImage()), null), x, startY, CardImage.height, CardImage.width, null);
              */
             int rotationRequired = x == 0 ? 90 : 270;
-            g2.drawImage(Utils.rotateImage(image.getImage(), rotationRequired), x, startY, CardImage.width, CardImage.height, null);
+            g2.drawImage(Utils.rotateImage(drawCard.apply(image), rotationRequired), x, startY, CardImage.width, CardImage.height, null);
 
             startY += cardsWidth;
         }
+    }
+
+    private void drawNames(String name, int x, int y, Graphics g2){
+        g2.setFont(new Font("Digital-7", Font.PLAIN, 25));
+        g2.setColor(Color.black);
+        g2.drawString(name, x, y);
     }
 
     @Override

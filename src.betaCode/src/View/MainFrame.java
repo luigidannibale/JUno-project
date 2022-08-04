@@ -172,7 +172,10 @@ public class MainFrame extends JFrame {
         return dimension;
     }
 
+    /*
     public void setDimension(Dimension dimension){
         this.dimension = dimension;
     }
+
+     */
 }

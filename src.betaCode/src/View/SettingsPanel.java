@@ -17,6 +17,7 @@ public class SettingsPanel extends ResizablePanel
     //JComboBox<MainFrame.Dimensions> combo;
     JLabel saveButton;
     JLabel closeButton;
+    JLabel quit;
     VolumeSlider effectsVolumeSlider;
     VolumeSlider musicVolumeSlider;
 
@@ -52,6 +53,8 @@ public class SettingsPanel extends ResizablePanel
         //JLabel screenLabel = new JLabel(new ImageIcon(imagePath+"Screensize.png"));
         //ImageComponent screenLabel = new ImageComponent(imagePath+"Screensize.png");
 
+        quit = new JLabel("ESCI DA QUA SALVATI");
+        //quit.setVisible(false);
         saveButton = new JLabel(new ImageIcon(imagePath+"save.png"));
         closeButton = new JLabel(new ImageIcon(imagePath+"discard.png"));
 
@@ -67,10 +70,11 @@ public class SettingsPanel extends ResizablePanel
         //------------First line
         gbc.gridx = 0;      gbc.gridy = 0;
         gbc.weightx = 0.2;  gbc.weighty = 0.5;
+        gbc.gridwidth = 2;
         add(effectsLabel, gbc);
 
-        gbc.gridx = 1;      gbc.gridy = 0;
-        gbc.weightx = 0.1;  gbc.weighty = 0.5;
+        gbc.gridx = 2;      gbc.gridy = 0;
+        gbc.weightx = 0.5;  gbc.weighty = 0.5;
         add(effectsVolumeSlider, gbc);
 
         //------------Second line
@@ -78,8 +82,8 @@ public class SettingsPanel extends ResizablePanel
         gbc.weightx = 0.2;  gbc.weighty = 0.5;
         add(musicLabel, gbc);
 
-        gbc.gridx = 1;      gbc.gridy = 1;
-        gbc.weightx = 0.1;  gbc.weighty = 0.5;
+        gbc.gridx = 2;      gbc.gridy = 1;
+        gbc.weightx = 0.5;  gbc.weighty = 0.5;
         add(musicVolumeSlider, gbc);
 
         //------------Third line
@@ -97,9 +101,15 @@ public class SettingsPanel extends ResizablePanel
         //------------Fourth line
         gbc.gridx = 1;      gbc.gridy = 3;
         gbc.weightx = 0.05; gbc.weighty = 0.1;
-        add(saveButton, gbc);
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        add(quit, gbc);
 
         gbc.gridx = 2;      gbc.gridy = 3;
+        gbc.weightx = 0.05; gbc.weighty = 0.1;
+        add(saveButton, gbc);
+
+        gbc.gridx = 3;      gbc.gridy = 3;
         gbc.weightx = 0.05; gbc.weighty = 0.1;
         add(closeButton, gbc);
     }
@@ -114,6 +124,14 @@ public class SettingsPanel extends ResizablePanel
 
     public JLabel getCloseButton(){
         return closeButton;
+    }
+
+    public JLabel getQuitButton(){
+        return quit;
+    }
+
+    public void setQuitVisible(boolean bool){
+        quit.setVisible(bool);
     }
 
     public VolumeSlider getEffectsVolumeSlider(){

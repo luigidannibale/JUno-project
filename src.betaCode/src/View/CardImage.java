@@ -10,7 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class CardImage extends JComponent {
-    private static final Image backCard = Utils.getImage("resources/images/Back_card.png");
+    public static final Image backCard = Utils.getImage("resources/images/Back_card.png");
     private static final String pathDeck = "resources/images/White_deck/";
     private final Image img;
 
@@ -23,11 +23,14 @@ public class CardImage extends JComponent {
     //che non sarebbe male
     private int rotation;
 
+    /*
     public CardImage(){
         img = backCard;
         setPreferredSize(new Dimension(width, height));
         setSize(new Dimension(width, height));
     }
+
+     */
 
     public CardImage(CardColor color, CardValue value) {
         int num = 0;
@@ -55,6 +58,8 @@ public class CardImage extends JComponent {
     public Image getImage() {
         return img;
     }
+
+    public Image getBackCard(){return backCard;}
 
     public int getWidth(){
         return width;
