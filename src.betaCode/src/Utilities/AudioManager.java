@@ -1,4 +1,4 @@
-package View;
+package Utilities;
 
 import javax.sound.sampled.*;
 import java.io.File;
