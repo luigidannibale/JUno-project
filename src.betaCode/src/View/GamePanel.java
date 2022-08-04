@@ -162,12 +162,22 @@ public class GamePanel extends JPanel implements Observer {
             else        g2.drawImage(image.getImage(), startX, y, CardImage.width, CardImage.height, null);
             startX += cardsWidth;
         }
+
+        int labelY = y == 0 ? CardImage.height + 30 : y - 30;
+        g2.setFont(new Font("Digital-7", Font.PLAIN, 25));
+        g2.setColor(Color.black);
+        g2.drawString(player.getName(), startX, labelY);
     }
 
     public void drawVerticalHand(Player player, Graphics2D g2, int x){
         int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsHeight);
         int startY = (getHeight() - cardsSpace) / 2;
         int cardsWidth = cardsSpace / player.getHand().size();
+
+        int labelX = x == 0 ? CardImage.width + 30 : x - 30;
+        g2.setFont(new Font("Digital-7", Font.PLAIN, 25));
+        g2.setColor(Color.black);
+        g2.drawString(player.getName(), labelX, startY);
 
         for (Card card : player.getHand()) {
             var image = new CardImage(card.getColor(), card.getValue());

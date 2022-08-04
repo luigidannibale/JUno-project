@@ -34,7 +34,7 @@ public class CardImage extends JComponent {
         if (color != CardColor.WILD) num = color.getIntValue() * 14 + value.ordinal() + 1;
         else num = value == CardValue.WILD ? 14 : 14 * 5;
         String numero = String.format("%02d", num) + ".png";
-        System.out.println(pathDeck + numero);
+        //System.out.println(pathDeck + numero);
 
         img = Utils.getImage(pathDeck + numero);
         //width = img.getWidth(null) * 50 / 100;

@@ -142,10 +142,10 @@ public class MainFrameController {
                 view.dispose();
                 view.setUndecorated(true);
                 view.pack();
-                view.setVisible(true);
                 view.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 view.getContentPane().repaint();
                 view.getGameBackground().add(gameController.getView(), BorderLayout.CENTER);
+                view.setVisible(true);
                 c1.show(view.getContentPane(), MainFrame.Cards.GAME.name());
             }
         }
