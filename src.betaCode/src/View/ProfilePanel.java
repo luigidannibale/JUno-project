@@ -24,7 +24,7 @@ public class ProfilePanel extends ResizablePanel {
 
 
     public ProfilePanel(MainFrameController mfc){
-        super(225, 90, 0);
+        super(230, 95, 0);
         imagePath = "resources/images/MainFrame/StartingMenuPanel/ProfilePanel/";
 
         setLayout(new GridBagLayout());
@@ -116,12 +116,18 @@ public class ProfilePanel extends ResizablePanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.green);
-        g.fillRect(0,0, getWidth(), getHeight());
+        //g.setColor(Color.green);
 
-        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g2 = (Graphics2D)g;
         Utils.applyQualityRenderingHints(g2);
-        int thickness = 2;
+        g2.setColor(new Color(55, 166, 71));
+        g2.fillRect(0,0, getWidth(), getHeight());
+        int thickness = 10;
+        g2.setColor(new Color(55, 100, 71));
+        g2.setStroke(new BasicStroke(thickness));
+        g2.drawRect(0, -thickness, getWidth()+thickness, getHeight()+thickness);
+
+        thickness = 2;
         g2.setStroke(new BasicStroke(thickness));
         g2.setColor(Color.BLACK);
         g2.drawOval(profilePicture.getX() - thickness, profilePicture.getY() - thickness, profilePicture.getWidth() + thickness, profilePicture.getHeight() + thickness);
