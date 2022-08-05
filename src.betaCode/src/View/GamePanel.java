@@ -9,6 +9,8 @@ import Utilities.Utils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.function.Function;
@@ -23,6 +25,7 @@ public class GamePanel extends JPanel implements Observer {
     private UnoGame model;
 
     private Player[] players;
+    private CardImage deck;
 
     public GamePanel(UnoGame model){
         this.model = model;          //server per prendere dati
@@ -34,6 +37,7 @@ public class GamePanel extends JPanel implements Observer {
     }
 
     private void InitializeComponents(){
+        deck = new CardImage();
     }
 
     @Override
@@ -49,7 +53,7 @@ public class GamePanel extends JPanel implements Observer {
         if (players != null){
             drawHorizontalHand(players[0], g2, getHeight() - CardImage.height, false);
             drawHorizontalHand(players[2], g2, 0, true);
-            drawVerticalHand(players[1], g2, getWidth() - CardImage.width, true);
+            drawVerticalHand(players[1], g2, getWidth() - CardImage.height, true);
             drawVerticalHand(players[3], g2, 0, true);
 
             int centerX = getWidth() / 2;
@@ -57,7 +61,7 @@ public class GamePanel extends JPanel implements Observer {
 
             var discard = model.getLastCard();
             g2.drawImage(new CardImage(discard.getColor(), discard.getValue()).getImage(), centerX + 25, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
-            g2.drawImage(CardImage.backCard, centerX - 25 - CardImage.width, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
+            g2.drawImage(deck.getBackCard(), centerX - 25 - CardImage.width, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
 
             g2.setColor(Color.black);
             g2.drawLine(centerX - 5, centerY, centerX + 5, centerY);
@@ -83,14 +87,22 @@ public class GamePanel extends JPanel implements Observer {
 
         Function<CardImage, Image> drawCard = covered ? getBackCard : getCard;
 
+        int width = CardImage.width;
+        int height = CardImage.height;
+        if (y == 0){
+            startX += width;
+            y += height;
+            width = -width;
+            height = -height;
+        }
+
         for (Card card : player.getHand()) {
             var image = new CardImage(card.getColor(), card.getValue());
-            if (y == 0) g2.drawImage(drawCard.apply(image), startX + CardImage.width, y + CardImage.height, -CardImage.width, -CardImage.height, this);
-            else        g2.drawImage(drawCard.apply(image), startX, y, CardImage.width, CardImage.height, null);
+            g2.drawImage(drawCard.apply(image), startX, y, width, height, null);
             startX += cardsWidth;
         }
 
-        drawNames(player.getName(), startX, y == 0 ? CardImage.height + 30 : y - 30, g2);
+        drawNames(player.getName(), startX, y == 0 ? height + 30 : y - 30, g2);
     }
 
     private  void drawVerticalHand(Player player, Graphics2D g2, int x, boolean covered){
@@ -102,21 +114,10 @@ public class GamePanel extends JPanel implements Observer {
 
         Function<CardImage, Image> drawCard = covered ? getBackCard : getCard;
 
+        int rotationRequired = x == 0 ? 90 : 270;
         for (Card card : player.getHand()) {
             var image = new CardImage(card.getColor(), card.getValue());
-
-            /*
-            double rotationRequired = Math.toRadians (x == 0 ? 90 : 270);
-            //int locationX = image.getWidth() / 2;
-            //int locationY = image.getHeight() / 2;
-            AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, image.getWidth(), image.getHeight());
-            AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-
-            g2.drawImage(op.filter(Utils.toBufferedImage(image.getImage()), null), x, startY, CardImage.height, CardImage.width, null);
-             */
-            int rotationRequired = x == 0 ? 90 : 270;
-            g2.drawImage(Utils.rotateImage(drawCard.apply(image), rotationRequired), x, startY, CardImage.width, CardImage.height, null);
-
+            g2.drawImage(Utils.rotateImage(drawCard.apply(image), rotationRequired), x, startY, CardImage.height, CardImage.width, null);
             startY += cardsWidth;
         }
     }
@@ -133,6 +134,7 @@ public class GamePanel extends JPanel implements Observer {
 
         UnoGame model = (UnoGame)o;
         this.players = model.getPlayers();
+        repaint();
     }
 }
 

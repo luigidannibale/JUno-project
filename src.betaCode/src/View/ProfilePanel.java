@@ -17,11 +17,18 @@ import java.util.Map;
 
 public class ProfilePanel extends ResizablePanel {
 
+<<<<<<< HEAD
     JPanel p1;
     CircleImage profilePicture;
     JLabel name;
     JLabel level;
     JProgressBar xpBar;
+=======
+    private CircleImage profilePicture;
+    private JLabel name;
+    private JLabel level;
+    private JProgressBar xpBar;
+>>>>>>> d2b2d31b67b9ec4aff119c2e8430bbea3894ec7b
 
 
     public ProfilePanel(MainFrameController mfc){

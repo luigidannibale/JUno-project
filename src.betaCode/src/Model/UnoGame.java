@@ -69,6 +69,16 @@ public class UnoGame extends Observable {
         return discards.peek();
     }
 
+    public void drawCard(){
+        var drawedCard = deck.draw();
+        discards.push(drawedCard);
+        turnManager.updateLastCardPlayed(drawedCard);
+        players[turnManager.getPlayer()].drawCard(drawedCard);
+
+        setChanged();
+        notifyObservers();
+    }
+
     /*
     public void cardActionPerformance(Card card)
     {
