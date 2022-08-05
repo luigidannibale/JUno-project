@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 public class StartingMenuController {
 
-    StartingMenuPanel view;
+    private StartingMenuPanel view;
 
     public StartingMenuController(MainFrameController mfc){
         view = new StartingMenuPanel(mfc);

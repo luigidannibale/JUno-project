@@ -30,6 +30,7 @@ public class MainFrameController {
     private SettingsController settingsController;
     private GameChoiceController gameChoiceController;
     private GamePanelController gameController;
+    private ProfilePanelController profileController;
 
     private Panels currentPanel;
 
@@ -95,8 +96,8 @@ public class MainFrameController {
             }
         });
 
-        ProfilePanel pp = new ProfilePanel(this);
-        view.addProfilePanel(pp);
+        profileController = new ProfilePanelController(this);
+        view.addProfilePanel(profileController.getView());
 
         setVisiblePanel(Panels.STARTMENU);
     }

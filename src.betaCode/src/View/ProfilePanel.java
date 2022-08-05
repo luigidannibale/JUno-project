@@ -17,34 +17,39 @@ import java.util.Map;
 
 public class ProfilePanel extends ResizablePanel {
 
-<<<<<<< HEAD
-    JPanel p1;
-    CircleImage profilePicture;
-    JLabel name;
-    JLabel level;
-    JProgressBar xpBar;
-=======
     private CircleImage profilePicture;
     private JLabel name;
     private JLabel level;
     private JProgressBar xpBar;
->>>>>>> d2b2d31b67b9ec4aff119c2e8430bbea3894ec7b
-
+    private JPanel p1;
 
     public ProfilePanel(MainFrameController mfc){
-<<<<<<< Updated upstream
         super(230, 95, 0);
-=======
-        super(225, 90, 0);
-        setPreferredSize(new Dimension(225, 90));
->>>>>>> Stashed changes
         imagePath = "resources/images/MainFrame/StartingMenuPanel/ProfilePanel/";
 
-        setLayout(new FlowLayout());
-        //setLayout(new GridBagLayout());
-        InitializeComponents();
+        //setLayout(new FlowLayout());
+        setLayout(new GridBagLayout());
+
+        InitializedSharedComponents();
+        InitializeSmallPanel();
     }
-    private void InitializeComponents()
+
+    private void InitializedSharedComponents(){
+        profilePicture = new CircleImage(imagePath + "discard.png", 60, 60);
+
+        name = new JLabel("Anonymous");
+        name.setFont(new Font(name.getFont().getName(), Font.PLAIN, 18));
+        name.setBorder(new EmptyBorder(3,0,0,3));
+
+        level = new JLabel("Level 1 ty");
+        level.setBorder(new EmptyBorder(0,0,0,3));
+
+        xpBar = new JProgressBar();
+        xpBar.setPreferredSize(new Dimension(80, 15));
+        xpBar.setStringPainted(true);
+    }
+
+    private void InitializeSmallPanel()
     {
 
         /*
@@ -62,7 +67,6 @@ public class ProfilePanel extends ResizablePanel {
 
         GridBagConstraints gbc = new GridBagConstraints();
 
-        profilePicture = new CircleImage(imagePath + "discard.png", 60, 60);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridheight = 3;
@@ -70,61 +74,24 @@ public class ProfilePanel extends ResizablePanel {
         gbc.weighty = 0.5;
         add(profilePicture, gbc);
 
-        name = new JLabel("Anonymous");
-        name.setFont(new Font(name.getFont().getName(), Font.PLAIN, 18));
-        name.setBorder(new EmptyBorder(3,0,0,3));
-        name.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                //cambia account
-                panelHeight += !p1.isVisible()?p1.getHeight():0;
-                p1.setVisible(true);
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                setFont(0);
-                name.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                setFont(-1);
-            }
-
-            //UNDERLINE 0 = sottolineato
-            //UNDERLINE -1 = non sottolineato
-            void setFont(int onOff){
-                Font font = name.getFont();
-                Map attributes = font.getAttributes();
-                attributes.put(TextAttribute.UNDERLINE, onOff);
-                name.setFont(font.deriveFont(attributes));
-            }
-        });
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridheight = 1;
         gbc.weightx = 0.7;
-        gbc.weighty = 0.7;
+        gbc.weighty = 0.5;
         add(name, gbc);
 
-        level = new JLabel("Level 1 ty");
-        level.setBorder(new EmptyBorder(0,0,0,3));
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 0.7;
-        gbc.gridheight = 1;
-        gbc.weighty = 0.9;
+        gbc.weighty = 0.5;
         add(level, gbc);
 
-        xpBar = new JProgressBar();
-        xpBar.setPreferredSize(new Dimension(80, 15));
-        xpBar.setStringPainted(true);
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.gridheight = 1;
         gbc.weightx = 0.7;
-        gbc.weighty = 0.9;
+        gbc.weighty = 0.5;
         add(xpBar, gbc);
 
         p1 = new JPanel();
@@ -144,16 +111,14 @@ public class ProfilePanel extends ResizablePanel {
         p1.add(b);
         gbc.gridx = 0;
         gbc.gridy = 4;
-        gbc.weightx = 0.7;
         gbc.gridwidth = 2;
+        gbc.weightx = 0.7;
         gbc.weighty = 0.9;
         add(p1,gbc);
-
-
     }
 
-    void DrawLoggedPanel(){
-
+    public JLabel getLabelName(){
+        return name;
     }
 
     @Override
@@ -187,7 +152,10 @@ public class ProfilePanel extends ResizablePanel {
             this.width = width;
             this.height = height;
             setPreferredSize(new Dimension(width, height));
+            setCircleImage(path);
+        }
 
+        public void setCircleImage(String path){
             try {
                 BufferedImage master = ImageIO.read(new File(path));
                 Image scaled = master.getScaledInstance(width, height, Image.SCALE_SMOOTH);
