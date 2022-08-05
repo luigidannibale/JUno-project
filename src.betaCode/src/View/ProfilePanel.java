@@ -17,6 +17,7 @@ import java.util.Map;
 
 public class ProfilePanel extends ResizablePanel {
 
+    JPanel p1;
     CircleImage profilePicture;
     JLabel name;
     JLabel level;
@@ -24,14 +25,21 @@ public class ProfilePanel extends ResizablePanel {
 
 
     public ProfilePanel(MainFrameController mfc){
+<<<<<<< Updated upstream
         super(230, 95, 0);
+=======
+        super(225, 90, 0);
+        setPreferredSize(new Dimension(225, 90));
+>>>>>>> Stashed changes
         imagePath = "resources/images/MainFrame/StartingMenuPanel/ProfilePanel/";
 
-        setLayout(new GridBagLayout());
+        setLayout(new FlowLayout());
+        //setLayout(new GridBagLayout());
         InitializeComponents();
     }
     private void InitializeComponents()
     {
+
         /*
         icons = new ImageComponent[]{
                 new ImageComponent(imagePath + "1"),
@@ -62,6 +70,8 @@ public class ProfilePanel extends ResizablePanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //cambia account
+                panelHeight += !p1.isVisible()?p1.getHeight():0;
+                p1.setVisible(true);
             }
 
             @Override
@@ -91,12 +101,13 @@ public class ProfilePanel extends ResizablePanel {
         gbc.weighty = 0.7;
         add(name, gbc);
 
-        level = new JLabel("level 1");
+        level = new JLabel("Level 1 ty");
         level.setBorder(new EmptyBorder(0,0,0,3));
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 0.7;
-        gbc.weighty = 0.1;
+        gbc.gridheight = 1;
+        gbc.weighty = 0.9;
         add(level, gbc);
 
         xpBar = new JProgressBar();
@@ -104,9 +115,34 @@ public class ProfilePanel extends ResizablePanel {
         xpBar.setStringPainted(true);
         gbc.gridx = 1;
         gbc.gridy = 2;
+        gbc.gridheight = 1;
         gbc.weightx = 0.7;
         gbc.weighty = 0.9;
         add(xpBar, gbc);
+
+        p1 = new JPanel();
+        p1.setPreferredSize(new Dimension(300, 200));
+        p1.setSize(300,200);
+        p1.setVisible(false);
+        p1.setBackground(Color.darkGray);
+        var b = new JLabel("è uno sballo");
+
+        b.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                panelHeight -= p1.isVisible()?p1.getHeight():0;
+                p1.setVisible(false);
+            }
+        });
+        p1.add(b);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.weightx = 0.7;
+        gbc.gridwidth = 2;
+        gbc.weighty = 0.9;
+        add(p1,gbc);
+
+
     }
 
     void DrawLoggedPanel(){
