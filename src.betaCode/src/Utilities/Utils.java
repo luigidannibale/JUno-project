@@ -38,6 +38,7 @@ public class Utils {
         return bimage;
     }
 
+    /*
     public static BufferedImage rotateImage(Image image, int degree){
 
         BufferedImage img = toBufferedImage(image);
@@ -61,6 +62,29 @@ public class Utils {
 
         // Return rotated buffer image
         return newImage;
+    }
+
+     */
+
+    public static BufferedImage rotateImage(Image image, double degree) {
+        BufferedImage originalImage = toBufferedImage(image);
+        int w = originalImage.getWidth();
+        int h = originalImage.getHeight();
+        double toRad = Math.toRadians(degree);
+        int hPrime = (int) (w * Math.abs(Math.sin(toRad)) + h * Math.abs(Math.cos(toRad)));
+        int wPrime = (int) (h * Math.abs(Math.sin(toRad)) + w * Math.abs(Math.cos(toRad)));
+
+        BufferedImage rotatedImage = new BufferedImage(wPrime, hPrime, originalImage.getType());
+        Graphics2D g = rotatedImage.createGraphics();
+        applyQualityRenderingHints(g);
+        //g.setColor(Color.LIGHT_GRAY);
+        //g.fillRect(0, 0, wPrime, hPrime);  // fill entire area
+        g.translate(wPrime/2, hPrime/2);
+        g.rotate(toRad);
+        g.translate(-w/2, -h/2);
+        g.drawImage(originalImage, 0, 0, null);
+        //g.dispose();  // release used resources before g is garbage-collected
+        return rotatedImage;
     }
 
     public static Image getImage(String path){

@@ -17,10 +17,10 @@ import java.util.Map;
 
 public class ProfilePanel extends ResizablePanel {
 
-    CircleImage profilePicture;
-    JLabel name;
-    JLabel level;
-    JProgressBar xpBar;
+    private CircleImage profilePicture;
+    private JLabel name;
+    private JLabel level;
+    private JProgressBar xpBar;
 
 
     public ProfilePanel(MainFrameController mfc){

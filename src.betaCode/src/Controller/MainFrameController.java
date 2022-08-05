@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.concurrent.TimeUnit;
 
 public class MainFrameController {
     private final String pathImages = "resources/images/MainFrame/MainframeDesignElements/";
@@ -18,19 +19,19 @@ public class MainFrameController {
         GAME
     }
 
-    MainFrame view;
+    private MainFrame view;
 
     public AudioManager backMusic;
     public AudioManager soundEffects;
 
-    Config config;
+    private Config config;
 
-    StartingMenuController startingMenuController;
-    SettingsController settingsController;
-    GameChoiceController gameChoiceController;
-    GamePanelController gameController;
+    private StartingMenuController startingMenuController;
+    private SettingsController settingsController;
+    private GameChoiceController gameChoiceController;
+    private GamePanelController gameController;
 
-    Panels currentPanel;
+    private Panels currentPanel;
 
     public MainFrameController(){
         view = new MainFrame();
@@ -148,8 +149,8 @@ public class MainFrameController {
                 view.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 view.getContentPane().repaint();
                 view.getGameBackground().add(gameController.getView(), BorderLayout.CENTER);
-                view.setVisible(true);
                 c1.show(view.getContentPane(), MainFrame.Cards.GAME.name());
+                view.setVisible(true);
             }
         }
         currentPanel = panel;

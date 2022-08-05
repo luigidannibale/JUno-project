@@ -49,7 +49,7 @@ public class GamePanel extends JPanel implements Observer {
         if (players != null){
             drawHorizontalHand(players[0], g2, getHeight() - CardImage.height, false);
             drawHorizontalHand(players[2], g2, 0, true);
-            drawVerticalHand(players[1], g2, getWidth() - CardImage.width, true);
+            drawVerticalHand(players[1], g2, getWidth() - CardImage.height, true);
             drawVerticalHand(players[3], g2, 0, true);
 
             int centerX = getWidth() / 2;
@@ -115,7 +115,7 @@ public class GamePanel extends JPanel implements Observer {
             g2.drawImage(op.filter(Utils.toBufferedImage(image.getImage()), null), x, startY, CardImage.height, CardImage.width, null);
              */
             int rotationRequired = x == 0 ? 90 : 270;
-            g2.drawImage(Utils.rotateImage(drawCard.apply(image), rotationRequired), x, startY, CardImage.width, CardImage.height, null);
+            g2.drawImage(Utils.rotateImage(drawCard.apply(image), rotationRequired), x, startY, CardImage.height, CardImage.width, null);
 
             startY += cardsWidth;
         }
