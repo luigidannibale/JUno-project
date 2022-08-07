@@ -17,21 +17,36 @@ import java.util.Map;
 
 public class ProfilePanel extends ResizablePanel {
 
+    private JPanel smallPanel;
+
     private CircleImage profilePicture;
     private JLabel name;
     private JLabel level;
     private JProgressBar xpBar;
-    private JPanel p1;
+
+    private final Color lightGreen = new Color(55, 166, 71);
+    private final Color darkGreen = new Color(55, 100, 71);
 
     public ProfilePanel(MainFrameController mfc){
-        super(230, 95, 0);
+        super(230, 400, 0);
         imagePath = "resources/images/MainFrame/StartingMenuPanel/ProfilePanel/";
 
         //setLayout(new FlowLayout());
         setLayout(new GridBagLayout());
 
+        smallPanel = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                paintPanel(g, this);
+            }
+        };
+        smallPanel.setSize(230, 95);
+        smallPanel.setPreferredSize(new Dimension(230, 95));
+        smallPanel.setOpaque(false);
+        smallPanel.setLayout(new GridBagLayout());
+
         InitializedSharedComponents();
-        InitializeSmallPanel();
     }
 
     private void InitializedSharedComponents(){
@@ -51,19 +66,7 @@ public class ProfilePanel extends ResizablePanel {
 
     private void InitializeSmallPanel()
     {
-
-        /*
-        icons = new ImageComponent[]{
-                new ImageComponent(imagePath + "1"),
-                new ImageComponent(imagePath + "2"),
-                new ImageComponent(imagePath + "3"),
-                new ImageComponent(imagePath + "4")
-        };
-        add(icons[0]);
-        add(icons[1]);
-        add(icons[2]);
-        add(icons[3]);
-         */
+        smallPanel.removeAll();
 
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -72,73 +75,58 @@ public class ProfilePanel extends ResizablePanel {
         gbc.gridheight = 3;
         gbc.weightx = 0.5;
         gbc.weighty = 0.5;
-        add(profilePicture, gbc);
+        smallPanel.add(profilePicture, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridheight = 1;
         gbc.weightx = 0.7;
         gbc.weighty = 0.5;
-        add(name, gbc);
+        smallPanel.add(name, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 0.7;
         gbc.weighty = 0.5;
-        add(level, gbc);
+        smallPanel.add(level, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.gridheight = 1;
         gbc.weightx = 0.7;
         gbc.weighty = 0.5;
-        add(xpBar, gbc);
+        smallPanel.add(xpBar, gbc);
+    }
 
-        p1 = new JPanel();
-        p1.setPreferredSize(new Dimension(300, 200));
-        p1.setSize(300,200);
-        p1.setVisible(false);
-        p1.setBackground(Color.darkGray);
-        var b = new JLabel("è uno sballo");
-
-        b.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                panelHeight -= p1.isVisible()?p1.getHeight():0;
-                p1.setVisible(false);
-            }
-        });
-        p1.add(b);
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.gridwidth = 2;
-        gbc.weightx = 0.7;
-        gbc.weighty = 0.9;
-        add(p1,gbc);
+    public JPanel getSmallPanel(){
+        InitializeSmallPanel();
+        return smallPanel;
     }
 
     public JLabel getLabelName(){
         return name;
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        //g.setColor(Color.green);
-
+    private void paintPanel(Graphics g, JPanel panel){
         Graphics2D g2 = (Graphics2D)g;
         Utils.applyQualityRenderingHints(g2);
-        g2.setColor(new Color(55, 166, 71));
-        g2.fillRect(0,0, getWidth(), getHeight());
+        g2.setColor(lightGreen);
+        g2.fillRect(0,0, panel.getWidth(), panel.getHeight());
         int thickness = 10;
-        g2.setColor(new Color(55, 100, 71));
+        g2.setColor(darkGreen);
         g2.setStroke(new BasicStroke(thickness));
-        g2.drawRect(0, -thickness, getWidth()+thickness, getHeight()+thickness);
+        g2.drawRect(0, -thickness, panel.getWidth()+thickness, panel.getHeight()+thickness);
 
         thickness = 2;
         g2.setStroke(new BasicStroke(thickness));
         g2.setColor(Color.BLACK);
         g2.drawOval(profilePicture.getX() - thickness, profilePicture.getY() - thickness, profilePicture.getWidth() + thickness, profilePicture.getHeight() + thickness);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        paintPanel(g, this);
     }
 
     public class CircleImage extends JComponent {

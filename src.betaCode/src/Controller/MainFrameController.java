@@ -97,7 +97,7 @@ public class MainFrameController {
         });
 
         profileController = new ProfilePanelController(this);
-        view.addProfilePanel(profileController.getView());
+        view.addProfilePanel(profileController.getSmallPanel());
 
         setVisiblePanel(Panels.STARTMENU);
     }

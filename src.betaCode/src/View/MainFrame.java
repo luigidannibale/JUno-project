@@ -139,7 +139,7 @@ public class MainFrame extends JFrame {
         }
     }
 
-    public void addProfilePanel(ProfilePanel pp){
+    public void addProfilePanel(JPanel pp){
 
         gbc.anchor = GridBagConstraints.FIRST_LINE_END;
         gbc.weightx = 0.1;

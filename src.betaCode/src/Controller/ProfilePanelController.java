@@ -50,4 +50,8 @@ public class ProfilePanelController {
     public ProfilePanel getView() {
         return view;
     }
+
+    public JPanel getSmallPanel(){
+        return view.getSmallPanel();
+    }
 }
