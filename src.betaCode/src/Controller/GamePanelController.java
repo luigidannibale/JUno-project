@@ -11,6 +11,9 @@ import Model.UnoGame;
 import View.GameChoicePanel;
 import View.GamePanel;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 public class GamePanelController {
     //UnoGame uno = new tipoDiUno(new Player[] {mario,filippo,marco,gianfranco});
     private GamePanel view;
@@ -34,14 +37,7 @@ public class GamePanelController {
 
         view.setVisible(true);
 
-        //System.out.println(Arrays.toString(view.getComponents()));
-        //this.model = model;
-        //this.model.addObserver(view);
-        /*my computer hates me
-        while(true) {
-            view.setVisible(true);
-            view.setVisible(false);
-        }*/
+
 
         model.startGame();
     }

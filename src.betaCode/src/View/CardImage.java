@@ -23,6 +23,13 @@ public class CardImage extends JComponent {
     //che non sarebbe male
     private int rotation;
 
+    private int x;
+    private int y;
+    private Rectangle position;
+
+    private CardColor color;
+    private CardValue value;
+
     /*
     public CardImage(){
         img = backCard;
@@ -34,10 +41,12 @@ public class CardImage extends JComponent {
 
     public CardImage(){
         img = null;
-        setPreferredSize(new Dimension(width, height));
+        //setPreferredSize(new Dimension(width, height));
     }
 
     public CardImage(CardColor color, CardValue value) {
+        this.color = color;
+        this.value = value;
         int num = 0;
         if (color != CardColor.WILD) num = color.getIntValue() * 14 + value.ordinal() + 1;
         else num = value == CardValue.WILD ? 14 : 14 * 5;
@@ -48,6 +57,7 @@ public class CardImage extends JComponent {
         //width = img.getWidth(null) * 50 / 100;
         //height = img.getHeight(null) * 50 / 100;
 
+        /*
         setPreferredSize(new Dimension(width, height));
         setSize(new Dimension(width, height));
         addMouseListener(new MouseAdapter() {
@@ -58,6 +68,7 @@ public class CardImage extends JComponent {
                 //repaint();
             }
         });
+         */
     }
 
     public Image getImage() {
@@ -74,6 +85,24 @@ public class CardImage extends JComponent {
         return height;
     }
 
+    public void setPosition(int x, int y){
+        setPosition(x, y, false);
+    }
+
+    public void setPosition(int x, int y, boolean rotated){
+        this.x = x;
+        this.y = y;
+        position = rotated ? new Rectangle(x, y, height, width) : new Rectangle(x, y, width, height);
+    }
+
+    public boolean hasBeenClicked(int x, int y){
+        return position.contains(x, y);
+    }
+
+    @Override
+    public String toString() {
+        return value + " " + color;
+    }
 
     /*
         @Override
