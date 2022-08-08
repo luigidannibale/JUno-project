@@ -14,6 +14,7 @@ public class TurnManager{
     private int player;
     private Card lastCardPlayed;
 
+
     /**
      * Builds a TurnManager
      * @param lastPlayed: the first card of the discards stack

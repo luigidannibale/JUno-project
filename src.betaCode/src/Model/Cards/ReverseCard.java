@@ -8,7 +8,7 @@ import Model.TurnManager;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class ReverseCard extends Card {
+public class ReverseCard extends ActionCard {
 
     public ReverseCard(CardColor color)
     {
@@ -16,12 +16,14 @@ public class ReverseCard extends Card {
     }
 
 
-    public void reverse(TurnManager turnManager, Player[] players){
+    public void performReverseAction(TurnManager turnManager, Player[] players){
         Player player = players[turnManager.getPlayer()];
         Collections.reverse(Arrays.asList(players));
         for(int i = 0;i< players.length;i++)
             if(player == players[i])
-                while(i+1> players.length?turnManager.getPlayer()!=0:turnManager.getPlayer()!=i+1)
+                //non serve il while
+                while(i+1> players.length?turnManager.getPlayer()!=0:
+                                          turnManager.getPlayer()!=i+1)
                     turnManager.passTurn();
         //turnManager.setPlayer(players.length - 1 - turnManager.getPlayer());
     }

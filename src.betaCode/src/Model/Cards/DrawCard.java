@@ -6,8 +6,11 @@ import Model.Interfaces.*;
 import Model.Player.Player;
 import Model.TurnManager;
 
-public class DrawCard extends Card implements WildAction, SkipAction {
+import java.util.function.Function;
+
+public class DrawCard extends ActionCard implements WildAction, SkipAction {
     private int numberOfCardsToDraw;
+
 
     public DrawCard(CardColor color, int numberOfCardsToDraw)
     {
