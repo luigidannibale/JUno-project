@@ -33,7 +33,7 @@ public abstract class Player {
         return hand;
     }
 
-    public List<Card> getPlayableCards(Card check)
+    public List<Card> getValidCards(Card check)
     {
         return hand.stream().filter(card -> card.isValid(check)).collect(Collectors.toList());
     }

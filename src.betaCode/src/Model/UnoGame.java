@@ -47,7 +47,7 @@ public class UnoGame extends Observable {
     }
 
     public List<Card> getPLayableCards() {
-        return ruleManager.getPlayableCards(players[turnManager.getPlayer()].getPlayableCards(turnManager.getLastCardPlayed()),turnManager.getLastCardPlayed());
+        return ruleManager.getPlayableCards(players[turnManager.getPlayer()].getValidCards(turnManager.getLastCardPlayed()),turnManager.getLastCardPlayed());
 
     }
 

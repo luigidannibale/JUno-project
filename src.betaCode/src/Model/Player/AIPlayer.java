@@ -27,9 +27,9 @@ public class AIPlayer extends Player{
      * @return List<Card> of playable cards
      */
     @Override
-    public List<Card> getPlayableCards(Card check)
+    public List<Card> getValidCards(Card check)
     {
-        List<Card> playableCards = super.getPlayableCards(check);
+        List<Card> playableCards = super.getValidCards(check);
         List<Card> wildCards = playableCards.stream().filter(c -> c.getColor() == CardColor.WILD).toList();
         playableCards.removeAll(wildCards);
         playableCards.sort(Comparator.comparing(i -> colorWeights().get(((Card) i).getColor())).reversed().thenComparing(i -> ((Card)i).getColor().VALUE));

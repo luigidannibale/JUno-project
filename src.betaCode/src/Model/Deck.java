@@ -5,10 +5,6 @@ import Model.Cards.*;
 import Model.Cards.Enumerations.CardColor;
 import Model.Cards.Enumerations.CardValue;
 
-import Model.Enumerations.CardColor;
-import Model.Enumerations.CardValue;
-import Model.Exceptions.NoMoreDeckException;
-
 
 import java.util.*;
 

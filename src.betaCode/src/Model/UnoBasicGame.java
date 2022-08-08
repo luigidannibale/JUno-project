@@ -17,7 +17,7 @@ public class UnoBasicGame extends UnoGame{
         while(!win){
             Player player = players[turnManager.getPlayer()];
             Card lastCard = turnManager.getLastCardPlayed();
-            List<Card> playableCards = player.getPlayableCards(lastCard);
+            List<Card> playableCards = player.getValidCards(lastCard);
 
             if (playableCards.size() == 0)
             {
