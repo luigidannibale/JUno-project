@@ -24,22 +24,13 @@ public class CardImage extends JComponent {
     private int x;
     private int y;
     private Rectangle position;
+    private int offsetY = 0;
 
     private CardColor color;
     private CardValue value;
 
-    /*
-    public CardImage(){
-        img = backCard;
-        setPreferredSize(new Dimension(width, height));
-        setSize(new Dimension(width, height));
-    }
-
-     */
-
     public CardImage(){
         img = null;
-        //setPreferredSize(new Dimension(width, height));
     }
 
     public CardImage(CardColor color, CardValue value) {
@@ -49,24 +40,8 @@ public class CardImage extends JComponent {
         if (color != CardColor.WILD) num = color.VALUE * 14 + value.ordinal() + 1;
         else num = value == CardValue.WILD ? 14 : 14 * 5;
         String numero = String.format("%02d", num) + ".png";
-        //System.out.println(pathDeck + numero);
 
         img = Utils.getImage(pathDeck + numero);
-        //width = img.getWidth(null) * 50 / 100;
-        //height = img.getHeight(null) * 50 / 100;
-
-        /*
-        setPreferredSize(new Dimension(width, height));
-        setSize(new Dimension(width, height));
-        addMouseListener(new MouseAdapter() {
-            //usato mouseReleased perchè a volte il clicked non prendeva
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                covered = !covered;
-                //repaint();
-            }
-        });
-         */
     }
 
     public Image getImage() {
@@ -83,23 +58,31 @@ public class CardImage extends JComponent {
         return height;
     }
 
-    public void setPosition(int x, int y){
-        setPosition(x, y, false);
+    public void setPosition(int x, int y, int width){
+        setPosition(x, y, width, false);
     }
 
-    public void setPosition(int x, int y, boolean rotated){
+    public void setPosition(int x, int y, int width, boolean rotated){
         this.x = x;
         this.y = y;
         position = rotated ? new Rectangle(x, y, height, width) : new Rectangle(x, y, width, height);
     }
 
-    public boolean hasBeenClicked(int x, int y){
-        return position.contains(x, y);
+    public boolean isInMouse(int x, int y){
+        return position != null && position.contains(x, y);
     }
 
     @Override
     public String toString() {
         return value + " " + color;
+    }
+
+    public int getOffsetY() {
+        return offsetY;
+    }
+
+    public void setOffsetY(int offsetY) {
+        this.offsetY = offsetY;
     }
 
     /*

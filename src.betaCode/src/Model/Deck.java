@@ -1,8 +1,14 @@
 package Model;
 
 import Model.Cards.*;
+
 import Model.Cards.Enumerations.CardColor;
 import Model.Cards.Enumerations.CardValue;
+
+import Model.Enumerations.CardColor;
+import Model.Enumerations.CardValue;
+import Model.Exceptions.NoMoreDeckException;
+
 
 import java.util.*;
 
@@ -86,7 +92,11 @@ public class Deck {
 
     public Stack<Card> getDeck() {return deck; }
 
-    public Card draw() { return deck.pop(); }
+    public Card draw() {
+        if(deck.size() > 1) return deck.pop();
+        //else throw new NoMoreDeckException();
+        else return null;
+    }
 
     public void push(Card card) { deck.push(card); }
 
