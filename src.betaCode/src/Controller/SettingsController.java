@@ -58,6 +58,7 @@ public class SettingsController {
 
     public void setReturnPanel(MainFrameController.Panels returnPanel) {
         this.returnPanel = returnPanel;
+        view.getQuitButton().setVisible(returnPanel == MainFrameController.Panels.GAME);
     }
 
     public void setVisible(boolean visible){
