@@ -5,8 +5,6 @@ import Model.Cards.Enumerations.CardValue;
 import Model.Cards.Interfaces.SkipAction;
 import Model.Cards.Interfaces.WildAction;
 import Model.Deck;
-import Model.Enumerations.*;
-import Model.Interfaces.*;
 import Model.Player.Player;
 
 public class DrawCard extends ActionCard implements WildAction, SkipAction {
