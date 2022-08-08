@@ -1,8 +1,5 @@
 package View;
 
-import Model.Cards.Card;
-import Model.Enumerations.CardColor;
-import Model.Enumerations.CardValue;
 import Model.Player.Player;
 import Model.UnoGame;
 import Utilities.Utils;

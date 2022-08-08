@@ -1,0 +1,125 @@
+
+<!-- saved from url=(0074)file:///F:/github.io/JUno/resources/images/UML/UML%20Class%20Diagrams.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+
+<link rel="stylesheet" type="text/css" href="file:///F:/github.io/JUno/resources/images/UML/UML%20Class%20Diagrams_files/webpage.css">
+<title>UML Class Diagrams</title>
+</head>
+<body>
+
+<h1 align="center">UML Class Diagrams</h1>
+
+
+
+<p align="center">
+<table border="1" style="border-collapse: collapse" bordercolor="#111111" cellpadding="4" cellspacing="0">
+  <tbody><tr>
+    <td align="center"><tt><b>ClassName</b></tt>
+    </td>
+  </tr>
+  <tr>
+    <td><tt>
+<i>vis</i> <i>attribute</i> : <i>type</i></tt></td>
+  </tr>
+  <tr>
+    <td><tt>
+<i>vis</i> <i>operation</i>(<i>arg list</i>) : <i>return type</i></tt></td>
+  </tr>
+</tbody></table>
+
+
+</p><dir>where
+<ul>
+<li><i><tt>vis</tt></i> = visibility (<tt>+</tt> for public, <tt>-</tt> for private)</li>
+<li><i><tt>attribute</tt></i> = data member (aka field)</li>
+<li><i><tt>operation</tt></i> = method (or constructor)</li> 
+</ul>
+</dir>
+<p>Note:
+</p><ul>
+<li>The <i>arg list</i> is a list of parameter types (e.g., <tt>int, double, String</tt>); 
+parameter names are <em>not</em> included in the UML class diagram</li>
+<li>Methods that don't return a value (i.e. <tt>void</tt> methods) should give a <i>return type</i> of <tt>void</tt></li>
+<li>Class (i.e. <tt>static</tt>) methods and fields are indicated by <u>underlining</u></li>
+<li>Constant (i.e. <tt>final</tt>) fields are indicated via naming convention: constants should be in ALL_CAPS</li>
+</ul>
+<p>&nbsp;</p>
+<h1 align="center">Example:</h1>
+<h2>UML diagram</h2>
+
+<p align="center">
+<table border="1" style="border-collapse: collapse" bordercolor="#111111" cellpadding="4" cellspacing="0">
+  <tbody><tr>
+    <td align="center"><tt>
+     <b>Employee</b>
+    </tt></td>
+  </tr>
+  <tr>
+    <td><tt>
+-name:String<br>
+-payRate:double<br>
+-EMPLOYEE_ID:int<br>
+-<u>nextID:int</u><br>
++<u>STARTING_PAY_RATE:double</u>
+    </tt></td>
+  </tr>
+  <tr>
+    <td><tt>
++Employee(String)<br>
++Employee(String, double)<br>
++getName():String<br>
++getEmployeeID():int<br>
++getPayRate():double<br>
++changeName(String):void<br>
++changePayRate(double):void<br>
++<u>getNextID():int</u>
+    </tt></td>
+  </tr>
+</tbody></table>
+
+
+</p><h2>Corresponding Java Class</h2>
+<pre>public class Employee {
+
+    private String name;
+    private double payRate;
+    private final int EMPLOYEE_ID;
+    
+    private static int nextID = 1000;
+    
+    public static final double STARTING_PAY_RATE = 7.75;
+    
+    public Employee(String name) {
+        this.name = name;
+        EMPLOYEE_ID = getNextID();
+        payRate = STARTING_PAY_RATE;
+    }
+    
+    public Employee(String name, double startingPay) {
+        this.name = name;
+        EMPLOYEE_ID = getNextID();
+        payRate = startingPay;
+    }
+    
+    public String getName() { return name; }
+    
+    public int getEmployeeID() { return EMPLOYEE_ID; }
+    
+    public double getPayRate() { return payRate; }
+    
+    public void changeName(String newName) { name = newName; }
+    
+    public void changePayRate(double newRate) { payRate = newRate; }
+    
+    public static int getNextID() {
+        int id = nextID;
+        nextID++;
+        return id;
+    }
+}
+</pre>
+
+</body></html>

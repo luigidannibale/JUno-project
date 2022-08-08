@@ -1,7 +1,7 @@
 package Model.Player;
 
 import Model.Cards.Card;
-import Model.Enumerations.CardColor;
+import Model.Cards.Enumerations.CardColor;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,7 +32,7 @@ public class AIPlayer extends Player{
         List<Card> playableCards = super.getPlayableCards(check);
         List<Card> wildCards = playableCards.stream().filter(c -> c.getColor() == CardColor.WILD).toList();
         playableCards.removeAll(wildCards);
-        playableCards.sort(Comparator.comparing(i -> colorWeights().get(((Card) i).getColor())).reversed().thenComparing(i -> ((Card)i).getColor().getIntValue()));
+        playableCards.sort(Comparator.comparing(i -> colorWeights().get(((Card) i).getColor())).reversed().thenComparing(i -> ((Card)i).getColor().VALUE));
         playableCards.addAll(wildCards);
         return playableCards;
     }

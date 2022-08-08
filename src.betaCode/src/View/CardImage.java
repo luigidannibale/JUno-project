@@ -1,13 +1,11 @@
 package View;
 
-import Model.Enumerations.CardColor;
-import Model.Enumerations.CardValue;
+import Model.Cards.Enumerations.CardColor;
+import Model.Cards.Enumerations.CardValue;
 import Utilities.Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class CardImage extends JComponent {
     public static final Image backCard = Utils.getImage("resources/images/Back_card.png");
@@ -48,7 +46,7 @@ public class CardImage extends JComponent {
         this.color = color;
         this.value = value;
         int num = 0;
-        if (color != CardColor.WILD) num = color.getIntValue() * 14 + value.ordinal() + 1;
+        if (color != CardColor.WILD) num = color.VALUE * 14 + value.ordinal() + 1;
         else num = value == CardValue.WILD ? 14 : 14 * 5;
         String numero = String.format("%02d", num) + ".png";
         //System.out.println(pathDeck + numero);

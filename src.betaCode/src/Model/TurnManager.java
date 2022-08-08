@@ -1,8 +1,8 @@
 package Model;
 
 import Model.Cards.Card;
-import Model.Enumerations.CardColor;
-import Model.Enumerations.CardValue;
+import Model.Cards.Enumerations.CardColor;
+import Model.Cards.Enumerations.CardValue;
 
 /**
  * Class used to manage the flow of turns in a Uno Match

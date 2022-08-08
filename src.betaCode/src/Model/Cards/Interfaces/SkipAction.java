@@ -1,4 +1,4 @@
-package Model.Interfaces;
+package Model.Cards.Interfaces;
 
 import Model.TurnManager;
 

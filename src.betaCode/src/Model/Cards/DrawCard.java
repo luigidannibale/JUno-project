@@ -1,12 +1,13 @@
 package Model.Cards;
 
+import Model.Cards.Enumerations.CardColor;
+import Model.Cards.Enumerations.CardValue;
+import Model.Cards.Interfaces.SkipAction;
+import Model.Cards.Interfaces.WildAction;
 import Model.Deck;
 import Model.Enumerations.*;
 import Model.Interfaces.*;
 import Model.Player.Player;
-import Model.TurnManager;
-
-import java.util.function.Function;
 
 public class DrawCard extends ActionCard implements WildAction, SkipAction {
     private int numberOfCardsToDraw;

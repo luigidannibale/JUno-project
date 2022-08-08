@@ -1,8 +1,8 @@
 package Model.Cards;
 
-import Model.Enumerations.CardColor;
-import Model.Enumerations.CardValue;
-import Model.Interfaces.WildAction;
+import Model.Cards.Enumerations.CardColor;
+import Model.Cards.Enumerations.CardValue;
+import Model.Cards.Interfaces.WildAction;
 
 public class WildCard extends ActionCard implements WildAction {
 

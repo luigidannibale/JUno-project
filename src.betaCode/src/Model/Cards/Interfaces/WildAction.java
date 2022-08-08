@@ -1,9 +1,7 @@
-package Model.Interfaces;
+package Model.Cards.Interfaces;
 
-import Model.Enumerations.CardColor;
+import Model.Cards.Enumerations.CardColor;
 import Model.TurnManager;
-
-import java.util.Random;
 
 public interface WildAction {
     default void changeColor(TurnManager turnManager,CardColor  color)

@@ -1,4 +1,4 @@
-package Model.Enumerations;
+package Model.Cards.Enumerations;
 
 public enum CardValue
 {
@@ -18,13 +18,10 @@ public enum CardValue
     WILD(50),
     WILD_DRAW(50);
 
-    private final int value;
+    private final int VALUE;
 
     private CardValue(int value){
-        this.value = value;
+        this.VALUE = value;
     }
 
-    public int getValue(){
-        return value;
-    }
 }
