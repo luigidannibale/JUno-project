@@ -3,8 +3,6 @@ package Model;
 import Model.Cards.Card;
 import Model.Player.AIPlayer;
 import Model.Player.Player;
-import Model.Rules.ClassicRules;
-import View.GameChoicePanel;
 
 import java.util.List;
 
@@ -25,7 +23,7 @@ public class UnoBasicGame extends UnoGame{
             {
                 Card drawed = deck.draw();
                 player.drawCard(drawed);
-                if (drawed.isPlayable(lastCard)) playableCards.add(drawed);
+                if (drawed.isValid(lastCard)) playableCards.add(drawed);
             }
             Card cardToPlay = null;
             if (player instanceof AIPlayer) cardToPlay = playableCards.get(0);

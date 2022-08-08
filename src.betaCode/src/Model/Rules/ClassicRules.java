@@ -1,12 +1,10 @@
 package Model.Rules;
 
 import Model.Cards.Card;
-import Model.Cards.CardBuilder;
 import Model.Cards.DrawCard;
 import Model.Cards.ReverseCard;
 import Model.Deck;
 import Model.Enumerations.CardColor;
-import Model.Enumerations.CardValue;
 import Model.Interfaces.SkipAction;
 import Model.Interfaces.WildAction;
 import Model.Player.Player;
@@ -48,9 +46,9 @@ public class ClassicRules extends UnoGameRules{
         if(lastCard instanceof DrawCard)
             players[turnManager.next()].drawCards(deck.draw(((DrawCard) lastCard).getNumberOfCardsToDraw()));
         else if(lastCard instanceof ReverseCard)
-            ((ReverseCard) lastCard).reverse(turnManager, players);
+            ((ReverseCard) lastCard).performReverseAction(turnManager, players);
         if(lastCard instanceof SkipAction)
-            ((SkipAction) lastCard).skipTurn(turnManager);
+            ((SkipAction) lastCard).performSkipAction(turnManager);
     };
 
 }

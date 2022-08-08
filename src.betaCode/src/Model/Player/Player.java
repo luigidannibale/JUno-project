@@ -35,7 +35,7 @@ public abstract class Player {
 
     public List<Card> getPlayableCards(Card check)
     {
-        return hand.stream().filter(card -> card.isPlayable(check)).collect(Collectors.toList());
+        return hand.stream().filter(card -> card.isValid(check)).collect(Collectors.toList());
     }
 
     public String getName(){ return name; }
