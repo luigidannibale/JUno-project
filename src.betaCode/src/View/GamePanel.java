@@ -7,9 +7,10 @@ import Utilities.Utils;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class GamePanel extends JPanel implements Observer {
 
     private static final String imagePath = "resources/images/MainFrame/GamePanel/";
+    private final Color verde = new Color(14, 209, 69);
 
     private final int maxCardsWidth = 1350;
     private final int maxCardsHeight = 800;
@@ -26,6 +28,9 @@ public class GamePanel extends JPanel implements Observer {
     private Player[] players;
     private HashMap<Player, ArrayList<CardImage>> playerHands;
     private CardImage deck;
+    private CardImage discard;
+
+    int ticksPerSecond;
 
     public GamePanel(UnoGame model){
         this.model = model;          //server per prendere dati
@@ -39,7 +44,6 @@ public class GamePanel extends JPanel implements Observer {
             public void mouseReleased(MouseEvent e) {
                 int x = e.getX();
                 int y = e.getY();
-                System.out.println(x + ":" + y);
 
                 if (deck.isInMouse(x, y)){
                     model.drawCard();
@@ -60,10 +64,32 @@ public class GamePanel extends JPanel implements Observer {
                 for (CardImage card : playerHands.get(players[0])){ //le carte dell'umano
                     if (card.isInMouse(x, y)) card.setOffsetY(-20);
                     else card.setOffsetY(0);
-                    repaint();
+                    //repaint();
                 }
             }
         });
+
+
+
+        Timer timer = new Timer(5, new ActionListener() {
+            private Instant lastTick;
+            private int ticks = 0;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (lastTick == null) {
+                    lastTick = Instant.now();
+                }
+                if (Duration.between(lastTick, Instant.now()).toMillis() >= 1000) {
+                    ticksPerSecond = ticks;
+                    lastTick = Instant.now();
+                    ticks = 0;
+                }
+                ticks++;
+                repaint();
+            }
+        });
+        timer.start();
+
         InitializeComponents();
     }
 
@@ -74,7 +100,9 @@ public class GamePanel extends JPanel implements Observer {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Color verde = new Color(14, 209, 69);
+
+        long start = System.nanoTime();
+
         g.setColor(verde);
         g.fillRect(0,0, getWidth(), getHeight());
 
@@ -90,8 +118,7 @@ public class GamePanel extends JPanel implements Observer {
             int centerX = getWidth() / 2;
             int centerY = getHeight() / 2;
 
-            var discard = model.getLastCard();
-            g2.drawImage(new CardImage(discard.getColor(), discard.getValue()).getImage(), centerX + 25, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
+            g2.drawImage(discard.getImage(), centerX + 25, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
 
             if (model.getDeck().size() > 1) {
                 int x = centerX - 25 - CardImage.width;
@@ -99,12 +126,12 @@ public class GamePanel extends JPanel implements Observer {
                 g2.drawImage(deck.getBackCard(), x, y, CardImage.width, CardImage.height, null);
                 deck.setPosition(x, y, CardImage.width);
             }
-
-            g2.setColor(Color.black);
-            g2.drawLine(centerX - 5, centerY, centerX + 5, centerY);
         }
-
         g2.dispose();
+
+        long end = System.nanoTime();
+        double difference = (end - start) / 1000000000.0;
+        System.out.println("Draw time: " + difference + "sec");
     }
 
     //trying to generalize
@@ -114,18 +141,19 @@ public class GamePanel extends JPanel implements Observer {
         int cardsWidth = cardsSpace / player.getHand().size();
     }
 
-    Function<CardImage, Image> getCard = CardImage::getImage;
-    Function<CardImage, Image> getBackCard = CardImage::getBackCard;
+    Function<CardImage, BufferedImage> getCard = CardImage::getImage;
+    Function<CardImage, BufferedImage> getBackCard = CardImage::getBackCard;
 
     private void drawHorizontalHand(Player player, Graphics2D g2, int y, boolean covered){
         int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsWidth);
         int startX = (getWidth() - cardsSpace) / 2;
         int cardsWidth = cardsSpace / player.getHand().size();
 
-        Function<CardImage, Image> drawCard = covered ? getBackCard : getCard;
+        Function<CardImage, BufferedImage> drawCard = covered ? getBackCard : getCard;
 
         int width = CardImage.width;
         int height = CardImage.height;
+        drawNames(player.getName(), maxCardsWidth - 100, y == 0 ? height + 50 : y - 50, g2);
         if (y == 0){
             startX += width;
             y += height;
@@ -138,8 +166,6 @@ public class GamePanel extends JPanel implements Observer {
             card.setPosition(startX, y, cardsWidth);
             startX += cardsWidth;
         }
-
-        drawNames(player.getName(), startX, y == 0 ? height + 30 : y - 30, g2);
     }
 
     private  void drawVerticalHand(Player player, Graphics2D g2, int x, boolean covered){
@@ -147,12 +173,12 @@ public class GamePanel extends JPanel implements Observer {
         int startY = (getHeight() - cardsSpace) / 2;
         int cardsWidth = cardsSpace / player.getHand().size();
 
-        drawNames(player.getName(), x == 0 ? CardImage.width + 30 : x - 30, startY, g2);
-        Function<CardImage, Image> drawCard = covered ? getBackCard : getCard;
-        int rotationRequired = x == 0 ? 90 : 270;
+        drawNames(player.getName(), x == 0 ? CardImage.height + 50 : x - 100, maxCardsHeight - 100, g2);
+
+        //Function<CardImage, BufferedImage> drawCard = covered ? getBackCard : getCard;
 
         for (CardImage card : playerHands.get(player)){
-            g2.drawImage(Utils.rotateImage(drawCard.apply(card), rotationRequired), x, startY, CardImage.height, CardImage.width, null);
+            g2.drawImage(card.getImage(), x, startY, CardImage.height, CardImage.width, null);
             card.setPosition(x, startY, cardsWidth, true);
             startY += cardsWidth;
         }
@@ -169,11 +195,25 @@ public class GamePanel extends JPanel implements Observer {
         UnoGame model = (UnoGame) o;
         this.players = model.getPlayers();
         playerHands = new HashMap<>();
+        int[] rotations = new int[]{0, 270, 0, 90};
+        int i = 0;
+        /*
         Arrays.stream(players).filter(p -> p.getHand().size() > 0).forEach(p -> {
             ArrayList<CardImage> hand = p.getHand().stream().map(c -> new CardImage(c.getColor(), c.getValue())).collect(Collectors.toCollection(ArrayList::new));
             playerHands.put(p, hand);
         });
-        repaint();
+
+         */
+        for (Player player : players){
+            if (player.getHand().size() > 0){
+                int finalI = i;
+                playerHands.put(player, player.getHand().stream().map(c -> new CardImage(c.getColor(), c.getValue(), rotations[finalI])).collect(Collectors.toCollection(ArrayList::new)));
+            }
+            i += 1;
+        }
+        var lastCard = model.getLastCard();
+        discard = new CardImage(lastCard.getColor(), lastCard.getValue());
+        //repaint();
     }
 }
 

@@ -138,15 +138,12 @@ public class MainFrameController {
                 c1.show(view.getContentPane(), MainFrame.Cards.MAIN.name());
             }
             case GAME -> {
-                /*
-                gameController.getView().setSize(view.getSize());
-                view.getMainPanel().add(gameController.getView());
-                view.setContentPane(gameController.getView());
-                view.pack();
-                 */
                 view.dispose();
                 view.setUndecorated(true);
                 view.pack();
+                //GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+                //GraphicsDevice ev = env.getDefaultScreenDevice();
+                //ev.setFullScreenWindow(view);
                 view.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 view.getContentPane().repaint();
                 view.getGameBackground().add(gameController.getView(), BorderLayout.CENTER);

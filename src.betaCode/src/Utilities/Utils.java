@@ -1,8 +1,11 @@
 package Utilities;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Utils {
 
@@ -66,8 +69,7 @@ public class Utils {
 
      */
 
-    public static BufferedImage rotateImage(Image image, double degree) {
-        BufferedImage originalImage = toBufferedImage(image);
+    public static BufferedImage rotateImage(BufferedImage originalImage, double degree) {
         int w = originalImage.getWidth();
         int h = originalImage.getHeight();
         double toRad = Math.toRadians(degree);
@@ -89,5 +91,15 @@ public class Utils {
 
     public static Image getImage(String path){
         return new ImageIcon(path).getImage();
+    }
+
+    public static BufferedImage getBufferedImage(String path){
+        try {
+            return ImageIO.read(new File(path));
+        }
+        catch (IOException e){
+            System.out.println("Immagine non trovata");
+        }
+        return null;
     }
 }

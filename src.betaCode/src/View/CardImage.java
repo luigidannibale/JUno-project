@@ -4,22 +4,24 @@ import Model.Cards.Enumerations.CardColor;
 import Model.Cards.Enumerations.CardValue;
 import Utilities.Utils;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.security.spec.ECField;
 
 public class CardImage extends JComponent {
-    public static final Image backCard = Utils.getImage("resources/images/Back_card.png");
+    public static final BufferedImage backCard = Utils.getBufferedImage("resources/images/Back_card.png");
     private static final String pathDeck = "resources/images/White_deck/";
-    private final Image img;
+    //private final Image img;
+    private BufferedImage img;
 
     private boolean covered = false;
 
     public static final int width = 120;
     public static final int height = 180;
-
-    //o ruotiamo tutte le immagini o ruotiamo l'intero panel
-    //che non sarebbe male
-    private int rotation;
 
     private int x;
     private int y;
@@ -34,6 +36,10 @@ public class CardImage extends JComponent {
     }
 
     public CardImage(CardColor color, CardValue value) {
+        this(color, value, 0);
+    }
+
+    public CardImage(CardColor color, CardValue value, int rotation) {
         this.color = color;
         this.value = value;
         int num = 0;
@@ -41,22 +47,25 @@ public class CardImage extends JComponent {
         else num = value == CardValue.WILD ? 14 : 14 * 5;
         String numero = String.format("%02d", num) + ".png";
 
-        img = Utils.getImage(pathDeck + numero);
+        //img = Utils.getImage(pathDeck + numero);
+        img = Utils.getBufferedImage(pathDeck + numero);
+        if(rotation != 0) {
+            img = Utils.rotateImage(backCard, rotation);
+
+        }
     }
 
+    /*
     public Image getImage() {
         return img;
     }
+     */
 
-    public Image getBackCard(){return backCard;}
-
-    public int getWidth(){
-        return width;
+    public BufferedImage getImage() {
+        return img;
     }
 
-    public int getHeight(){
-        return height;
-    }
+    public BufferedImage getBackCard(){return backCard;}
 
     public void setPosition(int x, int y, int width){
         setPosition(x, y, width, false);
