@@ -18,6 +18,8 @@ public class SettingsController {
     public SettingsController(MainFrameController mainFrame){
         view = new SettingsPanel(mainFrame);
 
+        view.getEffectsVolumeSlider().setValue(mainFrame.soundEffects.getVolume());
+        view.getMusicVolumeSlider().setValue(mainFrame.soundEffects.getVolume());
         //dimesionChanges = mainFrame.getCurrentDimension();
 
         view.getSaveButton().addMouseListener(new MouseAdapter() {
@@ -46,14 +48,29 @@ public class SettingsController {
                 mainFrame.quitGame();
             }
         }));
-        /*
-        view.getCombobox().setSelectedItem(mainFrame.getCurrentDimension());
-        view.getCombobox().addItemListener(new ItemListener() {
+
+        view.getWhiteDeck().addMouseListener(new MouseAdapter() {
             @Override
-            public void itemStateChanged(ItemEvent e) { dimesionChanges = (MainFrame.Dimensions) e.getItem();}
+            public void mouseClicked(MouseEvent e) {
+                mainFrame.whiteDeckOn = true;
+                changeDeckBack(true);
+            }
         });
 
-         */
+        view.getDarkDeck().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                mainFrame.whiteDeckOn = false;
+                changeDeckBack(false);
+            }
+        });
+
+        changeDeckBack(mainFrame.whiteDeckOn);
+    }
+
+    void changeDeckBack(boolean bool){
+        view.getDarkDeck().setPaintBackground(!bool);
+        view.getWhiteDeck().setPaintBackground(bool);
     }
 
     public void setReturnPanel(MainFrameController.Panels returnPanel) {

@@ -98,6 +98,8 @@ public class GamePanel extends JPanel implements Observer {
         deck = new CardImage();
     }
 
+    int count = 0;
+    double media;
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -124,6 +126,7 @@ public class GamePanel extends JPanel implements Observer {
             if (model.getDeck().size() > 1) {
                 int x = centerX - 25 - CardImage.width;
                 int y = centerY - CardImage.height / 2;
+                g2.drawString(String.valueOf(model.getDeck().size()), x, y - 10);
                 g2.drawImage(deck.getBackCard(), x, y, CardImage.width, CardImage.height, null);
                 deck.setPosition(x, y, CardImage.width);
             }
@@ -131,8 +134,14 @@ public class GamePanel extends JPanel implements Observer {
         g2.dispose();
 
         long end = System.nanoTime();
-        double difference = (end - start) / 1000000000.0;
-        System.out.println("Draw time: " + difference + "sec");
+        media += (end - start) / 1000000000.0;
+        count += 1;
+        if (count == 10){
+            media /= 10;
+            System.out.println("Draw time: " + media + "sec");
+            count = 0;
+        }
+
     }
 
     //trying to generalize

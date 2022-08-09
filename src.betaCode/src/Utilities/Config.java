@@ -30,6 +30,10 @@ public class Config {
             //Effects volume
             bw.write(String.valueOf(mfc.soundEffects.getVolume()));
             bw.newLine();
+
+            //WhiteDeck
+            bw.write(String.valueOf(mfc.whiteDeckOn));
+            bw.newLine();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -53,6 +57,10 @@ public class Config {
             //Effects volume
             line = br.readLine();
             mfc.soundEffects.setVolume(Integer.parseInt(line));
+
+            //whiteDeck
+            line = br.readLine();
+            mfc.whiteDeckOn = Boolean.parseBoolean(line);
 
         } catch (IOException e){
             e.printStackTrace();

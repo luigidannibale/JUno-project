@@ -1,6 +1,8 @@
 package View;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -11,10 +13,9 @@ public class VolumeSlider extends JProgressBar {
     String[] fileNames;
     String path;
 
-    public VolumeSlider(int value)
+    public VolumeSlider()
     {
         setSize(200,20);
-        setValue(value);
         setPreferredSize(new Dimension(200, 20));
         setMinimumSize(new Dimension(200, 20));
         setMaximumSize(new Dimension(200, 20));
@@ -30,13 +31,16 @@ public class VolumeSlider extends JProgressBar {
                 var perc = 100 * x / max;
                 perc = perc < 0 ? 0 : Math.min(perc, 100);
                 setValue(perc);
-                if (icon != null){
-                    String newImage = path;
-                    if (perc == 0) newImage += fileNames[0];
-                    else if (perc < 50) newImage += fileNames[1];
-                    else newImage += fileNames[2];
-                    icon.setIcon(new ImageIcon((newImage)));
-                }
+            }
+        });
+
+        addChangeListener(e -> {
+            if (icon != null){
+                String newImage = path;
+                if (getValue() == 0) newImage += fileNames[0];
+                else if (getValue() < 50) newImage += fileNames[1];
+                else newImage += fileNames[2];
+                icon.setIcon(new ImageIcon((newImage)));
             }
         });
     }
