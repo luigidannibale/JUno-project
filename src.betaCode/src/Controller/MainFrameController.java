@@ -77,7 +77,7 @@ public class MainFrameController {
             {
                 if(confirmDispose())
                 {
-                    config.saveConfig();
+                    //config.saveConfig();
                     System.exit(0);
                 }
 
@@ -186,6 +186,10 @@ public class MainFrameController {
         {
             view.dispose();
         }
+    }
+
+    public Config getConfig() {
+        return config;
     }
 
     /*public void updateSize(String s){
