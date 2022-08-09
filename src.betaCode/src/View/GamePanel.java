@@ -84,6 +84,7 @@ public class GamePanel extends JPanel implements Observer {
                     lastTick = Instant.now();
                     ticks = 0;
                 }
+                //System.out.println(ticksPerSecond);
                 ticks++;
                 repaint();
             }
@@ -110,10 +111,10 @@ public class GamePanel extends JPanel implements Observer {
         Utils.applyQualityRenderingHints(g2);
 
         if (players != null){
-            drawHorizontalHand(players[0], g2, getHeight() - CardImage.height, false);
-            drawHorizontalHand(players[2], g2, 0, true);
-            drawVerticalHand(players[1], g2, getWidth() - CardImage.height, true);
-            drawVerticalHand(players[3], g2, 0, true);
+            drawHorizontalHand(players[0], g2, getHeight() - CardImage.height, getCard);
+            drawHorizontalHand(players[2], g2, 0, getBackCard);
+            drawVerticalHand(players[1], g2, getWidth() - CardImage.height);
+            drawVerticalHand(players[3], g2, 0);
 
             int centerX = getWidth() / 2;
             int centerY = getHeight() / 2;
@@ -144,12 +145,10 @@ public class GamePanel extends JPanel implements Observer {
     Function<CardImage, BufferedImage> getCard = CardImage::getImage;
     Function<CardImage, BufferedImage> getBackCard = CardImage::getBackCard;
 
-    private void drawHorizontalHand(Player player, Graphics2D g2, int y, boolean covered){
+    private void drawHorizontalHand(Player player, Graphics2D g2, int y, Function<CardImage, BufferedImage> getCard){
         int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsWidth);
         int startX = (getWidth() - cardsSpace) / 2;
         int cardsWidth = cardsSpace / player.getHand().size();
-
-        Function<CardImage, BufferedImage> drawCard = covered ? getBackCard : getCard;
 
         int width = CardImage.width;
         int height = CardImage.height;
@@ -162,20 +161,18 @@ public class GamePanel extends JPanel implements Observer {
         }
 
         for (CardImage card : playerHands.get(player)){
-            g2.drawImage(drawCard.apply(card), startX, y + card.getOffsetY(), width, height, null);
+            g2.drawImage(getCard.apply(card), startX, y + card.getOffsetY(), width, height, null);
             card.setPosition(startX, y, cardsWidth);
             startX += cardsWidth;
         }
     }
 
-    private  void drawVerticalHand(Player player, Graphics2D g2, int x, boolean covered){
+    private  void drawVerticalHand(Player player, Graphics2D g2, int x){
         int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsHeight);
         int startY = (getHeight() - cardsSpace) / 2;
         int cardsWidth = cardsSpace / player.getHand().size();
 
         drawNames(player.getName(), x == 0 ? CardImage.height + 50 : x - 100, maxCardsHeight - 100, g2);
-
-        //Function<CardImage, BufferedImage> drawCard = covered ? getBackCard : getCard;
 
         for (CardImage card : playerHands.get(player)){
             g2.drawImage(card.getImage(), x, startY, CardImage.height, CardImage.width, null);
