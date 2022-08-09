@@ -30,6 +30,7 @@ public class SettingsController {
                 mainFrame.backMusic.setFloatControlVolume();
                 mainFrame.soundEffects.setVolume(view.getEffectsVolumeSlider().getValue());
                 mainFrame.soundEffects.setFloatControlVolume();
+                mainFrame.getConfig().saveConfig();
                 //AudioManager.getInstance().setEffectVolume((effectsVolumeSlider.getValue()));
             }
         });

@@ -28,6 +28,7 @@ public class SettingsPanel extends ResizablePanel
     private VolumeSlider effectsVolumeSlider;
     private ImageComponent musicLabel;
     private VolumeSlider musicVolumeSlider;
+    private ImageComponent deckStyleLabel;
     private DeckRectangle darkDeck;
     private DeckRectangle whiteDeck;
 
@@ -50,6 +51,7 @@ public class SettingsPanel extends ResizablePanel
         //Components
         effectsLabel = new ImageComponent(imagePath+"EffectsVolume/high.png", -1, -1, false);
         musicLabel = new ImageComponent(imagePath+"MusicVolume.png", -1, -1, false);
+        deckStyleLabel = new ImageComponent(imagePath+"DeckStyle.png", -1, -1, false);
 
         quit = new JLabel("ESCI DA QUA SALVATI");
         //saveButton = new JLabel(new ImageIcon(imagePath+"save.png"));
@@ -89,11 +91,15 @@ public class SettingsPanel extends ResizablePanel
         //------------Third line
         gbc.gridx = 0;      gbc.gridy = 2;
         gbc.weightx = 0.5;  gbc.weighty = 0.5;
+        add(deckStyleLabel, gbc);
+
+        gbc.gridx = 2;      gbc.gridy = 2;
+        gbc.weightx = 0.05;  gbc.weighty = 0.5;
         gbc.gridwidth = 1;
         add(whiteDeck, gbc);
 
-        gbc.gridx = 1;      gbc.gridy = 2;
-        gbc.weightx = 0.5;  gbc.weighty = 0.5;
+        gbc.gridx = 3;      gbc.gridy = 2;
+        gbc.weightx = 0.05;  gbc.weighty = 0.5;
         add(darkDeck, gbc);
 
         //------------Fourth line
@@ -105,6 +111,7 @@ public class SettingsPanel extends ResizablePanel
 
         gbc.gridx = 2;      gbc.gridy = 3;
         gbc.weightx = 0.05; gbc.weighty = 0.1;
+        gbc.anchor = GridBagConstraints.CENTER;
         add(saveButton, gbc);
 
         gbc.gridx = 3;      gbc.gridy = 3;
@@ -190,12 +197,13 @@ public class SettingsPanel extends ResizablePanel
      */
 
     public class DeckRectangle extends JPanel{
-        private static int width = 100;
-        private static int height = 100;
+        private static int width = 114;
+        private static int height = 114;
+        private static int radius = 42;
 
         private final BufferedImage image;
         private final String title;
-        private final Font font = new Font("Digital-7", Font.BOLD, 15);
+        private final Font font = new Font("Digital-7", Font.BOLD, 18);
         private Color deckRectangleBorder = Color.BLACK;
         private boolean paintBackground = false;
 
@@ -234,22 +242,22 @@ public class SettingsPanel extends ResizablePanel
 
             if (paintBackground) {
                 g.setColor(Color.GREEN);
-                g.fillRect(0, 0, width, height);
+                g.fillRoundRect(0, 0, width, height, radius, radius);
             }
 
             g2.setColor(deckRectangleBorder);
-            g2.setStroke(new BasicStroke(5));
-            g2.drawRect(0, 0, width, height);
+            g2.setStroke(new BasicStroke(2));
+            g2.drawRoundRect(0, 0, width, height,radius, radius);
 
-            int immWidth = 36;
-            int immHeight = 54;
+            int immWidth = 42;
+            int immHeight = 63;
             int centerX = width / 2;
             int centerY = height / 2;
             g2.drawImage(image, centerX - (immWidth / 2), centerY - (immHeight / 4), immWidth, immHeight, null);
 
             g2.setFont(font);
             int fontWidth = g.getFontMetrics().stringWidth(title);
-            g2.drawString(title, (width - fontWidth) / 2, 20);
+            g2.drawString(title, (width - fontWidth) / 2, 25);
         }
     }
 }
