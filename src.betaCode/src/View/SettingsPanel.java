@@ -20,13 +20,16 @@ public class SettingsPanel extends ResizablePanel
     private final Color verde = new Color(0, 231, 172);
 
     //JComboBox<MainFrame.Dimensions> combo;
-    JLabel saveButton;
-    JLabel closeButton;
-    JLabel quit;
-    ImageComponent effectsLabel;
-    VolumeSlider effectsVolumeSlider;
-    ImageComponent musicLabel;
-    VolumeSlider musicVolumeSlider;
+    //private GifComponent saveButton;
+    private GifComponent saveButton;
+    private JLabel closeButton;
+    private JLabel quit;
+    private ImageComponent effectsLabel;
+    private VolumeSlider effectsVolumeSlider;
+    private ImageComponent musicLabel;
+    private VolumeSlider musicVolumeSlider;
+    private DeckRectangle darkDeck;
+    private DeckRectangle whiteDeck;
 
     private boolean whiteOn = true;
     private final BufferedImage whiteImage = Utils.getBufferedImage(deckPath + "White_deck/01.png");
@@ -41,29 +44,25 @@ public class SettingsPanel extends ResizablePanel
 
         setOpaque(false);
         InitializeComponents();
-
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-            }
-        });
     }
 
     private void InitializeComponents(){
         //Components
-        effectsLabel = new ImageComponent(imagePath+"Effectsvolumeon.png", -1, -1, false);
+        effectsLabel = new ImageComponent(imagePath+"EffectsVolume/high.png", -1, -1, false);
         musicLabel = new ImageComponent(imagePath+"MusicVolume.png", -1, -1, false);
 
         quit = new JLabel("ESCI DA QUA SALVATI");
-        saveButton = new JLabel(new ImageIcon(imagePath+"save.png"));
+        //saveButton = new JLabel(new ImageIcon(imagePath+"save.png"));
+        saveButton = new GifComponent(imagePath + "save");
         closeButton = new JLabel(new ImageIcon(imagePath+"discard.png"));
 
-        effectsVolumeSlider = new VolumeSlider(mainFrame.soundEffects.getVolume());
+        effectsVolumeSlider = new VolumeSlider();
         effectsVolumeSlider.setChangebleIcon(effectsLabel,imagePath+"EffectsVolume/", new String[] {"off.png", "low.png", "high.png"});
-        musicVolumeSlider = new VolumeSlider(mainFrame.backMusic.getVolume());
+        musicVolumeSlider = new VolumeSlider();
 
-        DeckRectangle whiteDeck = new DeckRectangle(whiteImage, "White Deck");
-        DeckRectangle darkDeck = new DeckRectangle(darkImage, "Dark Deck");
+        whiteDeck = new DeckRectangle(whiteImage, "White Deck");
+        whiteDeck.setPaintBackground(true);
+        darkDeck = new DeckRectangle(darkImage, "Dark Deck");
 
         //Layout
         GridBagConstraints gbc = new GridBagConstraints();
@@ -90,6 +89,7 @@ public class SettingsPanel extends ResizablePanel
         //------------Third line
         gbc.gridx = 0;      gbc.gridy = 2;
         gbc.weightx = 0.5;  gbc.weighty = 0.5;
+        gbc.gridwidth = 1;
         add(whiteDeck, gbc);
 
         gbc.gridx = 1;      gbc.gridy = 2;
@@ -130,6 +130,14 @@ public class SettingsPanel extends ResizablePanel
 
     public VolumeSlider getMusicVolumeSlider(){
         return musicVolumeSlider;
+    }
+
+    public DeckRectangle getWhiteDeck() {
+        return whiteDeck;
+    }
+
+    public DeckRectangle getDarkDeck() {
+        return darkDeck;
     }
 
     public boolean isWhiteOn() {
@@ -181,20 +189,41 @@ public class SettingsPanel extends ResizablePanel
 
      */
 
-    private class DeckRectangle extends JPanel{
+    public class DeckRectangle extends JPanel{
         private static int width = 100;
         private static int height = 100;
 
         private final BufferedImage image;
         private final String title;
         private final Font font = new Font("Digital-7", Font.BOLD, 15);
-        private Color deckRectangleBorder = Color.black;
+        private Color deckRectangleBorder = Color.BLACK;
+        private boolean paintBackground = false;
 
         public DeckRectangle(BufferedImage image, String title){
             this.image = image;
             this.title = title;
             setSize(width, height);
             setPreferredSize(new Dimension(width, height));
+            setOpaque(false);
+
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    deckRectangleBorder = Color.ORANGE;
+                    repaint();
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    deckRectangleBorder = Color.BLACK;
+                    repaint();
+                }
+            });
+        }
+
+        public void setPaintBackground(boolean paintBackground) {
+            this.paintBackground = paintBackground;
+            repaint();
         }
 
         @Override
@@ -202,12 +231,13 @@ public class SettingsPanel extends ResizablePanel
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g;
             Utils.applyQualityRenderingHints(g2);
-            if (whiteOn) {
-                g.setColor(Color.green);
+
+            if (paintBackground) {
+                g.setColor(Color.GREEN);
                 g.fillRect(0, 0, width, height);
             }
 
-            g2.setColor(Color.black);
+            g2.setColor(deckRectangleBorder);
             g2.setStroke(new BasicStroke(5));
             g2.drawRect(0, 0, width, height);
 

@@ -23,6 +23,7 @@ public class MainFrameController {
 
     public AudioManager backMusic;
     public AudioManager soundEffects;
+    public boolean whiteDeckOn = true;
 
     private Config config;
 
