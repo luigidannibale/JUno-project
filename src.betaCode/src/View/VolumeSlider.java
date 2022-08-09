@@ -45,9 +45,9 @@ public class VolumeSlider extends JProgressBar {
         super.setValue(value);
     }
 
-    public void setChangebleIcon(JLabel icon, String[] fileNames){
+    public void setChangebleIcon(JLabel icon,String generalPath, String[] fileNames){
         this.icon = icon;
-        this.path = new File(icon.getIcon().toString()).getParent() + "/";
+        this.path = generalPath;
         this.fileNames = fileNames;
     }
 

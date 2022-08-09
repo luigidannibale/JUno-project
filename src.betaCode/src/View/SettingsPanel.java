@@ -59,7 +59,7 @@ public class SettingsPanel extends ResizablePanel
         closeButton = new JLabel(new ImageIcon(imagePath+"discard.png"));
 
         effectsVolumeSlider = new VolumeSlider(mainFrame.soundEffects.getVolume());
-        effectsVolumeSlider.setChangebleIcon(effectsLabel, new String[] {"Effectsvolumeoff.png", "Effectsvolumelow.png", "Effectsvolumeon.png"});
+        effectsVolumeSlider.setChangebleIcon(effectsLabel,imagePath+"EffectsVolume/", new String[] {"off.png", "low.png", "high.png"});
         musicVolumeSlider = new VolumeSlider(mainFrame.backMusic.getVolume());
 
         DeckRectangle whiteDeck = new DeckRectangle(whiteImage, "White Deck");
