@@ -52,7 +52,7 @@ public class SettingsPanel extends ResizablePanel
     private void InitializeComponents(){
         //Components
         effectsLabel = new ImageComponent(imagePath+"Effectsvolumeon.png", -1, -1, false);
-        musicLabel = new ImageComponent(imagePath+"Musicvolume.png", -1, -1, false);
+        musicLabel = new ImageComponent(imagePath+"MusicVolume.png", -1, -1, false);
 
         quit = new JLabel("ESCI DA QUA SALVATI");
         saveButton = new JLabel(new ImageIcon(imagePath+"save.png"));
