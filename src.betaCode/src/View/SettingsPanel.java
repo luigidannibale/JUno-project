@@ -1,6 +1,7 @@
 package View;
 
 import Controller.MainFrameController;
+import Utilities.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,53 +9,52 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 public class SettingsPanel extends ResizablePanel
 {
     private static final String imagePath = "resources/images/MainFrame/SettingsPanel/";
+    private static final String deckPath = "resources/images/";
+
+    private final Color verde = new Color(0, 231, 172);
 
     //JComboBox<MainFrame.Dimensions> combo;
     JLabel saveButton;
     JLabel closeButton;
     JLabel quit;
+    ImageComponent effectsLabel;
     VolumeSlider effectsVolumeSlider;
+    ImageComponent musicLabel;
     VolumeSlider musicVolumeSlider;
+
+    private boolean whiteOn = true;
+    private final BufferedImage whiteImage = Utils.getBufferedImage(deckPath + "White_deck/01.png");
+    private final BufferedImage darkImage = Utils.getBufferedImage(deckPath + "Dark_deck/01.png");
 
     public SettingsPanel(MainFrameController mainFrame)
     {
         super(1008, 506, 6);
         this.mainFrame = mainFrame;
 
-        //setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         setLayout(new GridBagLayout());
-        /*
-        super.Percentages = new HashMap<>(){{
-            put(MainFrame.Dimensions.FULLHD, new Double[]{0.57,0.60});
-            put(MainFrame.Dimensions.WIDESCREEN, new Double[]{0.70,0.55});
-            put(MainFrame.Dimensions.HD, new Double[]{0.60,0.55});
-        }};
 
-         */
-        /*percentX = 0.62;
-        percentY = 0.57;*/
-        //offset = 6;
-        //addScalingListener();
         setOpaque(false);
         InitializeComponents();
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+        });
     }
 
     private void InitializeComponents(){
         //Components
-        //JLabel effectsLabel = new JLabel(new ImageIcon(imagePath+"Effectsvolumeon.png"));
-        ImageComponent effectsLabel = new ImageComponent(imagePath+"Effectsvolumeon.png", -1, -1, false);
-        //JLabel musicLabel = new JLabel(new ImageIcon(imagePath+"Musicvolume.png"));
-        ImageComponent musicLabel = new ImageComponent(imagePath+"Musicvolume.png", -1, -1, false);
-        //JLabel screenLabel = new JLabel(new ImageIcon(imagePath+"Screensize.png"));
-        //ImageComponent screenLabel = new ImageComponent(imagePath+"Screensize.png");
+        effectsLabel = new ImageComponent(imagePath+"Effectsvolumeon.png", -1, -1, false);
+        musicLabel = new ImageComponent(imagePath+"Musicvolume.png", -1, -1, false);
 
         quit = new JLabel("ESCI DA QUA SALVATI");
-        //quit.setVisible(false);
         saveButton = new JLabel(new ImageIcon(imagePath+"save.png"));
         closeButton = new JLabel(new ImageIcon(imagePath+"discard.png"));
 
@@ -62,7 +62,8 @@ public class SettingsPanel extends ResizablePanel
         effectsVolumeSlider.setChangebleIcon(effectsLabel, new String[] {"Effectsvolumeoff.png", "Effectsvolumelow.png", "Effectsvolumeon.png"});
         musicVolumeSlider = new VolumeSlider(mainFrame.backMusic.getVolume());
 
-        //combo = new JComboBox<>(MainFrame.Dimensions.values());
+        DeckRectangle whiteDeck = new DeckRectangle(whiteImage, "White Deck");
+        DeckRectangle darkDeck = new DeckRectangle(darkImage, "Dark Deck");
 
         //Layout
         GridBagConstraints gbc = new GridBagConstraints();
@@ -87,16 +88,13 @@ public class SettingsPanel extends ResizablePanel
         add(musicVolumeSlider, gbc);
 
         //------------Third line
-        /*
         gbc.gridx = 0;      gbc.gridy = 2;
-        gbc.weightx = 0.2;  gbc.weighty = 0.5;
-        add(screenLabel, gbc);
-
-
+        gbc.weightx = 0.5;  gbc.weighty = 0.5;
+        add(whiteDeck, gbc);
 
         gbc.gridx = 1;      gbc.gridy = 2;
-        gbc.weightx = 0.1;  gbc.weighty = 0.5;
-        add(combo, gbc);*/
+        gbc.weightx = 0.5;  gbc.weighty = 0.5;
+        add(darkDeck, gbc);
 
         //------------Fourth line
         gbc.gridx = 1;      gbc.gridy = 3;
@@ -113,10 +111,6 @@ public class SettingsPanel extends ResizablePanel
         gbc.weightx = 0.05; gbc.weighty = 0.1;
         add(closeButton, gbc);
     }
-    /*
-    public JComboBox<MainFrame.Dimensions> getCombobox(){
-        return combo;
-    }*/
 
     public JLabel getSaveButton(){
         return saveButton;
@@ -130,10 +124,6 @@ public class SettingsPanel extends ResizablePanel
         return quit;
     }
 
-    public void setQuitVisible(boolean bool){
-        quit.setVisible(bool);
-    }
-
     public VolumeSlider getEffectsVolumeSlider(){
         return effectsVolumeSlider;
     }
@@ -142,12 +132,95 @@ public class SettingsPanel extends ResizablePanel
         return musicVolumeSlider;
     }
 
+    public boolean isWhiteOn() {
+        return whiteOn;
+    }
+
+    public void setWhiteOn(boolean whiteOn) {
+        this.whiteOn = whiteOn;
+    }
+
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Color verde = new Color(0, 231, 172);
         g.setColor(verde);
         g.fillRoundRect(0, 0, panelWidth, panelHeight, 15, 15);
+
+        //Graphics2D g2 = (Graphics2D) g;
+        //Utils.applyQualityRenderingHints(g2);
+        //int y = musicLabel.getY() + musicLabel.getHeight() + 30;
+        //paintDeckRectangle(g2, whiteImage, effectsLabel.getX(), y, "White Deck", whiteOn);
+        //paintDeckRectangle(g2, darkImage, effectsLabel.getX() + 150, y, "Dark Deck", !whiteOn);
+    }
+
+    /*
+    private void paintDeckRectangle(Graphics2D g, BufferedImage image, int x, int y, String title, boolean whiteOn){
+        int width = 100;
+        int height = 100;
+
+        if (whiteOn) {
+            g.setColor(Color.green);
+            g.fillRect(x, y, width, height);
+        }
+
+        g.setColor(Color.black);
+        g.setStroke(new BasicStroke(5));
+        g.drawRect(x, y, width, height);
+
+        int immWidth = 36;
+        int immHeight = 54;
+        int centerX = width / 2;
+        int centerY = height / 2;
+        g.drawImage(image, x + centerX - (immWidth / 2), y + centerY - (immHeight / 4), immWidth, immHeight, null);
+
+        g.setFont(font);
+        int fontWidth = g.getFontMetrics().stringWidth(title);
+        g.drawString(title, x + ((width - fontWidth) / 2), y + 20);
+    }
+
+     */
+
+    private class DeckRectangle extends JPanel{
+        private static int width = 100;
+        private static int height = 100;
+
+        private final BufferedImage image;
+        private final String title;
+        private final Font font = new Font("Digital-7", Font.BOLD, 15);
+        private Color deckRectangleBorder = Color.black;
+
+        public DeckRectangle(BufferedImage image, String title){
+            this.image = image;
+            this.title = title;
+            setSize(width, height);
+            setPreferredSize(new Dimension(width, height));
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
+            Utils.applyQualityRenderingHints(g2);
+            if (whiteOn) {
+                g.setColor(Color.green);
+                g.fillRect(0, 0, width, height);
+            }
+
+            g2.setColor(Color.black);
+            g2.setStroke(new BasicStroke(5));
+            g2.drawRect(0, 0, width, height);
+
+            int immWidth = 36;
+            int immHeight = 54;
+            int centerX = width / 2;
+            int centerY = height / 2;
+            g2.drawImage(image, centerX - (immWidth / 2), centerY - (immHeight / 4), immWidth, immHeight, null);
+
+            g2.setFont(font);
+            int fontWidth = g.getFontMetrics().stringWidth(title);
+            g2.drawString(title, (width - fontWidth) / 2, 20);
+        }
     }
 }
 
