@@ -1,5 +1,6 @@
 package View;
 
+import Controller.MainFrameController;
 import Model.Cards.Enumerations.CardColor;
 import Model.Cards.Enumerations.CardValue;
 import Utilities.Utils;
@@ -14,11 +15,11 @@ import java.security.spec.ECField;
 
 public class CardImage extends JComponent {
     public static final BufferedImage backCard = Utils.getBufferedImage("resources/images/Back_card.png");
-    private static final String pathDeck = "resources/images/White_deck/";
+    private static final String path = "resources/images/";
     //private final Image img;
     private BufferedImage img;
 
-    private boolean covered = false;
+    //private boolean covered = false;
 
     public static final int width = 120;
     public static final int height = 180;
@@ -36,10 +37,10 @@ public class CardImage extends JComponent {
     }
 
     public CardImage(CardColor color, CardValue value) {
-        this(color, value, 0);
+        this(color, value, 0, DeckColor.WHITE.VALUE+"/");
     }
 
-    public CardImage(CardColor color, CardValue value, int rotation) {
+    public CardImage(CardColor color, CardValue value, int rotation,String deck) {
         this.color = color;
         this.value = value;
         int num = 0;
@@ -48,7 +49,7 @@ public class CardImage extends JComponent {
         String numero = String.format("%02d", num) + ".png";
 
         //img = Utils.getImage(pathDeck + numero);
-        img = Utils.getBufferedImage(pathDeck + numero);
+        img = Utils.getBufferedImage(path+deck + numero);
         if(rotation != 0) {
             img = Utils.rotateImage(backCard, rotation);
 

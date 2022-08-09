@@ -22,7 +22,7 @@ public class SettingsPanel extends ResizablePanel
     //JComboBox<MainFrame.Dimensions> combo;
     //private GifComponent saveButton;
     private GifComponent saveButton;
-    private JLabel closeButton;
+    private GifComponent closeButton;
     private JLabel quit;
     private ImageComponent effectsLabel;
     private VolumeSlider effectsVolumeSlider;
@@ -56,8 +56,8 @@ public class SettingsPanel extends ResizablePanel
         quit = new JLabel("ESCI DA QUA SALVATI");
         //saveButton = new JLabel(new ImageIcon(imagePath+"save.png"));
         saveButton = new GifComponent(imagePath + "save");
-        closeButton = new JLabel(new ImageIcon(imagePath+"discard.png"));
-
+        //closeButton = new JLabel(new ImageIcon(imagePath+"discard.png"));
+        closeButton =new GifComponent(imagePath + "discard");
         effectsVolumeSlider = new VolumeSlider();
         effectsVolumeSlider.setChangebleIcon(effectsLabel,imagePath+"EffectsVolume/", new String[] {"off.png", "low.png", "high.png"});
         musicVolumeSlider = new VolumeSlider();

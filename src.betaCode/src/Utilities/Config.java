@@ -1,13 +1,15 @@
 package Utilities;
 
 import Controller.MainFrameController;
+import View.DeckColor;
 
 import java.io.*;
 
 public class Config {
-
+    int defaultVolume =50;
+    DeckColor defaultColor = DeckColor.WHITE;
     MainFrameController mfc;
-    final static String fileName = "config.txt";
+    final String fileName = "config.txt";
 
     public Config(MainFrameController mfc){
         this.mfc = mfc;
@@ -32,7 +34,7 @@ public class Config {
             bw.newLine();
 
             //WhiteDeck
-            bw.write(String.valueOf(mfc.whiteDeckOn));
+            bw.write(String.valueOf(mfc.deckColor.VALUE));
             bw.newLine();
         }
         catch (IOException e) {
@@ -49,18 +51,33 @@ public class Config {
             if (line == null) return;
             mfc.updateSize(line);
              */
+            int exceptionOccurred = 0;
 
             //Music volume
-            String line = br.readLine();
-            mfc.backMusic.setVolume(Integer.parseInt(line));
-
-            //Effects volume
-            line = br.readLine();
-            mfc.soundEffects.setVolume(Integer.parseInt(line));
-
-            //whiteDeck
-            line = br.readLine();
-            mfc.whiteDeckOn = Boolean.parseBoolean(line);
+            try
+            {
+                mfc.backMusic.setVolume(Integer.parseInt(br.readLine()));
+            }
+            catch (Exception e){
+                mfc.backMusic.setVolume(defaultVolume);
+                exceptionOccurred++;
+            }
+            try
+            {
+                mfc.soundEffects.setVolume(Integer.parseInt(br.readLine()));
+            }
+            catch (Exception e){
+                mfc.soundEffects.setVolume(defaultVolume);
+                exceptionOccurred++;
+            }
+            try
+            {
+                mfc.deckColor = DeckColor.valueOf(br.readLine());
+            }
+            catch (Exception e){
+                mfc.deckColor = defaultColor;
+                exceptionOccurred++;
+            }
 
         } catch (IOException e){
             e.printStackTrace();

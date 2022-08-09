@@ -1,5 +1,6 @@
 package Controller;
 
+import View.DeckColor;
 import View.MainFrame;
 import View.SettingsPanel;
 
@@ -53,25 +54,25 @@ public class SettingsController {
         view.getWhiteDeck().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.whiteDeckOn = true;
-                changeDeckBack(true);
+                mainFrame.deckColor = DeckColor.WHITE;
+                changeDeckBack(mainFrame.deckColor);
             }
         });
 
         view.getDarkDeck().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.whiteDeckOn = false;
-                changeDeckBack(false);
+                mainFrame.deckColor = DeckColor.BLACK;
+                changeDeckBack(mainFrame.deckColor);
             }
         });
 
-        changeDeckBack(mainFrame.whiteDeckOn);
+        changeDeckBack(mainFrame.deckColor);
     }
 
-    void changeDeckBack(boolean bool){
-        view.getDarkDeck().setPaintBackground(!bool);
-        view.getWhiteDeck().setPaintBackground(bool);
+    void changeDeckBack(DeckColor c){
+        view.getDarkDeck().setPaintBackground( c==DeckColor.BLACK);
+        view.getWhiteDeck().setPaintBackground(c==DeckColor.WHITE);
     }
 
     public void setReturnPanel(MainFrameController.Panels returnPanel) {

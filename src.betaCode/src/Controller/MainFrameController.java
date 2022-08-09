@@ -23,8 +23,7 @@ public class MainFrameController {
 
     public AudioManager backMusic;
     public AudioManager soundEffects;
-    public boolean whiteDeckOn = true;
-
+    public DeckColor deckColor = DeckColor.WHITE;
     private Config config;
 
     private StartingMenuController startingMenuController;
