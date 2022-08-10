@@ -1,5 +1,6 @@
 package Controller;
 
+import Utilities.Config;
 import View.DeckColor;
 import View.MainFrame;
 import View.SettingsPanel;
@@ -14,6 +15,7 @@ public class SettingsController {
     private SettingsPanel view;
 
     //MainFrame.Dimensions dimesionChanges;
+    private DeckColor deckChanges;
     private MainFrameController.Panels returnPanel;
 
     public SettingsController(MainFrameController mainFrame){
@@ -31,6 +33,9 @@ public class SettingsController {
                 mainFrame.backMusic.setFloatControlVolume();
                 mainFrame.soundEffects.setVolume(view.getEffectsVolumeSlider().getValue());
                 mainFrame.soundEffects.setFloatControlVolume();
+                //mainFrame.deckColor = deckChanges;
+                Config.defaultColor = deckChanges;
+                if (returnPanel == MainFrameController.Panels.GAME) mainFrame.changeGameDeck();
                 mainFrame.getConfig().saveConfig();
                 //AudioManager.getInstance().setEffectVolume((effectsVolumeSlider.getValue()));
             }
@@ -54,23 +59,22 @@ public class SettingsController {
         view.getWhiteDeck().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.deckColor = DeckColor.WHITE;
-                changeDeckBack(mainFrame.deckColor);
+                changeDeckBack(DeckColor.WHITE);
             }
         });
 
         view.getDarkDeck().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.deckColor = DeckColor.BLACK;
-                changeDeckBack(mainFrame.deckColor);
+                changeDeckBack(DeckColor.BLACK);
             }
         });
 
-        changeDeckBack(mainFrame.deckColor);
+        changeDeckBack(Config.defaultColor);
     }
 
     void changeDeckBack(DeckColor c){
+        deckChanges = c;
         view.getDarkDeck().setPaintBackground( c==DeckColor.BLACK);
         view.getWhiteDeck().setPaintBackground(c==DeckColor.WHITE);
     }

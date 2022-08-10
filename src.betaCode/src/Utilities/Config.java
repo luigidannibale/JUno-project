@@ -7,7 +7,7 @@ import java.io.*;
 
 public class Config {
     int defaultVolume =50;
-    DeckColor defaultColor = DeckColor.WHITE;
+    public static DeckColor defaultColor = DeckColor.WHITE;
     MainFrameController mfc;
     final String fileName = "config.txt";
 
@@ -34,7 +34,7 @@ public class Config {
             bw.newLine();
 
             //WhiteDeck
-            bw.write(String.valueOf(mfc.deckColor.VALUE));
+            bw.write(String.valueOf(defaultColor));
             bw.newLine();
         }
         catch (IOException e) {
@@ -72,10 +72,10 @@ public class Config {
             }
             try
             {
-                mfc.deckColor = DeckColor.valueOf(br.readLine());
+                defaultColor = DeckColor.valueOf(br.readLine());
             }
             catch (Exception e){
-                mfc.deckColor = defaultColor;
+                //defaultColor = defaultColor;
                 exceptionOccurred++;
             }
 

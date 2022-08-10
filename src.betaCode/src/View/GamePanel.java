@@ -202,6 +202,10 @@ public class GamePanel extends JPanel implements Observer {
         UnoGame model = (UnoGame) o;
         this.players = model.getPlayers();
         playerHands = new HashMap<>();
+        createCards();
+    }
+
+    public void createCards(){
         int[] rotations = new int[]{0, 270, 0, 90};
         int i = 0;
         /*
@@ -214,7 +218,7 @@ public class GamePanel extends JPanel implements Observer {
         for (Player player : players){
             if (player.getHand().size() > 0){
                 int finalI = i;
-                playerHands.put(player, player.getHand().stream().map(c -> new CardImage(c.getColor(), c.getValue(), rotations[finalI], DeckColor.WHITE.VALUE+"/")).collect(Collectors.toCollection(ArrayList::new)));
+                playerHands.put(player, player.getHand().stream().map(c -> new CardImage(c.getColor(), c.getValue(), rotations[finalI])).collect(Collectors.toCollection(ArrayList::new)));
             }
             i += 1;
         }
