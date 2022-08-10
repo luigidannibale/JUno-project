@@ -120,5 +120,4 @@ public class Config2 {
     public void setGraphicQuality(GraphicQuality graphicQuality) {
         this.graphicQuality = graphicQuality;
     }
-
 }
