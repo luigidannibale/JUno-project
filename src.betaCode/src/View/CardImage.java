@@ -1,6 +1,7 @@
 package View;
 
 import Controller.MainFrameController;
+import Model.Cards.Card;
 import Model.Cards.Enumerations.CardColor;
 import Model.Cards.Enumerations.CardValue;
 import Utilities.Config;
@@ -16,6 +17,8 @@ import java.security.spec.ECField;
 
 public class CardImage extends JComponent {
     public static final BufferedImage backCard = Utils.getBufferedImage("resources/images/Back_card.png");
+    public static final BufferedImage backLeft = Utils.rotateImage(backCard, 90);
+    public static final BufferedImage backRight = Utils.rotateImage(backCard, 270);
     private static final String path = "resources/images/";
     //private static DeckColor deck = Config.defaultColor;
     //private final Image img;
@@ -31,31 +34,27 @@ public class CardImage extends JComponent {
     private Rectangle position;
     private int offsetY = 0;
 
-    private CardColor color;
-    private CardValue value;
+    private Card card;
 
     public CardImage(){
         img = null;
     }
 
-    public CardImage(CardColor color, CardValue value) {
-        this(color, value, 0);
+    public CardImage(Card card) {
+        this(card, 0);
     }
 
-    public CardImage(CardColor color, CardValue value, int rotation) {
-        this.color = color;
-        this.value = value;
+    public CardImage(Card card, int rotation) {
+        this.card = card;
         int num = 0;
-        if (color != CardColor.WILD) num = color.VALUE * 14 + value.ordinal() + 1;
-        else num = value == CardValue.WILD ? 14 : 14 * 5;
+        if (card.getColor() != CardColor.WILD) num = card.getColor().VALUE * 14 + card.getValue().ordinal() + 1;
+        else num = card.getValue() == CardValue.WILD ? 14 : 14 * 5;
         String numero = String.format("%02d", num) + ".png";
 
-        //img = Utils.getImage(pathDeck + numero);
         img = Utils.getBufferedImage(path + Config.defaultColor + "/" + numero);
-        if(rotation != 0) {
-            img = Utils.rotateImage(backCard, rotation);
 
-        }
+        if (rotation == 90) img = backLeft;
+        else if (rotation == 270) img = backRight;
     }
 
     /*
@@ -86,7 +85,7 @@ public class CardImage extends JComponent {
 
     @Override
     public String toString() {
-        return value + " " + color;
+        return card.toString();
     }
 
     public int getOffsetY() {
@@ -97,6 +96,9 @@ public class CardImage extends JComponent {
         this.offsetY = offsetY;
     }
 
+    public Card getCard(){
+        return card;
+    }
     /*
         @Override
         protected void paintComponent(Graphics g) {

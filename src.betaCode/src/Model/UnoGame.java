@@ -42,8 +42,11 @@ public class UnoGame extends Observable {
         turnManager = new TurnManager(discards.peek());
         //ruleManager.cardActionPerformance(discards.peek());
 
-        setChanged();
-        notifyObservers();
+        updateObservers();
+    }
+
+    public Player currentPlayer(){
+        return players[turnManager.getPlayer()];
     }
 
     public List<Card> getPLayableCards() {
@@ -68,6 +71,21 @@ public class UnoGame extends Observable {
         if (drawedCard == null) return;
 
         players[turnManager.getPlayer()].drawCard(drawedCard);
+
+        updateObservers();
+    }
+
+    public void playCard(Card card){
+        players[turnManager.getPlayer()].playCard(card);
+
+        discards.push(card);
+        turnManager.updateLastCardPlayed(card);
+        ruleManager.cardActionPerformance(turnManager, players, deck);
+
+        updateObservers();
+    }
+
+    private void updateObservers(){
         setChanged();
         notifyObservers();
     }

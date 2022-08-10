@@ -10,7 +10,7 @@ import java.awt.event.*;
 
 public class SettingsController {
 
-    private SettingsPanel view;
+    private final SettingsPanel view;
 
     //MainFrame.Dimensions dimesionChanges;
     private DeckColor deckChanges;
@@ -70,9 +70,8 @@ public class SettingsController {
         });
 
         view.getQualityCombo().addActionListener(e -> {
-            JComboBox<String> combo = (JComboBox<String>) e.getSource();
-            String selectedBook = (String) combo.getSelectedItem();
-            if (selectedBook != null) graphicsChanges = selectedBook.equals("High");
+            String selectedQuality = (String) ((JComboBox<String>) e.getSource()).getSelectedItem();
+            if (selectedQuality != null) graphicsChanges = selectedQuality.equals("High");
         });
         view.getQualityCombo().setSelectedIndex(Config.highGraphics ? 0 : 1);
 
