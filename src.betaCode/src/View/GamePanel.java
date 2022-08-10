@@ -3,6 +3,7 @@ package View;
 import Controller.MainFrameController;
 import Model.Player.Player;
 import Model.UnoGame;
+import Utilities.Config;
 import Utilities.Utils;
 
 import javax.swing.*;
@@ -111,7 +112,7 @@ public class GamePanel extends JPanel implements Observer {
         g.fillRect(0,0, getWidth(), getHeight());
 
         Graphics2D g2 = (Graphics2D) g;
-        Utils.applyQualityRenderingHints(g2);
+        if (Config.highGraphics) Utils.applyQualityRenderingHints(g2);
 
         if (players != null){
             drawHorizontalHand(players[0], g2, getHeight() - CardImage.height, getCard);

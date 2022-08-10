@@ -8,6 +8,7 @@ import java.io.*;
 public class Config {
     int defaultVolume =50;
     public static DeckColor defaultColor = DeckColor.WHITE;
+    public static boolean highGraphics = false;
     MainFrameController mfc;
     final String fileName = "config.txt";
 
@@ -33,8 +34,12 @@ public class Config {
             bw.write(String.valueOf(mfc.soundEffects.getVolume()));
             bw.newLine();
 
-            //WhiteDeck
+            //DeckColor
             bw.write(String.valueOf(defaultColor));
+            bw.newLine();
+
+            //Graphics
+            bw.write(String.valueOf(highGraphics));
             bw.newLine();
         }
         catch (IOException e) {
@@ -62,6 +67,8 @@ public class Config {
                 mfc.backMusic.setVolume(defaultVolume);
                 exceptionOccurred++;
             }
+
+            //Effects volume
             try
             {
                 mfc.soundEffects.setVolume(Integer.parseInt(br.readLine()));
@@ -70,12 +77,22 @@ public class Config {
                 mfc.soundEffects.setVolume(defaultVolume);
                 exceptionOccurred++;
             }
+
+            //DeckColor
             try
             {
-                defaultColor = DeckColor.valueOf(br.readLine());
+                defaultColor = DeckColor.valueOf(br.readLine().toUpperCase());
             }
             catch (Exception e){
                 //defaultColor = defaultColor;
+                exceptionOccurred++;
+            }
+
+            try
+            {
+                highGraphics = Boolean.parseBoolean(br.readLine());
+            }
+            catch (Exception e){
                 exceptionOccurred++;
             }
 
