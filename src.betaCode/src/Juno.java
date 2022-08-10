@@ -13,18 +13,12 @@ import java.util.Random;
 
 public class Juno {
     public static void main(String[] args){
-        System.setProperty("sun.java2d.d3d", "false");
-        System.setProperty("sun.java2d.noddraw", "true");
+        //System.setProperty("sun.java2d.d3d", "false");
+        //System.setProperty("sun.java2d.noddraw", "true");
 
         MainFrameController table;
 
         //provaDeck();
-
-        Player gigi = new HumanPlayer("gigione");
-        Player d = new AIPlayer("danielone");
-        Player w = new AIPlayer("waluigi");
-        Player wa = new AIPlayer("wario");
-
         //UnoGame uno = new tipoDiUno(new Player[] {mario,filippo,marco,gianfranco});
         //UnoGameTable uno = new UnoGameTable(new UnoBasicGame(new Player[] {gigi, d, w, wa}));
         //uno.startGame();

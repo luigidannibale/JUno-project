@@ -49,6 +49,8 @@ public class ClassicRules extends UnoGameRules{
             ((ReverseCard) lastCard).performReverseAction(turnManager, players);
         if(lastCard instanceof SkipAction)
             ((SkipAction) lastCard).performSkipAction(turnManager);
+
+        turnManager.passTurn();
     };
 
 }

@@ -15,8 +15,9 @@ public class ReverseCard extends ActionCard {
     }
 
     public void performReverseAction(TurnManager turnManager, Player[] players){
-        Player player = players[turnManager.getPlayer()];
-        Collections.reverse(Arrays.asList(players));
-        Arrays.stream(players).filter(item -> player == item).forEach(item -> turnManager.passTurn());
+        //Player player = players[turnManager.getPlayer()];
+        //Collections.reverse(Arrays.asList(players));
+        //Arrays.stream(players).filter(item -> player == item).forEach(item -> turnManager.passTurn());
+        turnManager.reverseTurn();
     }
 }

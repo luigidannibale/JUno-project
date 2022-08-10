@@ -1,6 +1,8 @@
 package View;
 
 import Controller.MainFrameController;
+import Model.Cards.Card;
+import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.UnoGame;
 import Utilities.Config;
@@ -18,6 +20,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class GamePanel extends JPanel implements Observer {
+    public enum State{
+        PLAYER_TURN,
+        OTHERS_TURN
+    }
 
     private static final String imagePath = "resources/images/MainFrame/GamePanel/";
     private final Color verde = new Color(14, 209, 69);
@@ -31,6 +37,7 @@ public class GamePanel extends JPanel implements Observer {
     private HashMap<Player, ArrayList<CardImage>> playerHands;
     private CardImage deck;
     private CardImage discard;
+    private State currentState;
 
     int ticksPerSecond;
 
@@ -41,22 +48,29 @@ public class GamePanel extends JPanel implements Observer {
         //debug
         setBackground(Color.GREEN);
 
+        //mouse listener per cliccare le carte
+        //andra messo nel controller
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                int x = e.getX();
-                int y = e.getY();
+                if (currentState == State.PLAYER_TURN) {
+                    int x = e.getX();
+                    int y = e.getY();
 
-                if (deck.isInMouse(x, y)){
-                    model.drawCard();
-                }
+                    if (deck.isInMouse(x, y)) {
+                        model.drawCard();
+                    }
 
-                for (CardImage card : playerHands.get(players[0])){ //le carte dell'umano
-                    if (card.isInMouse(x, y)) System.out.println(card);
+                    for (CardImage card : playerHands.get(players[0])) { //le carte dell'umano
+                        if (!card.isInMouse(x, y)) continue;
+
+                        if (model.getPLayableCards().contains(card.getCard())) model.playCard(card.getCard());
+                    }
                 }
             }
         });
 
+        //mouse motion listener per alzare le carte con hovering
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -64,15 +78,15 @@ public class GamePanel extends JPanel implements Observer {
                 int y = e.getY();
 
                 for (CardImage card : playerHands.get(players[0])){ //le carte dell'umano
-                    if (card.isInMouse(x, y)) card.setOffsetY(-20);
+                    if (card.isInMouse(x, y)) card.setOffsetY(-30);
                     else card.setOffsetY(0);
                     //repaint();
                 }
             }
         });
 
-
-
+        //metodo che continua ad repaintare la view
+        //può essere cambiato
         Timer timer = new Timer(5, new ActionListener() {
             private Instant lastTick;
             private int ticks = 0;
@@ -100,8 +114,11 @@ public class GamePanel extends JPanel implements Observer {
         deck = new CardImage();
     }
 
+    ///debug
     int count = 0;
+    int dps;
     double media;
+    ///debug
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -133,17 +150,20 @@ public class GamePanel extends JPanel implements Observer {
                 deck.setPosition(x, y, CardImage.width);
             }
         }
-        g2.dispose();
 
+        ///debug
         long end = System.nanoTime();
         media += (end - start) / 1000000000.0;
         count += 1;
-        if (count == 10){
-            media /= 10;
+        if (count == 120){
+            media /= 120;
             System.out.println("Draw time: " + media + "sec");
             count = 0;
+            dps = (int) (1 / media);
         }
-
+        g2.drawString(String.valueOf(dps), 20, 20);
+        ///debug
+        g2.dispose();
     }
 
     //trying to generalize
@@ -219,13 +239,15 @@ public class GamePanel extends JPanel implements Observer {
         for (Player player : players){
             if (player.getHand().size() > 0){
                 int finalI = i;
-                playerHands.put(player, player.getHand().stream().map(c -> new CardImage(c.getColor(), c.getValue(), rotations[finalI])).collect(Collectors.toCollection(ArrayList::new)));
+                playerHands.put(player, player.getHand().stream().map(c -> new CardImage(c, rotations[finalI])).collect(Collectors.toCollection(ArrayList::new)));
             }
             i += 1;
         }
         var lastCard = model.getLastCard();
-        discard = new CardImage(lastCard.getColor(), lastCard.getValue());
-        //repaint();
+        discard = new CardImage(lastCard);
+
+        currentState = model.currentPlayer() instanceof HumanPlayer ? State.PLAYER_TURN : State.OTHERS_TURN;
+        System.out.println(currentState);
     }
 }
 

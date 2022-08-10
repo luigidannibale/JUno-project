@@ -14,6 +14,7 @@ public class TurnManager{
     private int player;
     private Card lastCardPlayed;
 
+    private int increase = 1;
 
     /**
      * Builds a TurnManager
@@ -30,9 +31,18 @@ public class TurnManager{
 
     /**
      *
-     * @return nextPlayer: prvides the next player index
+     * @return nextPlayer: provides the next player index
      */
-    public int next(){ return ++player == numberOfPlayers ? 0 : ++player; }
+    public int next(){
+        //return ++player == numberOfPlayers ? 0 : ++player;
+        if (player + increase >= numberOfPlayers) return 0;
+        if (player + increase <= -1) return numberOfPlayers - 1;
+        return player + increase;
+    }
+
+    public void reverseTurn(){
+        increase = -increase;
+    }
 
     /**
      *
