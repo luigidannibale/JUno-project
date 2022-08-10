@@ -15,6 +15,7 @@ public class SettingsPanel extends ResizablePanel
     private static final String deckPath = "resources/images/";
 
     private final Color verde = new Color(0, 231, 172);
+    private final Font font = new Font("Digital-7", Font.BOLD, 18);
 
     //JComboBox<MainFrame.Dimensions> combo;
     //private GifComponent saveButton;
@@ -28,6 +29,7 @@ public class SettingsPanel extends ResizablePanel
     private ImageComponent deckStyleLabel;
     private DeckRectangle darkDeck;
     private DeckRectangle whiteDeck;
+    private ImageComponent qualityLabel;
     private JComboBox<String> qualityCombo;
 
     private boolean whiteOn = true;
@@ -36,7 +38,7 @@ public class SettingsPanel extends ResizablePanel
 
     public SettingsPanel(MainFrameController mainFrame)
     {
-        super(1008, 506, 6);
+        super(900, 600, 6);
         this.mainFrame = mainFrame;
 
         setLayout(new GridBagLayout());
@@ -50,6 +52,7 @@ public class SettingsPanel extends ResizablePanel
         effectsLabel = new ImageComponent(imagePath+"EffectsVolume/high.png", -1, -1, false);
         musicLabel = new ImageComponent(imagePath+"MusicVolume.png", -1, -1, false);
         deckStyleLabel = new ImageComponent(imagePath+"DeckStyle.png", -1, -1, false);
+        qualityLabel = new ImageComponent(imagePath+"GraphicQuality/high.png", -1, -1, false);
 
         quit = new JLabel("ESCI DA QUA SALVATI");
         saveButton = new GifComponent(imagePath + "save");
@@ -65,6 +68,9 @@ public class SettingsPanel extends ResizablePanel
         qualityCombo = new JComboBox<>();
         qualityCombo.addItem("High");
         qualityCombo.addItem("Low");
+        qualityCombo.setPreferredSize(new Dimension(190, 28));
+        qualityCombo.setFont(font);
+        ((JLabel)qualityCombo.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
         //Layout
         GridBagConstraints gbc = new GridBagConstraints();
@@ -90,7 +96,8 @@ public class SettingsPanel extends ResizablePanel
 
         //------------Third line
         gbc.gridx = 0;      gbc.gridy = 2;
-        gbc.weightx = 0.5;  gbc.weighty = 0.5;
+        gbc.weightx = 0.2;  gbc.weighty = 0.5;
+        gbc.gridwidth = 2;
         add(deckStyleLabel, gbc);
 
         gbc.gridx = 2;      gbc.gridy = 2;
@@ -105,7 +112,8 @@ public class SettingsPanel extends ResizablePanel
         //------------Fourth line
         gbc.gridx = 0;      gbc.gridy = 3;
         gbc.weightx = 0.2;  gbc.weighty = 0.5;
-        add(new JLabel("Ciao"), gbc);
+        gbc.gridwidth = 2;
+        add(qualityLabel, gbc);
 
         gbc.gridx = 2;      gbc.gridy = 3;
         gbc.weightx = 0.5;  gbc.weighty = 0.5;
@@ -173,40 +181,7 @@ public class SettingsPanel extends ResizablePanel
         super.paintComponent(g);
         g.setColor(verde);
         g.fillRoundRect(0, 0, panelWidth, panelHeight, 15, 15);
-
-        //Graphics2D g2 = (Graphics2D) g;
-        //Utils.applyQualityRenderingHints(g2);
-        //int y = musicLabel.getY() + musicLabel.getHeight() + 30;
-        //paintDeckRectangle(g2, whiteImage, effectsLabel.getX(), y, "White Deck", whiteOn);
-        //paintDeckRectangle(g2, darkImage, effectsLabel.getX() + 150, y, "Dark Deck", !whiteOn);
     }
-
-    /*
-    private void paintDeckRectangle(Graphics2D g, BufferedImage image, int x, int y, String title, boolean whiteOn){
-        int width = 100;
-        int height = 100;
-
-        if (whiteOn) {
-            g.setColor(Color.green);
-            g.fillRect(x, y, width, height);
-        }
-
-        g.setColor(Color.black);
-        g.setStroke(new BasicStroke(5));
-        g.drawRect(x, y, width, height);
-
-        int immWidth = 36;
-        int immHeight = 54;
-        int centerX = width / 2;
-        int centerY = height / 2;
-        g.drawImage(image, x + centerX - (immWidth / 2), y + centerY - (immHeight / 4), immWidth, immHeight, null);
-
-        g.setFont(font);
-        int fontWidth = g.getFontMetrics().stringWidth(title);
-        g.drawString(title, x + ((width - fontWidth) / 2), y + 20);
-    }
-
-     */
 
     public class DeckRectangle extends JPanel{
         private static int width = 114;
@@ -215,7 +190,6 @@ public class SettingsPanel extends ResizablePanel
 
         private final BufferedImage image;
         private final String title;
-        private final Font font = new Font("Digital-7", Font.BOLD, 18);
         private Color deckRectangleBorder = Color.BLACK;
         private boolean paintBackground = false;
 

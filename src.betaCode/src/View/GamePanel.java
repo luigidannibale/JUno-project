@@ -224,6 +224,9 @@ public class GamePanel extends JPanel implements Observer {
         this.players = model.getPlayers();
         playerHands = new HashMap<>();
         createCards();
+
+        currentState = model.currentPlayer() instanceof HumanPlayer ? State.PLAYER_TURN : State.OTHERS_TURN;
+        System.out.println(currentState);
     }
 
     public void createCards(){
@@ -245,9 +248,6 @@ public class GamePanel extends JPanel implements Observer {
         }
         var lastCard = model.getLastCard();
         discard = new CardImage(lastCard);
-
-        currentState = model.currentPlayer() instanceof HumanPlayer ? State.PLAYER_TURN : State.OTHERS_TURN;
-        System.out.println(currentState);
     }
 }
 
