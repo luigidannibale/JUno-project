@@ -10,7 +10,6 @@ public class ChangebleIcon extends JLabel{
         for(String fileName:fileNames)
             ICONS.put(fileName,new ImageIcon(path+fileName+fileExtension));
     }
-
     public void setIcon(String iconID) {
         super.setIcon(ICONS.get(iconID));
     }

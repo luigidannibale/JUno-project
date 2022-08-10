@@ -16,7 +16,8 @@ public class Config2 {
     private final String fileName = "config.txt";
 
     /**
-     * Assigns default values :
+     * Tries to read datas from file, if something goes wrong: <br/>
+     * assigns default values :
      * <ul>
      *  <li>effectsVolume = 50;</li>
      *  <li>musicVolume = 50;</li>
@@ -26,8 +27,8 @@ public class Config2 {
      */
     public Config2()
     {
-        assignDefaultValues();
-
+        if(!readFromFile())
+            assignDefaultValues();
     }
     public void assignDefaultValues()
     {
