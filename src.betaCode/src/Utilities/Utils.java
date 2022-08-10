@@ -98,7 +98,7 @@ public class Utils {
             return ImageIO.read(new File(path));
         }
         catch (IOException e){
-            System.out.println("Immagine non trovata");
+            System.out.println("Immagine non trovata : "+path);
         }
         return null;
     }
