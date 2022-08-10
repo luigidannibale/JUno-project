@@ -5,12 +5,9 @@ import Utilities.Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 
 public class SettingsPanel extends ResizablePanel
 {
@@ -31,10 +28,11 @@ public class SettingsPanel extends ResizablePanel
     private ImageComponent deckStyleLabel;
     private DeckRectangle darkDeck;
     private DeckRectangle whiteDeck;
+    private JComboBox<String> qualityCombo;
 
     private boolean whiteOn = true;
-    private final BufferedImage whiteImage = Utils.getBufferedImage(deckPath + "White_deck/01.png");
-    private final BufferedImage darkImage = Utils.getBufferedImage(deckPath + "Dark_deck/01.png");
+    private final BufferedImage whiteImage = Utils.getBufferedImage(deckPath + "white/01.png");
+    private final BufferedImage darkImage = Utils.getBufferedImage(deckPath + "black/01.png");
 
     public SettingsPanel(MainFrameController mainFrame)
     {
@@ -54,17 +52,19 @@ public class SettingsPanel extends ResizablePanel
         deckStyleLabel = new ImageComponent(imagePath+"DeckStyle.png", -1, -1, false);
 
         quit = new JLabel("ESCI DA QUA SALVATI");
-        //saveButton = new JLabel(new ImageIcon(imagePath+"save.png"));
         saveButton = new GifComponent(imagePath + "save");
-        //closeButton = new JLabel(new ImageIcon(imagePath+"discard.png"));
         closeButton =new GifComponent(imagePath + "discard");
+
         effectsVolumeSlider = new VolumeSlider();
         effectsVolumeSlider.setChangebleIcon(effectsLabel,imagePath+"EffectsVolume/", new String[] {"off.png", "low.png", "high.png"});
         musicVolumeSlider = new VolumeSlider();
 
         whiteDeck = new DeckRectangle(whiteImage, "White Deck");
-        whiteDeck.setPaintBackground(true);
         darkDeck = new DeckRectangle(darkImage, "Dark Deck");
+
+        qualityCombo = new JComboBox<>();
+        qualityCombo.addItem("High");
+        qualityCombo.addItem("Low");
 
         //Layout
         GridBagConstraints gbc = new GridBagConstraints();
@@ -103,18 +103,27 @@ public class SettingsPanel extends ResizablePanel
         add(darkDeck, gbc);
 
         //------------Fourth line
-        gbc.gridx = 1;      gbc.gridy = 3;
+        gbc.gridx = 0;      gbc.gridy = 3;
+        gbc.weightx = 0.2;  gbc.weighty = 0.5;
+        add(new JLabel("Ciao"), gbc);
+
+        gbc.gridx = 2;      gbc.gridy = 3;
+        gbc.weightx = 0.5;  gbc.weighty = 0.5;
+        add(qualityCombo, gbc);
+
+        //------------Fifth line
+        gbc.gridx = 1;      gbc.gridy = 4;
         gbc.weightx = 0.05; gbc.weighty = 0.1;
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.EAST;
         add(quit, gbc);
 
-        gbc.gridx = 2;      gbc.gridy = 3;
+        gbc.gridx = 2;      gbc.gridy = 4;
         gbc.weightx = 0.05; gbc.weighty = 0.1;
         gbc.anchor = GridBagConstraints.CENTER;
         add(saveButton, gbc);
 
-        gbc.gridx = 3;      gbc.gridy = 3;
+        gbc.gridx = 3;      gbc.gridy = 4;
         gbc.weightx = 0.05; gbc.weighty = 0.1;
         add(closeButton, gbc);
     }
@@ -145,6 +154,9 @@ public class SettingsPanel extends ResizablePanel
 
     public DeckRectangle getDarkDeck() {
         return darkDeck;
+    }
+    public JComboBox getQualityCombo() {
+        return qualityCombo;
     }
 
     public boolean isWhiteOn() {

@@ -1,19 +1,20 @@
 package Controller;
 
+import Utilities.Config;
 import View.DeckColor;
 import View.MainFrame;
 import View.SettingsPanel;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.*;
+import java.awt.event.*;
 
 public class SettingsController {
 
     private SettingsPanel view;
 
     //MainFrame.Dimensions dimesionChanges;
+    private DeckColor deckChanges;
+    private boolean graphicsChanges;
     private MainFrameController.Panels returnPanel;
 
     public SettingsController(MainFrameController mainFrame){
@@ -26,13 +27,16 @@ public class SettingsController {
         view.getSaveButton().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //mainFrame.updateSize(dimesionChanges);
                 mainFrame.backMusic.setVolume(view.getMusicVolumeSlider().getValue());
                 mainFrame.backMusic.setFloatControlVolume();
                 mainFrame.soundEffects.setVolume(view.getEffectsVolumeSlider().getValue());
                 mainFrame.soundEffects.setFloatControlVolume();
+                Config.defaultColor = deckChanges;
+                Config.highGraphics = graphicsChanges;
+                if (returnPanel == MainFrameController.Panels.GAME) mainFrame.changeGameDeck();
                 mainFrame.getConfig().saveConfig();
-                //AudioManager.getInstance().setEffectVolume((effectsVolumeSlider.getValue()));
+                mainFrame.setVisiblePanel(returnPanel);
+                view.setVisible(false);
             }
         });
         view.getCloseButton().addMouseListener(new MouseAdapter() {
@@ -54,23 +58,29 @@ public class SettingsController {
         view.getWhiteDeck().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.deckColor = DeckColor.WHITE;
-                changeDeckBack(mainFrame.deckColor);
+                changeDeckBack(DeckColor.WHITE);
             }
         });
 
         view.getDarkDeck().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.deckColor = DeckColor.BLACK;
-                changeDeckBack(mainFrame.deckColor);
+                changeDeckBack(DeckColor.BLACK);
             }
         });
 
-        changeDeckBack(mainFrame.deckColor);
+        view.getQualityCombo().addActionListener(e -> {
+            JComboBox<String> combo = (JComboBox<String>) e.getSource();
+            String selectedBook = (String) combo.getSelectedItem();
+            if (selectedBook != null) graphicsChanges = selectedBook.equals("High");
+        });
+        view.getQualityCombo().setSelectedIndex(Config.highGraphics ? 0 : 1);
+
+        changeDeckBack(Config.defaultColor);
     }
 
     void changeDeckBack(DeckColor c){
+        deckChanges = c;
         view.getDarkDeck().setPaintBackground( c==DeckColor.BLACK);
         view.getWhiteDeck().setPaintBackground(c==DeckColor.WHITE);
     }

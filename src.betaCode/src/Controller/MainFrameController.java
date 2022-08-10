@@ -23,7 +23,7 @@ public class MainFrameController {
 
     public AudioManager backMusic;
     public AudioManager soundEffects;
-    public DeckColor deckColor = DeckColor.WHITE;
+    //public DeckColor deckColor = DeckColor.WHITE;
     private Config config;
 
     private StartingMenuController startingMenuController;
@@ -189,6 +189,10 @@ public class MainFrameController {
 
     public Config getConfig() {
         return config;
+    }
+
+    public void changeGameDeck(){
+        gameController.getView().createCards();
     }
 
     /*public void updateSize(String s){

@@ -3,6 +3,7 @@ package View;
 import Controller.MainFrameController;
 import Model.Cards.Enumerations.CardColor;
 import Model.Cards.Enumerations.CardValue;
+import Utilities.Config;
 import Utilities.Utils;
 
 import javax.imageio.ImageIO;
@@ -16,6 +17,7 @@ import java.security.spec.ECField;
 public class CardImage extends JComponent {
     public static final BufferedImage backCard = Utils.getBufferedImage("resources/images/Back_card.png");
     private static final String path = "resources/images/";
+    //private static DeckColor deck = Config.defaultColor;
     //private final Image img;
     private BufferedImage img;
 
@@ -37,10 +39,10 @@ public class CardImage extends JComponent {
     }
 
     public CardImage(CardColor color, CardValue value) {
-        this(color, value, 0, DeckColor.WHITE.VALUE+"/");
+        this(color, value, 0);
     }
 
-    public CardImage(CardColor color, CardValue value, int rotation,String deck) {
+    public CardImage(CardColor color, CardValue value, int rotation) {
         this.color = color;
         this.value = value;
         int num = 0;
@@ -49,7 +51,7 @@ public class CardImage extends JComponent {
         String numero = String.format("%02d", num) + ".png";
 
         //img = Utils.getImage(pathDeck + numero);
-        img = Utils.getBufferedImage(path+deck + numero);
+        img = Utils.getBufferedImage(path + Config.defaultColor + "/" + numero);
         if(rotation != 0) {
             img = Utils.rotateImage(backCard, rotation);
 
