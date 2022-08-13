@@ -164,6 +164,7 @@ public class MainFrameController {
     }
 
     public void quitGame(){
+        gameController.quitGame();
         view.getGameBackground().remove(gameController.getView());
         view.dispose();
         view.setUndecorated(false);
