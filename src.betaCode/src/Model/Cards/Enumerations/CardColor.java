@@ -1,7 +1,7 @@
 package Model.Cards.Enumerations;
 
 /**
- * All the colors of UNO game,<br/>
+ * All the colors of Uno {@link Card},<br/>
  * colors are thought to be comparable, <br/>
  * and the order goes top-down like this:
  * <ul>
@@ -20,7 +20,6 @@ public enum CardColor implements Comparable<CardColor>{
     GREEN(2),
     BLUE(3),
     WILD(4);
-
     public final int VALUE;
     private CardColor(int num){
         this.VALUE = num;

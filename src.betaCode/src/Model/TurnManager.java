@@ -5,17 +5,16 @@ import Model.Cards.Enumerations.CardColor;
 import Model.Cards.Enumerations.CardValue;
 
 /**
- * Class used to manage the flow of turns in a Uno Match
+ * Class used to manage the flow of turns in a Uno Game match
  * Provides a good help to keep trace of the player that has to play and the last card played
  * @author D'annibale Luigi, Venturini Daniele
  */
-public class TurnManager{
-    private int numberOfPlayers = 4;
+public class TurnManager
+{
+    private final int numberOfPlayers = 4;
+    private final int increase = 1;
     private int player;
     private Card lastCardPlayed;
-
-    private int increase = 1;
-
     /**
      * Builds a TurnManager
      * @param lastPlayed: the first card of the discards stack
@@ -23,57 +22,47 @@ public class TurnManager{
     public TurnManager(Card lastPlayed){
         this.lastCardPlayed = lastPlayed;
     }
-
     /**
      * Increments the player index to the next
      */
     public void passTurn(){ player = next(); }
-
     /**
-     *
      * @return nextPlayer: provides the next player index
      */
-    public int next(){
+    public int next()
+    {
         //return ++player == numberOfPlayers ? 0 : ++player;
         if (player + increase >= numberOfPlayers) return 0;
         if (player + increase <= -1) return numberOfPlayers - 1;
         return player + increase;
     }
-
     public void reverseTurn(){
         increase = -increase;
     }
-
     /**
-     *
      * @return player: provides the player who has to play the turn
      */
     public int getPlayer(){ return player; }
-
-    ///////////////l'unico utilizzo sensato di setPLayer è nel reverse forse è meglio farli interagire
     /**
-     *
-     * @param player: the player that has to play the turn
-     */
-    //public void setPlayer(int player){ this.player = player; }
-
-    /**
-     *
      * @return card: returns the last card played, more precisely a card which has the value of that card and the color (that can be either the same of the card or
      * the one chosen after a wild card)
      */
     public Card getLastCardPlayed(){return lastCardPlayed;}
-
     /**
-     *
      * @param lastPlayed: the card that has been played
      */
     public void updateLastCardPlayed(Card lastPlayed){this.lastCardPlayed = lastPlayed;}
-
     /**
-     *
      * @param value : the value of the last card played
      * @param color : the color of the last card played (or the color that has been chosen after a wild)
      */
     public void updateLastCardPlayed(CardValue value, CardColor color){ updateLastCardPlayed(new Card(color,value)); }
 }
+
+//    nousecode
+//    ///////////////l'unico utilizzo sensato di setPLayer è nel reverse forse è meglio farli interagire
+//    /**
+//     *
+//     * @param player: the player that has to play the turn
+//     */
+//    public void setPlayer(int player){ this.player = player; }
