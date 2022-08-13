@@ -7,6 +7,8 @@ import Model.Player.Player;
 import Model.UnoGame;
 import Utilities.Config;
 import Utilities.Utils;
+import View.Animations.Animation;
+import View.Animations.FlipAnimation;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -31,13 +33,18 @@ public class GamePanel extends JPanel implements Observer {
     private final int maxCardsWidth = 1350;
     private final int maxCardsHeight = 800;
 
-    private UnoGame model;
+    private final UnoGame model;
+    private final Timer repaintTimer;
 
     private Player[] players;
     private HashMap<Player, ArrayList<CardImage>> playerHands;
     private CardImage deck;
     private CardImage discard;
     private State currentState;
+    private boolean hasDrawed;
+
+    private ArrayList<Animation> animations;
+    private FlipAnimation flipAnimation;
 
     int ticksPerSecond;
 
@@ -47,6 +54,7 @@ public class GamePanel extends JPanel implements Observer {
         setDoubleBuffered(true);
         //debug
         setBackground(Color.GREEN);
+        InitializeComponents();
 
         //mouse listener per cliccare le carte
         //andra messo nel controller
@@ -57,14 +65,24 @@ public class GamePanel extends JPanel implements Observer {
                     int x = e.getX();
                     int y = e.getY();
 
-                    if (deck.isInMouse(x, y)) {
-                        model.drawCard();
+                    if (model.getPLayableCards().size() == 0 && !hasDrawed && deck.isInMouse(x, y)) {
+                        hasDrawed = true;
+                        flipAnimation = new FlipAnimation(new CardImage(model.peekNextCard()), deck.getPosition());
+                        animations.add(flipAnimation);
+                        Thread thread = new Thread(() -> {
+                            while (flipAnimation.isRunning()){}
+                            model.drawCard();
+                            });
+                        thread.start();
                     }
 
                     for (CardImage card : playerHands.get(players[0])) { //le carte dell'umano
                         if (!card.isInMouse(x, y)) continue;
 
-                        if (model.getPLayableCards().contains(card.getCard())) model.playCard(card.getCard());
+                        if (model.getPLayableCards().contains(card.getCard())){
+                            model.playCard(card.getCard());
+                            hasDrawed = false;
+                        }
                     }
                 }
             }
@@ -87,7 +105,7 @@ public class GamePanel extends JPanel implements Observer {
 
         //metodo che continua ad repaintare la view
         //può essere cambiato
-        Timer timer = new Timer(5, new ActionListener() {
+        repaintTimer = new Timer(5, new ActionListener() {
             private Instant lastTick;
             private int ticks = 0;
             @Override
@@ -105,13 +123,13 @@ public class GamePanel extends JPanel implements Observer {
                 repaint();
             }
         });
-        timer.start();
-
-        InitializeComponents();
+        repaintTimer.start();
     }
 
     private void InitializeComponents(){
         deck = new CardImage();
+        playerHands = new HashMap<>();
+        animations = new ArrayList<>();
     }
 
     ///debug
@@ -149,14 +167,27 @@ public class GamePanel extends JPanel implements Observer {
                 g2.drawImage(deck.getBackCard(), x, y, CardImage.width, CardImage.height, null);
                 deck.setPosition(x, y, CardImage.width);
             }
+
+            Iterator<Animation> iter = animations.iterator();
+            while(iter.hasNext()){
+                Animation animation = iter.next();
+                if (animation.isRunning()) animation.paint(g2);
+                else iter.remove();
+            }
+            /*
+            if (flipAnimation != null && flipAnimation.isRunning()){
+                flipAnimation.paint(g2);
+            }
+
+             */
         }
 
         ///debug
         long end = System.nanoTime();
         media += (end - start) / 1000000000.0;
         count += 1;
-        if (count == 120){
-            media /= 120;
+        if (count == 60){
+            media /= 60;
             System.out.println("Draw time: " + media + "sec");
             count = 0;
             dps = (int) (1 / media);
@@ -222,11 +253,13 @@ public class GamePanel extends JPanel implements Observer {
     public void update(Observable o, Object arg) {
         UnoGame model = (UnoGame) o;
         this.players = model.getPlayers();
-        playerHands = new HashMap<>();
+        //playerHands = new HashMap<>();
         createCards();
 
         currentState = model.currentPlayer() instanceof HumanPlayer ? State.PLAYER_TURN : State.OTHERS_TURN;
         System.out.println(currentState);
+
+        if (players[0].getValidCards(discard.getCard()).size() == 0 && hasDrawed) model.passTurn();
     }
 
     public void createCards(){
@@ -246,8 +279,13 @@ public class GamePanel extends JPanel implements Observer {
             }
             i += 1;
         }
+
         var lastCard = model.getLastCard();
         discard = new CardImage(lastCard);
+    }
+
+    public void stopTimer(){
+        repaintTimer.stop();
     }
 }
 

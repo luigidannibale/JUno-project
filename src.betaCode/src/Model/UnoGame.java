@@ -85,6 +85,14 @@ public class UnoGame extends Observable {
         updateObservers();
     }
 
+    public Card peekNextCard(){
+        return deck.peek();
+    }
+
+    public void passTurn(){
+        turnManager.passTurn();
+    }
+
     private void updateObservers(){
         setChanged();
         notifyObservers();

@@ -37,8 +37,6 @@ public class GamePanelController {
 
         view.setVisible(true);
 
-
-
         model.startGame();
     }
 
@@ -48,5 +46,9 @@ public class GamePanelController {
 
     public void startGame() {
         model.startGame();
+    }
+
+    public void quitGame(){
+        view.stopTimer();
     }
 }
