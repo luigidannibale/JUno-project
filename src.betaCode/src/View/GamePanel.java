@@ -7,6 +7,7 @@ import Model.Player.Player;
 import Model.UnoGame;
 import Utilities.Config;
 import Utilities.Utils;
+import View.Animations.FlipAnimation;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -39,6 +40,8 @@ public class GamePanel extends JPanel implements Observer {
     private CardImage discard;
     private State currentState;
 
+    private FlipAnimation flipAnimation;
+
     int ticksPerSecond;
 
     public GamePanel(UnoGame model){
@@ -58,7 +61,13 @@ public class GamePanel extends JPanel implements Observer {
                     int y = e.getY();
 
                     if (deck.isInMouse(x, y)) {
-                        model.drawCard();
+                        //animazione girata carta
+                        flipAnimation = new FlipAnimation(new CardImage(model.peekNextCard()), deck.getPosition());
+                        Thread thread = new Thread(() -> {
+                            while (flipAnimation.isRunning()){}
+                            model.drawCard();
+                            });
+                        thread.start();
                     }
 
                     for (CardImage card : playerHands.get(players[0])) { //le carte dell'umano
@@ -112,6 +121,7 @@ public class GamePanel extends JPanel implements Observer {
 
     private void InitializeComponents(){
         deck = new CardImage();
+        playerHands = new HashMap<>();
     }
 
     ///debug
@@ -148,6 +158,10 @@ public class GamePanel extends JPanel implements Observer {
                 g2.drawString(String.valueOf(model.getDeck().size()), x, y - 10);
                 g2.drawImage(deck.getBackCard(), x, y, CardImage.width, CardImage.height, null);
                 deck.setPosition(x, y, CardImage.width);
+            }
+
+            if (flipAnimation != null && flipAnimation.isRunning()){
+                flipAnimation.paint(g2);
             }
         }
 
@@ -222,7 +236,7 @@ public class GamePanel extends JPanel implements Observer {
     public void update(Observable o, Object arg) {
         UnoGame model = (UnoGame) o;
         this.players = model.getPlayers();
-        playerHands = new HashMap<>();
+        //playerHands = new HashMap<>();
         createCards();
 
         currentState = model.currentPlayer() instanceof HumanPlayer ? State.PLAYER_TURN : State.OTHERS_TURN;
@@ -246,6 +260,7 @@ public class GamePanel extends JPanel implements Observer {
             }
             i += 1;
         }
+
         var lastCard = model.getLastCard();
         discard = new CardImage(lastCard);
     }

@@ -79,6 +79,8 @@ public class CardImage extends JComponent {
         position = rotated ? new Rectangle(x, y, height, width) : new Rectangle(x, y, width, height);
     }
 
+    public Rectangle getPosition() {return position;}
+
     public boolean isInMouse(int x, int y){
         return position != null && position.contains(x, y);
     }
