@@ -191,7 +191,7 @@ public class GamePanel extends JPanel implements Observer {
         count += 1;
         if (count == 60){
             media /= 60;
-            System.out.println("Draw time: " + media + "sec");
+            //System.out.println("Draw time: " + media + "sec");
             count = 0;
             dps = (int) (1 / media);
         }
@@ -260,7 +260,7 @@ public class GamePanel extends JPanel implements Observer {
         createCards();
 
         currentState = model.currentPlayer() instanceof HumanPlayer ? State.PLAYER_TURN : State.OTHERS_TURN;
-        System.out.println(currentState);
+        System.out.println(currentState + " " + model.currentPlayer());
 
         if (currentState == State.OTHERS_TURN){
             asyncAITurn();
@@ -297,11 +297,17 @@ public class GamePanel extends JPanel implements Observer {
                 Thread.sleep(1500);
                 if ((ai.getValidCards(discard.getCard()).size() == 0)) {
                     if (!hasDrawed) {
-                        model.drawCard();
                         hasDrawed = true;
-                    } else model.passTurn();
+                        model.drawCard();
+                    } else{
+                        hasDrawed = false;
+                        model.passTurn();
+                    }
                 }
-                else model.playCard(ai.getValidCards(discard.getCard()).get(0));
+                else{
+                    hasDrawed = false;
+                    model.playCard(ai.getValidCards(discard.getCard()).get(0));
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

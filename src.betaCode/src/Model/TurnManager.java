@@ -12,7 +12,7 @@ import Model.Cards.Enumerations.CardValue;
 public class TurnManager
 {
     private final int numberOfPlayers = 4;
-    private final int increase = 1;
+    private int increase = 1;
     private int player;
     private Card lastCardPlayed;
     /**

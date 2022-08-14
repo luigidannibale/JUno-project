@@ -69,13 +69,22 @@ public class UnoGame extends Observable {
     public void drawCard(){
         var drawedCard = deck.draw();
         if (drawedCard == null) return;
-
         players[turnManager.getPlayer()].drawCard(drawedCard);
+
+        System.out.println(currentPlayer());
+        System.out.println("DRAWED: " + drawedCard);
+        System.out.println("HAND: " + currentPlayer().getHand());
+        System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
 
         updateObservers();
     }
 
     public void playCard(Card card){
+        System.out.println(currentPlayer());
+        System.out.println("PLAYED: " + card);
+        System.out.println("HAND: " + currentPlayer().getHand());
+        System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
+
         players[turnManager.getPlayer()].playCard(card);
 
         discards.push(card);
@@ -90,7 +99,13 @@ public class UnoGame extends Observable {
     }
 
     public void passTurn(){
+        System.out.println(currentPlayer());
+        System.out.println("PASSED TURN");
+        System.out.println("HAND: " + currentPlayer().getHand());
+        System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
         turnManager.passTurn();
+
+        updateObservers();
     }
 
     private void updateObservers(){
