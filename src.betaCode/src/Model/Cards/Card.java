@@ -3,11 +3,10 @@ package Model.Cards;
 import Model.Cards.Enumerations.CardColor;
 import Model.Cards.Enumerations.CardValue;
 
-public class Card /*implements Comparable<Card>*/{
-
+public class Card /*implements Comparable<Card>*/
+{
     protected final CardColor color;
     protected final CardValue value;
-
 
     public Card(CardColor color, CardValue value)
     {
@@ -15,29 +14,31 @@ public class Card /*implements Comparable<Card>*/{
         this.value = value;
     }
 
-    public CardValue getValue() {
-        return value;
-    }
+    public CardValue getValue() { return value; }
 
     public CardColor getColor() { return color; }
-
-    public boolean isValid(Card check){
-        return getColor() == check.getColor() || getValue() == check.getValue() || getColor() == CardColor.WILD;
-    }
+    /**
+     * Validity means basic Uno context playability,<br/>
+     * so basing on the check a {@link Card} is valid whether <br/>
+     * is the same {@link CardColor} or the same {@link CardValue} <br/>
+     * or is a wild card. <br/>
+     * To be valid is necessary but not sufficient for a {@link Card} to be playable: <br/>
+     * it must be checked basing on the rules.
+     * @param check
+     * @return whether the card is valid or not
+     */
+    public boolean isValid(Card check)
+    { return getColor() == check.getColor() || getValue() == check.getValue() || getColor() == CardColor.WILD; }
 
     @Override
-    public String toString(){
-        return value.name() + "-"+ color.name();
-    }
+    public String toString(){ return value.name() + "-"+ color.name(); }
 
     @Override
-    public boolean equals(Object obj) {
-        return (obj instanceof Card && color.equals(((Card) obj).getColor()) && value.equals(((Card) obj).getValue()));
-    }
-
-    /*
-    @Override
-    public int compareTo(Card o) {
-        return getColor() == o.getColor() ? 0 : getValue() == o.getValue() ? -1 : 1;
-    }*/
+    public boolean equals(Object obj)
+    { return (obj instanceof Card && color.equals(((Card) obj).getColor()) && value.equals(((Card) obj).getValue())); }
 }
+//nousecode
+//@Override
+//public int compareTo(Card o) {
+//    return getColor() == o.getColor() ? 0 : getValue() == o.getValue() ? -1 : 1;
+
