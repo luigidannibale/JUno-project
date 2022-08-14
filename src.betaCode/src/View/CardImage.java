@@ -46,15 +46,10 @@ public class CardImage extends JComponent {
 
     public CardImage(Card card, int rotation) {
         this.card = card;
-        int num = 0;
-        if (card.getColor() != CardColor.WILD) num = card.getColor().VALUE * 14 + card.getValue().ordinal() + 1;
-        else num = card.getValue() == CardValue.WILD ? 14 : 14 * 5;
-        String numero = String.format("%02d", num) + ".png";
-
-        img = Utils.getBufferedImage(path + Config.defaultColor + "/" + numero);
 
         if (rotation == 90) img = backLeft;
         else if (rotation == 270) img = backRight;
+        else newGetCard();
     }
 
     /*
@@ -111,4 +106,18 @@ public class CardImage extends JComponent {
         }
 
          */
+
+    private void oldGetCard(){
+        int num = 0;
+        if (card.getColor() != CardColor.WILD) num = card.getColor().VALUE * 14 + card.getValue().ordinal() + 1;
+        else num = card.getValue() == CardValue.WILD ? 14 : 14 * 5;
+        String numero = String.format("%02d", num) + ".png";
+
+        img = Utils.getBufferedImage(path + Config.defaultColor + "/" + numero);
+    }
+
+    private void newGetCard(){
+        String cardName = card.getValue().name() + card.getColor().name() + ".png";
+        img = Utils.getBufferedImage(path + Config.defaultColor + "/" + cardName);
+    }
 }
