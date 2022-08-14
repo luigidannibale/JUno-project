@@ -1,4 +1,4 @@
-package Model.Cards.Enumerations;
+package Model.Cards;
 /**
  * All the values of Uno {@link Card},<br/>
  * values are associate to their points value<br/>

@@ -1,7 +1,7 @@
 package Model;
 import Model.Cards.*;
-import Model.Cards.Enumerations.CardColor;
-import Model.Cards.Enumerations.CardValue;
+import Model.Cards.CardColor;
+import Model.Cards.CardValue;
 import java.util.*;
 
 /**

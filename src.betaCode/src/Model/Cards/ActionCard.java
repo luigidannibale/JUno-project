@@ -1,10 +1,9 @@
 package Model.Cards;
 
-import Model.Cards.Enumerations.CardColor;
-import Model.Cards.Enumerations.CardValue;
-
 /**
- * Class used to model a generic action card
+ * Class used to model a generic Uno action card
+ *
+ * @author D'annibale Luigi, Venturini Daniele
  */
 public abstract class ActionCard extends Card
 {

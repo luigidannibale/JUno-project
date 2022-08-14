@@ -1,4 +1,4 @@
-package Model.Cards.Enumerations;
+package Model.Cards;
 
 /**
  * All the colors of Uno {@link Card},<br/>

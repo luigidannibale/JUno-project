@@ -2,7 +2,7 @@ package Model.Rules;
 
 import Model.Cards.Card;
 import Model.Deck;
-import Model.Cards.Enumerations.CardValue;
+import Model.Cards.CardValue;
 import Model.Player.Player;
 import Model.TurnManager;
 

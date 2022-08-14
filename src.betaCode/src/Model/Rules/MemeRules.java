@@ -2,9 +2,9 @@ package Model.Rules;
 
 import Model.Cards.*;
 import Model.Deck;
-import Model.Cards.Enumerations.CardValue;
-import Model.Cards.Interfaces.SkipAction;
-import Model.Cards.Interfaces.WildAction;
+import Model.Cards.CardValue;
+import Model.Cards.SkipAction;
+import Model.Cards.WildAction;
 import Model.Player.Player;
 import Model.TurnManager;
 

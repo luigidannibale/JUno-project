@@ -1,6 +1,6 @@
-package Model.Cards.Interfaces;
+package Model.Cards;
 
-import Model.Cards.Enumerations.CardColor;
+import Model.Cards.CardColor;
 import Model.TurnManager;
 
 /**

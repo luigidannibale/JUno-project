@@ -1,19 +1,14 @@
 package View;
 
-import Controller.MainFrameController;
 import Model.Cards.Card;
-import Model.Cards.Enumerations.CardColor;
-import Model.Cards.Enumerations.CardValue;
+import Model.Cards.CardColor;
+import Model.Cards.CardValue;
 import Utilities.Config;
 import Utilities.Utils;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.security.spec.ECField;
 
 public class CardImage extends JComponent {
     public static final BufferedImage backCard = Utils.getBufferedImage("resources/images/Back_card.png");

@@ -1,9 +1,11 @@
 package Model.Cards;
 
-import Model.Cards.Enumerations.CardColor;
-import Model.Cards.Enumerations.CardValue;
-
-public class Card /*implements Comparable<Card>*/
+/**
+ * Class used to model a generic Uno card
+ *
+ * @author D'annibale Luigi, Venturini Daniele
+ */
+public class Card //implements Comparable<Card>
 {
     protected final CardColor color;
     protected final CardValue value;
@@ -15,7 +17,6 @@ public class Card /*implements Comparable<Card>*/
     }
 
     public CardValue getValue() { return value; }
-
     public CardColor getColor() { return color; }
     /**
      * Validity means basic Uno context playability,<br/>
@@ -30,9 +31,18 @@ public class Card /*implements Comparable<Card>*/
     public boolean isValid(Card check)
     { return getColor() == check.getColor() || getValue() == check.getValue() || getColor() == CardColor.WILD; }
 
+    /**
+     * @return {@link CardValue} - {@link CardColor}
+     */
     @Override
     public String toString(){ return value.name() + "-"+ color.name(); }
 
+    /**
+     * Compares the actual card to a given object, <br/>
+     * returns whether they are equal or not
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj)
     { return (obj instanceof Card && color.equals(((Card) obj).getColor()) && value.equals(((Card) obj).getValue())); }

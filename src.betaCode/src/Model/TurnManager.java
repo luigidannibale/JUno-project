@@ -1,8 +1,8 @@
 package Model;
 
 import Model.Cards.Card;
-import Model.Cards.Enumerations.CardColor;
-import Model.Cards.Enumerations.CardValue;
+import Model.Cards.CardColor;
+import Model.Cards.CardValue;
 
 /**
  * Class used to manage the flow of turns in a Uno Game match
@@ -12,7 +12,7 @@ import Model.Cards.Enumerations.CardValue;
 public class TurnManager
 {
     private final int numberOfPlayers = 4;
-    private final int increase = 1;
+    private int increase = 1;
     private int player;
     private Card lastCardPlayed;
     /**

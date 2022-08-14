@@ -1,7 +1,7 @@
 package Model;
 
 import Model.Cards.Card;
-import Model.Cards.Enumerations.CardValue;
+import Model.Cards.CardValue;
 import Model.Player.Player;
 import Model.Rules.UnoGameRules;
 

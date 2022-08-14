@@ -4,9 +4,9 @@ import Model.Cards.Card;
 import Model.Cards.DrawCard;
 import Model.Cards.ReverseCard;
 import Model.Deck;
-import Model.Cards.Enumerations.CardColor;
-import Model.Cards.Interfaces.SkipAction;
-import Model.Cards.Interfaces.WildAction;
+import Model.Cards.CardColor;
+import Model.Cards.SkipAction;
+import Model.Cards.WildAction;
 import Model.Player.Player;
 import Model.TurnManager;
 

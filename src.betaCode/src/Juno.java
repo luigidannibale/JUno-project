@@ -1,10 +1,7 @@
 import Controller.MainFrameController;
 import Model.Cards.Card;
 import Model.Deck;
-import Model.Cards.Enumerations.CardValue;
-import Model.Player.AIPlayer;
-import Model.Player.HumanPlayer;
-import Model.Player.Player;
+import Model.Cards.CardValue;
 import Utilities.Utils;
 
 import javax.swing.*;
