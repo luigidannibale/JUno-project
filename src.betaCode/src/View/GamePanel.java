@@ -91,6 +91,7 @@ public class GamePanel extends JPanel implements Observer {
         });
 
         //mouse motion listener per alzare le carte con hovering
+        //va messo nel controller
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
