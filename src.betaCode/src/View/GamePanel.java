@@ -2,6 +2,7 @@ package View;
 
 import Controller.MainFrameController;
 import Model.Cards.Card;
+import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.UnoGame;
@@ -72,6 +73,7 @@ public class GamePanel extends JPanel implements Observer {
                         Thread thread = new Thread(() -> {
                             while (flipAnimation.isRunning()){}
                             model.drawCard();
+                            if (players[0].getValidCards(discard.getCard()).size() == 0 && hasDrawed) model.passTurn();
                             });
                         thread.start();
                     }
@@ -89,6 +91,7 @@ public class GamePanel extends JPanel implements Observer {
         });
 
         //mouse motion listener per alzare le carte con hovering
+        //va messo nel controller
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -188,7 +191,7 @@ public class GamePanel extends JPanel implements Observer {
         count += 1;
         if (count == 60){
             media /= 60;
-            System.out.println("Draw time: " + media + "sec");
+            //System.out.println("Draw time: " + media + "sec");
             count = 0;
             dps = (int) (1 / media);
         }
@@ -257,9 +260,11 @@ public class GamePanel extends JPanel implements Observer {
         createCards();
 
         currentState = model.currentPlayer() instanceof HumanPlayer ? State.PLAYER_TURN : State.OTHERS_TURN;
-        System.out.println(currentState);
+        System.out.println(currentState + " " + model.currentPlayer());
 
-        if (players[0].getValidCards(discard.getCard()).size() == 0 && hasDrawed) model.passTurn();
+        if (currentState == State.OTHERS_TURN){
+            asyncAITurn();
+        }
     }
 
     public void createCards(){
@@ -284,6 +289,32 @@ public class GamePanel extends JPanel implements Observer {
         discard = new CardImage(lastCard);
     }
 
+    public void asyncAITurn(){
+        new Thread(() -> {
+            try {
+                AIPlayer ai = (AIPlayer) model.currentPlayer();
+
+                Thread.sleep(1500);
+                if ((ai.getValidCards(discard.getCard()).size() == 0)) {
+                    if (!hasDrawed) {
+                        hasDrawed = true;
+                        model.drawCard();
+                    } else{
+                        hasDrawed = false;
+                        model.passTurn();
+                    }
+                }
+                else{
+                    hasDrawed = false;
+                    model.playCard(ai.getValidCards(discard.getCard()).get(0));
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    //controller usage
     public void stopTimer(){
         repaintTimer.stop();
     }

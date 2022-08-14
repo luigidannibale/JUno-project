@@ -13,5 +13,7 @@ public interface WildAction
      * Changes the color in a Uno Game match
      * @param turnManager
      */
-    default void changeColor(TurnManager turnManager,CardColor  color) { turnManager.updateLastCardPlayed(turnManager.getLastCardPlayed().getValue(),color); }
+    default void changeColor(TurnManager turnManager,CardColor  color) {
+        turnManager.updateLastCardPlayed(turnManager.getLastCardPlayed().getValue(),color);
+    }
 }

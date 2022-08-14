@@ -33,8 +33,8 @@ public class SettingsPanel extends ResizablePanel
     private JComboBox<String> qualityCombo;
 
     private boolean whiteOn = true;
-    private final BufferedImage whiteImage = Utils.getBufferedImage(deckPath + "white/01.png");
-    private final BufferedImage darkImage = Utils.getBufferedImage(deckPath + "black/01.png");
+    private final BufferedImage whiteImage = Utils.getBufferedImage(deckPath + "white/ZERORED.png");
+    private final BufferedImage darkImage = Utils.getBufferedImage(deckPath + "black/ZERORED.png");
 
     public SettingsPanel(MainFrameController mainFrame)
     {

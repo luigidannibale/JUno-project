@@ -12,7 +12,7 @@ public class FlipAnimation extends Animation{
     int x;
     int y;
 
-    int increase = 2;
+    int increase = 3;
 
     int width = CardImage.width;
     int height = CardImage.height;
@@ -20,7 +20,7 @@ public class FlipAnimation extends Animation{
     BufferedImage currentCard;
 
     public FlipAnimation(CardImage card, Rectangle position){
-        int framesPerSecond = 120;
+        int framesPerSecond = 140;
         int delay = 1000 / framesPerSecond;
 
         x = (int) position.getX();
