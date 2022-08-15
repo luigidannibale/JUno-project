@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class FlipAnimation extends Animation{
-    //final Timer timer;
 
     int x;
     int y;
@@ -20,14 +19,10 @@ public class FlipAnimation extends Animation{
     BufferedImage currentCard;
 
     public FlipAnimation(CardImage card, Rectangle position){
-        int framesPerSecond = 140;
-        int delay = 1000 / framesPerSecond;
-
         x = (int) position.getX();
         y = (int) position.getY();
         currentCard = card.getBackCard();
 
-        timer = new Timer(delay, null);
         timer.addActionListener(e -> {
             x += increase;
             width -= increase;

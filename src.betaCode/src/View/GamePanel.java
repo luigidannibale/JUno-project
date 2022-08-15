@@ -10,6 +10,7 @@ import Utilities.Config;
 import Utilities.Utils;
 import View.Animations.Animation;
 import View.Animations.FlipAnimation;
+import View.Animations.PlayAnimation;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -46,6 +47,7 @@ public class GamePanel extends JPanel implements Observer {
 
     private ArrayList<Animation> animations;
     private FlipAnimation flipAnimation;
+    private PlayAnimation playAnimation;
 
     int ticksPerSecond;
 
@@ -82,8 +84,16 @@ public class GamePanel extends JPanel implements Observer {
                         if (!card.isInMouse(x, y)) continue;
 
                         if (model.getPLayableCards().contains(card.getCard())){
-                            model.playCard(card.getCard());
                             hasDrawed = false;
+                            //playerHands.get(players[0]).remove(card);
+                            playAnimation = new PlayAnimation(card.getPosition().x, card.getPosition().y, discard.getPosition().x, discard.getPosition().y, card);
+                            animations.add(playAnimation);
+                            Thread thread = new Thread(() -> {
+                                while (playAnimation.isRunning()){}
+                                model.playCard(card.getCard());
+                            });
+                            thread.start();
+                            ///model.playCard(card.getCard());
                         }
                     }
                 }
@@ -162,6 +172,7 @@ public class GamePanel extends JPanel implements Observer {
             int centerY = getHeight() / 2;
 
             g2.drawImage(discard.getImage(), centerX + 25, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
+            discard.setPosition(centerX + 25, centerY - CardImage.height / 2, CardImage.width);
 
             if (model.getDeck().size() > 1) {
                 int x = centerX - 25 - CardImage.width;

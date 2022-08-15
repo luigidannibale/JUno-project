@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class CardImage extends JComponent {
+public class CardImage {
     public static final BufferedImage backCard = Utils.getBufferedImage("resources/images/Back_card.png");
     public static final BufferedImage backLeft = Utils.rotateImage(backCard, 90);
     public static final BufferedImage backRight = Utils.rotateImage(backCard, 270);
