@@ -12,8 +12,8 @@ import java.awt.image.BufferedImage;
 
 public class CardImage {
     public static final BufferedImage backCard = Utils.getBufferedImage("resources/images/Back_card.png");
-    public static final BufferedImage backLeft = Utils.rotateImage(backCard, 90);
-    public static final BufferedImage backRight = Utils.rotateImage(backCard, 270);
+    public static final BufferedImage backLeft = Utils.rotateImage(backCard, 270);
+    public static final BufferedImage backRight = Utils.rotateImage(backCard, 90);
     private static final String path = "resources/images/";
     //private static DeckColor deck = Config.defaultColor;
     //private final Image img;
@@ -28,6 +28,7 @@ public class CardImage {
     private int y;
     private Rectangle position;
     private int offsetY = 0;
+    private int rotation;
 
     private Card card;
 
@@ -41,10 +42,12 @@ public class CardImage {
 
     public CardImage(Card card, int rotation) {
         this.card = card;
+        this.rotation = rotation;
 
-        if (rotation == 90) img = backLeft;
-        else if (rotation == 270) img = backRight;
-        else newGetCard();
+        //if (rotation == 90) img = backLeft;
+        //else if (rotation == 270) img = backRight;
+        //else newGetCard();
+        newGetCard();
     }
 
     /*
@@ -58,6 +61,8 @@ public class CardImage {
     }
 
     public BufferedImage getBackCard(){return backCard;}
+    public BufferedImage getLeftCard(){return backLeft;}
+    public BufferedImage getRightCard(){return backRight;}
 
     public void setPosition(int x, int y, int width){
         setPosition(x, y, width, false);
@@ -91,6 +96,11 @@ public class CardImage {
     public Card getCard(){
         return card;
     }
+
+    public int getRotation(){
+        return rotation;
+    }
+
     /*
         @Override
         protected void paintComponent(Graphics g) {

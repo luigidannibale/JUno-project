@@ -80,19 +80,21 @@ public class GamePanel extends JPanel implements Observer {
                         thread.start();
                     }
 
+                    var iterator = playerHands.get(players[0]).listIterator();
                     for (CardImage card : playerHands.get(players[0])) { //le carte dell'umano
                         if (!card.isInMouse(x, y)) continue;
 
                         if (model.getPLayableCards().contains(card.getCard())){
                             hasDrawed = false;
                             //playerHands.get(players[0]).remove(card);
-                            playAnimation = new PlayAnimation(card.getPosition().x, card.getPosition().y, discard.getPosition().x, discard.getPosition().y, card);
-                            animations.add(playAnimation);
-                            Thread thread = new Thread(() -> {
-                                while (playAnimation.isRunning()){}
-                                model.playCard(card.getCard());
-                            });
-                            thread.start();
+                            playCardAnimation(card);
+                            //playAnimation = new PlayAnimation(card.getPosition().x, card.getPosition().y, discard.getPosition().x, discard.getPosition().y, card);
+                            //animations.add(playAnimation);
+                            //Thread thread = new Thread(() -> {
+                            //    while (playAnimation.isRunning()){}
+                            //    model.playCard(card.getCard());
+                            //});
+                            //thread.start();
                             ///model.playCard(card.getCard());
                         }
                     }
@@ -165,8 +167,8 @@ public class GamePanel extends JPanel implements Observer {
         if (players != null){
             drawHorizontalHand(players[0], g2, getHeight() - CardImage.height, getCard);
             drawHorizontalHand(players[2], g2, 0, getBackCard);
-            drawVerticalHand(players[1], g2, getWidth() - CardImage.height);
-            drawVerticalHand(players[3], g2, 0);
+            drawVerticalHand(players[1], g2, getWidth() - CardImage.height, getLeftCard);
+            drawVerticalHand(players[3], g2, 0, getRightCard);
 
             int centerX = getWidth() / 2;
             int centerY = getHeight() / 2;
@@ -220,6 +222,8 @@ public class GamePanel extends JPanel implements Observer {
 
     Function<CardImage, BufferedImage> getCard = CardImage::getImage;
     Function<CardImage, BufferedImage> getBackCard = CardImage::getBackCard;
+    Function<CardImage, BufferedImage> getLeftCard = CardImage::getLeftCard;
+    Function<CardImage, BufferedImage> getRightCard = CardImage::getRightCard;
 
     private void drawHorizontalHand(Player player, Graphics2D g2, int y, Function<CardImage, BufferedImage> getCard){
         int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsWidth);
@@ -243,7 +247,7 @@ public class GamePanel extends JPanel implements Observer {
         }
     }
 
-    private  void drawVerticalHand(Player player, Graphics2D g2, int x){
+    private  void drawVerticalHand(Player player, Graphics2D g2, int x, Function<CardImage, BufferedImage> getCard){
         int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsHeight);
         int startY = (getHeight() - cardsSpace) / 2;
         int cardsWidth = cardsSpace / player.getHand().size();
@@ -251,7 +255,7 @@ public class GamePanel extends JPanel implements Observer {
         drawNames(player.getName(), x == 0 ? CardImage.height + 50 : x - 100, maxCardsHeight - 100, g2);
 
         for (CardImage card : playerHands.get(player)){
-            g2.drawImage(card.getImage(), x, startY, CardImage.height, CardImage.width, null);
+            g2.drawImage(getCard.apply(card), x, startY, CardImage.height, CardImage.width, null);
             card.setPosition(x, startY, cardsWidth, true);
             startY += cardsWidth;
         }
@@ -317,12 +321,25 @@ public class GamePanel extends JPanel implements Observer {
                 }
                 else{
                     hasDrawed = false;
-                    model.playCard(ai.getValidCards(discard.getCard()).get(0));
+                    Card playedCard = ai.getValidCards(discard.getCard()).get(0);
+                    CardImage relatedImage = playerHands.get(ai).stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
+                    playCardAnimation(relatedImage);
+                    //model.playCard(ai.getValidCards(discard.getCard()).get(0));
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    private void playCardAnimation(CardImage card){
+        playAnimation = new PlayAnimation(card.getPosition().x, card.getPosition().y, discard.getPosition().x, discard.getPosition().y, card);
+        animations.add(playAnimation);
+        Thread thread = new Thread(() -> {
+            while (playAnimation.isRunning()){}
+            model.playCard(card.getCard());
+        });
+        thread.start();
     }
 
     //controller usage

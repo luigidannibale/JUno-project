@@ -1,8 +1,11 @@
 package View.Animations;
 
+import Model.Cards.Card;
+import Utilities.Utils;
 import View.CardImage;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class PlayAnimation extends Animation{
     //1 attemp
@@ -13,17 +16,17 @@ public class PlayAnimation extends Animation{
     int m;
 
 
-    int x;
-    int y;
+    int width = CardImage.width;
+    int height = CardImage.height;
     double startX;
     double startY;
     double endX;
     double endY;
+    final double speed = 60.0;
 
-    CardImage card;
+    BufferedImage image;
 
     public PlayAnimation(int startX, int startY, int endX, int endY, CardImage card) {
-        this.card = card;
         this.startX = startX;
         this.startY = startY;
         this.endX = endX;
@@ -56,10 +59,16 @@ public class PlayAnimation extends Animation{
         });
         timer.start();
          */
+        if (card.getRotation() == 90 || card.getRotation() == 270){
+            width = CardImage.height;
+            height = CardImage.width;
+            image = Utils.rotateImage(card.getImage(), card.getRotation());
+        }
+        else image = card.getImage();
+
 
         int deltaX = endX - startX;
         int deltaY = endY - startY;
-        double speed = 40.0;
         double vX = deltaX / speed;
         double vY = deltaY / speed;
         System.out.println(vX + " " + vY);
@@ -67,7 +76,7 @@ public class PlayAnimation extends Animation{
         timer.addActionListener(e ->{
             move(vX, vY);
 
-            if (this.startX == this.endX && this.startY == this.endY) timer.stop();
+            if (checkEnd()) timer.stop();
         });
         timer.start();
     }
@@ -75,6 +84,10 @@ public class PlayAnimation extends Animation{
     private void move(double vX, double vY){
         startX += vX;
         startY += vY;
+    }
+
+    private boolean checkEnd(){
+        return Math.round(startX) == endX || Math.round(startY) == endY;
     }
 
     @Override
@@ -92,6 +105,6 @@ public class PlayAnimation extends Animation{
 
         //3 attemp
         System.out.println(startX + " " + startY);
-        g.drawImage(card.getImage(), (int)startX, (int)startY, CardImage.width, CardImage.height, null);
+        g.drawImage(image, (int)startX, (int)startY, width, height, null);
     }
 }
