@@ -22,7 +22,7 @@ public class PlayAnimation extends Animation{
     double startY;
     double endX;
     double endY;
-    final double speed = 60.0;
+    final double speed = 60.0;      //più alta è meno veloce va
 
     BufferedImage image;
 
