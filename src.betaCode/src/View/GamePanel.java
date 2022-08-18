@@ -10,6 +10,7 @@ import Utilities.Utils;
 import View.Animations.Animation;
 import View.Animations.FlipAnimation;
 import View.Animations.PlayAnimation;
+import View.Animations.RotatingAnimation;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -34,8 +35,16 @@ public class GamePanel extends JPanel implements Observer {
     private final int maxCardsWidth = 1350;
     private final int maxCardsHeight = 800;
 
+
     private final UnoGameTable model;
     private final Timer repaintTimer;
+
+    private int centerX;
+    private int centerY;
+
+
+    //private final Timer repaintTimer;
+
 
     private Player[] players;
     private HashMap<Player, ArrayList<CardImage>> playerHands;
@@ -47,6 +56,7 @@ public class GamePanel extends JPanel implements Observer {
     private ArrayList<Animation> animations;
     private FlipAnimation flipAnimation;
     private PlayAnimation playAnimation;
+    private RotatingAnimation rotatingAnimation;
 
     int ticksPerSecond;
 
@@ -119,6 +129,7 @@ public class GamePanel extends JPanel implements Observer {
 
         //metodo che continua ad repaintare la view
         //può essere cambiato
+        /*
         repaintTimer = new Timer(5, new ActionListener() {
             private Instant lastTick;
             private int ticks = 0;
@@ -138,6 +149,18 @@ public class GamePanel extends JPanel implements Observer {
             }
         });
         repaintTimer.start();
+         */
+        new Thread(() -> {
+            while(true) {
+                repaint();
+            }
+        }).start();
+
+        centerX = 960;
+        centerY = 540;
+
+        rotatingAnimation = new RotatingAnimation(imagePath, centerX, centerY);
+        animations.add(rotatingAnimation);
     }
 
     private void InitializeComponents(){
@@ -169,11 +192,11 @@ public class GamePanel extends JPanel implements Observer {
             drawVerticalHand(players[1], g2, getWidth() - CardImage.height, getLeftCard);
             drawVerticalHand(players[3], g2, 0, getRightCard);
 
-            int centerX = getWidth() / 2;
-            int centerY = getHeight() / 2;
-
             g2.drawImage(discard.getImage(), centerX + 25, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
             discard.setPosition(centerX + 25, centerY - CardImage.height / 2, CardImage.width);
+
+            centerX = getWidth() / 2;
+            centerY = getHeight() / 2;
 
             if (model.getDeck().size() > 1) {
                 int x = centerX - 25 - CardImage.width;
@@ -189,12 +212,6 @@ public class GamePanel extends JPanel implements Observer {
                 if (animation.isRunning()) animation.paint(g2);
                 else iter.remove();
             }
-            /*
-            if (flipAnimation != null && flipAnimation.isRunning()){
-                flipAnimation.paint(g2);
-            }
-
-             */
         }
 
         ///debug
@@ -343,7 +360,7 @@ public class GamePanel extends JPanel implements Observer {
 
     //controller usage
     public void stopTimer(){
-        repaintTimer.stop();
+        //repaintTimer.stop();
     }
 }
 
