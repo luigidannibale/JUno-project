@@ -5,8 +5,11 @@ import Model.Cards.CardValue;
 import java.util.*;
 
 /**
- * Class used to manage a deck of cards of a Uno Game;
+ * Class used to manage a deck of cards of a Uno Game. <br/>
+ * Deck is composed basing on a card distribution,
+ * each {@link CardValue} is associated with the number of instances for each {@link CardColor}.
  *
+ * @see Stack<Card>
  * @author D'annibale Luigi, Venturini Daniele
  */
 public class Deck
@@ -67,32 +70,31 @@ public class Deck
     */
     public Deck(HashMap<CardValue,Integer> numberOfCards)
     {
-        if(numberOfCards.size() != 15) throw new IllegalArgumentException("Specify one number for each of the cards value in the deck creation");
+        assert (numberOfCards.size() == 15):"Specify one number for each of the CardValue in the deck creation";
         deck = new Stack<>();
         createDeck(numberOfCards);
         shuffle();
     }
     /**
      * Actually performs the creation of the deck: <br/>
-     * puts in the deck, all the cards.
+     * puts in the deck, all the cards, basing on the cards distribution
      *
-     * @param rules {@see Deck(HashMap<CardValue,Integer> numberOfCards)}
+     * @param cardsDistribution
      */
-    private void createDeck(HashMap<CardValue,Integer> rules)
+    private void createDeck(HashMap<CardValue,Integer> cardsDistribution)
     {
         for (CardColor color : CardColor.values())
         {
+            //adds the wild cards
             if (color == CardColor.WILD)
-            {//adds the wild cards
-                addManyCards(color,CardValue.WILD,rules.get(CardValue.WILD));
-                addManyCards(color,CardValue.WILD_DRAW,rules.get(CardValue.WILD_DRAW));
+            {
+                addManyCards(color,CardValue.WILD,cardsDistribution.get(CardValue.WILD));
+                addManyCards(color,CardValue.WILD_DRAW,cardsDistribution.get(CardValue.WILD_DRAW));
             }
+            //adds the red, blue, green and yellow cards
             else
-            {//adds the red, blue, green and yellow cards
-                for (CardValue value : Arrays.stream(CardValue.values()).filter(cardValue ->
-                    !(cardValue == CardValue.WILD || cardValue == CardValue.WILD_DRAW)).toList())
-                    addManyCards(color, value, rules.get(value));
-            }
+                for (CardValue value : Arrays.stream(CardValue.values()).filter(cardValue -> !(cardValue == CardValue.WILD || cardValue == CardValue.WILD_DRAW)).toList())
+                    addManyCards(color, value, cardsDistribution.get(value));
         }
     }
     /**
@@ -109,25 +111,24 @@ public class Deck
     }
     /**
      * Pops the first card on the deck
-     * @return Card : the {@link Card} drawed
+     * @return Card : the {@link Card} drawed out
      */
     public Card draw()
-    {
-        if(deck.size() > 0) return deck.pop();
-        //else throw new NoMoreDeckException();
-        else return null;
-    }
+    { return deck.size() >0?  deck.pop():null; }
     /**
      * Pops the first cards on the deck: <br/>
      * the number of cards to pop is specified as param.
      * @param cardsToDraw: the number of cards to pop
-     * @return {@link ArrayList<{@link Card}>}
+     * @return {@link ArrayList} of {@link Card}
      */
     public ArrayList<Card> draw(int cardsToDraw)
     {
         ArrayList<Card> drawed = new ArrayList<>();
         for (int i = 0; i < cardsToDraw; i++)
-            drawed.add(deck.pop());
+        {
+            Card drawedCard = draw();
+            drawed.add(drawedCard);
+        }
         return drawed;
     }
     public Stack<Card> getDeck() { return deck; }

@@ -5,13 +5,13 @@ import Model.Deck;
 import Model.Cards.CardValue;
 import Model.Player.Player;
 import Model.TurnManager;
-
 import java.util.HashMap;
 import java.util.List;
 
 public class SevenoRules extends UnoGameRules{
 
-    public SevenoRules(){
+    public SevenoRules()
+    {
         cardsDistribution = Deck.classicRules;
         cardsDistribution.putAll(new HashMap<>(){{
             put(CardValue.ZERO,2);
@@ -21,14 +21,10 @@ public class SevenoRules extends UnoGameRules{
         numberOfPlayableCards = 1;
         numberOfCardsPerPlayer = 7;
     }
-
     @Override
-    public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick) {
-        return playerPlayableHand;
-    }
-
+    public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick)
+    { return playerPlayableHand; }
     @Override
-    public void cardActionPerformance(TurnManager turnManager, Player[] players, Deck deck){
-
-    }
+    public void cardActionPerformance(TurnManager turnManager, Player[] players, Deck deck)
+    {}
 }

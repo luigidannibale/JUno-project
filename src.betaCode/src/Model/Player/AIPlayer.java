@@ -6,9 +6,8 @@ import Model.Cards.CardColor;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class AIPlayer extends Player{
-
-
+public class AIPlayer extends Player
+{
     public AIPlayer(String name) {
         super(name);
     }

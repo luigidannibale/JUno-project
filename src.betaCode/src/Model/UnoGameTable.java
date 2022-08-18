@@ -11,15 +11,21 @@ import java.util.Observable;
 import java.util.Stack;
 import java.util.stream.IntStream;
 
-public class UnoGame extends Observable {
+/**
+ *
+ * @author D'annibale Luigi, Venturini Daniele
+ */
+public class UnoGameTable extends Observable {
     protected UnoGameRules ruleManager;
     protected TurnManager turnManager;
     protected Deck deck;
     protected Stack<Card> discards;
     protected Player[] players;
+
+    //win must be a method
     protected boolean win;
 
-    public UnoGame(Player[] players, UnoGameRules ruleManager)
+    public UnoGameTable(Player[] players, UnoGameRules ruleManager)
     {
         this.ruleManager = ruleManager;
         deck = new Deck(ruleManager.getCardsDistribution());
@@ -41,78 +47,71 @@ public class UnoGame extends Observable {
         discards.push(deck.draw());
         turnManager = new TurnManager(discards.peek());
         //ruleManager.cardActionPerformance(discards.peek());
-
         updateObservers();
     }
+    public Player currentPlayer()
+    { return players[turnManager.getPlayer()]; }
+    public List<Card> getPLayableCards()
+    { return ruleManager.getPlayableCards(players[turnManager.getPlayer()].getValidCards(turnManager.getLastCardPlayed()),turnManager.getLastCardPlayed()); }
 
-    public Player currentPlayer(){
-        return players[turnManager.getPlayer()];
-    }
+    public Player[] getPlayers() { return players; }
 
-    public List<Card> getPLayableCards() {
-        return ruleManager.getPlayableCards(players[turnManager.getPlayer()].getValidCards(turnManager.getLastCardPlayed()),turnManager.getLastCardPlayed());
-
-    }
-
-    public Player[] getPlayers(){
-        return players;
-    }
-
-    public Deck getDeck() {
-        return deck;
-    }
-
-    public Card getLastCard(){
-        return discards.peek();
-    }
-
+    public Deck getDeck() { return deck; }
+    public Card getLastCard(){ return discards.peek(); }
     public void drawCard(){
-        var drawedCard = deck.draw();
-        if (drawedCard == null) return;
+        Card drawedCard = deck.draw();
+        if (drawedCard == null)
+        {
+            deck.re_shuffle(discards);
+            drawedCard = deck.draw();
+        }
         players[turnManager.getPlayer()].drawCard(drawedCard);
-
+        //--test start
         System.out.println(currentPlayer());
         System.out.println("DRAWED: " + drawedCard);
         System.out.println("HAND: " + currentPlayer().getHand());
         System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
-
+        //--test end
         updateObservers();
     }
 
-    public void playCard(Card card){
+    public void playCard(Card card)
+    {
+        //--test start
         System.out.println(currentPlayer());
         System.out.println("PLAYED: " + card);
         System.out.println("HAND: " + currentPlayer().getHand());
         System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
-
+        //--test end
         players[turnManager.getPlayer()].playCard(card);
-
         discards.push(card);
         turnManager.updateLastCardPlayed(card);
         ruleManager.cardActionPerformance(turnManager, players, deck);
-
         updateObservers();
     }
 
-    public Card peekNextCard(){
-        return deck.peek();
-    }
+    public Card peekNextCard(){ return deck.peek(); }
 
-    public void passTurn(){
+    public void passTurn()
+    {
+        //--test start
         System.out.println(currentPlayer());
         System.out.println("PASSED TURN");
         System.out.println("HAND: " + currentPlayer().getHand());
         System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
+        //--test end
         turnManager.passTurn();
-
         updateObservers();
     }
-
-    private void updateObservers(){
+    private void updateObservers()
+    {
         setChanged();
         notifyObservers();
     }
 
+    public TurnManager getTurnManager(){ return turnManager; }
+}
+//nousecode
     /*
     public void cardActionPerformance(Card card)
     {
@@ -148,5 +147,4 @@ public class UnoGame extends Observable {
             default -> {}
         }
     }*/
-}
 
