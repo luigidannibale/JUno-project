@@ -22,7 +22,7 @@ public class PlayAnimation extends Animation{
     double startY;
     double endX;
     double endY;
-    final double speed = 60.0;      //più alta è meno veloce va
+    final double speed = 40.0;      //più alta è meno veloce va
 
     BufferedImage image;
 
@@ -104,7 +104,7 @@ public class PlayAnimation extends Animation{
         //g.drawImage(card.getImage(), startX + x, startY + y, CardImage.width, CardImage.height, null);
 
         //3 attemp
-        System.out.println(startX + " " + startY);
+        //System.out.println(startX + " " + startY);
         g.drawImage(image, (int)startX, (int)startY, width, height, null);
     }
 }
