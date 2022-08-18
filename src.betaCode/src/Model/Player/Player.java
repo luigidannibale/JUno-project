@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
-public abstract class Player {
-
-    //protected boolean saidOne=false;
+public abstract class Player 
+{
     protected String name;
     protected Stack<Card> hand;
+
+    //ogni inizio turno deve tornare ad essre false
+    protected boolean saidOne=false;
 
     protected Player(String name){
         this.name = name;
@@ -40,7 +42,9 @@ public abstract class Player {
 
     public String getName(){ return name; }
 
-    public abstract void shoutUno();
+    public void shoutUno()
+    { saidOne = true; }
+
 
     @Override
     public String toString(){

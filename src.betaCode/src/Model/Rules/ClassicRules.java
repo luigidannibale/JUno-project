@@ -9,6 +9,7 @@ import Model.Cards.SkipAction;
 import Model.Cards.WildAction;
 import Model.Player.Player;
 import Model.TurnManager;
+import Model.UnoGameTable;
 
 import java.util.List;
 
@@ -25,10 +26,9 @@ public class ClassicRules extends UnoGameRules{
     @Override
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick)
     {
+        //if there is at least one not wild card and one wild card all the wild cards are not playables
         if(playerPlayableHand.stream().anyMatch(card -> card.getColor()!= CardColor.WILD) && playerPlayableHand.stream().anyMatch(card -> card.getColor()==CardColor.WILD))
-        {//if there is at least one not wild card and one wild card all the wild cards are not playables
             playerPlayableHand = playerPlayableHand.stream().filter(card -> card.getColor()!=CardColor.WILD).toList();
-        }
         return playerPlayableHand;
     }
 
@@ -51,6 +51,29 @@ public class ClassicRules extends UnoGameRules{
             ((SkipAction) lastCard).performSkipAction(turnManager);
 
         turnManager.passTurn();
-    };
+    }
+    @Override
+    public void cardActionPerformance(UnoGameTable gameTable)
+    {
+        TurnManager turnManager = gameTable.getTurnManager();
+        Player[] players = gameTable.getPlayers();
+        Deck deck = gameTable.getDeck();
+
+        Card lastCard = turnManager.getLastCardPlayed();
+
+        if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD)
+        {
+            //color deve essere preso come scelta dell'utente
+            CardColor color = CardColor.RED;
+            ((WildAction) lastCard).changeColor(turnManager, color);
+        }
+        if(lastCard instanceof DrawCard)
+            players[turnManager.next()].drawCards(deck.draw(((DrawCard) lastCard).getNumberOfCardsToDraw()));
+        else if(lastCard instanceof ReverseCard)
+            ((ReverseCard) lastCard).performReverseAction(turnManager, players);
+        if(lastCard instanceof SkipAction)
+            ((SkipAction) lastCard).performSkipAction(turnManager);
+        turnManager.passTurn();
+    }
 
 }

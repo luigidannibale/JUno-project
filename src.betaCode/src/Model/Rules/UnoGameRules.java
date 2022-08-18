@@ -5,15 +5,29 @@ import Model.Deck;
 import Model.Cards.CardValue;
 import Model.Player.Player;
 import Model.TurnManager;
+import Model.UnoGameTable;
 
 import java.util.HashMap;
 import java.util.List;
 
 public abstract class UnoGameRules {
 
+    /**
+     * @see Deck
+     */
     protected HashMap<CardValue, Integer> cardsDistribution;
+    /**
+     * If more cards of a same value can be stacked by a single player in a single turn.
+     *///stackable card can be replaced controlling if number of playable cards is one or ore than one.
     protected boolean stackableCards;
+    /**
+     * How many cards can be played in a single turn,<br/>
+     * to play more than a card in a single turn cards must be the same value.
+     */
     protected int numberOfPlayableCards;
+    /**
+     * How many cards are distributed to each player at the start of the game.
+     */
     protected int numberOfCardsPerPlayer;
 
 
@@ -35,6 +49,7 @@ public abstract class UnoGameRules {
 
     public abstract List<Card> getPlayableCards(List<Card> playerHand, Card discardsPick);
     public abstract void cardActionPerformance(TurnManager turnManager,Player[] players, Deck deck);
+    public abstract void cardActionPerformance(UnoGameTable gameTable);
 
 
 }

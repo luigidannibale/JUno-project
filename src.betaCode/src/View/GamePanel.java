@@ -1,11 +1,10 @@
 package View;
 
-import Controller.MainFrameController;
 import Model.Cards.Card;
 import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
-import Model.UnoGame;
+import Model.UnoGameTable;
 import Utilities.Config;
 import Utilities.Utils;
 import View.Animations.Animation;
@@ -36,11 +35,16 @@ public class GamePanel extends JPanel implements Observer {
     private final int maxCardsWidth = 1350;
     private final int maxCardsHeight = 800;
 
+
+    private final UnoGameTable model;
+    private final Timer repaintTimer;
+
     private int centerX;
     private int centerY;
 
-    private final UnoGame model;
+
     //private final Timer repaintTimer;
+
 
     private Player[] players;
     private HashMap<Player, ArrayList<CardImage>> playerHands;
@@ -56,7 +60,7 @@ public class GamePanel extends JPanel implements Observer {
 
     int ticksPerSecond;
 
-    public GamePanel(UnoGame model){
+    public GamePanel(UnoGameTable model){
         this.model = model;          //server per prendere dati
         setOpaque(true);
         setDoubleBuffered(true);
@@ -270,7 +274,7 @@ public class GamePanel extends JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        UnoGame model = (UnoGame) o;
+        UnoGameTable model = (UnoGameTable) o;
         this.players = model.getPlayers();
         //playerHands = new HashMap<>();
         createCards();

@@ -3,14 +3,15 @@ package Model;
 import Model.Cards.Card;
 import Model.Player.AIPlayer;
 import Model.Player.Player;
+import Model.Rules.UnoGameRules;
 
 import java.util.List;
 
-public class UnoBasicGame extends UnoGame{
+public class UnoBasicGameNoUse extends UnoGameTable {
 
-    public UnoBasicGame(Player[] players)
+    public UnoBasicGameNoUse(Player[] players, UnoGameRules ruleManager)
     {
-        super(players, null);
+        super(players, ruleManager);
     }
 
     public void gamePlay(){

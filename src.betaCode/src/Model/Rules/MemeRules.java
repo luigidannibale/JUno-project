@@ -13,7 +13,8 @@ import java.util.List;
 
 public class MemeRules extends UnoGameRules{
 
-    public MemeRules(){
+    public MemeRules()
+    {
         cardsDistribution = Deck.classicRules;
         cardsDistribution.putAll(new HashMap<>(){{
             put(CardValue.SKIP,4);
