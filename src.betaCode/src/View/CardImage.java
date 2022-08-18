@@ -61,8 +61,6 @@ public class CardImage {
     }
 
     public BufferedImage getBackCard(){return backCard;}
-    public BufferedImage getLeftCard(){return backLeft;}
-    public BufferedImage getRightCard(){return backRight;}
 
     public void setPosition(int x, int y, int width){
         setPosition(x, y, width, false);
