@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements Observer {
 
 
     private final UnoGameTable model;
-    private final Timer repaintTimer;
+    //private final Timer repaintTimer;
 
     private int centerX;
     private int centerY;

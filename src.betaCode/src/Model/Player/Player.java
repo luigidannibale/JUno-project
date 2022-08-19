@@ -34,6 +34,12 @@ public abstract class Player
     public Stack<Card> getHand(){
         return hand;
     }
+    public Stack<Card> swapHand(Stack<Card> newHand)
+    {
+        var oldHand = hand;
+        hand = newHand;
+        return oldHand;
+    }
 
     public List<Card> getValidCards(Card check)
     {

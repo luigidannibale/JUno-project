@@ -11,5 +11,14 @@
     <orderEntry type="library" name="17.0" level="project" />
     <orderEntry type="library" name="openjfx" level="application" />
     <orderEntry type="library" name="javafx-base-17.0.1-sources" level="application" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/annotations/20.1.0/annotations-20.1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

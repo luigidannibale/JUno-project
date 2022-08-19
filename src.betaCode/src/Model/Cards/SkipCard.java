@@ -11,5 +11,5 @@ public class SkipCard extends ActionCard implements SkipAction
      * Creates a skip card
      * @param color
      */
-    public SkipCard(CardColor color) {super(color, CardValue.SKIP);}
+    public SkipCard(CardColor color) { super(color, CardValue.SKIP); }
 }

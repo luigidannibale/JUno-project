@@ -10,8 +10,5 @@ public class WildCard extends ActionCard implements WildAction
     /**
      * Class used to model a Uno card : Wild
      */
-    public WildCard()
-    {
-        super(CardColor.WILD,CardValue.WILD);
-    }
+    public WildCard() { super(CardColor.WILD,CardValue.WILD); }
 }

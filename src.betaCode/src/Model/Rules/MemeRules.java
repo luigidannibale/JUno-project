@@ -7,6 +7,7 @@ import Model.Cards.SkipAction;
 import Model.Cards.WildAction;
 import Model.Player.Player;
 import Model.TurnManager;
+import Model.UnoGameTable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -71,5 +72,13 @@ public class MemeRules extends UnoGameRules{
             }
             default -> {}
         }*/
+    }
+    @Override
+    public void cardActionPerformance(UnoGameTable gameTable)
+    {
+        TurnManager turnManager = gameTable.getTurnManager();
+        Player[] players = gameTable.getPlayers();
+        Deck deck = gameTable.getDeck();
+
     }
 }
