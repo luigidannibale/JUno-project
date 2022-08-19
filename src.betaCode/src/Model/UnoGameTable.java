@@ -52,12 +52,13 @@ public class UnoGameTable extends Observable {
     public Player currentPlayer()
     { return players[turnManager.getPlayer()]; }
     public List<Card> getPLayableCards()
-    { return ruleManager.getPlayableCards(players[turnManager.getPlayer()].getValidCards(turnManager.getLastCardPlayed()),turnManager.getLastCardPlayed()); }
+    { return ruleManager.getPlayableCards(currentPlayer().getValidCards(turnManager.getLastCardPlayed()),turnManager.getLastCardPlayed()); }
 
     public Player[] getPlayers() { return players; }
 
     public Deck getDeck() { return deck; }
     public Card getLastCard(){ return discards.peek(); }
+
     public void drawCard(){
         Card drawedCard = deck.draw();
         if (drawedCard == null)
@@ -65,7 +66,7 @@ public class UnoGameTable extends Observable {
             deck.re_shuffle(discards);
             drawedCard = deck.draw();
         }
-        players[turnManager.getPlayer()].drawCard(drawedCard);
+        currentPlayer().drawCard(drawedCard);
         //--test start
         System.out.println(currentPlayer());
         System.out.println("DRAWED: " + drawedCard);
@@ -83,7 +84,7 @@ public class UnoGameTable extends Observable {
         System.out.println("HAND: " + currentPlayer().getHand());
         System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
         //--test end
-        players[turnManager.getPlayer()].playCard(card);
+        currentPlayer().playCard(card);
         discards.push(card);
         turnManager.updateLastCardPlayed(card);
         ruleManager.cardActionPerformance(turnManager, players, deck);
@@ -103,6 +104,11 @@ public class UnoGameTable extends Observable {
         turnManager.passTurn();
         updateObservers();
     }
+
+    public boolean clockwiseTurn(){
+        return turnManager.clockwiseTurn();
+    }
+
     private void updateObservers()
     {
         setChanged();

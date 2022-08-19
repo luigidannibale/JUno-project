@@ -17,8 +17,6 @@ import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -30,7 +28,9 @@ public class GamePanel extends JPanel implements Observer {
     }
 
     private static final String imagePath = "resources/images/MainFrame/GamePanel/";
-    private final Color verde = new Color(14, 209, 69);
+    private final Color green = new Color(14, 209, 69);
+    private final Color darkGreen = new Color(230, 172, 0, 250);
+    private final Font fontNames = new Font("Digital-7", Font.PLAIN, 25);
 
     private final int maxCardsWidth = 1350;
     private final int maxCardsHeight = 800;
@@ -171,7 +171,7 @@ public class GamePanel extends JPanel implements Observer {
 
         long start = System.nanoTime();
 
-        g.setColor(verde);
+        g.setColor(green);
         g.fillRect(0,0, getWidth(), getHeight());
 
         Graphics2D g2 = (Graphics2D) g;
@@ -267,7 +267,11 @@ public class GamePanel extends JPanel implements Observer {
     }
 
     private void drawNames(String name, int x, int y, Graphics g2){
-        g2.setFont(new Font("Digital-7", Font.PLAIN, 25));
+        g2.setFont(fontNames);
+        g2.setColor(darkGreen);
+        int width = g2.getFontMetrics().stringWidth(name);
+        int height = g2.getFontMetrics().getHeight();
+        g2.fillRoundRect(x-5, y - height + 5, width + 10, height, 20, 20);
         g2.setColor(Color.black);
         g2.drawString(name, x, y);
     }
@@ -281,6 +285,8 @@ public class GamePanel extends JPanel implements Observer {
 
         currentState = model.currentPlayer() instanceof HumanPlayer ? State.PLAYER_TURN : State.OTHERS_TURN;
         System.out.println(currentState + " " + model.currentPlayer());
+
+        rotatingAnimation.changeTurn(model.clockwiseTurn());
 
         if (currentState == State.OTHERS_TURN){
             asyncAITurn();

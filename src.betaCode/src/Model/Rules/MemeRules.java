@@ -81,4 +81,5 @@ public class MemeRules extends UnoGameRules{
         Deck deck = gameTable.getDeck();
 
     }
+
 }

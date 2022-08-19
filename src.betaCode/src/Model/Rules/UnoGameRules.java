@@ -6,7 +6,6 @@ import Model.Cards.CardValue;
 import Model.Player.Player;
 import Model.TurnManager;
 import Model.UnoGameTable;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,4 +50,7 @@ public abstract class UnoGameRules {
 
     public abstract List<Card> getPlayableCards(List<Card> playerHand, Card discardsPick);
 
+    public abstract void cardActionPerformance(TurnManager turnManager, Player[] players, Deck deck);
+
+    public abstract void cardActionPerformance(UnoGameTable gameTable);
 }
