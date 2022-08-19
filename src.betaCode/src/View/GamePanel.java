@@ -95,16 +95,7 @@ public class GamePanel extends JPanel implements Observer {
 
                         if (model.getPLayableCards().contains(card.getCard())){
                             hasDrawed = false;
-                            //playerHands.get(players[0]).remove(card);
                             playCardAnimation(card);
-                            //playAnimation = new PlayAnimation(card.getPosition().x, card.getPosition().y, discard.getPosition().x, discard.getPosition().y, card);
-                            //animations.add(playAnimation);
-                            //Thread thread = new Thread(() -> {
-                            //    while (playAnimation.isRunning()){}
-                            //    model.playCard(card.getCard());
-                            //});
-                            //thread.start();
-                            ///model.playCard(card.getCard());
                         }
                     }
                 }
@@ -189,8 +180,8 @@ public class GamePanel extends JPanel implements Observer {
         if (players != null){
             drawHorizontalHand(players[0], g2, getHeight() - CardImage.height, getCard);
             drawHorizontalHand(players[2], g2, 0, getBackCard);
-            drawVerticalHand(players[1], g2, getWidth() - CardImage.height, getLeftCard);
-            drawVerticalHand(players[3], g2, 0, getRightCard);
+            drawVerticalHand(players[1], g2, getWidth() - CardImage.height, CardImage.backLeft);
+            drawVerticalHand(players[3], g2, 0, CardImage.backRight);
 
             g2.drawImage(discard.getImage(), centerX + 25, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
             discard.setPosition(centerX + 25, centerY - CardImage.height / 2, CardImage.width);
@@ -238,8 +229,6 @@ public class GamePanel extends JPanel implements Observer {
 
     Function<CardImage, BufferedImage> getCard = CardImage::getImage;
     Function<CardImage, BufferedImage> getBackCard = CardImage::getBackCard;
-    Function<CardImage, BufferedImage> getLeftCard = CardImage::getLeftCard;
-    Function<CardImage, BufferedImage> getRightCard = CardImage::getRightCard;
 
     private void drawHorizontalHand(Player player, Graphics2D g2, int y, Function<CardImage, BufferedImage> getCard){
         int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsWidth);
@@ -263,7 +252,7 @@ public class GamePanel extends JPanel implements Observer {
         }
     }
 
-    private  void drawVerticalHand(Player player, Graphics2D g2, int x, Function<CardImage, BufferedImage> getCard){
+    private  void drawVerticalHand(Player player, Graphics2D g2, int x, BufferedImage image){
         int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsHeight);
         int startY = (getHeight() - cardsSpace) / 2;
         int cardsWidth = cardsSpace / player.getHand().size();
@@ -271,7 +260,7 @@ public class GamePanel extends JPanel implements Observer {
         drawNames(player.getName(), x == 0 ? CardImage.height + 50 : x - 100, maxCardsHeight - 100, g2);
 
         for (CardImage card : playerHands.get(player)){
-            g2.drawImage(getCard.apply(card), x, startY, CardImage.height, CardImage.width, null);
+            g2.drawImage(image, x, startY, CardImage.height, CardImage.width, null);
             card.setPosition(x, startY, cardsWidth, true);
             startY += cardsWidth;
         }
