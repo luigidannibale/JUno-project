@@ -24,12 +24,14 @@ import java.util.stream.Collectors;
 public class GamePanel extends JPanel implements Observer {
     public enum State{
         PLAYER_TURN,
-        OTHERS_TURN
+        OTHERS_TURN,
+        PAUSED
     }
 
     private static final String imagePath = "resources/images/MainFrame/GamePanel/";
     private final Color green = new Color(14, 209, 69);
-    private final Color darkGreen = new Color(230, 172, 0, 250);
+    private final Color playerBackground = new Color(101, 132, 247, 160);
+    private final Color currentPlayerBackground = new Color(255, 209, 26, 160);
     private final Font fontNames = new Font("Digital-7", Font.PLAIN, 25);
 
     private final int maxCardsWidth = 1350;
@@ -38,16 +40,16 @@ public class GamePanel extends JPanel implements Observer {
 
     private final UnoGameTable model;
     //private final Timer repaintTimer;
+    Thread gameThread;
+    boolean gameRunning = true;
 
     private int centerX;
     private int centerY;
 
 
-    //private final Timer repaintTimer;
-
-
     private Player[] players;
     private HashMap<Player, ArrayList<CardImage>> playerHands;
+    private Player currentPlayer;                   //da sistemare?
     private CardImage deck;
     private CardImage discard;
     private State currentState;
@@ -84,13 +86,13 @@ public class GamePanel extends JPanel implements Observer {
                         Thread thread = new Thread(() -> {
                             while (flipAnimation.isRunning()){}
                             model.drawCard();
-                            if (players[0].getValidCards(discard.getCard()).size() == 0 && hasDrawed) model.passTurn();
+                            if (currentPlayer.getValidCards(discard.getCard()).size() == 0 && hasDrawed) model.passTurn();
                             });
                         thread.start();
                     }
 
-                    var iterator = playerHands.get(players[0]).listIterator();
-                    for (CardImage card : playerHands.get(players[0])) { //le carte dell'umano
+                    //var iterator = playerHands.get(players[0]).listIterator();
+                    for (CardImage card : playerHands.get(currentPlayer)) { //le carte dell'umano
                         if (!card.isInMouse(x, y)) continue;
 
                         if (model.getPLayableCards().contains(card.getCard())){
@@ -118,40 +120,26 @@ public class GamePanel extends JPanel implements Observer {
             }
         });
 
-        //metodo che continua ad repaintare la view
-        //può essere cambiato
-        /*
-        repaintTimer = new Timer(5, new ActionListener() {
-            private Instant lastTick;
-            private int ticks = 0;
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (lastTick == null) {
-                    lastTick = Instant.now();
-                }
-                if (Duration.between(lastTick, Instant.now()).toMillis() >= 1000) {
-                    ticksPerSecond = ticks;
-                    lastTick = Instant.now();
-                    ticks = 0;
-                }
-                //System.out.println(ticksPerSecond);
-                ticks++;
-                repaint();
-            }
-        });
-        repaintTimer.start();
-         */
-        new Thread(() -> {
-            while(true) {
-                repaint();
-            }
-        }).start();
-
+        //come faccio a prendere ste coseeee
         centerX = 960;
         centerY = 540;
 
         rotatingAnimation = new RotatingAnimation(imagePath, centerX, centerY);
         animations.add(rotatingAnimation);
+
+
+        //metodo che continua ad repaintare la view
+        //può essere cambiato
+        //repaintTimer = new Timer(1, e -> repaint());
+        //repaintTimer.start();
+
+        gameThread = new Thread(() -> {
+            while(gameRunning) {
+                repaint();
+            }
+        });
+        gameThread.setName("GAME");  //debug
+        gameThread.start();
     }
 
     private void InitializeComponents(){
@@ -186,8 +174,8 @@ public class GamePanel extends JPanel implements Observer {
             g2.drawImage(discard.getImage(), centerX + 25, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
             discard.setPosition(centerX + 25, centerY - CardImage.height / 2, CardImage.width);
 
-            centerX = getWidth() / 2;
-            centerY = getHeight() / 2;
+            //centerX = getWidth() / 2;
+            //centerY = getHeight() / 2;
 
             if (model.getDeck().size() > 1) {
                 int x = centerX - 25 - CardImage.width;
@@ -237,7 +225,7 @@ public class GamePanel extends JPanel implements Observer {
 
         int width = CardImage.width;
         int height = CardImage.height;
-        drawNames(player.getName(), maxCardsWidth - 100, y == 0 ? height + 50 : y - 50, g2);
+        drawNames(player, maxCardsWidth - 100, y == 0 ? height + 50 : y - 50, g2);
         if (y == 0){
             startX += width;
             y += height;
@@ -257,7 +245,7 @@ public class GamePanel extends JPanel implements Observer {
         int startY = (getHeight() - cardsSpace) / 2;
         int cardsWidth = cardsSpace / player.getHand().size();
 
-        drawNames(player.getName(), x == 0 ? CardImage.height + 50 : x - 100, maxCardsHeight - 100, g2);
+        drawNames(player, x == 0 ? CardImage.height + 50 : x - 100, maxCardsHeight - 100, g2);
 
         for (CardImage card : playerHands.get(player)){
             g2.drawImage(image, x, startY, CardImage.height, CardImage.width, null);
@@ -266,14 +254,14 @@ public class GamePanel extends JPanel implements Observer {
         }
     }
 
-    private void drawNames(String name, int x, int y, Graphics g2){
+    private void drawNames(Player player, int x, int y, Graphics g2){
         g2.setFont(fontNames);
-        g2.setColor(darkGreen);
-        int width = g2.getFontMetrics().stringWidth(name);
+        g2.setColor(player.equals(currentPlayer) ? currentPlayerBackground : playerBackground);
+        int width = g2.getFontMetrics().stringWidth(player.getName());
         int height = g2.getFontMetrics().getHeight();
         g2.fillRoundRect(x-5, y - height + 5, width + 10, height, 20, 20);
         g2.setColor(Color.black);
-        g2.drawString(name, x, y);
+        g2.drawString(player.getName(), x, y);
     }
 
     @Override
@@ -282,15 +270,24 @@ public class GamePanel extends JPanel implements Observer {
         this.players = model.getPlayers();
         //playerHands = new HashMap<>();
         createCards();
+        currentPlayer = model.currentPlayer();
 
-        currentState = model.currentPlayer() instanceof HumanPlayer ? State.PLAYER_TURN : State.OTHERS_TURN;
-        System.out.println(currentState + " " + model.currentPlayer());
+        currentState = currentPlayer instanceof HumanPlayer ? State.PLAYER_TURN : State.OTHERS_TURN;
+        System.out.println(currentState + " " + currentPlayer);
 
         rotatingAnimation.changeTurn(model.clockwiseTurn());
 
         if (currentState == State.OTHERS_TURN){
             asyncAITurn();
         }
+
+        /* debug
+        Set<Thread> threads = Thread.getAllStackTraces().keySet();
+        System.out.printf("%-15s \t %-15s \t %-15s \t %s\n", "Name", "State", "Priority", "isDaemon");
+        for (Thread t : threads) {
+            System.out.printf("%-15s \t %-15s \t %-15d \t %s\n", t.getName(), t.getState(), t.getPriority(), t.isDaemon());
+        }
+         */
     }
 
     public void createCards(){
@@ -311,14 +308,13 @@ public class GamePanel extends JPanel implements Observer {
             i += 1;
         }
 
-        var lastCard = model.getLastCard();
-        discard = new CardImage(lastCard);
+        discard = new CardImage(model.getLastCard());
     }
 
     public void asyncAITurn(){
         new Thread(() -> {
             try {
-                AIPlayer ai = (AIPlayer) model.currentPlayer();
+                AIPlayer ai = (AIPlayer) currentPlayer;
 
                 Thread.sleep(1500);
                 if ((ai.getValidCards(discard.getCard()).size() == 0)) {
@@ -353,9 +349,15 @@ public class GamePanel extends JPanel implements Observer {
         thread.start();
     }
 
+    private void flipCardAnimation(){
+
+    }
+
     //controller usage
     public void stopTimer(){
         //repaintTimer.stop();
+        rotatingAnimation.stop();
+        gameRunning = false;
     }
 }
 

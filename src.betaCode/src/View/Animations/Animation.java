@@ -18,5 +18,7 @@ public abstract class Animation {
         return timer.isRunning();
     }
 
+    public void stop(){timer.stop();}
+
     public abstract void paint(Graphics2D g);
 }
