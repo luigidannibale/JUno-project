@@ -33,6 +33,7 @@ public class ProfilePanel extends ResizablePanel {
 
         //setLayout(new FlowLayout());
         setLayout(new GridBagLayout());
+        setVisible(false);
 
         smallPanel = new JPanel(){
             @Override

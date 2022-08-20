@@ -37,7 +37,6 @@ public class SettingsController {
                 if (returnPanel == MainFrameController.Panels.GAME) mainFrame.changeGameDeck();
                 mainFrame.getConfig().saveConfig();
                 mainFrame.setVisiblePanel(returnPanel);
-                view.setVisible(false);
             }
         });
         view.getCloseButton().addMouseListener(new MouseAdapter() {
@@ -45,7 +44,6 @@ public class SettingsController {
             public void mouseClicked(MouseEvent e) {
                 //mainFrame.setVisiblePanel(MainFrameController.Panels.STARTMENU);
                 mainFrame.setVisiblePanel(returnPanel);
-                view.setVisible(false);
             }
         });
 

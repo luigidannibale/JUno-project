@@ -21,9 +21,7 @@ public class ProfilePanelController {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                //cambia account
-                //panelHeight += !p1.isVisible()?p1.getHeight():0;
-                //p1.setVisible(true);
+                mfc.setVisiblePanel(MainFrameController.Panels.PROFILE);
             }
 
             @Override

@@ -35,6 +35,7 @@ public class SettingsPanel extends ResizablePanel
         imagePath = "resources/images/MainFrame/SettingsPanel/";
         setLayout(new GridBagLayout());
         setOpaque(false);
+        setVisible(false);
 
         InitializeComponents();
     }

@@ -17,6 +17,7 @@ public class MainFrameController {
         STARTMENU,
         SETTINGS,
         GAMECHOICE,
+        PROFILE,
         GAME
     }
 
@@ -46,60 +47,31 @@ public class MainFrameController {
         config.loadConfig();
 
         startingMenuController = new StartingMenuController(this);
-
         settingsController = new SettingsController(this);
-        settingsController.setVisible(false);
-
         gameChoiceController = new GameChoiceController(this);
-        gameChoiceController.setVisible(false);
+        profileController = new ProfilePanelController(this);
 
-        //gameController = new GamePanelController(view);
-/*
-        GridBagConstraints gbc = new GridBagConstraints();
-
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.weightx = 1;
-        gbc.weighty = 1;
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        gbc.gridheight = 2;
-
-        view.add(startingMenuController.getView(), gbc);
-        view.add(settingsController.getView(), gbc);
-        view.add(gameChoiceController.getView(), gbc);
- */
-        view.addCenteredPanels(startingMenuController.getView(), settingsController.getView(), gameChoiceController.getView());
+        view.addCenteredPanels(startingMenuController.getView(), settingsController.getView(), gameChoiceController.getView(), profileController.getView());
+        view.addProfilePanel(profileController.getSmallPanel());
 
         view.addWindowListener(new WindowAdapter()
         {
             @Override
             public void windowClosing(WindowEvent e)
             {
-                if(confirmDispose())
-                {
-                    //config.saveConfig();
-                    System.exit(0);
-                }
-
+                if(confirmDispose()) System.exit(0);
             }
         });
 
-        ///debug da cancellare
         view.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                //System.out.println(e.getComponent());
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
-                    //System.exit(42);
                     setSettingsReturnPanel();
                     setVisiblePanel(Panels.SETTINGS);
                 }
             }
         });
-
-        profileController = new ProfilePanelController(this);
-        view.addProfilePanel(profileController.getSmallPanel());
 
         setVisiblePanel(Panels.STARTMENU);
     }
@@ -125,6 +97,13 @@ public class MainFrameController {
     }
 
     public void setVisiblePanel(MainFrameController.Panels panel){
+        if (currentPanel != null) switch (currentPanel){
+            case STARTMENU -> startingMenuController.setVisible(false);
+            case SETTINGS -> settingsController.setVisible(false);
+            case PROFILE -> profileController.getView().setVisible(false);
+            case GAMECHOICE -> gameChoiceController.setVisible(false);
+        }
+
         CardLayout c1 = (CardLayout) view.getContentPane().getLayout();
         switch (panel){
             case STARTMENU -> {
@@ -137,6 +116,10 @@ public class MainFrameController {
             }
             case GAMECHOICE -> {
                 gameChoiceController.setVisible(true);
+                c1.show(view.getContentPane(), MainFrame.Cards.MAIN.name());
+            }
+            case PROFILE -> {
+                profileController.getView().setVisible(true);
                 c1.show(view.getContentPane(), MainFrame.Cards.MAIN.name());
             }
             case GAME -> {

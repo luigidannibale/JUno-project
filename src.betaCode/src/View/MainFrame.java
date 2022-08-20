@@ -140,15 +140,12 @@ public class MainFrame extends JFrame {
     }
 
     public void addProfilePanel(JPanel pp){
-
         gbc.anchor = GridBagConstraints.FIRST_LINE_END;
         gbc.weightx = 0.1;
         gbc.weighty = 0.1;
         gbc.gridx = 1;
         gbc.gridy = 1;
 
-
-        //titleBar.add(pp, BorderLayout.LINE_END);
         mainBackground.add(pp, gbc);
     }
 

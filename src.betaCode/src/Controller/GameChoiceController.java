@@ -44,14 +44,12 @@ public class GameChoiceController {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mainFrame.setVisiblePanel(MainFrameController.Panels.STARTMENU);
-                view.setVisible(false);
             }
         });
     }
 
     private void createNewGame(MainFrameController mainFrame, GameMode gameMode){
         mainFrame.createNewGame(gameMode);
-        view.setVisible(false);
     }
 
     public GameChoicePanel getView() {

@@ -22,7 +22,6 @@ public class StartingMenuController {
             @Override
             public void mouseReleased(MouseEvent e) {
                 mfc.setVisiblePanel(MainFrameController.Panels.GAMECHOICE);
-                view.setVisible(false);
             }
         });
 
@@ -32,7 +31,6 @@ public class StartingMenuController {
             public void mouseReleased(MouseEvent e) {
                 mfc.setSettingsReturnPanel();
                 mfc.setVisiblePanel(MainFrameController.Panels.SETTINGS);
-                view.setVisible(false);
             }
         });
 
