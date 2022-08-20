@@ -1,17 +1,12 @@
 package View;
-import Controller.MainFrameController;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+
 public class ResizablePanel extends JPanel {
-    protected MainFrameController mainFrame;
     protected int panelWidth, panelHeight;
-    protected String imagePath ;
-    protected int offset;
-    protected ImageComponent[] icons;
+    protected String imagePath;
 
-
-    // perche dare il controller alla view?
     public ResizablePanel(int panelWidth, int panelHeight, int offset)
     {
         this.panelWidth = panelWidth;

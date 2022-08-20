@@ -2,74 +2,62 @@ package View;
 
 import Controller.MainFrameController;
 
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.util.Arrays;
-import java.util.HashMap;
 
 public class StartingMenuPanel extends ResizablePanel
 {
+    //Components
+    private ImageComponent startGameLabel;
+    private ImageComponent settingLabel;
+    private ImageComponent quitLabel;
 
 
-    public StartingMenuPanel(MainFrameController mainFrame)
+    //Paint variables
+    private final Color lightBlue = new Color(0, 114, 187);
+    private final Color darkBlue = new Color(7, 71, 113);
+    private final int offset = 20;
+    private final int angle = 15;
+
+    public StartingMenuPanel()
     {
         super(480, 500, 6);
         setLayout(new BorderLayout());
         imagePath = "resources/images/MainFrame/StartingMenuPanel/";
-        /*
-        Percentages = new HashMap<>(){{
-            put(MainFrame.Dimensions.FULLHD, new Double[]{0.25,0.45});
-            put(MainFrame.Dimensions.WIDESCREEN, new Double[]{0.27,0.45});
-            put(MainFrame.Dimensions.HD, new Double[]{0.33,0.55});
-        }};
-
-*/
-        /*percentX = 0.28;
-        percentY = 0.48;*/
-        //offset = 6;
-        //addScalingListener();
         setOpaque(false);
         InitializeComponents();
-
     }
 
     private void InitializeComponents()
     {
-        icons = new ImageComponent[]{
-                new ImageComponent(imagePath + "Startgame.png"),
-                new ImageComponent(imagePath + "Settings.png"),
-                new ImageComponent(imagePath + "Quit.png")
-        };
+        startGameLabel = new ImageComponent(imagePath + "Startgame.png");
+        settingLabel = new ImageComponent(imagePath + "Settings.png");
+        quitLabel = new ImageComponent(imagePath + "Quit.png");
+        quitLabel.setBorder(new EmptyBorder(5,0,0,0));
 
-        add(icons[0], BorderLayout.NORTH);
-        add(icons[1], BorderLayout.CENTER);
-        add(icons[2], BorderLayout.SOUTH);
+        add(startGameLabel, BorderLayout.NORTH);
+        add(settingLabel, BorderLayout.CENTER);
+        add(quitLabel, BorderLayout.SOUTH);
     }
 
     public ImageComponent getGameChoiceIcon(){
-        return icons[0];
+        return startGameLabel;
     }
 
     public ImageComponent getSettingIcon(){
-        return icons[1];
+        return settingLabel;
     }
 
     public ImageComponent getQuitIcon(){
-        return icons[2];
+        return quitLabel;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        var off = 20;
-        Color bluchiaro = new Color(0, 114, 187);
-        Color bluscuro = new Color(7, 71, 113);
-        var angle = 15;
-        g.setColor(bluscuro);
+        g.setColor(darkBlue);
         g.fillRoundRect(0, 0, panelWidth, panelHeight, angle, angle);
-        g.setColor(bluchiaro);
-        g.fillRect(off, off, panelWidth - off * 2, panelHeight - off * 2);
+        g.setColor(lightBlue);
+        g.fillRect(offset, offset, panelWidth - offset * 2, panelHeight - offset * 2);
     }
 }

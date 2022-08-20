@@ -2,6 +2,7 @@ package Controller;
 
 import Utilities.Config;
 import View.DeckColor;
+import View.GraphicQuality;
 import View.MainFrame;
 import View.SettingsPanel;
 
@@ -18,7 +19,7 @@ public class SettingsController {
     private MainFrameController.Panels returnPanel;
 
     public SettingsController(MainFrameController mainFrame){
-        view = new SettingsPanel(mainFrame);
+        view = new SettingsPanel();
 
         view.getEffectsVolumeSlider().setValue(mainFrame.soundEffects.getVolume());
         view.getMusicVolumeSlider().setValue(mainFrame.soundEffects.getVolume());
@@ -71,7 +72,7 @@ public class SettingsController {
 
         view.getQualityCombo().addActionListener(e -> {
             String selectedQuality = (String) ((JComboBox<String>) e.getSource()).getSelectedItem();
-            if (selectedQuality != null) graphicsChanges = selectedQuality.equals("High");
+            if (selectedQuality != null) graphicsChanges = selectedQuality.equals(GraphicQuality.HIGH.VALUE);
         });
         view.getQualityCombo().setSelectedIndex(Config.highGraphics ? 0 : 1);
 

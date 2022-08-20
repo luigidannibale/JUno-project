@@ -15,12 +15,12 @@ public class StartingMenuController {
     private StartingMenuPanel view;
 
     public StartingMenuController(MainFrameController mfc){
-        view = new StartingMenuPanel(mfc);
-        //view.setSize();
+        view = new StartingMenuPanel();
 
+        //GameChoicePanel
         view.getGameChoiceIcon().addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 mfc.setVisiblePanel(MainFrameController.Panels.GAMECHOICE);
                 view.setVisible(false);
             }
@@ -29,7 +29,7 @@ public class StartingMenuController {
         //SettingPanel
         view.getSettingIcon().addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 mfc.setSettingsReturnPanel();
                 mfc.setVisiblePanel(MainFrameController.Panels.SETTINGS);
                 view.setVisible(false);
@@ -37,9 +37,9 @@ public class StartingMenuController {
         });
 
         //Quit
-        view.getQuitIcon().addMouseListener(new MouseAdapter() { // Quit button
+        view.getQuitIcon().addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 mfc.closeWindow();
             }
         });

@@ -14,12 +14,10 @@ public class RotatingAnimation extends Animation{
     double increment = -0.5;
 
     int x;
-    int turnX;
-    int normalX;
+    int imageX;
     int y;
 
     int width;
-    int turnWidth;
     int height;
 
     BufferedImage image;
@@ -33,11 +31,6 @@ public class RotatingAnimation extends Animation{
         width = image.getWidth();
         height = image.getHeight();
 
-        normalX = x;
-
-        turnX = x + width;
-        turnWidth = -width;
-
         timer.addActionListener(e ->{
             degree += Math.toRadians(increment);
             //System.out.println(degree);
@@ -49,12 +42,12 @@ public class RotatingAnimation extends Animation{
     //dont like this
     public void changeTurn(boolean clockwise){
         if (!clockwise) {
-            x = turnX;
-            width = turnWidth;
+            imageX = x + image.getWidth();
+            width = -image.getWidth();
             increment = 1;
         }
         else{
-            x = normalX;
+            imageX = x;
             width = image.getWidth();
             increment = -1;
         }
@@ -66,9 +59,9 @@ public class RotatingAnimation extends Animation{
         Composite oldC = g.getComposite();
 
         g.setComposite(transparent);
-        g.rotate(degree, normalX, y);                                                     //setta la rotazione dell'immagine a centro schermo
+        g.rotate(degree, x, y);                                                     //setta la rotazione dell'immagine a centro schermo
         g.translate(-image.getWidth() / 2, -image.getHeight() / 2);               //modifica l'inizio del disegno
-        g.drawImage(image, x, y, width, height, null);
+        g.drawImage(image, imageX, y, width, height, null);
         //g.drawImage(image, x - width / 2, y - height / 2,width, height, null);
 
         g.setTransform(oldAT);

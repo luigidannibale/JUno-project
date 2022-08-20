@@ -15,10 +15,7 @@ public class VolumeSlider extends JProgressBar {
 
     public VolumeSlider()
     {
-        setSize(200,20);
         setPreferredSize(new Dimension(200, 20));
-        setMinimumSize(new Dimension(200, 20));
-        setMaximumSize(new Dimension(200, 20));
         setStringPainted(true);
         setFont(new Font("MV Boli", Font.PLAIN, 14));
         setForeground(Color.BLUE);

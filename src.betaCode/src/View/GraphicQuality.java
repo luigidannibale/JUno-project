@@ -1,10 +1,11 @@
 package View;
 
 public enum GraphicQuality {
-    LOW("low"),
-    HIGH("high");
+    HIGH("High"),
+    LOW("Low");
+
     public final String VALUE;
-    private GraphicQuality(String value){
+    GraphicQuality(String value){
         this.VALUE = value;
     }
 

@@ -2,6 +2,7 @@ package Controller;
 
 import Utilities.AudioManager;
 import Utilities.Config;
+import Utilities.Config2;
 import View.*;
 
 import javax.swing.*;
@@ -25,6 +26,7 @@ public class MainFrameController {
     public AudioManager soundEffects;
     //public DeckColor deckColor = DeckColor.WHITE;
     private Config config;
+    private Config2 config2;
 
     private StartingMenuController startingMenuController;
     private SettingsController settingsController;

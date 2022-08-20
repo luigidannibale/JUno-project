@@ -1,6 +1,5 @@
 package View;
 
-import Controller.MainFrameController;
 import Utilities.Utils;
 
 import javax.swing.*;
@@ -8,17 +7,15 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 public class SettingsPanel extends ResizablePanel
 {
-    private static final String imagePath = "resources/images/MainFrame/SettingsPanel/";
     private static final String deckPath = "resources/images/";
 
-    private final Color verde = new Color(0, 231, 172);
+    private final Color green = new Color(0, 231, 172);
     private final Font font = new Font("Digital-7", Font.BOLD, 18);
 
-    //JComboBox<MainFrame.Dimensions> combo;
-    //private GifComponent saveButton;
     private GifComponent saveButton;
     private GifComponent closeButton;
     private JLabel quit;
@@ -32,18 +29,13 @@ public class SettingsPanel extends ResizablePanel
     private ImageComponent qualityLabel;
     private JComboBox<String> qualityCombo;
 
-    private boolean whiteOn = true;
-    private final BufferedImage whiteImage = Utils.getBufferedImage(deckPath + "white/ZERORED.png");
-    private final BufferedImage darkImage = Utils.getBufferedImage(deckPath + "black/ZERORED.png");
-
-    public SettingsPanel(MainFrameController mainFrame)
+    public SettingsPanel()
     {
         super(900, 600, 6);
-        this.mainFrame = mainFrame;
-
+        imagePath = "resources/images/MainFrame/SettingsPanel/";
         setLayout(new GridBagLayout());
-
         setOpaque(false);
+
         InitializeComponents();
     }
 
@@ -62,12 +54,11 @@ public class SettingsPanel extends ResizablePanel
         effectsVolumeSlider.setChangebleIcon(effectsLabel,imagePath+"EffectsVolume/", new String[] {"off.png", "low.png", "high.png"});
         musicVolumeSlider = new VolumeSlider();
 
-        whiteDeck = new DeckRectangle(whiteImage, "White Deck");
-        darkDeck = new DeckRectangle(darkImage, "Dark Deck");
+        whiteDeck = new DeckRectangle(deckPath + "white/ZERORED.png", "White Deck");
+        darkDeck = new DeckRectangle(deckPath + "black/ZERORED.png", "Dark Deck");
 
         qualityCombo = new JComboBox<>();
-        qualityCombo.addItem("High");
-        qualityCombo.addItem("Low");
+        Arrays.stream(GraphicQuality.values()).forEach(g -> qualityCombo.addItem(g.VALUE));
         qualityCombo.setPreferredSize(new Dimension(190, 28));
         qualityCombo.setFont(font);
         ((JLabel)qualityCombo.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
@@ -167,19 +158,10 @@ public class SettingsPanel extends ResizablePanel
         return qualityCombo;
     }
 
-    public boolean isWhiteOn() {
-        return whiteOn;
-    }
-
-    public void setWhiteOn(boolean whiteOn) {
-        this.whiteOn = whiteOn;
-    }
-
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(verde);
+        g.setColor(green);
         g.fillRoundRect(0, 0, panelWidth, panelHeight, 15, 15);
     }
 
@@ -193,9 +175,9 @@ public class SettingsPanel extends ResizablePanel
         private Color deckRectangleBorder = Color.BLACK;
         private boolean paintBackground = false;
 
-        public DeckRectangle(BufferedImage image, String title){
-            this.image = image;
+        public DeckRectangle(String imagePath, String title){
             this.title = title;
+            image = Utils.getBufferedImage(imagePath);
             setSize(width, height);
             setPreferredSize(new Dimension(width, height));
             setOpaque(false);
