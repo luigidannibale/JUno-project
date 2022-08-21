@@ -30,9 +30,19 @@ public class AIPlayer extends Player
     {
         List<Card> playableCards = super.getValidCards(check);
         List<Card> wildCards = playableCards.stream().filter(c -> c.getColor() == CardColor.WILD).toList();
+        Map<CardColor, Long> colorWeights = colorWeights();
         playableCards.removeAll(wildCards);
-        playableCards.sort(Comparator.comparing(i -> colorWeights().get(((Card) i).getColor())).reversed().thenComparing(i -> ((Card)i).getColor().VALUE));
+        playableCards.sort(Comparator.comparing(i -> colorWeights.get(((Card) i).getColor())).reversed().thenComparing(i -> ((Card)i).getColor().VALUE));
         playableCards.addAll(wildCards);
         return playableCards;
+    }
+
+    public CardColor chooseBestColor(){
+        //funziona ma sembra esageratamente lungo
+        //var some = hand.stream().collect(Collectors.groupingBy(Card::getColor, Collectors.counting())).entrySet().stream().sorted(Map.Entry.comparingByValue()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        Map<CardColor, Long> colorWeights = colorWeights();
+        var some = hand.stream().filter(c -> c.getColor() != CardColor.WILD).sorted(Comparator.comparing(c -> colorWeights.get(((Card)c).getColor())).reversed()).toList();
+        //some.forEach(System.out::println);
+        return some.get(0).getColor();
     }
 }

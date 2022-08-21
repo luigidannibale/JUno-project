@@ -40,7 +40,7 @@ public class ClassicRules extends UnoGameRules{
         }
         if(lastCard instanceof DrawCard)
             players[turnManager.next()].drawCards(deck.draw(((DrawCard) lastCard).getNumberOfCardsToDraw()));
-        else if(lastCard instanceof ReverseCard)
+        if(lastCard instanceof ReverseCard)
             ((ReverseCard) lastCard).performReverseAction(turnManager, players);
         if(lastCard instanceof SkipAction)
             ((SkipAction) lastCard).performSkipAction(turnManager);

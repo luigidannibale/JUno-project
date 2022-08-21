@@ -2,6 +2,7 @@ package Model;
 
 import Model.Cards.Card;
 import Model.Cards.CardValue;
+import Model.Player.AIPlayer;
 import Model.Player.Player;
 import Model.Rules.UnoGameRules;
 
@@ -82,6 +83,7 @@ public class UnoGameTable extends Observable {
         System.out.println(currentPlayer());
         System.out.println("PLAYED: " + card);
         System.out.println("HAND: " + currentPlayer().getHand());
+        if (currentPlayer() instanceof AIPlayer) System.out.println(((AIPlayer) currentPlayer()).chooseBestColor());
         System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
         //--test end
         currentPlayer().playCard(card);

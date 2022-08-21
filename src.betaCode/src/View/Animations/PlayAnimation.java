@@ -32,7 +32,7 @@ public class PlayAnimation extends Animation{
         this.endX = endX;
         this.endY = endY;
 
-        System.out.println(startX + ":" + startY + " -> " + endX + ":" + endY);
+        //System.out.println(startX + ":" + startY + " -> " + endX + ":" + endY);
 
         /* 1 attemp
         int deltaX = endX - startX;
@@ -71,7 +71,7 @@ public class PlayAnimation extends Animation{
         int deltaY = endY - startY;
         double vX = deltaX / speed;
         double vY = deltaY / speed;
-        System.out.println(vX + " " + vY);
+        //System.out.println(vX + " " + vY);
 
         timer.addActionListener(e ->{
             move(vX, vY);
