@@ -62,9 +62,9 @@ public class PlayAnimation extends Animation{
         if (card.getRotation() == 90 || card.getRotation() == 270){
             width = CardImage.height;
             height = CardImage.width;
-            image = Utils.rotateImage(card.getImage(), card.getRotation());
+            image = Utils.rotateImage(card.getCardImage(), card.getRotation());
         }
-        else image = card.getImage();
+        else image = card.getCardImage();
 
 
         int deltaX = endX - startX;

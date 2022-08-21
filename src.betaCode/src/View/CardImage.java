@@ -6,7 +6,6 @@ import Model.Cards.CardValue;
 import Utilities.Config;
 import Utilities.Utils;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -18,6 +17,7 @@ public class CardImage {
     //private static DeckColor deck = Config.defaultColor;
     //private final Image img;
     private BufferedImage img;
+    private BufferedImage drawedImage;
 
     //private boolean covered = false;
 
@@ -43,11 +43,14 @@ public class CardImage {
     public CardImage(Card card, int rotation) {
         this.card = card;
         this.rotation = rotation;
-
-        //if (rotation == 90) img = backLeft;
-        //else if (rotation == 270) img = backRight;
-        //else newGetCard();
         newGetCard();
+
+        switch (rotation){
+            case 90 -> drawedImage = backRight;
+            case 180 -> drawedImage = backCard;
+            case 270 -> drawedImage = backLeft;
+            default -> drawedImage = img;
+        }
     }
 
     /*
@@ -56,9 +59,15 @@ public class CardImage {
     }
      */
 
-    public BufferedImage getImage() {
+    public BufferedImage getCardImage() {
         return img;
     }
+
+    public BufferedImage getDrawedImage() {
+        return drawedImage;
+    }
+
+    public void setDrawedImage(BufferedImage drawedImage) {this.drawedImage = drawedImage;}
 
     public BufferedImage getBackCard(){return backCard;}
 

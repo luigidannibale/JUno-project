@@ -22,6 +22,7 @@ public class ProfilePanelController {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mfc.setVisiblePanel(MainFrameController.Panels.PROFILE);
+                view.getSmallPanel().setVisible(false);
             }
 
             @Override

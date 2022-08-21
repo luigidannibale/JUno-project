@@ -3,7 +3,6 @@ package Controller;
 import Utilities.Config;
 import View.DeckColor;
 import View.GraphicQuality;
-import View.MainFrame;
 import View.SettingsPanel;
 
 import javax.swing.*;
@@ -34,7 +33,7 @@ public class SettingsController {
                 mainFrame.soundEffects.setFloatControlVolume();
                 Config.defaultColor = deckChanges;
                 Config.highGraphics = graphicsChanges;
-                if (returnPanel == MainFrameController.Panels.GAME) mainFrame.changeGameDeck();
+                if (returnPanel == MainFrameController.Panels.GAME) mainFrame.resumeGame();
                 mainFrame.getConfig().saveConfig();
                 mainFrame.setVisiblePanel(returnPanel);
             }

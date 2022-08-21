@@ -1,10 +1,12 @@
 package View.Animations;
 
+import Utilities.Utils;
 import View.CardImage;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.TimeUnit;
 
 public class FlipAnimation extends Animation{
 
@@ -32,16 +34,12 @@ public class FlipAnimation extends Animation{
             //System.out.println("Width :" + width);
 
             if (width == 0){
-                currentCard = card.getImage();
+                currentCard = card.getCardImage();
                 increase = -increase;
             }
 
             if(width == CardImage.width) {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
+                Utils.wait(500);
                 timer.stop();
             }
         });

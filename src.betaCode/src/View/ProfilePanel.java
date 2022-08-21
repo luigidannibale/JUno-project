@@ -28,7 +28,7 @@ public class ProfilePanel extends ResizablePanel {
     private final Color darkGreen = new Color(55, 100, 71);
 
     public ProfilePanel(MainFrameController mfc){
-        super(230, 400, 0);
+        super(350, 450, 0);
         imagePath = "resources/images/MainFrame/StartingMenuPanel/ProfilePanel/";
 
         //setLayout(new FlowLayout());

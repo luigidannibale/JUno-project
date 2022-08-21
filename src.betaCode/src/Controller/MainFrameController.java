@@ -9,7 +9,6 @@ import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.concurrent.TimeUnit;
 
 public class MainFrameController {
     private final String pathImages = "resources/images/MainFrame/MainframeDesignElements/";
@@ -177,7 +176,7 @@ public class MainFrameController {
         return config;
     }
 
-    public void changeGameDeck(){
+    public void resumeGame(){
         gameController.getView().createCards();
     }
 

@@ -13,7 +13,6 @@ import View.Animations.PlayAnimation;
 import View.Animations.RotatingAnimation;
 
 import javax.swing.*;
-import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -120,6 +119,16 @@ public class GamePanel extends JPanel implements Observer {
             }
         });
 
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
+                    currentState = State.PAUSED;
+                }
+                super.keyPressed(e);
+            }
+        });
+
         //come faccio a prendere ste coseeee
         centerX = 960;
         centerY = 540;
@@ -166,12 +175,12 @@ public class GamePanel extends JPanel implements Observer {
         if (Config.highGraphics) Utils.applyQualityRenderingHints(g2);
 
         if (players != null){
-            drawHorizontalHand(players[0], g2, getHeight() - CardImage.height, getCard);
-            drawHorizontalHand(players[2], g2, 0, getBackCard);
-            drawVerticalHand(players[1], g2, getWidth() - CardImage.height, CardImage.backLeft);
-            drawVerticalHand(players[3], g2, 0, CardImage.backRight);
+            drawHorizontalHand(players[0], g2, getHeight() - CardImage.height);
+            drawHorizontalHand(players[2], g2, 0);
+            drawVerticalHand(players[1], g2, getWidth() - CardImage.height);
+            drawVerticalHand(players[3], g2, 0);
 
-            g2.drawImage(discard.getImage(), centerX + 25, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
+            g2.drawImage(discard.getCardImage(), centerX + 25, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
             discard.setPosition(centerX + 25, centerY - CardImage.height / 2, CardImage.width);
 
             //centerX = getWidth() / 2;
@@ -215,10 +224,7 @@ public class GamePanel extends JPanel implements Observer {
         int cardsWidth = cardsSpace / player.getHand().size();
     }
 
-    Function<CardImage, BufferedImage> getCard = CardImage::getImage;
-    Function<CardImage, BufferedImage> getBackCard = CardImage::getBackCard;
-
-    private void drawHorizontalHand(Player player, Graphics2D g2, int y, Function<CardImage, BufferedImage> getCard){
+    private void drawHorizontalHand(Player player, Graphics2D g2, int y){
         int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsWidth);
         int startX = (getWidth() - cardsSpace) / 2;
         int cardsWidth = cardsSpace / player.getHand().size();
@@ -234,13 +240,13 @@ public class GamePanel extends JPanel implements Observer {
         }
 
         for (CardImage card : playerHands.get(player)){
-            g2.drawImage(getCard.apply(card), startX, y + card.getOffsetY(), width, height, null);
+            g2.drawImage(card.getDrawedImage(), startX, y + card.getOffsetY(), width, height, null);
             card.setPosition(startX, y, cardsWidth);
             startX += cardsWidth;
         }
     }
 
-    private  void drawVerticalHand(Player player, Graphics2D g2, int x, BufferedImage image){
+    private  void drawVerticalHand(Player player, Graphics2D g2, int x){
         int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsHeight);
         int startY = (getHeight() - cardsSpace) / 2;
         int cardsWidth = cardsSpace / player.getHand().size();
@@ -248,7 +254,7 @@ public class GamePanel extends JPanel implements Observer {
         drawNames(player, x == 0 ? CardImage.height + 50 : x - 100, maxCardsHeight - 100, g2);
 
         for (CardImage card : playerHands.get(player)){
-            g2.drawImage(image, x, startY, CardImage.height, CardImage.width, null);
+            g2.drawImage(card.getDrawedImage(), x, startY, CardImage.height, CardImage.width, null);
             card.setPosition(x, startY, cardsWidth, true);
             startY += cardsWidth;
         }
@@ -291,7 +297,7 @@ public class GamePanel extends JPanel implements Observer {
     }
 
     public void createCards(){
-        int[] rotations = new int[]{0, 270, 0, 90};
+        int[] rotations = new int[]{0, 270, 180, 90};
         int i = 0;
         /*
         Arrays.stream(players).filter(p -> p.getHand().size() > 0).forEach(p -> {
@@ -340,11 +346,13 @@ public class GamePanel extends JPanel implements Observer {
     }
 
     private void playCardAnimation(CardImage card){
+        Card played = card.getCard();
         playAnimation = new PlayAnimation(card.getPosition().x, card.getPosition().y, discard.getPosition().x, discard.getPosition().y, card);
         animations.add(playAnimation);
+        card.setDrawedImage(null);
         Thread thread = new Thread(() -> {
             while (playAnimation.isRunning()){}
-            model.playCard(card.getCard());
+            model.playCard(played);
         });
         thread.start();
     }
@@ -356,7 +364,7 @@ public class GamePanel extends JPanel implements Observer {
     //controller usage
     public void stopTimer(){
         //repaintTimer.stop();
-        rotatingAnimation.stop();
+        animations.forEach(Animation::stop);
         gameRunning = false;
     }
 }
