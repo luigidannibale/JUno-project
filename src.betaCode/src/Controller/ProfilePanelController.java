@@ -3,6 +3,7 @@ package Controller;
 import View.ProfilePanel;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,6 +14,8 @@ public class ProfilePanelController {
 
     private ProfilePanel view;
 
+    private MainFrameController.Panels returnPanel;
+
     public ProfilePanelController(MainFrameController mfc){
         view = new ProfilePanel(mfc);
 
@@ -22,7 +25,6 @@ public class ProfilePanelController {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mfc.setVisiblePanel(MainFrameController.Panels.PROFILE);
-                view.getSmallPanel().setVisible(false);
             }
 
             @Override
@@ -43,7 +45,26 @@ public class ProfilePanelController {
                 Map attributes = font.getAttributes();
                 attributes.put(TextAttribute.UNDERLINE, onOff);
                 name.setFont(font.deriveFont(attributes));
-            }});
+        }});
+
+        view.getQuit().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                mfc.setVisiblePanel(returnPanel);
+            }
+        });
+
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png"));
+        view.getChangeIcon().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                int ret = chooser.showOpenDialog(null);
+                if(ret == JFileChooser.APPROVE_OPTION){
+                    view.getProfilePicture().setCircleImage(chooser.getSelectedFile().getAbsolutePath());
+                }
+            }
+        });
     }
 
     public ProfilePanel getView() {
@@ -52,5 +73,16 @@ public class ProfilePanelController {
 
     public JPanel getSmallPanel(){
         return view.getSmallPanel();
+    }
+
+    public void setVisible(boolean visible){
+        view.setVisible(visible);
+        view.getSmallPanel().setVisible(!visible);
+        if (visible) view.InitializeMainPanel();
+        else view.InitializeSmallPanel();
+    }
+
+    public void setReturnPanel(MainFrameController.Panels returnPanel){
+        this.returnPanel = returnPanel;
     }
 }

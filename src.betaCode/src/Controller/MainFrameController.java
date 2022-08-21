@@ -99,7 +99,7 @@ public class MainFrameController {
         if (currentPanel != null) switch (currentPanel){
             case STARTMENU -> startingMenuController.setVisible(false);
             case SETTINGS -> settingsController.setVisible(false);
-            case PROFILE -> profileController.getView().setVisible(false);
+            case PROFILE -> profileController.setVisible(false);
             case GAMECHOICE -> gameChoiceController.setVisible(false);
         }
 
@@ -118,16 +118,14 @@ public class MainFrameController {
                 c1.show(view.getContentPane(), MainFrame.Cards.MAIN.name());
             }
             case PROFILE -> {
-                profileController.getView().setVisible(true);
+                profileController.setReturnPanel(currentPanel);
+                profileController.setVisible(true);
                 c1.show(view.getContentPane(), MainFrame.Cards.MAIN.name());
             }
             case GAME -> {
                 view.dispose();
                 view.setUndecorated(true);
                 view.pack();
-                //GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-                //GraphicsDevice ev = env.getDefaultScreenDevice();
-                //ev.setFullScreenWindow(view);
                 view.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 view.getContentPane().repaint();
                 view.getGameBackground().add(gameController.getView(), BorderLayout.CENTER);
@@ -157,7 +155,6 @@ public class MainFrameController {
         view.setSize(view.getDimension());
         view.setLocationRelativeTo(null);
         view.setVisible(true);
-        //view.setDimension(view.getDimension());
         setVisiblePanel(Panels.STARTMENU);
     }
 
@@ -179,20 +176,4 @@ public class MainFrameController {
     public void resumeGame(){
         gameController.getView().createCards();
     }
-
-    /*public void updateSize(String s){
-        MainFrame.Dimensions dim;
-        switch (s) {
-            case "1920x1080" -> dim = MainFrame.Dimensions.FULLHD;
-            case "1080x720" -> dim = MainFrame.Dimensions.HD;
-            default -> dim = MainFrame.Dimensions.WIDESCREEN;
-        }
-        updateSize(dim);
-    }
-
-    public void updateSize(MainFrame.Dimensions dimension){
-        view.setCurrentDimension(dimension);
-        view.setSize(dimension.getDimension());
-        view.setLocationRelativeTo(null);
-    }*/
 }

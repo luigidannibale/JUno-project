@@ -6,14 +6,11 @@ import Utilities.Utils;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 
 public class ProfilePanel extends ResizablePanel {
 
@@ -23,6 +20,9 @@ public class ProfilePanel extends ResizablePanel {
     private JLabel name;
     private JLabel level;
     private JProgressBar xpBar;
+
+    private JButton quit;
+    private JLabel changeIcon;
 
     private final Color lightGreen = new Color(55, 166, 71);
     private final Color darkGreen = new Color(55, 100, 71);
@@ -47,10 +47,11 @@ public class ProfilePanel extends ResizablePanel {
         smallPanel.setOpaque(false);
         smallPanel.setLayout(new GridBagLayout());
 
-        InitializedSharedComponents();
+        InitializedComponents();
     }
 
-    private void InitializedSharedComponents(){
+    private void InitializedComponents(){
+        //Shared
         profilePicture = new CircleImage(imagePath + "discard.png", 60, 60);
 
         name = new JLabel("Anonymous");
@@ -63,12 +64,21 @@ public class ProfilePanel extends ResizablePanel {
         xpBar = new JProgressBar();
         xpBar.setPreferredSize(new Dimension(80, 15));
         xpBar.setStringPainted(true);
+
+        //Main Panel
+        quit = new JButton("X");
+        quit.setFont(new Font(name.getFont().getName(), Font.BOLD, 18));
+        quit.setForeground(Color.RED);
+        quit.setBackground(lightGreen);
+
+        changeIcon = new JLabel("Change icon");
+        changeIcon.setFont(new Font(name.getFont().getName(), Font.PLAIN, 13));
+        changeIcon.setBorder(new LineBorder(Color.BLACK, 1, true));
+        changeIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
-    private void InitializeSmallPanel()
+    public void InitializeSmallPanel()
     {
-        smallPanel.removeAll();
-
         GridBagConstraints gbc = new GridBagConstraints();
 
         gbc.gridx = 0;
@@ -99,6 +109,64 @@ public class ProfilePanel extends ResizablePanel {
         smallPanel.add(xpBar, gbc);
     }
 
+    public void InitializeMainPanel()
+    {
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.anchor = GridBagConstraints.FIRST_LINE_END;
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.weightx = 0.1;
+        gbc.weighty = 0.01;
+        add(quit, gbc);
+
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridheight = 4;
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.03;
+        add(profilePicture, gbc);
+
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridheight = 1;
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.01;
+        add(changeIcon, gbc);
+
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridheight = 2;
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.07;
+        add(name, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.gridheight = 1;
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.01;
+        add(level, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.gridheight = 1;
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.01;
+        add(xpBar, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridheight = 1;
+        gbc.gridwidth = 3;
+        gbc.weightx = 0.9;
+        gbc.weighty = 0.85;
+        add(new JPanel(), gbc);
+    }
+
     public JPanel getSmallPanel(){
         InitializeSmallPanel();
         return smallPanel;
@@ -106,6 +174,18 @@ public class ProfilePanel extends ResizablePanel {
 
     public JLabel getLabelName(){
         return name;
+    }
+
+    public JButton getQuit(){
+        return quit;
+    }
+
+    public JLabel getChangeIcon(){
+        return changeIcon;
+    }
+
+    public CircleImage getProfilePicture(){
+        return profilePicture;
     }
 
     private void paintPanel(Graphics g, JPanel panel){
@@ -170,6 +250,7 @@ public class ProfilePanel extends ResizablePanel {
 
                 imm = masked;
                 //setIcon(new ImageIcon(masked));
+                repaint();
             }
             catch (IOException e) {
                 System.out.println("Cannot find image");
