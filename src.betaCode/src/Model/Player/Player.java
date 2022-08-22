@@ -12,7 +12,9 @@ public abstract class Player
     protected Stack<Card> hand;
 
     //ogni inizio turno deve tornare ad essre false
-    protected boolean saidOne=false;
+    protected boolean saidOne = false;
+    protected boolean hasDrew = false;
+    protected boolean hasOne = false;
 
     protected Player(String name){
         this.name = name;
@@ -21,19 +23,27 @@ public abstract class Player
 
     public void drawCard(Card drawedCard){
         hand.push(drawedCard);
+        hasOne = false;
     }
 
     public void drawCards(List<Card> cards){
         hand.addAll(cards);
+        hasOne = false;
     }
 
     public void playCard(Card played){
         hand.remove(played);
+        if (hand.size() == 1) hasOne = true;
     }
 
     public Stack<Card> getHand(){
         return hand;
     }
+
+    public void setHand(Stack<Card> newHand){
+        hand = newHand;
+    }
+
     public Stack<Card> swapHand(Stack<Card> newHand)
     {
         var oldHand = hand;
@@ -51,6 +61,9 @@ public abstract class Player
     public void shoutUno()
     { saidOne = true; }
 
+    public void setHasDrew(boolean hasDrew) {this.hasDrew = hasDrew;}
+
+    public boolean HasDrew(){return hasDrew;}
 
     @Override
     public String toString(){

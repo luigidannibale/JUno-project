@@ -15,9 +15,7 @@ import View.Animations.RotatingAnimation;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class GamePanel extends JPanel implements Observer {
@@ -52,7 +50,6 @@ public class GamePanel extends JPanel implements Observer {
     private CardImage deck;
     private CardImage discard;
     private State currentState;
-    private boolean hasDrawed;
 
     private ArrayList<Animation> animations;
     private FlipAnimation flipAnimation;
@@ -78,14 +75,13 @@ public class GamePanel extends JPanel implements Observer {
                     int x = e.getX();
                     int y = e.getY();
 
-                    if (model.getPLayableCards().size() == 0 && !hasDrawed && deck.isInMouse(x, y)) {
-                        hasDrawed = true;
+                    if (model.getPLayableCards().size() == 0 && !currentPlayer.HasDrew() && deck.isInMouse(x, y)) {
                         flipAnimation = new FlipAnimation(new CardImage(model.peekNextCard()), deck.getPosition());
                         animations.add(flipAnimation);
                         Thread thread = new Thread(() -> {
                             while (flipAnimation.isRunning()){}
                             model.drawCard();
-                            if (currentPlayer.getValidCards(discard.getCard()).size() == 0 && hasDrawed) model.passTurn();
+                            if (currentPlayer.getValidCards(discard.getCard()).size() == 0 && currentPlayer.HasDrew()) model.passTurn();
                             });
                         thread.start();
                     }
@@ -95,7 +91,6 @@ public class GamePanel extends JPanel implements Observer {
                         if (!card.isInMouse(x, y)) continue;
 
                         if (model.getPLayableCards().contains(card.getCard())){
-                            hasDrawed = false;
                             playCardAnimation(card);
                         }
                     }
@@ -134,7 +129,7 @@ public class GamePanel extends JPanel implements Observer {
         centerY = 540;
 
         rotatingAnimation = new RotatingAnimation(imagePath, centerX, centerY);
-        animations.add(rotatingAnimation);
+        //animations.add(rotatingAnimation);
 
 
         //metodo che continua ad repaintare la view
@@ -194,6 +189,8 @@ public class GamePanel extends JPanel implements Observer {
                 deck.setPosition(x, y, CardImage.width);
             }
 
+            rotatingAnimation.paint(g2);
+
             Iterator<Animation> iter = animations.iterator();
             while(iter.hasNext()){
                 Animation animation = iter.next();
@@ -240,7 +237,7 @@ public class GamePanel extends JPanel implements Observer {
         }
 
         for (CardImage card : playerHands.get(player)){
-            g2.drawImage(card.getDrawedImage(), startX, y + card.getOffsetY(), width, height, null);
+            g2.drawImage(card.getDrawImage(), startX, y + card.getOffsetY(), width, height, null);
             card.setPosition(startX, y, cardsWidth);
             startX += cardsWidth;
         }
@@ -254,7 +251,7 @@ public class GamePanel extends JPanel implements Observer {
         drawNames(player, x == 0 ? CardImage.height + 50 : x - 100, maxCardsHeight - 100, g2);
 
         for (CardImage card : playerHands.get(player)){
-            g2.drawImage(card.getDrawedImage(), x, startY, CardImage.height, CardImage.width, null);
+            g2.drawImage(card.getDrawImage(), x, startY, CardImage.height, CardImage.width, null);
             card.setPosition(x, startY, cardsWidth, true);
             startY += cardsWidth;
         }
@@ -324,16 +321,10 @@ public class GamePanel extends JPanel implements Observer {
 
                 Thread.sleep(1500);
                 if ((ai.getValidCards(discard.getCard()).size() == 0)) {
-                    if (!hasDrawed) {
-                        hasDrawed = true;
-                        model.drawCard();
-                    } else{
-                        hasDrawed = false;
-                        model.passTurn();
-                    }
+                    if (!ai.HasDrew()) model.drawCard();
+                    else model.passTurn();
                 }
                 else{
-                    hasDrawed = false;
                     Card playedCard = ai.getValidCards(discard.getCard()).get(0);
                     CardImage relatedImage = playerHands.get(ai).stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
                     playCardAnimation(relatedImage);
@@ -349,7 +340,7 @@ public class GamePanel extends JPanel implements Observer {
         Card played = card.getCard();
         playAnimation = new PlayAnimation(card.getPosition().x, card.getPosition().y, discard.getPosition().x, discard.getPosition().y, card);
         animations.add(playAnimation);
-        card.setDrawedImage(null);
+        card.setDrawImage(null);
         Thread thread = new Thread(() -> {
             while (playAnimation.isRunning()){}
             model.playCard(played);
@@ -365,6 +356,7 @@ public class GamePanel extends JPanel implements Observer {
     public void stopTimer(){
         //repaintTimer.stop();
         animations.forEach(Animation::stop);
+        rotatingAnimation.stop();
         gameRunning = false;
     }
 }

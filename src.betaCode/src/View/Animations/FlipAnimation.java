@@ -39,8 +39,15 @@ public class FlipAnimation extends Animation{
             }
 
             if(width == CardImage.width) {
-                Utils.wait(500);
-                timer.stop();
+                new Thread(() -> {
+                    try {
+                        increase = 0;
+                        Thread.sleep(750);
+                        timer.stop();
+                    } catch (InterruptedException ee) {
+                        ee.printStackTrace();
+                    }
+                }).start();
             }
         });
         timer.start();

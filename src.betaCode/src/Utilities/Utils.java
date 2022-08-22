@@ -103,13 +103,4 @@ public class Utils {
         return null;
     }
 
-    public static void wait(int milliseconds){
-        new Thread(() -> {
-            try {
-                Thread.sleep(milliseconds);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
 }

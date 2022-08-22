@@ -8,6 +8,7 @@ import Model.UnoGameTable;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 
 public class SevenoRules extends UnoGameRules{
 
@@ -49,14 +50,20 @@ public class SevenoRules extends UnoGameRules{
         }
         if (lastCard.getValue() == CardValue.ZERO){
             //i giocatori si scambiano le carte in base al senso del turno
-            /*
+
+            var newHand = players[0].getHand();
             for (int i = 0; i < players.length; i++){
                 var nextPlayer = players[turnManager.next(i)];
-                var nextHand = nextPlayer.getHand();
-                nextPlayer.
+                newHand = swapHand(newHand, nextPlayer);
             }
-             */
         }
+        turnManager.passTurn();
+    }
+
+    private Stack<Card> swapHand(Stack<Card> newHand, Player nextPlayer){
+        var oldHand = nextPlayer.getHand();
+        nextPlayer.setHand(newHand);
+        return oldHand;
     }
 
     @Override

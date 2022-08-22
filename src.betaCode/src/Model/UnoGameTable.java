@@ -52,6 +52,7 @@ public class UnoGameTable extends Observable {
     }
     public Player currentPlayer()
     { return players[turnManager.getPlayer()]; }
+
     public List<Card> getPLayableCards()
     { return ruleManager.getPlayableCards(currentPlayer().getValidCards(turnManager.getLastCardPlayed()),turnManager.getLastCardPlayed()); }
 
@@ -61,16 +62,17 @@ public class UnoGameTable extends Observable {
     public Card getLastCard(){ return discards.peek(); }
 
     public void drawCard(){
-        Card drawedCard = deck.draw();
-        if (drawedCard == null)
+        Card drewCard = deck.draw();
+        if (drewCard == null)
         {
             deck.re_shuffle(discards);
-            drawedCard = deck.draw();
+            drewCard = deck.draw();
         }
-        currentPlayer().drawCard(drawedCard);
+        currentPlayer().drawCard(drewCard);
+        currentPlayer().setHasDrew(true);
         //--test start
         System.out.println(currentPlayer());
-        System.out.println("DRAWED: " + drawedCard);
+        System.out.println("DRAWED: " + drewCard);
         System.out.println("HAND: " + currentPlayer().getHand());
         System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
         //--test end
@@ -83,10 +85,10 @@ public class UnoGameTable extends Observable {
         System.out.println(currentPlayer());
         System.out.println("PLAYED: " + card);
         System.out.println("HAND: " + currentPlayer().getHand());
-        if (currentPlayer() instanceof AIPlayer) System.out.println(((AIPlayer) currentPlayer()).chooseBestColor());
         System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
         //--test end
         currentPlayer().playCard(card);
+        currentPlayer().setHasDrew(false);
         discards.push(card);
         turnManager.updateLastCardPlayed(card);
         ruleManager.cardActionPerformance(turnManager, players, deck);
@@ -103,6 +105,7 @@ public class UnoGameTable extends Observable {
         System.out.println("HAND: " + currentPlayer().getHand());
         System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
         //--test end
+        currentPlayer().setHasDrew(false);
         turnManager.passTurn();
         updateObservers();
     }

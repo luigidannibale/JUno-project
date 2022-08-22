@@ -17,19 +17,16 @@ public class CardImage {
     //private static DeckColor deck = Config.defaultColor;
     //private final Image img;
     private BufferedImage img;
-    private BufferedImage drawedImage;
+    private BufferedImage drawImage;
 
     //private boolean covered = false;
 
     public static final int width = 120;
     public static final int height = 180;
 
-    private int x;
-    private int y;
     private Rectangle position;
     private int offsetY = 0;
     private int rotation;
-
     private Card card;
 
     public CardImage(){
@@ -46,10 +43,10 @@ public class CardImage {
         newGetCard();
 
         switch (rotation){
-            case 90 -> drawedImage = backRight;
-            case 180 -> drawedImage = backCard;
-            case 270 -> drawedImage = backLeft;
-            default -> drawedImage = img;
+            case 90 -> drawImage = backRight;
+            case 180 -> drawImage = backCard;
+            case 270 -> drawImage = backLeft;
+            default -> drawImage = img;
         }
     }
 
@@ -63,11 +60,11 @@ public class CardImage {
         return img;
     }
 
-    public BufferedImage getDrawedImage() {
-        return drawedImage;
+    public BufferedImage getDrawImage() {
+        return drawImage;
     }
 
-    public void setDrawedImage(BufferedImage drawedImage) {this.drawedImage = drawedImage;}
+    public void setDrawImage(BufferedImage drawedImage) {this.drawImage = drawedImage;}
 
     public BufferedImage getBackCard(){return backCard;}
 
@@ -76,8 +73,6 @@ public class CardImage {
     }
 
     public void setPosition(int x, int y, int width, boolean rotated){
-        this.x = x;
-        this.y = y;
         position = rotated ? new Rectangle(x, y, height, width) : new Rectangle(x, y, width, height);
     }
 
@@ -108,17 +103,7 @@ public class CardImage {
         return rotation;
     }
 
-    /*
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2 = (Graphics2D)g;
-            Utils.applyQualityRenderingHints(g2);
-            g2.drawImage(covered ? img : backCard, 0, 0, width, height, null);
-        }
-
-         */
-
+    @Deprecated
     private void oldGetCard(){
         int num = 0;
         if (card.getColor() != CardColor.WILD) num = card.getColor().VALUE * 14 + card.getValue().ordinal() + 1;
