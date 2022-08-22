@@ -2,6 +2,9 @@ package Utilities;
 
 import Controller.MainFrameController;
 import View.DeckColor;
+import View.GraphicQuality;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.*;
 
@@ -17,15 +20,8 @@ public class Config {
     }
 
     public void saveConfig(){
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))){
-
-            /*
-            //Screen Dimension
-            MainFrame.Dimensions dim = mfc.getCurrentDimension();
-            bw.write(dim.toString());
-            bw.newLine();
-             */
-
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName)))
+        {
             //Music volume
             bw.write(String.valueOf(mfc.backMusic.getVolume()));
             bw.newLine();
@@ -48,14 +44,9 @@ public class Config {
     }
 
     public void loadConfig(){
-        try(BufferedReader br = new BufferedReader(new FileReader(fileName))){
 
-            /*
-            //Screen dimension
-            String line = br.readLine();
-            if (line == null) return;
-            mfc.updateSize(line);
-             */
+        try(BufferedReader br = new BufferedReader(new FileReader(fileName)))
+        {
             int exceptionOccurred = 0;
 
             //Music volume
@@ -87,7 +78,6 @@ public class Config {
                 //defaultColor = defaultColor;
                 exceptionOccurred++;
             }
-
             try
             {
                 highGraphics = Boolean.parseBoolean(br.readLine());
@@ -96,7 +86,8 @@ public class Config {
                 exceptionOccurred++;
             }
 
-        } catch (IOException e){
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
     }

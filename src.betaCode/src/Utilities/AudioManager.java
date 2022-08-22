@@ -3,68 +3,68 @@ package Utilities;
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Function;
 
-public class AudioManager {
-    static final String pathAudio = "resources/audio/";
+public class AudioManager
+{
+    private static AudioManager instance;
+    private final String pathAudio = "resources/audio/";
+    private Clip audioTrack;
+    private Integer volume;
 
-    Clip clip;
-    FloatControl floatControl;
-    Integer volume = 50;
+    public AudioManager getInstance(String filename,int volume)
+    {
+        if(instance == null)
+            instance = new AudioManager(volume);
+        instance.setAudio(filename);
+        instance.setVolume(volume);
+        return instance;
+    }
+    public static AudioManager getInstance()
+    {
+        if(instance == null)
+            instance = new AudioManager(50);
+        return instance;
+    }
+    private AudioManager(int volume) { this.volume = volume; }
 
-    public void setAudio(String filename) {
-        try {
-            AudioInputStream stream = AudioSystem.getAudioInputStream(new File(pathAudio + filename));
-            clip = AudioSystem.getClip();
-            clip.open(stream);
-            floatControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+    public void setAudio(String filename)
+    {
+        try
+        {
+            audioTrack = AudioSystem.getClip();                                                        //creates an audio clip that plays back an audio (either file or stream)
+            audioTrack.open(AudioSystem.getAudioInputStream(new File(pathAudio + filename))); //assigns the audio
         }
-        catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored){
-
-        }
+        catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) { System.out.println("File not found"+filename); }
     }
-
-    public void play(){
-        clip.start();
+    public void play(){ audioTrack.start(); }
+    public void loop(){ audioTrack.loop(Clip.LOOP_CONTINUOUSLY); }
+    public void stop(){ audioTrack.stop(); }
+    public void setVolume(int value)
+    {
+        volume = value;
+        if(audioTrack != null)
+            ((FloatControl) audioTrack.getControl(FloatControl.Type.MASTER_GAIN)).setValue(convert.apply(volume));
     }
-
-    public void loop(){
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
-    }
-
-    public void stop(){
-        clip.stop();
-    }
-
-    public void playMusic(String filename){
+    public int getVolume(){ return volume; }
+    public int getDecimalVolume(){ return convert.apply(volume); }
+    public void playMusic(String filename)
+    {
+        assert (volume != null):"Volume is null";
         setAudio(filename);
-        setFloatControlVolume();
         play();
         loop();
     }
-
-    public void playEffect(String filename){
+    public void playEffect(String filename)
+    {
+        assert (volume != null):"Volume is null";
         setAudio(filename);
-        setFloatControlVolume();
         play();
     }
+    Function<Integer,Integer> convert = v -> (v * 86 / 100) - 80;
+    Function<Integer,Integer> deconvert = v -> (v+80) * 100/86;
+    //private int convert(int volume) { return (volume * 86 / 100) - 80; }
+    //nousecode
+    private int deconvert(int volume) { return (volume+80) * 100/86; }
 
-    public void setVolume(int value){
-        volume = value;
-    }
-
-    //volume minimo -80, volume massimo 6
-    public void setFloatControlVolume(){
-        if (floatControl == null) return;
-
-        int value = (volume * 86 / 100) - 80;
-        floatControl.setValue(value);
-    }
-
-    public int getActualVolume(){
-        return (volume + 80) * 100 / 86;
-    }
-
-    public int getVolume(){
-        return volume;
-    }
 }

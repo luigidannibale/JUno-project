@@ -39,8 +39,8 @@ public class MainFrameController {
     public MainFrameController(){
         view = new MainFrame();
 
-        backMusic = new AudioManager();
-        soundEffects = new AudioManager();
+        backMusic = AudioManager.getInstance();
+        soundEffects = AudioManager.getInstance();
 
         config = new Config(this);
         config.loadConfig();

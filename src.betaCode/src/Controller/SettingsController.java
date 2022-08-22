@@ -28,9 +28,9 @@ public class SettingsController {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mainFrame.backMusic.setVolume(view.getMusicVolumeSlider().getValue());
-                mainFrame.backMusic.setFloatControlVolume();
+                //mainFrame.backMusic.setFloatControlVolume();
                 mainFrame.soundEffects.setVolume(view.getEffectsVolumeSlider().getValue());
-                mainFrame.soundEffects.setFloatControlVolume();
+                //mainFrame.soundEffects.setFloatControlVolume();
                 Config.defaultColor = deckChanges;
                 Config.highGraphics = graphicsChanges;
                 if (returnPanel == MainFrameController.Panels.GAME) mainFrame.resumeGame();
