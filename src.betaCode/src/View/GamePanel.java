@@ -269,6 +269,7 @@ public class GamePanel extends JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        //potremmo passare un infomazione come arg per dire quale animazione startare nel caso di pesca carte ai
         UnoGameTable model = (UnoGameTable) o;
         this.players = model.getPlayers();
         //playerHands = new HashMap<>();

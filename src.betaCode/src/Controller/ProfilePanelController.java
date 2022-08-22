@@ -83,6 +83,6 @@ public class ProfilePanelController {
     }
 
     public void setReturnPanel(MainFrameController.Panels returnPanel){
-        this.returnPanel = returnPanel;
+        if (returnPanel != MainFrameController.Panels.PROFILE) this.returnPanel = returnPanel;
     }
 }

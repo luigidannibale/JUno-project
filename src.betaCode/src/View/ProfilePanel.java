@@ -243,6 +243,8 @@ public class ProfilePanel extends ResizablePanel {
                 Utils.applyQualityRenderingHints(g2d);
                 int x = (diameter - width) / 2;
                 int y = (diameter - height) / 2;
+                g2d.setColor(Color.WHITE);
+                g2d.fillOval(x, y, width, height);
                 g2d.drawImage(scaled, x, y, null);
                 g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_IN));
                 g2d.drawImage(mask, 0, 0, null);

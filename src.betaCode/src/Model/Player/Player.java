@@ -21,8 +21,8 @@ public abstract class Player
         hand = new Stack<>();
     }
 
-    public void drawCard(Card drawedCard){
-        hand.push(drawedCard);
+    public void drawCard(Card drewCard){
+        hand.push(drewCard);
         hasOne = false;
     }
 
@@ -63,7 +63,9 @@ public abstract class Player
 
     public void setHasDrew(boolean hasDrew) {this.hasDrew = hasDrew;}
 
-    public boolean HasDrew(){return hasDrew;}
+    public boolean HasDrew(){ return hasDrew; }
+
+    public boolean HasOne(){ return hasOne; }
 
     @Override
     public String toString(){
