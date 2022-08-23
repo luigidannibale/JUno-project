@@ -26,7 +26,7 @@ public class PlayAnimation extends Animation{
 
     BufferedImage image;
 
-    public PlayAnimation(int startX, int startY, int endX, int endY, CardImage card) {
+    public PlayAnimation(double startX, double startY, double endX, double endY, CardImage card) {
         this.startX = startX;
         this.startY = startY;
         this.endX = endX;
@@ -67,8 +67,8 @@ public class PlayAnimation extends Animation{
         else image = card.getCardImage();
 
 
-        int deltaX = endX - startX;
-        int deltaY = endY - startY;
+        double deltaX = endX - startX;
+        double deltaY = endY - startY;
         double vX = deltaX / speed;
         double vY = deltaY / speed;
         //System.out.println(vX + " " + vY);

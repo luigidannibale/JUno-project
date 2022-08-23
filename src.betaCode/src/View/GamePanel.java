@@ -76,10 +76,15 @@ public class GamePanel extends JPanel implements Observer {
                     int y = e.getY();
 
                     if (model.getPLayableCards().size() == 0 && !currentPlayer.HasDrew() && deck.isInMouse(x, y)) {
-                        flipAnimation = new FlipAnimation(new CardImage(model.peekNextCard()), deck.getPosition());
+                        CardImage drawnCard = new CardImage(model.peekNextCard());
+                        flipAnimation = new FlipAnimation(drawnCard, deck.getPosition());
                         animations.add(flipAnimation);
                         Thread thread = new Thread(() -> {
                             while (flipAnimation.isRunning()){}
+                            Rectangle lastCardPosition = playerHands.get(currentPlayer).get(playerHands.get(currentPlayer).size() - 1).getPosition();
+                            playAnimation = new PlayAnimation(deck.getPosition().getX(), deck.getPosition().getY(), lastCardPosition.getX() + 50, lastCardPosition.getY(), drawnCard);
+                            animations.add(playAnimation);
+                            while (playAnimation.isRunning()){}
                             model.drawCard();
                             if (currentPlayer.getValidCards(discard.getCard()).size() == 0 && currentPlayer.HasDrew()) model.passTurn();
                             });
@@ -339,7 +344,7 @@ public class GamePanel extends JPanel implements Observer {
 
     private void playCardAnimation(CardImage card){
         Card played = card.getCard();
-        playAnimation = new PlayAnimation(card.getPosition().x, card.getPosition().y, discard.getPosition().x, discard.getPosition().y, card);
+        playAnimation = new PlayAnimation(card.getPosition().getX(), card.getPosition().getY(), discard.getPosition().getX(), discard.getPosition().getY(), card);
         animations.add(playAnimation);
         card.setDrawImage(null);
         Thread thread = new Thread(() -> {
