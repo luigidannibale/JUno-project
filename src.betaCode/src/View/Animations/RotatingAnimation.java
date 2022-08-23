@@ -10,8 +10,10 @@ public class RotatingAnimation extends Animation{
 
     AlphaComposite transparent = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
 
+    final double SPEED = 0.5;
+
     double degree = 0;
-    double increment = -0.5;
+    double increment = -SPEED;
 
     int x;
     int imageX;
@@ -44,12 +46,12 @@ public class RotatingAnimation extends Animation{
         if (!clockwise) {
             imageX = x + image.getWidth();
             width = -image.getWidth();
-            increment = 1;
+            increment = SPEED;
         }
         else{
             imageX = x;
             width = image.getWidth();
-            increment = -1;
+            increment = -SPEED;
         }
     }
 
