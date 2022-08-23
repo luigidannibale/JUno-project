@@ -30,7 +30,7 @@ public class CardImage {
     private Card card;
 
     public CardImage(){
-        img = null;
+        img = backCard;
     }
 
     public CardImage(Card card) {
