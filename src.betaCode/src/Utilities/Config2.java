@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.util.HashMap;
 
 
 public class Config2 {
@@ -29,7 +30,7 @@ public class Config2 {
      */
     public Config2()
     {
-        if(!readFromFile())
+        if(!loadConfig())
             assignDefaultValues();
     }
     public void assignDefaultValues()
@@ -48,29 +49,19 @@ public class Config2 {
         this.graphicQuality = graphicQuality;
     }
 
-    public boolean writeOnFile()
+    public boolean saveConfig()
     {
-        JSONObject info = new JSONObject();
+        HashMap<String,Object> info = new HashMap<>();
 
         info.put("effectsVolume",effectsVolume);
         info.put("musicVolume",musicVolume);
         info.put("deckStyle",deckStyle.VALUE);
         info.put("graphicQuality",graphicQuality.VALUE);
 
-
-        try (FileWriter file = new FileWriter(fileName))
-        {
-            file.write(info.toString());
-            file.flush();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        FileManager fm = new FileManager();
+        return fm.writeSingleJson(info,fileName);
     }
-    public boolean readFromFile()
+    public boolean loadConfig()
     {
         try(BufferedReader br = new BufferedReader(new FileReader(fileName)))
         {
