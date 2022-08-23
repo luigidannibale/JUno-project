@@ -1,6 +1,7 @@
 package View;
 
 import Model.Cards.Card;
+import Model.Cards.CardColor;
 import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
@@ -284,7 +285,11 @@ public class GamePanel extends JPanel implements Observer {
         currentState = currentPlayer instanceof HumanPlayer ? State.PLAYER_TURN : State.OTHERS_TURN;
         System.out.println(currentState + " " + currentPlayer);
 
-        if (rotatingAnimation.isRunning()) rotatingAnimation.changeTurn(model.clockwiseTurn());
+        if (rotatingAnimation.isRunning())
+        {
+            rotatingAnimation.changeTurn(model.clockwiseTurn());
+            rotatingAnimation.imageColor(discard.getCard().getColor());
+        }
 
         if (currentState == State.OTHERS_TURN){
             asyncAITurn();

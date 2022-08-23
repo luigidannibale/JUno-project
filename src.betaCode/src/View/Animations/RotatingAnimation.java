@@ -1,5 +1,6 @@
 package View.Animations;
 
+import Model.Cards.CardColor;
 import Utilities.Utils;
 
 import java.awt.*;
@@ -8,7 +9,7 @@ import java.awt.image.BufferedImage;
 
 public class RotatingAnimation extends Animation{
 
-    AlphaComposite transparent = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f);
+    AlphaComposite transparent = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f);
 
     final double SPEED = 0.5;
 
@@ -21,14 +22,15 @@ public class RotatingAnimation extends Animation{
 
     int width;
     int height;
-
+    String path;
     BufferedImage image;
 
     public RotatingAnimation(String path, int x, int y){
         this.x = x;
         this.y = y;
+        this.path = path;
 
-        image = Utils.getBufferedImage(path + "aaa.png");
+        image = Utils.getBufferedImage(path + "four/four.png");
 
         if (image == null) return;
 
@@ -42,7 +44,11 @@ public class RotatingAnimation extends Animation{
         });
         timer.start();
     }
-
+    public void imageColor(CardColor c)
+    {
+        if (c == CardColor.WILD) image = Utils.getBufferedImage(path + "four/four.png");
+        else    image = Utils.getBufferedImage(path + "four/"+c.name() +".png");
+    }
     //dont like this
     public void changeTurn(boolean clockwise){
         if (!clockwise) {

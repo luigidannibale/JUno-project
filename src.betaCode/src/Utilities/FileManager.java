@@ -49,7 +49,11 @@ public class FileManager
     {
         JSONArray datasJson = read(file);
         HashMap<String,Object> data = new HashMap<>();
-        datasJson.forEach();
+        for (JSONObject o:datasJson)
+        {
+
+        }
+        return null;
     }
     private JSONArray read(String file) throws IOException
     {
