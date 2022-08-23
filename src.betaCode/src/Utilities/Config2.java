@@ -57,6 +57,7 @@ public class Config2 {
         info.put("deckStyle",deckStyle.VALUE);
         info.put("graphicQuality",graphicQuality.VALUE);
 
+
         try (FileWriter file = new FileWriter(fileName))
         {
             file.write(info.toString());
