@@ -130,7 +130,7 @@ public class GamePanel extends JPanel implements Observer {
         centerY = 540;
 
         rotatingAnimation = new RotatingAnimation(imagePath, centerX, centerY);
-        //animations.add(rotatingAnimation);
+        animations.add(rotatingAnimation);
 
 
         //metodo che continua ad repaintare la view
@@ -190,7 +190,7 @@ public class GamePanel extends JPanel implements Observer {
                 deck.setPosition(x, y, CardImage.width);
             }
 
-            rotatingAnimation.paint(g2);
+            //rotatingAnimation.paint(g2);
 
             Iterator<Animation> iter = animations.iterator();
             while(iter.hasNext()){
@@ -266,6 +266,10 @@ public class GamePanel extends JPanel implements Observer {
         g2.fillRoundRect(x-5, y - height + 5, width + 10, height, 20, 20);
         g2.setColor(Color.black);
         g2.drawString(player.getName(), x, y);
+
+        if (player instanceof HumanPlayer){
+            if (player.HasDrew()) g2.drawString("Skip turn", x + width + 20, y);
+        }
     }
 
     @Override
@@ -280,7 +284,7 @@ public class GamePanel extends JPanel implements Observer {
         currentState = currentPlayer instanceof HumanPlayer ? State.PLAYER_TURN : State.OTHERS_TURN;
         System.out.println(currentState + " " + currentPlayer);
 
-        rotatingAnimation.changeTurn(model.clockwiseTurn());
+        if (rotatingAnimation.isRunning()) rotatingAnimation.changeTurn(model.clockwiseTurn());
 
         if (currentState == State.OTHERS_TURN){
             asyncAITurn();
@@ -348,10 +352,6 @@ public class GamePanel extends JPanel implements Observer {
             model.playCard(played);
         });
         thread.start();
-    }
-
-    private void flipCardAnimation(){
-
     }
 
     private void drawCardAnimation(CardImage drawnCard){

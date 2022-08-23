@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 public class RotatingAnimation extends Animation{
 
-    AlphaComposite transparent = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+    AlphaComposite transparent = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f);
 
     final double SPEED = 0.5;
 
@@ -28,7 +28,9 @@ public class RotatingAnimation extends Animation{
         this.x = x;
         this.y = y;
 
-        image = Utils.getBufferedImage(path + "rotating image.png");
+        image = Utils.getBufferedImage(path + "aaa.png");
+
+        if (image == null) return;
 
         width = image.getWidth();
         height = image.getHeight();
