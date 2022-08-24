@@ -38,6 +38,7 @@ public class FileManager
         }
         return true;
     }
+<<<<<<< Updated upstream
     public ArrayList<HashMap<String,Object>>  readJson(String file) throws IOException {
         JSONArray datasJson = new JSONArray();
         try
@@ -59,6 +60,14 @@ public class FileManager
             data.add(hashMapObject);
         }
         return data;
+=======
+    public HashMap<String,Object>  readJson(String file) throws IOException
+    {
+        JSONArray datasJson = read(file);
+        HashMap<String,Object> data = new HashMap<>();
+        //datasJson.forEach();
+        return null;
+>>>>>>> Stashed changes
     }
     private JSONArray read(String file) throws IOException
     {
