@@ -135,9 +135,9 @@ public class GamePanel extends JPanel implements Observer {
             }
         });
 
-        //come faccio a prendere ste coseeee
-        centerX = 960;
-        centerY = 540;
+        var screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        centerX = screenSize.width / 2;
+        centerY = screenSize.height / 2;
 
         rotatingAnimation = new RotatingAnimation(imagePath, centerX, centerY);
         animations.add(rotatingAnimation);
