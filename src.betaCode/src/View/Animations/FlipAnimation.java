@@ -1,51 +1,44 @@
 package View.Animations;
 
-import Utilities.Utils;
 import View.CardImage;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.TimeUnit;
 
-public class FlipAnimation extends Animation{
-
+public class FlipAnimation extends Animation
+{
     int x;
     int y;
-
     int increase = 3;
-
-    int width = CardImage.width;
-    int height = CardImage.height;
-
-    BufferedImage currentCard;
+    private int delay = 750;
 
     public FlipAnimation(CardImage card, Rectangle position){
         x = (int) position.getX();
         y = (int) position.getY();
-        currentCard = card.getBackCard();
+
+        image = card.getBackCard();
 
         timer.addActionListener(e -> {
             x += increase;
-            width -= increase;
-            width -= increase;
+            width -= 2*increase;
 
-            //System.out.println("X :" + x);
-            //System.out.println("Width :" + width);
-
-            if (width == 0){
-                currentCard = card.getCardImage();
+            if (width == 0)
+            {
+                image = card.getCardImage();
                 increase = -increase;
             }
 
             if(width == CardImage.width) {
                 new Thread(() -> {
-                    try {
+                    try
+                    {
                         increase = 0;
-                        Thread.sleep(750);
+                        Thread.sleep(delay);
                         timer.stop();
-                    } catch (InterruptedException ee) {
-                        ee.printStackTrace();
+                    }
+                    catch (InterruptedException ie)
+                    {
+                        ie.printStackTrace();
                     }
                 }).start();
             }
@@ -54,7 +47,7 @@ public class FlipAnimation extends Animation{
     }
 
     public void paint(Graphics2D g){
-        g.drawImage(currentCard, x, y, width, height, null);
+        g.drawImage(image, x, y, width, height, null);
     }
 
     //public boolean isRunning(){

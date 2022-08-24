@@ -57,6 +57,9 @@ public class GamePanel extends JPanel implements Observer {
     private PlayAnimation playAnimation;
     private RotatingAnimation rotatingAnimation;
 
+    private Rectangle skipTurnPosition;
+    private Rectangle unoPosition;
+
     int ticksPerSecond;
 
     public GamePanel(UnoGameTable model){
@@ -77,13 +80,15 @@ public class GamePanel extends JPanel implements Observer {
                     int y = e.getY();
 
                     if (!currentPlayer.HasDrew() && deck.isInMouse(x, y)) {
+                        currentPlayer.setHasDrew(true);
+
                         CardImage drawnCard = new CardImage(model.peekNextCard());
                         flipAnimation = new FlipAnimation(drawnCard, deck.getPosition());
                         animations.add(flipAnimation);
                         Thread thread = new Thread(() -> {
                             while (flipAnimation.isRunning()){}
                             drawCardAnimation(drawnCard);
-                            if (currentPlayer.getValidCards(discard.getCard()).size() == 0 && currentPlayer.HasDrew()) model.passTurn();
+                            //if (currentPlayer.getValidCards(discard.getCard()).size() == 0 && currentPlayer.HasDrew()) model.passTurn();
                             });
                         thread.start();
                     }
@@ -96,6 +101,10 @@ public class GamePanel extends JPanel implements Observer {
                             playCardAnimation(card);
                         }
                     }
+
+                    if (currentPlayer.HasDrew() && skipTurnPosition.contains(x , y)) model.passTurn();
+
+                    if (currentPlayer.HasOne() && unoPosition.contains(x, y)) currentPlayer.setSaidOne(true);
                 }
             }
         });
@@ -152,6 +161,8 @@ public class GamePanel extends JPanel implements Observer {
         deck = new CardImage();
         playerHands = new HashMap<>();
         animations = new ArrayList<>();
+        skipTurnPosition = new Rectangle();
+        unoPosition = new Rectangle();
     }
 
     ///debug
@@ -269,7 +280,18 @@ public class GamePanel extends JPanel implements Observer {
         g2.drawString(player.getName(), x, y);
 
         if (player instanceof HumanPlayer){
-            if (player.HasDrew()) g2.drawString("Skip turn", x + width + 20, y);
+            y += height;
+            if (player.HasOne() && !player.HasSaidOne()){
+                g2.drawString("UNO!", x, y);
+                width = g2.getFontMetrics().stringWidth("UNO!");
+                unoPosition.setRect(x, y - height, width, height);
+            }
+            if (player.HasDrew()){
+                x += width + 20;
+                g2.drawString("Skip turn", x, y);
+                width = g2.getFontMetrics().stringWidth("Skip Turn");
+                skipTurnPosition.setRect(x, y - height, width, height);
+            }
         }
     }
 
@@ -348,6 +370,7 @@ public class GamePanel extends JPanel implements Observer {
     }
 
     private void playCardAnimation(CardImage card){
+        if (playAnimation != null && playAnimation.isRunning()) return;
         Card played = card.getCard();
         playAnimation = new PlayAnimation(card.getPosition().getX(), card.getPosition().getY(), discard.getPosition().getX(), discard.getPosition().getY(), card);
         animations.add(playAnimation);

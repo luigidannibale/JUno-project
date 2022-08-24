@@ -59,7 +59,7 @@ public class Config2 {
         info.put("graphicQuality",graphicQuality.VALUE);
 
         FileManager fm = new FileManager();
-        return fm.writeSingleJson(info,fileName);
+        return false;//fm.writeJson(info,fileName);
     }
     public boolean loadConfig()
     {

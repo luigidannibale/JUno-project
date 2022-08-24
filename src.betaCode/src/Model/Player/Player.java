@@ -62,10 +62,12 @@ public abstract class Player
     { saidOne = true; }
 
     public void setHasDrew(boolean hasDrew) {this.hasDrew = hasDrew;}
+    public void setSaidOne(boolean saidOne) {this.saidOne = saidOne;}
 
     public boolean HasDrew(){ return hasDrew; }
 
     public boolean HasOne(){ return hasOne; }
+    public boolean HasSaidOne(){ return saidOne; }
 
     @Override
     public String toString(){

@@ -9,21 +9,20 @@ import java.awt.image.BufferedImage;
 
 public class RotatingAnimation extends Animation{
 
-    AlphaComposite transparent = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f);
+    private AlphaComposite transparent = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f);
 
-    final double SPEED = 0.5;
+    private final double SPEED = 0.5;
 
-    double degree = 0;
-    double increment = -SPEED;
+    private double degree = 0;
+    private double increment = -SPEED;
 
-    int x;
-    int imageX;
-    int y;
+    private int x;
+    private int imageX;
+    private int y;
 
-    int width;
-    int height;
-    String path;
-    BufferedImage image;
+    private int width;
+    private int height;
+    private String path;
 
     public RotatingAnimation(String path, int x, int y){
         this.x = x;

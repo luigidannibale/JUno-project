@@ -48,6 +48,8 @@ public class CardImage {
             case 270 -> drawImage = backLeft;
             default -> drawImage = img;
         }
+
+        //position = new Rectangle();
     }
 
     /*
@@ -74,6 +76,8 @@ public class CardImage {
 
     public void setPosition(int x, int y, int width, boolean rotated){
         position = rotated ? new Rectangle(x, y, height, width) : new Rectangle(x, y, width, height);
+        //if (rotated) position.setRect(x, y, height, width);
+        //else position.setRect(x, y, width, height);
     }
 
     public Rectangle getPosition() {return position;}
