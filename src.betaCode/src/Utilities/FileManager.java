@@ -67,6 +67,9 @@ public class FileManager
         HashMap<String,Object> data = new HashMap<>();
         //datasJson.forEach();
         return null;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
     private JSONArray read(String file) throws IOException

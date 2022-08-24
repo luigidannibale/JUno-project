@@ -37,10 +37,15 @@ public class RotatingAnimation extends Animation{
         this.y = y;
         this.path = path;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
         image = Utils.getBufferedImage(path + "four/four.png");
 
         if (image == null) return;
+=======
+
+        changeColor(CardColor.BLUE);
+>>>>>>> Stashed changes
 =======
 
         changeColor(CardColor.BLUE);
@@ -57,10 +62,16 @@ public class RotatingAnimation extends Animation{
         timer.start();
     }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public void imageColor(CardColor c)
     {
         if (c == CardColor.WILD) image = Utils.getBufferedImage(path + "four/four.png");
         else    image = Utils.getBufferedImage(path + "four/"+c.name() +".png");
+=======
+    public void changeColor(CardColor c)
+    {
+        image = Utils.getBufferedImage(path + "four/"+ c.name()+".png");
+>>>>>>> Stashed changes
 =======
     public void changeColor(CardColor c)
     {
