@@ -32,8 +32,8 @@ public class GamePanel extends JPanel implements Observer {
     private final Color currentPlayerBackground = new Color(255, 209, 26, 160);
     private final Font fontNames = new Font("Digital-7", Font.PLAIN, 25);
 
-    private final int maxCardsWidth = 1350;
-    private final int maxCardsHeight = 800;
+    private final int maxCardsWidth;
+    private final int maxCardsHeight;
 
 
     private final UnoGameTable model;
@@ -138,6 +138,9 @@ public class GamePanel extends JPanel implements Observer {
         var screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         centerX = screenSize.width / 2;
         centerY = screenSize.height / 2;
+
+        maxCardsHeight = screenSize.height * 74 / 100;
+        maxCardsWidth = screenSize.width * 70 / 100;
 
         rotatingAnimation = new RotatingAnimation(imagePath, centerX, centerY);
         animations.add(rotatingAnimation);

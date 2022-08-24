@@ -16,7 +16,7 @@ public class MainFrame extends JFrame {
             return name();
         }
     }
-
+    
     private final String pathImages = "resources/images/MainFrame/MainframeDesignElements/";
     /*public enum Dimensions{
         FULLHD(new Dimension(1920,1080)),
