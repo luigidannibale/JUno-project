@@ -19,37 +19,24 @@ public class RotatingAnimation extends Animation{
     private int x;
     private int imageX;
     private int y;
-
-<<<<<<< Updated upstream
     private int width;
     private int height;
     private String path;
-=======
-    int width;
-    int height;
-    String path;
 
     BufferedImage image;
->>>>>>> Stashed changes
 
-    public RotatingAnimation(String path, int x, int y,CardColor c){
+
+    public RotatingAnimation(String path, int x, int y){
         this.x = x;
         this.y = y;
         this.path = path;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 
         image = Utils.getBufferedImage(path + "four/four.png");
 
         if (image == null) return;
-=======
+
 
         changeColor(CardColor.BLUE);
->>>>>>> Stashed changes
-=======
-
-        changeColor(CardColor.BLUE);
->>>>>>> Stashed changes
 
         width = image.getWidth();
         height = image.getHeight();
@@ -61,22 +48,15 @@ public class RotatingAnimation extends Animation{
         });
         timer.start();
     }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
     public void imageColor(CardColor c)
     {
         if (c == CardColor.WILD) image = Utils.getBufferedImage(path + "four/four.png");
-        else    image = Utils.getBufferedImage(path + "four/"+c.name() +".png");
-=======
+        else image = Utils.getBufferedImage(path + "four/" + c.name() + ".png");
+    }
     public void changeColor(CardColor c)
     {
-        image = Utils.getBufferedImage(path + "four/"+ c.name()+".png");
->>>>>>> Stashed changes
-=======
-    public void changeColor(CardColor c)
-    {
-        image = Utils.getBufferedImage(path + "four/"+ c.name()+".png");
->>>>>>> Stashed changes
+        image = Utils.getBufferedImage(path + "four/" + c.name() + ".png");
     }
     //dont like this
     public void changeTurn(boolean clockwise){

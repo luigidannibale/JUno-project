@@ -38,39 +38,24 @@ public class FileManager
         }
         return true;
     }
-<<<<<<< Updated upstream
+
     public ArrayList<HashMap<String,Object>>  readJson(String file) throws IOException {
         JSONArray datasJson = new JSONArray();
-        try
-        {
+        try {
             datasJson = read(file);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw e;
         }
-        ArrayList<HashMap<String,Object>> data = new ArrayList<>();
+        ArrayList<HashMap<String, Object>> data = new ArrayList<>();
 
-        for (Object object:datasJson)
-        {
-            assert(object instanceof JSONObject);
-            JSONObject jsonObject= (JSONObject) object;
-            HashMap<String,Object> hashMapObject = new HashMap<>();
-            jsonObject.keys().forEachRemaining(key->hashMapObject.put(key,jsonObject.get(key)));
+        for (Object object : datasJson) {
+            assert (object instanceof JSONObject);
+            JSONObject jsonObject = (JSONObject) object;
+            HashMap<String, Object> hashMapObject = new HashMap<>();
+            jsonObject.keys().forEachRemaining(key -> hashMapObject.put(key, jsonObject.get(key)));
             data.add(hashMapObject);
         }
         return data;
-=======
-    public HashMap<String,Object>  readJson(String file) throws IOException
-    {
-        JSONArray datasJson = read(file);
-        HashMap<String,Object> data = new HashMap<>();
-        //datasJson.forEach();
-        return null;
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     }
     private JSONArray read(String file) throws IOException
     {
