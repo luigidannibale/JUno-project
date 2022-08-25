@@ -4,6 +4,7 @@ import View.DeckColor;
 import View.GraphicQuality;
 import org.json.JSONObject;
 
+import java.awt.*;
 import java.io.*;
 import java.util.HashMap;
 
@@ -13,12 +14,12 @@ public class Config {
     public static int musicVolume;
     public static DeckColor deckStyle;
     public static GraphicQuality graphicQuality;
-    public static double scalingPercentage = 0;
+    public static double scalingPercentage;
     private final String fileName = "config.json";
 
     /**
-     * Tries to read datas from file, if something goes wrong: <br/>
-     * assigns default values :
+     * Tries to read datas from file, if something goes wrong
+     * assigns the folowing default values :
      * <ul>
      *  <li>effectsVolume = 50;</li>
      *  <li>musicVolume = 50;</li>
@@ -38,17 +39,18 @@ public class Config {
         musicVolume = 50;
         deckStyle = DeckColor.WHITE;
         graphicQuality = GraphicQuality.LOW;
-        if(scalingPercentage == 0) scalingPercentage = 1;
+        refreshScalingPercentage();
     }
 
-    public Config(int effectsVolume, int musicVolume, DeckColor deckStyle, GraphicQuality graphicQuality, double scalingPercentage)
+    public Config(int effectsVolume, int musicVolume, DeckColor deckStyle, GraphicQuality graphicQuality)
     {
         this.effectsVolume = effectsVolume;
         this.musicVolume = musicVolume;
         this.deckStyle = deckStyle;
         this.graphicQuality = graphicQuality;
-        this.scalingPercentage = scalingPercentage;
+        refreshScalingPercentage();
     }
+    public void refreshScalingPercentage() { scalingPercentage = Toolkit.getDefaultToolkit().getScreenSize().getWidth()/1920; }
 
     public boolean saveConfig()
     {
@@ -56,9 +58,8 @@ public class Config {
 
         info.put("effectsVolume", effectsVolume);
         info.put("musicVolume", musicVolume);
-        info.put("deckStyle", deckStyle.VALUE);
-        info.put("graphicQuality", graphicQuality.VALUE);
-        info.put("scalingPercentage", scalingPercentage);
+        info.put("deckStyle", deckStyle.name());
+        info.put("graphicQuality", graphicQuality.name());
 
         FileManager fm = new FileManager();
         return fm.writeJson(new HashMap[]{info}, fileName);
@@ -74,13 +75,13 @@ public class Config {
             musicVolume = (int)info.get("musicVolume");
             graphicQuality = GraphicQuality.valueOf((String) info.get("graphicQuality"));
             deckStyle = DeckColor.valueOf((String)info.get("deckStyle"));
-            scalingPercentage = (double) info.get("scalingPercentage");
+            refreshScalingPercentage();
             return true;
         }
         catch (Exception e)
         {
             assignDefaultValues();
-            //e.printStackTrace();
+            e.printStackTrace();
             return false;
         }
     }

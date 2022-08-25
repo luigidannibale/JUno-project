@@ -38,10 +38,7 @@ public class MainFrameController {
 
     public MainFrameController()
     {
-        Config.scalingPercentage = Toolkit.getDefaultToolkit().getScreenSize().getHeight()/1080;
         config = new Config();
-//        configDeprecated = new ConfigDeprecated(this);
-//        configDeprecated.loadConfig();
 
         view = new MainFrame();
 

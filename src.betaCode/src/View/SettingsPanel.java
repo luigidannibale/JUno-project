@@ -31,7 +31,7 @@ public class SettingsPanel extends ResizablePanel
 
     public SettingsPanel()
     {
-        super(900, 600, 6);
+        super(900, 600,0);
         imagePath = "resources/images/MainFrame/SettingsPanel/";
         setLayout(new GridBagLayout());
         setOpaque(false);
@@ -40,7 +40,8 @@ public class SettingsPanel extends ResizablePanel
         InitializeComponents();
     }
 
-    private void InitializeComponents(){
+    private void InitializeComponents()
+    {
         //Components
         effectsLabel = new ImageComponent(imagePath+"EffectsVolume/high.png", -1, -1, false);
         musicLabel = new ImageComponent(imagePath+"MusicVolume.png", -1, -1, false);

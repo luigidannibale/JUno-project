@@ -23,6 +23,7 @@ public class GifComponent extends ImageComponent{
             width = gif.getIconWidth();
             height = gif.getIconHeight();
         }
+
         gif = ScaleImage(gif, width, height);
 
         addMouseListener(new MouseAdapter() {

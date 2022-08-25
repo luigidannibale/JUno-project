@@ -72,7 +72,7 @@ public class GamePanel extends JPanel implements Observer {
         InitializeComponents();
         CardImage.height = (int) (180 * Config.scalingPercentage);
         CardImage.width = (int) (120 * Config.scalingPercentage);
-        
+
         //mouse listener per cliccare le carte
         //andra messo nel controller
         addMouseListener(new MouseAdapter() {

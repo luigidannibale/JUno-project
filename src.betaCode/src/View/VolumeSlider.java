@@ -1,5 +1,7 @@
 package View;
 
+import Utilities.Config;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -15,7 +17,7 @@ public class VolumeSlider extends JProgressBar {
 
     public VolumeSlider()
     {
-        setPreferredSize(new Dimension(200, 20));
+        setPreferredSize(new Dimension((int)(200*Config.scalingPercentage),(int)(20*Config.scalingPercentage)));
         setStringPainted(true);
         setFont(new Font("MV Boli", Font.PLAIN, 14));
         setForeground(Color.BLUE);
@@ -37,11 +39,14 @@ public class VolumeSlider extends JProgressBar {
                 if (getValue() == 0) newImage += fileNames[0];
                 else if (getValue() < 50) newImage += fileNames[1];
                 else newImage += fileNames[2];
-                icon.setIcon(new ImageIcon((newImage)));
+                var icona = new ImageIcon((newImage));
+                icon.setIcon(ScaleImage(icona, icona.getIconWidth(), icona.getIconHeight()));
             }
         });
     }
-
+    protected ImageIcon ScaleImage(ImageIcon image, int width, int height){
+        return new ImageIcon(image.getImage().getScaledInstance((int) (width * Config.scalingPercentage), (int) (height * Config.scalingPercentage), Image.SCALE_DEFAULT));
+    }
     public void setValue(int value){
         super.setValue(value);
     }

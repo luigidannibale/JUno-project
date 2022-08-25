@@ -31,10 +31,12 @@ public class ImageComponent extends JLabel
          */
 
         icona = new ImageIcon(imagePath);
-        if (width < 0 && height < 0){
+        if (width < 0 && height < 0)
+        {
             width = icona.getIconWidth();
             height = icona.getIconHeight();
         }
+
         icona = ScaleImage(icona, width, height);
 
         if(addDefaultScalingListener) AddScalingOnHovering();
@@ -69,6 +71,8 @@ public class ImageComponent extends JLabel
     protected ImageIcon ScaleImage(ImageIcon image, int width, int height){
         return new ImageIcon(image.getImage().getScaledInstance((int) (width * Config.scalingPercentage), (int) (height * Config.scalingPercentage), Image.SCALE_DEFAULT));
     }
+}
+//nouse code
 
     /*public void AddSclingOnHoveringGif(){
         addMouseListener(new MouseAdapter() {
@@ -105,4 +109,3 @@ public class ImageComponent extends JLabel
         setIcon(getImageIcon());
     }*/
 
-}

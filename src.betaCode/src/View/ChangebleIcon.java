@@ -3,7 +3,8 @@ package View;
 import javax.swing.*;
 import java.util.HashMap;
 
-public class ChangebleIcon extends JLabel{
+public class ChangebleIcon extends JLabel
+{
     public HashMap<String,Icon> ICONS= new HashMap<>();
     public ChangebleIcon(String path, String[]fileNames,String fileExtension)
     {
