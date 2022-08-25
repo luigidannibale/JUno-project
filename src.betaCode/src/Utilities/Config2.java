@@ -6,6 +6,7 @@ import netscape.javascript.JSObject;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.awt.*;
 import java.io.*;
 import java.util.HashMap;
 
@@ -16,6 +17,7 @@ public class Config2 {
     private int musicVolume;
     private DeckColor deckStyle;
     private GraphicQuality graphicQuality;
+    private double scalingPercentage;
     private final String fileName = "config.json";
 
     /**
@@ -39,9 +41,10 @@ public class Config2 {
         this.musicVolume = 50;
         this.deckStyle = DeckColor.WHITE;
         this.graphicQuality = GraphicQuality.LOW;
+        this.scalingPercentage = 1;
     }
 
-    public Config2(int effectsVolume, int musicVolume, DeckColor deckStyle,GraphicQuality graphicQuality)
+    public Config2(int effectsVolume, int musicVolume, DeckColor deckStyle,GraphicQuality graphicQuality, double scalingPercentage)
     {
         this.effectsVolume = effectsVolume;
         this.musicVolume = musicVolume;
@@ -57,21 +60,26 @@ public class Config2 {
         info.put("musicVolume",musicVolume);
         info.put("deckStyle",deckStyle.VALUE);
         info.put("graphicQuality",graphicQuality.VALUE);
+        info.put("scalingPercentage",scalingPercentage);
 
         FileManager fm = new FileManager();
-        return false;//fm.writeJson(info,fileName);
+        return fm.writeJson(new HashMap[]{info},fileName);
     }
     public boolean loadConfig()
     {
         try(BufferedReader br = new BufferedReader(new FileReader(fileName)))
         {
             JSONObject info = new JSONObject(br.readLine());
-            effectsVolume = Integer.parseInt((String) info.get("effectsVolume"));
-            musicVolume = Integer.parseInt((String) info.get("musicVolume"));
-            graphicQuality = GraphicQuality.valueOf((String)info.get("graphicQuality"));
-            deckStyle = DeckColor.valueOf((String)info.get("deckStyle"));
+            effectsVolume = Integer.parseInt(info.getString("effectsVolume"));
+            musicVolume = Integer.parseInt( info.getString("musicVolume"));
+            graphicQuality = GraphicQuality.valueOf(info.getString("graphicQuality"));
+            deckStyle = DeckColor.valueOf(info.getString("deckStyle"));
+            scalingPercentage = Double.parseDouble(info.getString("scalingPercentage"));
             return true;
-        } catch (IOException e){
+        }
+        catch (IOException e)
+        {
+            assignDefaultValues();
             e.printStackTrace();
             return false;
         }

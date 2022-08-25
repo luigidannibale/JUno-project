@@ -21,8 +21,8 @@ public class CardImage {
 
     //private boolean covered = false;
 
-    public static final int width = 120;
-    public static final int height = 180;
+    public static int width = 120;
+    public static int height = 180;
 
     private Rectangle position;
     private int offsetY = 0;
@@ -37,7 +37,8 @@ public class CardImage {
         this(card, 0);
     }
 
-    public CardImage(Card card, int rotation) {
+    public CardImage(Card card, int rotation)
+    {
         this.card = card;
         this.rotation = rotation;
         newGetCard();
@@ -48,7 +49,6 @@ public class CardImage {
             case 270 -> drawImage = backLeft;
             default -> drawImage = img;
         }
-
         //position = new Rectangle();
     }
 

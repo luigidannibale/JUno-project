@@ -33,11 +33,15 @@ public class MainFrame extends JFrame
     private JPanel settingBackground;
     private JPanel gameBackground;
 
-    public MainFrame()
+    public MainFrame(double scalingPercentage)
     {
         super("J Uno");
-        double p = ResizablePanel.SCALING_PERCENTAGE = getToolkit().getScreenSize().getWidth()/1920;
-        dimension.setSize(dimension.getWidth()*p, dimension.getHeight()*p);
+        //System.out.println(getToolkit().getScreenSize().toString());
+        //double p = ResizablePanel.SCALING_PERCENTAGE = getToolkit().getScreenSize().getWidth()/1920;
+        ResizablePanel.SCALING_PERCENTAGE = scalingPercentage;
+        System.out.println("Scaling percentage : "+scalingPercentage);
+        dimension.setSize(dimension.getWidth()*scalingPercentage, dimension.getHeight()*scalingPercentage);
+
         background = Utils.getImage(pathImages + "background.png");
         setContentPane(new JPanel(){
             @Override

@@ -37,7 +37,9 @@ public class MainFrameController {
     private Panels currentPanel;
 
     public MainFrameController(){
-        view = new MainFrame();
+        System.out.println(Toolkit.getDefaultToolkit().getScreenSize().toString());
+        double scalingPercentage = Toolkit.getDefaultToolkit().getScreenSize().getHeight()/1080;
+        view = new MainFrame(scalingPercentage);
 
         backMusic = AudioManager.getInstance();
         soundEffects = AudioManager.getInstance();

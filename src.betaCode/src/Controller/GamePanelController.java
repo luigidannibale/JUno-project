@@ -9,6 +9,7 @@ import Model.Rules.SevenoRules;
 import Model.Rules.UnoGameRules;
 import Model.UnoGameTable;
 import View.GamePanel;
+import View.ResizablePanel;
 
 public class GamePanelController {
     //UnoGame uno = new tipoDiUno(new Player[] {mario,filippo,marco,gianfranco});
@@ -27,7 +28,7 @@ public class GamePanelController {
             default -> rules = new ClassicRules();
         }
         model = new UnoGameTable(new Player[]{new HumanPlayer("Piero"),new AIPlayer("Ai 1"),new AIPlayer("Ai 2"),new AIPlayer("Ai 3")}, rules);
-        view = new GamePanel(model);
+        view = new GamePanel(model, ResizablePanel.SCALING_PERCENTAGE);
 
         model.addObserver(view);
 

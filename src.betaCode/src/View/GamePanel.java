@@ -62,13 +62,17 @@ public class GamePanel extends JPanel implements Observer {
 
     int ticksPerSecond;
 
-    public GamePanel(UnoGameTable model){
+    public GamePanel(UnoGameTable model,double scalingPercentage)
+    {
         this.model = model;          //server per prendere dati
         setOpaque(true);
         setDoubleBuffered(true);
         //debug
         setBackground(Color.GREEN);
         InitializeComponents();
+        CardImage.height *= scalingPercentage;
+        CardImage.width *= scalingPercentage;
+
 
         //mouse listener per cliccare le carte
         //andra messo nel controller
