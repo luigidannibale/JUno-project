@@ -5,43 +5,22 @@ import Utilities.Utils;
 import javax.swing.*;
 import java.awt.*;
 
-public class MainFrame extends JFrame {
-    public enum Cards{
+public class MainFrame extends JFrame
+{
+    public enum Cards
+    {
         MAIN,
         SETTINGS,
         GAME;
 
         @Override
-        public String toString() {
-            return name();
-        }
+        public String toString() { return name(); }
     }
     
     private final String pathImages = "resources/images/MainFrame/MainframeDesignElements/";
-    /*public enum Dimensions{
-        FULLHD(new Dimension(1920,1080)),
-        WIDESCREEN(new Dimension(1440,920)),
-        HD(new Dimension(1080,720));
-
-        private final Dimension dimension;
-
-        Dimensions(Dimension dimension){
-            this.dimension = dimension;
-        }
-
-        public Dimension getDimension() {
-            return dimension;
-        }
-
-        @Override
-        public String toString() {
-            int width = (int)getDimension().getWidth();
-            int height = (int)getDimension().getHeight();
-            return width + "x" + height;
-        }
-    }*/
 
     //private Dimensions currentDimension = Dimensions.WIDESCREEN;
+
     private Dimension dimension = new Dimension(1440,920);
     private Image background;
     private GridBagConstraints gbc;
@@ -57,7 +36,8 @@ public class MainFrame extends JFrame {
     public MainFrame()
     {
         super("J Uno");
-
+        double p = ResizablePanel.SCALING_PERCENTAGE = getToolkit().getScreenSize().getWidth()/1920;
+        dimension.setSize(dimension.getWidth()*p, dimension.getHeight()*p);
         background = Utils.getImage(pathImages + "background.png");
         setContentPane(new JPanel(){
             @Override
