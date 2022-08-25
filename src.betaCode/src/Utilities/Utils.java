@@ -90,7 +90,8 @@ public class Utils {
     }
 
     public static Image getImage(String path){
-        return new ImageIcon(path).getImage();
+        var image = new ImageIcon(path).getImage();
+        return image.getScaledInstance((int) (image.getWidth(null) * Config.scalingPercentage), (int) (image.getHeight(null) * Config.scalingPercentage), Image.SCALE_DEFAULT);
     }
 
     public static BufferedImage getBufferedImage(String path){

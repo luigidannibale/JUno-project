@@ -1,11 +1,11 @@
 package View;
 
 import Model.Cards.Card;
-import Model.Cards.CardColor;
 import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.UnoGameTable;
+import Utilities.ConfigDeprecated;
 import Utilities.Config;
 import Utilities.Utils;
 import View.Animations.Animation;
@@ -62,7 +62,7 @@ public class GamePanel extends JPanel implements Observer {
 
     int ticksPerSecond;
 
-    public GamePanel(UnoGameTable model,double scalingPercentage)
+    public GamePanel(UnoGameTable model)
     {
         this.model = model;          //server per prendere dati
         setOpaque(true);
@@ -70,10 +70,9 @@ public class GamePanel extends JPanel implements Observer {
         //debug
         setBackground(Color.GREEN);
         InitializeComponents();
-        CardImage.height *= scalingPercentage;
-        CardImage.width *= scalingPercentage;
-
-
+        CardImage.height = (int) (180 * Config.scalingPercentage);
+        CardImage.width = (int) (120 * Config.scalingPercentage);
+        
         //mouse listener per cliccare le carte
         //andra messo nel controller
         addMouseListener(new MouseAdapter() {
@@ -187,7 +186,7 @@ public class GamePanel extends JPanel implements Observer {
         g.fillRect(0,0, getWidth(), getHeight());
 
         Graphics2D g2 = (Graphics2D) g;
-        if (Config.highGraphics) Utils.applyQualityRenderingHints(g2);
+        if (Config.graphicQuality == GraphicQuality.HIGH) Utils.applyQualityRenderingHints(g2);
 
         if (players != null){
             drawHorizontalHand(players[0], g2, getHeight() - CardImage.height);

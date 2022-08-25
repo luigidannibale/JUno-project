@@ -1,6 +1,7 @@
 package Controller;
 
 import Utilities.Config;
+import Utilities.ConfigDeprecated;
 import View.DeckColor;
 import View.GraphicQuality;
 import View.SettingsPanel;
@@ -14,7 +15,7 @@ public class SettingsController {
 
     //MainFrame.Dimensions dimesionChanges;
     private DeckColor deckChanges;
-    private boolean graphicsChanges;
+    private GraphicQuality graphicsChanges;
     private MainFrameController.Panels returnPanel;
 
     public SettingsController(MainFrameController mainFrame){
@@ -31,8 +32,8 @@ public class SettingsController {
                 //mainFrame.backMusic.setFloatControlVolume();
                 mainFrame.soundEffects.setVolume(view.getEffectsVolumeSlider().getValue());
                 //mainFrame.soundEffects.setFloatControlVolume();
-                Config.defaultColor = deckChanges;
-                Config.highGraphics = graphicsChanges;
+                Config.deckStyle = deckChanges;
+                Config.graphicQuality = graphicsChanges;
                 if (returnPanel == MainFrameController.Panels.GAME) mainFrame.resumeGame();
                 mainFrame.getConfig().saveConfig();
                 mainFrame.setVisiblePanel(returnPanel);
@@ -68,12 +69,12 @@ public class SettingsController {
         });
 
         view.getQualityCombo().addActionListener(e -> {
-            String selectedQuality = (String) ((JComboBox<String>) e.getSource()).getSelectedItem();
-            if (selectedQuality != null) graphicsChanges = selectedQuality.equals(GraphicQuality.HIGH.VALUE);
+            GraphicQuality selectedQuality = GraphicQuality.valueOf( ((String) ((JComboBox<String>) e.getSource()).getSelectedItem()).toUpperCase());
+            if (selectedQuality != null) graphicsChanges = selectedQuality;
         });
-        view.getQualityCombo().setSelectedIndex(Config.highGraphics ? 0 : 1);
+        view.getQualityCombo().setSelectedIndex(ConfigDeprecated.highGraphics ? 0 : 1);
 
-        changeDeckBack(Config.defaultColor);
+        changeDeckBack(ConfigDeprecated.defaultColor);
     }
 
     void changeDeckBack(DeckColor c){

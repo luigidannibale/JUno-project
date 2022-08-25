@@ -1,8 +1,8 @@
 package Controller;
 
 import Utilities.AudioManager;
+import Utilities.ConfigDeprecated;
 import Utilities.Config;
-import Utilities.Config2;
 import View.*;
 
 import javax.swing.*;
@@ -25,8 +25,8 @@ public class MainFrameController {
     public AudioManager backMusic;
     public AudioManager soundEffects;
     //public DeckColor deckColor = DeckColor.WHITE;
+//    private ConfigDeprecated configDeprecated;
     private Config config;
-    private Config2 config2;
 
     private StartingMenuController startingMenuController;
     private SettingsController settingsController;
@@ -36,16 +36,17 @@ public class MainFrameController {
 
     private Panels currentPanel;
 
-    public MainFrameController(){
-        System.out.println(Toolkit.getDefaultToolkit().getScreenSize().toString());
-        double scalingPercentage = Toolkit.getDefaultToolkit().getScreenSize().getHeight()/1080;
-        view = new MainFrame(scalingPercentage);
+    public MainFrameController()
+    {
+        Config.scalingPercentage = Toolkit.getDefaultToolkit().getScreenSize().getHeight()/1080;
+        config = new Config();
+//        configDeprecated = new ConfigDeprecated(this);
+//        configDeprecated.loadConfig();
+
+        view = new MainFrame();
 
         backMusic = AudioManager.getInstance();
         soundEffects = AudioManager.getInstance();
-
-        config = new Config(this);
-        config.loadConfig();
 
         startingMenuController = new StartingMenuController(this);
         settingsController = new SettingsController(this);
@@ -73,7 +74,6 @@ public class MainFrameController {
                 }
             }
         });
-
         setVisiblePanel(Panels.STARTMENU);
     }
 

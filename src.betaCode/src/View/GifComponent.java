@@ -1,5 +1,7 @@
 package View;
 
+import Utilities.Config;
+
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,8 +18,12 @@ public class GifComponent extends ImageComponent{
     public GifComponent(String imagePath, int width, int height){
         super(imagePath + ".png", width, height, false);
 
-        //gif = new ImageIcon(imagePath + ".gif");
-        gif = ScaleImage(imagePath + ".gif", width, height);
+        gif = new ImageIcon(imagePath + ".gif");
+        if (width < 0 && height < 0){
+            width = gif.getIconWidth();
+            height = gif.getIconHeight();
+        }
+        gif = ScaleImage(gif, width, height);
 
         addMouseListener(new MouseAdapter() {
             @Override

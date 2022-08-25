@@ -1,4 +1,6 @@
 package View;
+import Utilities.Config;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -6,12 +8,11 @@ import java.awt.*;
 public class ResizablePanel extends JPanel {
     protected int panelWidth, panelHeight;
     protected String imagePath;
-    public static double SCALING_PERCENTAGE=1;
 
     public ResizablePanel(int panelWidth,int panelHeight, int borderOffset)
     {
-        this.panelWidth = (int) (panelWidth*SCALING_PERCENTAGE);
-        this.panelHeight = (int) (panelHeight*SCALING_PERCENTAGE);
+        this.panelWidth = (int) (panelWidth * Config.scalingPercentage);
+        this.panelHeight = (int) (panelHeight * Config.scalingPercentage);
         setSize(this.panelWidth, this.panelHeight);
 
         int borderPX = this.panelHeight*borderOffset/100;

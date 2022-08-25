@@ -4,6 +4,7 @@ import Model.Cards.Card;
 import Model.Cards.CardColor;
 import Model.Cards.CardValue;
 import Utilities.Config;
+import Utilities.ConfigDeprecated;
 import Utilities.Utils;
 
 import java.awt.*;
@@ -114,11 +115,11 @@ public class CardImage {
         else num = card.getValue() == CardValue.WILD ? 14 : 14 * 5;
         String numero = String.format("%02d", num) + ".png";
 
-        img = Utils.getBufferedImage(path + Config.defaultColor + "/" + numero);
+        img = Utils.getBufferedImage(path + Config.deckStyle + "/" + numero);
     }
 
     private void newGetCard(){
         String cardName = card.getValue().name() + card.getColor().name() + ".png";
-        img = Utils.getBufferedImage(path + Config.defaultColor + "/" + cardName);
+        img = Utils.getBufferedImage(path + Config.deckStyle + "/" + cardName);
     }
 }

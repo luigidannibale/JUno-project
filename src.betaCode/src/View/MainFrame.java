@@ -1,5 +1,6 @@
 package View;
 
+import Utilities.Config;
 import Utilities.Utils;
 
 import javax.swing.*;
@@ -19,28 +20,22 @@ public class MainFrame extends JFrame
     
     private final String pathImages = "resources/images/MainFrame/MainframeDesignElements/";
 
-    //private Dimensions currentDimension = Dimensions.WIDESCREEN;
-
     private Dimension dimension = new Dimension(1440,920);
     private Image background;
     private GridBagConstraints gbc;
-    //private JPanel titleBar;
-
-    //int mouseX;
-    //int mouseY;
 
     private JPanel mainBackground;
     private JPanel settingBackground;
     private JPanel gameBackground;
 
-    public MainFrame(double scalingPercentage)
+    public MainFrame()
     {
         super("J Uno");
         //System.out.println(getToolkit().getScreenSize().toString());
         //double p = ResizablePanel.SCALING_PERCENTAGE = getToolkit().getScreenSize().getWidth()/1920;
-        ResizablePanel.SCALING_PERCENTAGE = scalingPercentage;
-        System.out.println("Scaling percentage : "+scalingPercentage);
-        dimension.setSize(dimension.getWidth()*scalingPercentage, dimension.getHeight()*scalingPercentage);
+        //ResizablePanel.SCALING_PERCENTAGE = scalingPercentage;
+        //System.out.println("Scaling percentage : "+scalingPercentage);
+        dimension.setSize(dimension.getWidth() * Config.scalingPercentage, dimension.getHeight() * Config.scalingPercentage);
 
         background = Utils.getImage(pathImages + "background.png");
         setContentPane(new JPanel(){

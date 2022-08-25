@@ -1,4 +1,5 @@
 package View;
+import Utilities.Config;
 import Utilities.Utils;
 
 import javax.swing.*;
@@ -11,6 +12,7 @@ import java.awt.event.MouseListener;
 public class ImageComponent extends JLabel
 {
     protected ImageIcon icona;
+    //protected double scalingPercentage = Config.scalingPercentage;
 
     public ImageComponent(String imagePath)
     {
@@ -19,12 +21,22 @@ public class ImageComponent extends JLabel
 
     public ImageComponent(String imagePath, int width, int height, boolean addDefaultScalingListener)
     {
+        /*
         icona = (width > 0 && height > 0)?  ScaleImage(imagePath, width, height):
                                             new ImageIcon(imagePath);
         if (width < 0 && height < 0){
             width = icona.getIconWidth();
             height = icona.getIconHeight();
         }
+         */
+
+        icona = new ImageIcon(imagePath);
+        if (width < 0 && height < 0){
+            width = icona.getIconWidth();
+            height = icona.getIconHeight();
+        }
+        icona = ScaleImage(icona, width, height);
+
         if(addDefaultScalingListener) AddScalingOnHovering();
         setPreferredSize(new Dimension(width, height));
         setIcon(icona);
@@ -54,8 +66,8 @@ public class ImageComponent extends JLabel
             }});
     };
 
-    protected ImageIcon ScaleImage(String imagePath, int width, int height){
-        return new ImageIcon(Utils.getImage(imagePath).getScaledInstance(width, height, Image.SCALE_DEFAULT));
+    protected ImageIcon ScaleImage(ImageIcon image, int width, int height){
+        return new ImageIcon(image.getImage().getScaledInstance((int) (width * Config.scalingPercentage), (int) (height * Config.scalingPercentage), Image.SCALE_DEFAULT));
     }
 
     /*public void AddSclingOnHoveringGif(){
