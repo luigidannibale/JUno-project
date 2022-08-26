@@ -27,7 +27,7 @@ public class Juno {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D)g;
                 Utils.applyQualityRenderingHints(g2);
-                g2.drawImage((new ImageIcon("resources/images/icon3.png")).getImage(), 0,0, 550, 487, null);
+                g2.drawImage(Utils.getImage("resources/images/icon3.png"), 0,0, 550, 487, null);
             }
         }, SwingConstants.CENTER);
         g.setSize(new Dimension(550,487));

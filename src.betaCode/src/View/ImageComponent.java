@@ -12,6 +12,9 @@ import java.awt.event.MouseListener;
 public class ImageComponent extends JLabel
 {
     protected ImageIcon icona;
+
+    private int scaleX = 15;
+    private int scaleY = 5;
     //protected double scalingPercentage = Config.scalingPercentage;
 
     public ImageComponent(String imagePath)
@@ -50,7 +53,9 @@ public class ImageComponent extends JLabel
     private void scaleUpIcon()
     {
         Image im = ((ImageIcon) getIcon()).getImage();
-        im = im.getScaledInstance(im.getWidth(this)+15, im.getHeight(this)+5, Image.SCALE_DEFAULT);
+        int width = (int) (im.getWidth(this) + scaleX * Config.scalingPercentage);
+        int height = (int) (im.getHeight(this) + scaleY * Config.scalingPercentage);
+        im = im.getScaledInstance(width, height, Image.SCALE_DEFAULT);
         super.setIcon(new ImageIcon(im));
     }
 

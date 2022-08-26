@@ -1,6 +1,7 @@
 package View.Animations;
 
 import Model.Cards.CardColor;
+import Utilities.Config;
 import Utilities.Utils;
 
 import java.awt.*;
@@ -21,6 +22,8 @@ public class RotatingAnimation extends Animation{
     private int y;
     private int width;
     private int height;
+    private int imageWidth;
+
     private String path;
 
     BufferedImage image;
@@ -38,8 +41,8 @@ public class RotatingAnimation extends Animation{
 
         changeColor(CardColor.BLUE);
 
-        width = image.getWidth();
-        height = image.getHeight();
+        imageWidth = (int) (image.getWidth() * Config.scalingPercentage);
+        height = (int) (image.getHeight() * Config.scalingPercentage);
 
         timer.addActionListener(e ->{
             degree += Math.toRadians(increment);
@@ -61,13 +64,13 @@ public class RotatingAnimation extends Animation{
     //dont like this
     public void changeTurn(boolean clockwise){
         if (!clockwise) {
-            imageX = x + image.getWidth();
-            width = -image.getWidth();
+            imageX = x + imageWidth;
+            width = -imageWidth;
             increment = SPEED;
         }
         else{
             imageX = x;
-            width = image.getWidth();
+            width = imageWidth;
             increment = -SPEED;
         }
     }
@@ -79,7 +82,7 @@ public class RotatingAnimation extends Animation{
 
         g.setComposite(transparent);
         g.rotate(degree, x, y);                                                     //setta la rotazione dell'immagine a centro schermo
-        g.translate(-image.getWidth() / 2, -image.getHeight() / 2);               //modifica l'inizio del disegno
+        g.translate(-imageWidth / 2, -height / 2);               //modifica l'inizio del disegno
         g.drawImage(image, imageX, y, width, height, null);
         //g.drawImage(image, x - width / 2, y - height / 2,width, height, null);
 
