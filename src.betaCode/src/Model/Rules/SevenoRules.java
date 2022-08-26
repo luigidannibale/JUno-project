@@ -40,9 +40,8 @@ public class SevenoRules extends UnoGameRules
 
         if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD)
         {
-            //color deve essere preso come scelta dell'utente
-            CardColor color = CardColor.RED;
-            ((WildAction) lastCard).changeColor(turnManager, color);
+            assert (parameters.getColor() != null);
+            ((WildAction) lastCard).changeColor(turnManager, parameters.getColor());
         }
         if(lastCard instanceof DrawCard)
             players[turnManager.next()].drawCards(parameters.getDeck().draw(((DrawCard) lastCard).getNumberOfCardsToDraw()));
@@ -50,10 +49,13 @@ public class SevenoRules extends UnoGameRules
             ((ReverseCard) lastCard).performReverseAction(turnManager);
         if(lastCard instanceof SkipAction)
             ((SkipAction) lastCard).performSkipAction(turnManager);
-
-        if (lastCard.getValue() == CardValue.SEVEN){
+        if (lastCard.getValue() == CardValue.SEVEN)
+        {
             //il giocatore che ha giocato deve scambiare le carte con un altro player di sua scelta
             //----> i nomi dei player devono essere cliccabili
+            assert (parameters.getPlayerToSwapCards() != null);
+            Player currentPlayer = players[turnManager.getPlayer()];
+            currentPlayer.setHand(swapHand(currentPlayer.getHand(),parameters.getPlayerToSwapCards()));
         }
         if (lastCard.getValue() == CardValue.ZERO){
             //i giocatori si scambiano le carte in base al senso del turno
@@ -100,10 +102,10 @@ public class SevenoRules extends UnoGameRules
         turnManager.passTurn();
     }
 
-    private Stack<Card> swapHand(Stack<Card> newHand, Player nextPlayer){
-        var oldHand = nextPlayer.getHand();
-        nextPlayer.setHand(newHand);
-        return oldHand;
+    private Stack<Card> swapHand(Stack<Card> handToGiveAway, Player playerToSwapWith){
+        Stack<Card> handToGet = playerToSwapWith.getHand();
+        playerToSwapWith.setHand(handToGiveAway);
+        return handToGet;
     }
 
 }

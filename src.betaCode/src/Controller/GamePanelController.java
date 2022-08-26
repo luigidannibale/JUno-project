@@ -66,6 +66,8 @@ public class GamePanelController {
                                     Options parameters;
                                     if(card.getCard().getValue() == CardValue.WILD)
                                         parameters = new Options.OptionsBuilder(model.getTurnManager(), model.getPlayers(), model.getDeck()).color(view.choseColorByUser()).build();
+                                    if(card.getCard().getValue() == CardValue.SEVEN && rules instanceof SevenoRules)
+                                        parameters = new Options.OptionsBuilder(model.getTurnManager(), model.getPlayers(), model.getDeck()).playerToSwapCards(view.chosePlayerToSwap()).build();
                                     else
                                         parameters = new Options.OptionsBuilder(model.getTurnManager(), model.getPlayers(), model.getDeck()).build();
                                     model.cardActionPerformance(parameters);

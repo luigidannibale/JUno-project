@@ -114,6 +114,23 @@ public class GamePanel extends JPanel implements Observer {
                 colors, colors[0]);
         return CardColor.valueOf(colors[choice]);
     }
+    public Player chosePlayerToSwap()
+    {
+        String[] playersNames = new String[players.length];
+        for (int i = 0; i <players.length ; i++)
+            playersNames[i] = players[i].getName();
+
+        var choice = JOptionPane.showOptionDialog(
+                null,
+                null,
+                "Chose the player to swap hand with",
+                2,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                playersNames, playersNames[0]);
+
+        return Arrays.stream(players).toList().get(choice);
+    }
     public void pauseGame()
     {
         currentState = State.PAUSED;
