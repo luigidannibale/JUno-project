@@ -49,7 +49,6 @@ public class GamePanelController {
                 if (view.getCurrentState() == GamePanel.State.PLAYER_TURN)
                 {
                     if (!currentPlayer.HasDrew() && view.getDeck().isInMouse(x, y))
-
                         drawOutCard(currentPlayer);
 
                     //var iterator = playerHands.get(players[0]).listIterator();
@@ -62,15 +61,16 @@ public class GamePanelController {
                             new Thread( () -> {
                                 if (anim != null){
                                     anim.Join();
+                                    System.out.println("cardgetcard: "+card.getCard());
                                     model.playCard(card.getCard());
-                                    Options parameters;
-                                    if(card.getCard().getValue() == CardValue.WILD)
-                                        parameters = new Options.OptionsBuilder(model.getTurnManager(), model.getPlayers(), model.getDeck()).color(view.choseColorByUser()).build();
-                                    if(card.getCard().getValue() == CardValue.SEVEN && rules instanceof SevenoRules)
-                                        parameters = new Options.OptionsBuilder(model.getTurnManager(), model.getPlayers(), model.getDeck()).playerToSwapCards(view.chosePlayerToSwap()).build();
-                                    else
-                                        parameters = new Options.OptionsBuilder(model.getTurnManager(), model.getPlayers(), model.getDeck()).build();
-                                    model.cardActionPerformance(parameters);
+                                    Options.OptionsBuilder parameters = model.getOptions();
+                                    --oppure metterlo di qua
+                                    //si puo usare un try catch
+//                                    if(card.getCard().getValue() == CardValue.WILD)
+//                                        parameters.color(view.choseColorByUser());
+//                                    if(card.getCard().getValue() == CardValue.SEVEN && rules instanceof SevenoRules)
+//                                        parameters.playerToSwapCards(view.chosePlayerToSwap());
+//                                    model.cardActionPerformance(parameters.build());
                                 }
                             },"playing card").start();
                         }

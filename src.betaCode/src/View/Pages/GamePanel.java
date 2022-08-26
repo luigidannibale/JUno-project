@@ -97,7 +97,6 @@ public class GamePanel extends JPanel implements Observer {
 
         for (CardImage card : playerHands.get(players[0])) {
             //if the mouse is hovering on the card, the card goes up, all the others cards goes down
-            System.out.println(card.getCard());
             card.setOffsetY(card.isInMouse(x, y) ? -30 : 0);
         }
     }
@@ -226,6 +225,7 @@ public class GamePanel extends JPanel implements Observer {
         UnoGameTable model = (UnoGameTable) o;
         players = model.getPlayers();
         lastCard = model.getLastCard();
+        System.out.println("LAST CARD " + lastCard);
         deckSize = model.getDeck().size();
         createCards();
         currentPlayer = model.currentPlayer();
@@ -238,7 +238,7 @@ public class GamePanel extends JPanel implements Observer {
             rotatingAnimation.imageColor(discard.getCard().getColor());
         }
 
-        if (currentState == State.OTHERS_TURN)
+        if (currentState == State.OTHERS_TURN || (aiThread != null && !aiThread.isAlive()))
             asyncAITurn(model);
     }
 
@@ -246,7 +246,7 @@ public class GamePanel extends JPanel implements Observer {
         int[] rotations = new int[]{0, 270, 180, 90};
         for (Player player : players)
         {
-            assert (player.getHand().size() > 0):"Gamepanel->createcards";
+            assert (player.getHand().size() > 0):"Gamepanel->createcards size <= 0";
             int rotation = Arrays.stream(players).toList().indexOf(player);
             playerHands.put(player, player.getHand().stream().map(c -> new CardImage(c, rotations[rotation])).collect(Collectors.toCollection(ArrayList::new)));
         }

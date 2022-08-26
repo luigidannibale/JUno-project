@@ -4,7 +4,7 @@ package Model.Cards;
  * Class used to provide methods to build cards
  * @author D'annibale Luigi, Venturini Daniele
  */
-public class CardBuilder
+public class CardFactory
 {
     /**
      * Creates a classic Uno card, with {@link CardColor} and a {@link CardValue}

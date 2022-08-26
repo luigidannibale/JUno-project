@@ -93,9 +93,11 @@ public class UnoGameTable extends Observable {
         currentPlayer().setHasDrew(false);
         discards.push(card);
         turnManager.updateLastCardPlayed(card);
+
 //        Options parameters = new Options.OptionsBuilder(turnManager, players, deck).build();
-//        ruleManager.cardActionPerformance(parameters);
-//        updateObservers();
+        ruleManager.cardActionPerformance(getOptions().build());
+        updateObservers();
+        --non si sa se metterlo qui che poi gli dovresti passare options
     }
     public void cardActionPerformance(Options parameters)
     {
@@ -129,6 +131,10 @@ public class UnoGameTable extends Observable {
     }
 
     public TurnManager getTurnManager(){ return turnManager; }
+
+    public Options.OptionsBuilder getOptions(){
+        return new Options.OptionsBuilder(turnManager, players, deck);
+    }
 }
 //nousecode
     /*

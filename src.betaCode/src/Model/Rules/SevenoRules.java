@@ -40,7 +40,7 @@ public class SevenoRules extends UnoGameRules
 
         if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD)
         {
-            assert (parameters.getColor() != null);
+            assert (parameters.getColor() != null):"No player to swap hand with provided";
             ((WildAction) lastCard).changeColor(turnManager, parameters.getColor());
         }
         if(lastCard instanceof DrawCard)

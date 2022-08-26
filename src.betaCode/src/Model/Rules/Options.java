@@ -12,7 +12,6 @@ public class Options
     private final Deck deck;
     private final CardColor color;
     private final Player playerToSwapCards;
-
     private Options(OptionsBuilder builder)
     {
         turnManager = builder.turnManager;
@@ -21,6 +20,11 @@ public class Options
         color = builder.color;
         playerToSwapCards = builder.playerToSwapCards;
     }
+    public TurnManager getTurnManager() { return turnManager; }
+    public Player[] getPlayers() { return players; }
+    public Deck getDeck() { return deck; }
+    public CardColor getColor() { return color; }
+    public Player getPlayerToSwapCards() { return playerToSwapCards; }
 
     public static class OptionsBuilder
     {
@@ -35,7 +39,7 @@ public class Options
             this.players = players;
             this.deck = deck;
         }
-        public OptionsBuilder turnManager(TurnManager turnManager1)
+        public OptionsBuilder turnManager(TurnManager turnManager)
         {
             this.turnManager = turnManager;
             return this;
@@ -65,29 +69,4 @@ public class Options
             return new Options(this);
         }
     }
-
-
-
-    public TurnManager getTurnManager() {
-        return turnManager;
-    }
-
-    public Player[] getPlayers() {
-        return players;
-    }
-
-    public Deck getDeck() {
-        return deck;
-    }
-
-    public CardColor getColor() {
-        return color;
-    }
-
-    public Player getPlayerToSwapCards() {
-        return playerToSwapCards;
-    }
-
-
-
 }

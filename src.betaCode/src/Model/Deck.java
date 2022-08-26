@@ -107,7 +107,7 @@ public class Deck
     private void addManyCards(CardColor color, CardValue value, int numberOfCards)
     {
         for (int howMany = numberOfCards; howMany > 0; howMany--)
-            deck.add(CardBuilder.createCard(color, value));
+            deck.add(CardFactory.createCard(color, value));
     }
     /**
      * Pops the first card on the deck
