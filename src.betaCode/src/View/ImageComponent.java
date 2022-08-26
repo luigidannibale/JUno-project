@@ -39,7 +39,6 @@ public class ImageComponent extends JLabel
             width = icona.getIconWidth();
             height = icona.getIconHeight();
         }
-
         icona = ScaleImage(icona, width, height);
 
         if(addDefaultScalingListener) AddScalingOnHovering();

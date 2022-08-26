@@ -1,6 +1,7 @@
 package Model;
 
 import Model.Cards.Card;
+import Model.Cards.CardBuilder;
 import Model.Cards.CardColor;
 import Model.Cards.CardValue;
 
@@ -72,7 +73,7 @@ public class TurnManager
      * @param value : the value of the last card played
      * @param color : the color of the last card played (or the color that has been chosen after a wild)
      */
-    public void updateLastCardPlayed(CardValue value, CardColor color){ updateLastCardPlayed(new Card(color,value)); }
+    public void updateLastCardPlayed(CardValue value, CardColor color){ updateLastCardPlayed(CardBuilder.createFlowCard(color,value)); }
 
     //da vedere se utile
     public boolean clockwiseTurn() { return increase == 1;}

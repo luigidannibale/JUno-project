@@ -20,13 +20,13 @@ public class MainFrame extends JFrame
     
     private final String pathImages = "resources/images/MainFrame/MainframeDesignElements/";
 
-    private Dimension dimension = new Dimension(1440,920);
-    private Image background;
+    private final Dimension dimension = new Dimension(1440,920);
+    private final Image background;
     private GridBagConstraints gbc;
 
-    private JPanel mainBackground;
-    private JPanel settingBackground;
-    private JPanel gameBackground;
+    private final JPanel mainBackground;
+    private final JPanel settingBackground;
+    private final JPanel gameBackground;
 
     public MainFrame()
     {

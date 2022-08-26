@@ -30,7 +30,7 @@ public class GamePanel extends JPanel implements Observer {
     private final Color green = new Color(14, 209, 69);
     private final Color playerBackground = new Color(101, 132, 247, 160);
     private final Color currentPlayerBackground = new Color(255, 209, 26, 160);
-    private final Font fontNames = new Font("Digital-7", Font.PLAIN, 25);
+    private final Font fontNames;
 
     private int maxCardsWidth = 1350;
     private int maxCardsHeight = 810;
@@ -72,16 +72,17 @@ public class GamePanel extends JPanel implements Observer {
         InitializeComponents();
         CardImage.height = (int) (180 * Config.scalingPercentage);
         CardImage.width = (int) (120 * Config.scalingPercentage);
+        fontNames = new Font("Digital-7", Font.PLAIN, (int) (25 * Config.scalingPercentage));
 
         //mouse listener per cliccare le carte
         //andra messo nel controller
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (currentState == State.PLAYER_TURN) {
-                    int x = e.getX();
-                    int y = e.getY();
+                int x = e.getX();
+                int y = e.getY();
 
+                if (currentState == State.PLAYER_TURN) {
                     if (!currentPlayer.HasDrew() && deck.isInMouse(x, y)) {
                         currentPlayer.setHasDrew(true);
 
@@ -106,9 +107,9 @@ public class GamePanel extends JPanel implements Observer {
                     }
 
                     if (currentPlayer.HasDrew() && skipTurnPosition.contains(x , y)) model.passTurn();
-
-                    if (currentPlayer.HasOne() && unoPosition.contains(x, y)) currentPlayer.setSaidOne(true);
                 }
+
+                if (currentPlayer.HasOne() && unoPosition.contains(x, y)) currentPlayer.setSaidOne(true);
             }
         });
 

@@ -59,7 +59,7 @@ public class UnoGameTable extends Observable {
     public Player[] getPlayers() { return players; }
 
     public Deck getDeck() { return deck; }
-    public Card getLastCard(){ return discards.peek(); }
+    public Card getLastCard(){ return turnManager.getLastCardPlayed(); }
 
     public void drawCard(){
         Card drewCard = deck.draw();

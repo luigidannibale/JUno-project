@@ -13,15 +13,15 @@ public class Juno {
         //System.setProperty("sun.java2d.d3d", "false");
         //System.setProperty("sun.java2d.noddraw", "true");
 
-        MainFrameController table;
+        MainFrameController game;
 
         //provaDeck();
         //UnoGame uno = new tipoDiUno(new Player[] {mario,filippo,marco,gianfranco});
         //UnoGameTable uno = new UnoGameTable(new UnoBasicGame(new Player[] {gigi, d, w, wa}));
         //uno.startGame();
 
-        var g = new JWindow();
-        g.getContentPane().add(new JLabel(){
+        var loadingWindow = new JWindow();
+        loadingWindow.getContentPane().add(new JLabel(){
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -30,19 +30,19 @@ public class Juno {
                 g2.drawImage(Utils.getImage("resources/images/icon3.png"), 0,0, 550, 487, null);
             }
         }, SwingConstants.CENTER);
-        g.setSize(new Dimension(550,487));
-        g.setBackground(new Color(0,0,0,0));
-        g.setLocationRelativeTo(null);
-        g.setVisible(true);
-        table = new MainFrameController();
+        loadingWindow.setSize(new Dimension(550,487));
+        loadingWindow.setBackground(new Color(0,0,0,0));
+        loadingWindow.setLocationRelativeTo(null);
+        loadingWindow.setVisible(true);
+        game = new MainFrameController();
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        g.setVisible(false);
-        table.setVisible();
-        g.dispose();
+        loadingWindow.setVisible(false);
+        game.setVisible();
+        loadingWindow.dispose();
     }
 
 

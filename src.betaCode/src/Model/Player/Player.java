@@ -24,11 +24,13 @@ public abstract class Player
     public void drawCard(Card drewCard){
         hand.push(drewCard);
         hasOne = false;
+        saidOne = false;
     }
 
     public void drawCards(List<Card> cards){
         hand.addAll(cards);
         hasOne = false;
+        saidOne = false;
     }
 
     public void playCard(Card played){
@@ -42,6 +44,8 @@ public abstract class Player
 
     public void setHand(Stack<Card> newHand){
         hand = newHand;
+        hasOne = hand.size() == 1;
+        saidOne = false;
     }
 
     public Stack<Card> swapHand(Stack<Card> newHand)
@@ -65,7 +69,6 @@ public abstract class Player
     public void setSaidOne(boolean saidOne) {this.saidOne = saidOne;}
 
     public boolean HasDrew(){ return hasDrew; }
-
     public boolean HasOne(){ return hasOne; }
     public boolean HasSaidOne(){ return saidOne; }
 
