@@ -1,12 +1,12 @@
 package View.Animations;
 
 import Utilities.Utils;
-import View.CardImage;
+import View.Elements.CardImage;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
-public class PlayAnimation extends Animation{
+public class PlayAnimation extends Animation
+{
     private double startX;
     private double startY;
     private double endX;
@@ -29,14 +29,20 @@ public class PlayAnimation extends Animation{
         else
             image = card.getCardImage();
 
+        start();
+    }
+
+    @Override
+    public void run()
+    {
         double shiftX = (endX - startX) / speed,
                shiftY = (endY - startY) / speed;
-
-        timer.addActionListener(e ->{
+        while(isAlive())
+        {
             move(shiftX, shiftY);
-            if (hasReachedEnd()) timer.stop();
-        });
-        timer.start();
+            if (hasReachedEnd()) return;
+            super.sleep();
+        }
     }
 
     private void move(double vX, double vY)
@@ -48,5 +54,17 @@ public class PlayAnimation extends Animation{
     private boolean hasReachedEnd() { return Math.round(startX) == endX || Math.round(startY) == endY; }
 
     @Override
-    public void paint(Graphics2D g) { g.drawImage(image, (int)startX, (int)startY, width, height, null); }
+    public void paint(Graphics2D g2) { g2.drawImage(image, (int)startX, (int)startY, width, height, null); }
 }
+
+
+
+//        double shiftX = (endX - startX) / speed,
+//               shiftY = (endY - startY) / speed;
+//
+//        timer.addActionListener(e ->{
+//            move(shiftX, shiftY);
+//            if (hasReachedEnd()) timer.stop();
+//
+//        });
+//        timer.start();

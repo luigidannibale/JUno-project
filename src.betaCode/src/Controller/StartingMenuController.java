@@ -1,14 +1,9 @@
 package Controller;
 
-import View.ImageComponent;
-import View.MainFrame;
-import View.StartingMenuPanel;
+import View.Pages.StartingMenuPanel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.Arrays;
 
 public class StartingMenuController {
 

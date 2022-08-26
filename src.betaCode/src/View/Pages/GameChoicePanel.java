@@ -1,7 +1,7 @@
-package View;
+package View.Pages;
 
 import Controller.MainFrameController;
-import Utilities.Utils;
+import View.Elements.GifComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,7 @@ public class GameChoicePanel extends ResizablePanel{
 
     JLabel indietro;
 
-    public GameChoicePanel(MainFrameController mainFrame) {
+    public GameChoicePanel() {
         super(1080, 552, 6);
 
         imagePath = "resources/images/MainFrame/GameChoicePanel/";

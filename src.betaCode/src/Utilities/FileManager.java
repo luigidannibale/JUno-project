@@ -1,7 +1,5 @@
 package Utilities;
 
-import View.DeckColor;
-import View.GraphicQuality;
 import org.json.*;
 import java.io.*;
 import java.util.*;

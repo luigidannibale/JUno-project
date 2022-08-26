@@ -1,4 +1,4 @@
-package View;
+package View.Elements;
 
 import Model.Cards.Card;
 import Model.Cards.CardColor;

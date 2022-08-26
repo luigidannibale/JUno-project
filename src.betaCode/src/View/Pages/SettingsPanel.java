@@ -1,6 +1,10 @@
-package View;
+package View.Pages;
 
 import Utilities.Utils;
+import View.Elements.GifComponent;
+import View.Elements.GraphicQuality;
+import View.Elements.ImageComponent;
+import View.Elements.VolumeSlider;
 
 import javax.swing.*;
 import java.awt.*;

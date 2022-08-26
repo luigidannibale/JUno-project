@@ -15,7 +15,7 @@ public class ReverseCard extends ActionCard
      * @param color
      */
     public ReverseCard(CardColor color) { super(color, CardValue.REVERSE); }
-    public void performReverseAction(TurnManager turnManager, Player[] players){ turnManager.reverseTurn(); }
+    public void performReverseAction(TurnManager turnManager){ turnManager.reverseTurn(); }
 }
 //nousecode
 //public void performReverseAction(TurnManager turnManager, Player[] players)

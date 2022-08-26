@@ -8,8 +8,8 @@ import Model.UnoGameTable;
 
 import java.util.List;
 
-public class ClassicRules extends UnoGameRules{
-
+public class ClassicRules extends UnoGameRules
+{
     public ClassicRules()
     {
         cardsDistribution = Deck.classicRules;
@@ -26,9 +26,32 @@ public class ClassicRules extends UnoGameRules{
             playerPlayableHand = playerPlayableHand.stream().filter(card -> card.getColor()!=CardColor.WILD).toList();
         return playerPlayableHand;
     }
+    @Override
+    public void cardActionPerformance(Options parameters)
+    {
+        assert(parameters.getTurnManager() != null);
+        assert(parameters.getPlayers() != null);
+        assert(parameters.getDeck() != null);
+        TurnManager turnManager = parameters.getTurnManager();
+        Card lastCard = turnManager.getLastCardPlayed();
+
+        if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD)
+        {
+            assert (parameters.getColor() != null);
+            ((WildAction) lastCard).changeColor(turnManager, parameters.getColor());
+        }
+        if(lastCard instanceof DrawCard)
+            parameters.getPlayers()[turnManager.next()].drawCards(parameters.getDeck().draw(((DrawCard) lastCard).getNumberOfCardsToDraw()));
+        if(lastCard instanceof ReverseCard)
+            ((ReverseCard) lastCard).performReverseAction(turnManager);
+        if(lastCard instanceof SkipAction)
+            ((SkipAction) lastCard).performSkipAction(turnManager);
+
+        turnManager.passTurn();
+    }
 
     @Override
-    public void cardActionPerformance(TurnManager turnManager, Player[] players, Deck deck)
+    public void oldCardActionPerformance(TurnManager turnManager, Player[] players, Deck deck)
     {
         Card lastCard = turnManager.getLastCardPlayed();
 
@@ -41,55 +64,11 @@ public class ClassicRules extends UnoGameRules{
         if(lastCard instanceof DrawCard)
             players[turnManager.next()].drawCards(deck.draw(((DrawCard) lastCard).getNumberOfCardsToDraw()));
         if(lastCard instanceof ReverseCard)
-            ((ReverseCard) lastCard).performReverseAction(turnManager, players);
+            ((ReverseCard) lastCard).performReverseAction(turnManager);
         if(lastCard instanceof SkipAction)
             ((SkipAction) lastCard).performSkipAction(turnManager);
 
         turnManager.passTurn();
-    }
-    @Override
-    public void cardActionPerformance(UnoGameTable gameTable)
-    {
-        TurnManager turnManager = gameTable.getTurnManager();
-        Player[] players = gameTable.getPlayers();
-        Deck deck = gameTable.getDeck();
-
-        Card lastCard = turnManager.getLastCardPlayed();
-
-        switch (lastCard.getValue())
-        {
-            case REVERSE :
-            {//if discard discard.peek == reverse -> il primo gioca e poi cambia giro
-                ((ReverseCard) lastCard).performReverseAction(turnManager,players);
-                break;
-            }
-            case WILD_DRAW:
-            case DRAW:
-            {//if discard discard.peek == draw -> il primo pesca due carte
-                players[turnManager.getPlayer()].drawCards(deck.draw(((DrawCard)lastCard).getNumberOfCardsToDraw()));
-                ((DrawCard) lastCard).performSkipAction(turnManager);
-                break;
-            }
-            case SKIP :
-            {//if discard discard.peek == skip -> il primo viene skippato
-                ((SkipCard) lastCard).performSkipAction(turnManager);
-                break;
-            }
-            /*i wild li gestisco a parte, uso lo switch perchè devo definire una regola specifica e non che prenda tutte
-             le ereditarietà, si puo gestire il wild draw in altra maniera a che serve il cardvalue wild draw*/
-        }
-        turnManager.passTurn();
-    }
-    public void cardActionPerformance(UnoGameTable gameTable,CardColor color)
-    {
-        TurnManager turnManager = gameTable.getTurnManager();
-        Player[] players = gameTable.getPlayers();
-        Deck deck = gameTable.getDeck();
-
-        Card lastCard = turnManager.getLastCardPlayed();
-        if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD)
-            ((WildAction) lastCard).changeColor(turnManager, color);
-        cardActionPerformance(gameTable);
     }
 
 }

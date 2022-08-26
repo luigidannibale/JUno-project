@@ -12,7 +12,8 @@ import Model.UnoGameTable;
 import java.util.HashMap;
 import java.util.List;
 
-public class MemeRules extends UnoGameRules{
+public class MemeRules extends UnoGameRules
+{
 
     public MemeRules()
     {
@@ -37,7 +38,14 @@ public class MemeRules extends UnoGameRules{
     }
 
     @Override
-    public void cardActionPerformance(TurnManager turnManager, Player[] players, Deck deck)
+    public void cardActionPerformance(Options parameters)
+    {
+        assert(parameters.getTurnManager() != null);
+        assert(parameters.getPlayers() != null);
+        assert(parameters.getDeck() != null);
+    }
+    @Override
+    public void oldCardActionPerformance(TurnManager turnManager, Player[] players, Deck deck)
     {   /*
         Card lastCard = turnManager.getLastCardPlayed();
         if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD &&
@@ -73,13 +81,4 @@ public class MemeRules extends UnoGameRules{
             default -> {}
         }*/
     }
-    @Override
-    public void cardActionPerformance(UnoGameTable gameTable)
-    {
-        TurnManager turnManager = gameTable.getTurnManager();
-        Player[] players = gameTable.getPlayers();
-        Deck deck = gameTable.getDeck();
-
-    }
-
 }

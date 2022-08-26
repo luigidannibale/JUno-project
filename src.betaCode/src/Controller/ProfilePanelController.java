@@ -1,6 +1,6 @@
 package Controller;
 
-import View.ProfilePanel;
+import View.Pages.ProfilePanel;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;

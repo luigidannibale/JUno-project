@@ -38,18 +38,23 @@ public class RotatingAnimation extends Animation{
 
         if (image == null) return;
 
-
-        changeColor(CardColor.BLUE);
+        imageColor(CardColor.BLUE);
 
         imageWidth = (int) (image.getWidth() * Config.scalingPercentage);
         height = (int) (image.getHeight() * Config.scalingPercentage);
 
-        timer.addActionListener(e ->{
+        start();
+    }
+
+    @Override
+    public void run(){
+        while(isAlive()){
             degree += Math.toRadians(increment);
             //System.out.println(degree);
             if (degree > 360) degree = 0;
-        });
-        timer.start();
+
+            super.sleep();
+        }
     }
 
     public void imageColor(CardColor c)
@@ -57,10 +62,7 @@ public class RotatingAnimation extends Animation{
         if (c == CardColor.WILD) image = Utils.getBufferedImage(path + "four/four.png");
         else image = Utils.getBufferedImage(path + "four/" + c.name() + ".png");
     }
-    public void changeColor(CardColor c)
-    {
-        image = Utils.getBufferedImage(path + "four/" + c.name() + ".png");
-    }
+
     //dont like this
     public void changeTurn(boolean clockwise){
         if (!clockwise) {

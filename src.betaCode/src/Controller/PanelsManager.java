@@ -1,6 +1,6 @@
 package Controller;
 
-import View.ResizablePanel;
+import View.Pages.ResizablePanel;
 
 import java.util.Collection;
 

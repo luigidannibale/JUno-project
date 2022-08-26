@@ -1,11 +1,9 @@
 package Utilities;
 
-import View.DeckColor;
-import View.GraphicQuality;
-import org.json.JSONObject;
+import View.Elements.DeckColor;
+import View.Elements.GraphicQuality;
 
 import java.awt.*;
-import java.io.*;
 import java.util.HashMap;
 
 

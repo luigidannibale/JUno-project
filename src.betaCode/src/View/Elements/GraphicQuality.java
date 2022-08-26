@@ -1,4 +1,4 @@
-package View;
+package View.Elements;
 
 public enum GraphicQuality {
     HIGH("High"),

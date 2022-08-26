@@ -1,4 +1,4 @@
-package View;
+package View.Pages;
 
 import Controller.MainFrameController;
 import Utilities.Utils;

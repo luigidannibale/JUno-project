@@ -11,7 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-public class SevenoRules extends UnoGameRules{
+public class SevenoRules extends UnoGameRules
+{
 
     public SevenoRules()
     {
@@ -28,7 +29,45 @@ public class SevenoRules extends UnoGameRules{
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick)
     { return playerPlayableHand; }
     @Override
-    public void cardActionPerformance(TurnManager turnManager, Player[] players, Deck deck)
+    public void cardActionPerformance(Options parameters)
+    {
+        assert(parameters.getTurnManager() != null);
+        assert(parameters.getPlayers() != null);
+        assert(parameters.getDeck() != null);
+        TurnManager turnManager = parameters.getTurnManager();
+        Player[] players = parameters.getPlayers();
+        Card lastCard = turnManager.getLastCardPlayed();
+
+        if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD)
+        {
+            //color deve essere preso come scelta dell'utente
+            CardColor color = CardColor.RED;
+            ((WildAction) lastCard).changeColor(turnManager, color);
+        }
+        if(lastCard instanceof DrawCard)
+            players[turnManager.next()].drawCards(parameters.getDeck().draw(((DrawCard) lastCard).getNumberOfCardsToDraw()));
+        if(lastCard instanceof ReverseCard)
+            ((ReverseCard) lastCard).performReverseAction(turnManager);
+        if(lastCard instanceof SkipAction)
+            ((SkipAction) lastCard).performSkipAction(turnManager);
+
+        if (lastCard.getValue() == CardValue.SEVEN){
+            //il giocatore che ha giocato deve scambiare le carte con un altro player di sua scelta
+            //----> i nomi dei player devono essere cliccabili
+        }
+        if (lastCard.getValue() == CardValue.ZERO){
+            //i giocatori si scambiano le carte in base al senso del turno
+
+            var newHand = players[0].getHand();
+            for (int i = 0; i < players.length; i++){
+                var nextPlayer = players[turnManager.next(i)];
+                newHand = swapHand(newHand, nextPlayer);
+            }
+        }
+        turnManager.passTurn();
+    }
+    @Override
+    public void oldCardActionPerformance(TurnManager turnManager, Player[] players, Deck deck)
     {
         Card lastCard = turnManager.getLastCardPlayed();
 
@@ -41,7 +80,7 @@ public class SevenoRules extends UnoGameRules{
         if(lastCard instanceof DrawCard)
             players[turnManager.next()].drawCards(deck.draw(((DrawCard) lastCard).getNumberOfCardsToDraw()));
         if(lastCard instanceof ReverseCard)
-            ((ReverseCard) lastCard).performReverseAction(turnManager, players);
+            ((ReverseCard) lastCard).performReverseAction(turnManager);
         if(lastCard instanceof SkipAction)
             ((SkipAction) lastCard).performSkipAction(turnManager);
 
@@ -67,8 +106,4 @@ public class SevenoRules extends UnoGameRules{
         return oldHand;
     }
 
-    @Override
-    public void cardActionPerformance(UnoGameTable gameTable) {
-
-    }
 }

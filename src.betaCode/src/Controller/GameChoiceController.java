@@ -1,7 +1,6 @@
 package Controller;
 
-import View.GameChoicePanel;
-import View.MainFrame;
+import View.Pages.GameChoicePanel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,7 +15,7 @@ public class GameChoiceController {
     GameChoicePanel view;
 
     public GameChoiceController(MainFrameController mainFrame){
-        view = new GameChoicePanel(mainFrame);
+        view = new GameChoicePanel();
 
         view.getBasicGame().addMouseListener(new MouseAdapter() {
             @Override

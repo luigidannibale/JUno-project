@@ -2,9 +2,9 @@ package Controller;
 
 import Utilities.Config;
 import Utilities.ConfigDeprecated;
-import View.DeckColor;
-import View.GraphicQuality;
-import View.SettingsPanel;
+import View.Elements.DeckColor;
+import View.Elements.GraphicQuality;
+import View.Pages.SettingsPanel;
 
 import javax.swing.*;
 import java.awt.event.*;

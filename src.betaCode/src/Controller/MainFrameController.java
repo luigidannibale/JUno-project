@@ -1,9 +1,8 @@
 package Controller;
 
 import Utilities.AudioManager;
-import Utilities.ConfigDeprecated;
 import Utilities.Config;
-import View.*;
+import View.Pages.MainFrame;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
@@ -65,7 +64,10 @@ public class MainFrameController {
         view.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+                {
+                    if (currentPanel == Panels.GAME)  gameController.getView().pauseGame();
+
                     setSettingsReturnPanel();
                     setVisiblePanel(Panels.SETTINGS);
                 }

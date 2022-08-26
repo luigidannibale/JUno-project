@@ -4,6 +4,7 @@ import Model.Cards.Card;
 import Model.Cards.CardValue;
 import Model.Player.AIPlayer;
 import Model.Player.Player;
+import Model.Rules.Options;
 import Model.Rules.UnoGameRules;
 
 import java.util.Arrays;
@@ -61,7 +62,8 @@ public class UnoGameTable extends Observable {
     public Deck getDeck() { return deck; }
     public Card getLastCard(){ return turnManager.getLastCardPlayed(); }
 
-    public void drawCard(){
+    public void drawCard()
+    {
         Card drewCard = deck.draw();
         if (drewCard == null)
         {
@@ -91,7 +93,13 @@ public class UnoGameTable extends Observable {
         currentPlayer().setHasDrew(false);
         discards.push(card);
         turnManager.updateLastCardPlayed(card);
-        ruleManager.cardActionPerformance(turnManager, players, deck);
+//        Options parameters = new Options.OptionsBuilder(turnManager, players, deck).build();
+//        ruleManager.cardActionPerformance(parameters);
+//        updateObservers();
+    }
+    public void cardActionPerformance(Options parameters)
+    {
+        ruleManager.cardActionPerformance(parameters);
         updateObservers();
     }
 

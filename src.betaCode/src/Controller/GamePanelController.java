@@ -1,23 +1,29 @@
 package Controller;
 
+import Model.Cards.CardColor;
+import Model.Cards.CardValue;
 import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
-import Model.Rules.ClassicRules;
-import Model.Rules.MemeRules;
-import Model.Rules.SevenoRules;
-import Model.Rules.UnoGameRules;
+import Model.Rules.*;
 import Model.UnoGameTable;
-import Utilities.Config;
-import View.CardImage;
-import View.GamePanel;
-import View.ResizablePanel;
+import View.Animations.Animation;
+import View.Animations.FlipAnimation;
+import View.Animations.PlayAnimation;
+import View.Elements.CardImage;
+import View.Pages.GamePanel;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
 
 public class GamePanelController {
     //UnoGame uno = new tipoDiUno(new Player[] {mario,filippo,marco,gianfranco});
     private GamePanel view;
-
     private UnoGameTable model;
+
+
 
     //qui dentro ci sono anche la view e tutti i suoi eventi
 
@@ -30,15 +36,72 @@ public class GamePanelController {
             default -> rules = new ClassicRules();
         }
         model = new UnoGameTable(new Player[]{new HumanPlayer("Piero"),new AIPlayer("Ai 1"),new AIPlayer("Ai 2"),new AIPlayer("Ai 3")}, rules);
-        view = new GamePanel(model);
+        view = new GamePanel();
+        view.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+                int x = e.getX();
+                int y = e.getY();
+                Player currentPlayer = view.getCurrentPlayer();
+
+                if (view.getCurrentState() == GamePanel.State.PLAYER_TURN)
+                {
+                    if (!currentPlayer.HasDrew() && view.getDeck().isInMouse(x, y))
+
+                        drawOutCard(currentPlayer);
+
+                    //var iterator = playerHands.get(players[0]).listIterator();
+                    for (CardImage card : view.getPlayerHands().get(currentPlayer)) { //le carte dell'umano
+                        if (!card.isInMouse(x, y)) continue;
+
+                        if (model.getPLayableCards().contains(card.getCard()))
+                        {
+                            Animation anim = view.playCardAnimation(card);
+                            new Thread( () -> {
+                                if (anim != null){
+                                    anim.Join();
+                                    model.playCard(card.getCard());
+                                    Options parameters;
+                                    if(card.getCard().getValue() == CardValue.WILD)
+                                        parameters = new Options.OptionsBuilder(model.getTurnManager(), model.getPlayers(), model.getDeck()).color(view.choseColorByUser()).build();
+                                    else
+                                        parameters = new Options.OptionsBuilder(model.getTurnManager(), model.getPlayers(), model.getDeck()).build();
+                                    model.cardActionPerformance(parameters);
+                                }
+                            },"playing card").start();
+                        }
+                    }
+
+                    if (currentPlayer.HasDrew() && view.getSkipTurnPosition().contains(x , y)) model.passTurn();
+                }
+                if (currentPlayer.HasOne() && view.getUnoPosition().contains(x, y)) currentPlayer.setSaidOne(true);
+            }
+        });
+
+        view.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                view.animateCardsOnHovering(e); }
+        });
 
         model.addObserver(view);
-
         view.setVisible(true);
-
         model.startGame();
     }
-
+    private void drawOutCard(Player currentPlayer)
+    {
+        currentPlayer.setHasDrew(true);
+        CardImage drawnCard = new CardImage(model.peekNextCard());
+        Animation flipCardAnimation = view.flipCardAnimation(drawnCard);
+        new Thread( () -> {
+            if (flipCardAnimation == null) return;
+            flipCardAnimation.Join();
+            view.drawCardAnimation(drawnCard).Join();
+            model.drawCard();
+        },"drawing card").start();
+    }
     public GamePanel getView() {
         return view;
     }

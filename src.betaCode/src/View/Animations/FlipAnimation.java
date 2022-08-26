@@ -1,9 +1,8 @@
 package View.Animations;
 
-import View.CardImage;
+import View.Elements.CardImage;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class FlipAnimation extends Animation
 {
@@ -12,7 +11,64 @@ public class FlipAnimation extends Animation
     int increase = 3;
     private int delay = 750;
 
-    public FlipAnimation(CardImage card, Rectangle position){
+    CardImage card;
+    Rectangle position;
+
+    public FlipAnimation(CardImage card, Rectangle position)
+    {
+        this.card = card;
+        this.position = position;
+
+        start();
+    }
+
+    @Override
+    public void run()
+    {
+        x = (int) position.getX();
+        y = (int) position.getY();
+
+        image = card.getBackCard();
+
+        while(isAlive()){
+            x += increase;
+            width -= 2*increase;
+
+            if (width == 0)
+            {
+                image = card.getCardImage();
+                increase = -increase;
+            }
+
+            if(width >= CardImage.width) {
+                try
+                {
+                    increase = 0;
+                    Thread.sleep(delay);
+                    return;
+                }
+                catch (InterruptedException ie)
+                {
+                    ie.printStackTrace();
+                }
+            }
+
+            super.sleep();
+        }
+
+    }
+
+    public void paint(Graphics2D g){
+        g.drawImage(image, x, y, width, height, null);
+    }
+
+    //public boolean isRunning(){
+    //    return timer.isRunning();
+    //}
+
+}
+
+ /*
         x = (int) position.getX();
         y = (int) position.getY();
 
@@ -44,14 +100,5 @@ public class FlipAnimation extends Animation
             }
         });
         timer.start();
-    }
 
-    public void paint(Graphics2D g){
-        g.drawImage(image, x, y, width, height, null);
-    }
-
-    //public boolean isRunning(){
-    //    return timer.isRunning();
-    //}
-
-}
+         */

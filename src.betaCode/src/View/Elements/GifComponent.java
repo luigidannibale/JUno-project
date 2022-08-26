@@ -1,6 +1,4 @@
-package View;
-
-import Utilities.Config;
+package View.Elements;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;

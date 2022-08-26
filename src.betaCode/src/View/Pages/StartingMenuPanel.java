@@ -1,6 +1,6 @@
-package View;
+package View.Pages;
 
-import Controller.MainFrameController;
+import View.Elements.ImageComponent;
 
 import javax.swing.border.EmptyBorder;
 import java.awt.*;

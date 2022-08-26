@@ -50,7 +50,6 @@ public abstract class UnoGameRules {
 
     public abstract List<Card> getPlayableCards(List<Card> playerHand, Card discardsPick);
 
-    public abstract void cardActionPerformance(TurnManager turnManager, Player[] players, Deck deck);
-
-    public abstract void cardActionPerformance(UnoGameTable gameTable);
+    public abstract void oldCardActionPerformance(TurnManager turnManager, Player[] players, Deck deck);
+    public abstract void cardActionPerformance(Options parameters);
 }

@@ -1,7 +1,7 @@
 package Utilities;
 
 import Controller.MainFrameController;
-import View.DeckColor;
+import View.Elements.DeckColor;
 
 import java.io.*;
 
