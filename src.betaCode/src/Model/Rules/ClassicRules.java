@@ -24,8 +24,8 @@ public class ClassicRules extends UnoGameRules
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick)
     {
 //        if there is at least one not wild card and one wild card all the wild cards are not playables
-//        if(playerPlayableHand.stream().anyMatch(card -> card.getColor()!= CardColor.WILD) && playerPlayableHand.stream().anyMatch(card -> card.getColor()==CardColor.WILD))
-//            playerPlayableHand = playerPlayableHand.stream().filter(card -> card.getColor()!=CardColor.WILD).toList();
+        if(playerPlayableHand.stream().anyMatch(card -> card.getColor()!= CardColor.WILD) && playerPlayableHand.stream().anyMatch(card -> card.getColor()==CardColor.WILD))
+            playerPlayableHand = playerPlayableHand.stream().filter(card -> card.getColor()!=CardColor.WILD).toList();
         return playerPlayableHand;
     }
 

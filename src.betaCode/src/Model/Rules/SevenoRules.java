@@ -21,8 +21,8 @@ public class SevenoRules extends UnoGameRules
     {
         cardsDistribution = Deck.classicRules;
         cardsDistribution.putAll(new HashMap<>(){{
-            put(CardValue.ZERO,2);
-            put(CardValue.SEVEN,700);
+            put(CardValue.ZERO,3);
+            put(CardValue.SEVEN,4);
         }});
         stackableCards = false;
         numberOfPlayableCards = 1;
