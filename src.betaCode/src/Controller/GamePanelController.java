@@ -62,9 +62,10 @@ public class GamePanelController {
                                 if (anim != null){
                                     anim.Join();
                                     System.out.println("cardgetcard: "+card.getCard());
+
                                     model.playCard(card.getCard());
                                     Options.OptionsBuilder parameters = model.getOptions();
-                                    --oppure metterlo di qua
+
                                     //si puo usare un try catch
 //                                    if(card.getCard().getValue() == CardValue.WILD)
 //                                        parameters.color(view.choseColorByUser());

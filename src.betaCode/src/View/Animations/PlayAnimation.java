@@ -37,10 +37,10 @@ public class PlayAnimation extends Animation
     {
         double shiftX = (endX - startX) / speed,
                shiftY = (endY - startY) / speed;
-        while(isAlive())
+        while(running)
         {
             move(shiftX, shiftY);
-            if (hasReachedEnd()) return;
+            if (hasReachedEnd()) running = false;
             super.sleep();
         }
     }

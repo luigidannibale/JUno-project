@@ -281,13 +281,14 @@ public class GamePanel extends JPanel implements Observer {
 
     public Animation playCardAnimation(CardImage card)
     {
-        if (playAnimation != null && playAnimation.isAlive()) return null;
+        if (animationRunning(playAnimation)) return null;
         playAnimation = new PlayAnimation(card.getPosition().getX(), card.getPosition().getY(), discard.getPosition().getX(), discard.getPosition().getY(), card);
         animations.add(playAnimation);
         card.setDrawImage(null);
         return playAnimation;
     }
     public Animation drawCardAnimation(CardImage drawnCard){
+        if (animationRunning(playAnimation)) return null;
         Rectangle lastCardPosition = playerHands.get(currentPlayer).get(playerHands.get(currentPlayer).size() - 1).getPosition();
         playAnimation = new PlayAnimation(deck.getPosition().getX(), deck.getPosition().getY(), lastCardPosition.getX(), lastCardPosition.getY(), drawnCard);
         animations.add(playAnimation);
@@ -295,10 +296,13 @@ public class GamePanel extends JPanel implements Observer {
     }
 
     public Animation flipCardAnimation(CardImage drawnCard){
+        if (animationRunning(flipAnimation)) return null;
         flipAnimation = new FlipAnimation(drawnCard, deck.getPosition());
         animations.add(flipAnimation);
         return flipAnimation;
     }
+
+    public boolean animationRunning(Animation anim){return anim != null && anim.isAlive();}
 
     private void drawHorizontalHand(Player player, Graphics2D g2, int y){
         int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsWidth);
@@ -363,7 +367,7 @@ public class GamePanel extends JPanel implements Observer {
 
     //controller usage
     public void stopTimer(){
-        animations.forEach(Animation::interrupt);
+        animations.forEach(Animation::Stop);
         gameRunning = false;
     }
 

@@ -30,7 +30,7 @@ public class FlipAnimation extends Animation
 
         image = card.getBackCard();
 
-        while(isAlive()){
+        while(running){
             x += increase;
             width -= 2*increase;
 
@@ -45,7 +45,7 @@ public class FlipAnimation extends Animation
                 {
                     increase = 0;
                     Thread.sleep(delay);
-                    return;
+                    running = false;
                 }
                 catch (InterruptedException ie)
                 {

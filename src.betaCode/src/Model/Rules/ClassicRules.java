@@ -29,15 +29,18 @@ public class ClassicRules extends UnoGameRules
     @Override
     public void cardActionPerformance(Options parameters)
     {
+        /*
         assert(parameters.getTurnManager() != null);
         assert(parameters.getPlayers() != null);
         assert(parameters.getDeck() != null);
+         */
+
         TurnManager turnManager = parameters.getTurnManager();
         Card lastCard = turnManager.getLastCardPlayed();
-        System.out.println("Cardactperfm"+lastCard);
+
         if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD)
         {
-            assert (parameters.getColor() != null):"No color provided";
+            //assert (parameters.getColor() != null):"No color provided";
             ((WildAction) lastCard).changeColor(turnManager, parameters.getColor());
         }
         if(lastCard instanceof DrawCard)

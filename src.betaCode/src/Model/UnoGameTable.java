@@ -97,7 +97,6 @@ public class UnoGameTable extends Observable {
 //        Options parameters = new Options.OptionsBuilder(turnManager, players, deck).build();
         ruleManager.cardActionPerformance(getOptions().build());
         updateObservers();
-        --non si sa se metterlo qui che poi gli dovresti passare options
     }
     public void cardActionPerformance(Options parameters)
     {

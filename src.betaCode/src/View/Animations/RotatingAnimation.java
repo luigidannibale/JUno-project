@@ -48,7 +48,7 @@ public class RotatingAnimation extends Animation{
 
     @Override
     public void run(){
-        while(isAlive()){
+        while(running){
             degree += Math.toRadians(increment);
             //System.out.println(degree);
             if (degree > 360) degree = 0;

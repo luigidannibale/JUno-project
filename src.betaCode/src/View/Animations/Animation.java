@@ -14,6 +14,7 @@ public abstract class Animation extends Thread//implements Runnable
     protected BufferedImage image;
     //protected final Timer timer;
     protected final int delay;
+    protected boolean running = true;
     //protected int delay;
 
     protected Animation(){
@@ -48,5 +49,9 @@ public abstract class Animation extends Thread//implements Runnable
         {
             throw new RuntimeException(e);
         }
+    }
+
+    public void Stop(){
+        running = false;
     }
 }
