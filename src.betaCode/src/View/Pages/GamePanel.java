@@ -1,5 +1,6 @@
 package View.Pages;
 
+import Controller.GamePanelController;
 import Model.Cards.Card;
 import Model.Cards.CardColor;
 import Model.Player.AIPlayer;
@@ -253,7 +254,8 @@ public class GamePanel extends JPanel implements Observer {
         discard = new CardImage(lastCard);
     }
 
-    public void asyncAITurn(UnoGameTable model){
+    public void asyncAITurn(UnoGameTable model)
+    {
         aiThread = new Thread(() -> {
             try {
                 AIPlayer ai = (AIPlayer) currentPlayer;
@@ -271,9 +273,12 @@ public class GamePanel extends JPanel implements Observer {
                     CardImage relatedImage = playerHands.get(ai).stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
                     playCardAnimation(relatedImage).Join();
                     model.playCard(ai.getValidCards(discard.getCard()).get(0));
+                    model.cardActionPerformance();
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } catch (Exception e) {
+                throw e;
             }
         });
         aiThread.start();

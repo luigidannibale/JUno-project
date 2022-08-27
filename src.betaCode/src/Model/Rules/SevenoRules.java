@@ -2,6 +2,7 @@ package Model.Rules;
 
 import Model.Cards.*;
 import Model.Deck;
+import Model.Exceptions.NoSelectedPlayerToSwapException;
 import Model.Player.Player;
 import Model.TurnManager;
 import Model.UnoGameTable;
@@ -28,12 +29,13 @@ public class SevenoRules extends UnoGameRules
     @Override
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick)
     { return playerPlayableHand; }
+
     @Override
-    public void cardActionPerformance(Options parameters)
+    public void cardActionPerformance(Options parameters) throws NoSelectedPlayerToSwapException
     {
-        assert(parameters.getTurnManager() != null);
-        assert(parameters.getPlayers() != null);
-        assert(parameters.getDeck() != null);
+//        assert(parameters.getTurnManager() != null);
+//        assert(parameters.getPlayers() != null);
+//        assert(parameters.getDeck() != null);
         TurnManager turnManager = parameters.getTurnManager();
         Player[] players = parameters.getPlayers();
         Card lastCard = turnManager.getLastCardPlayed();
@@ -53,7 +55,7 @@ public class SevenoRules extends UnoGameRules
         {
             //il giocatore che ha giocato deve scambiare le carte con un altro player di sua scelta
             //----> i nomi dei player devono essere cliccabili
-            assert (parameters.getPlayerToSwapCards() != null);
+            if (parameters.getPlayerToSwapCards() != null) throw new NoSelectedPlayerToSwapException();
             Player currentPlayer = players[turnManager.getPlayer()];
             currentPlayer.setHand(swapHand(currentPlayer.getHand(),parameters.getPlayerToSwapCards()));
         }

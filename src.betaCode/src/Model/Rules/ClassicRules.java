@@ -2,9 +2,11 @@ package Model.Rules;
 
 import Model.Cards.*;
 import Model.Deck;
+import Model.Exceptions.NoSelectedColorException;
+import Model.Player.AIPlayer;
+import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.TurnManager;
-import Model.UnoGameTable;
 
 import java.util.List;
 
@@ -27,13 +29,7 @@ public class ClassicRules extends UnoGameRules
         return playerPlayableHand;
     }
     @Override
-    public void cardActionPerformance(Options parameters)
-    {
-        /*
-        assert(parameters.getTurnManager() != null);
-        assert(parameters.getPlayers() != null);
-        assert(parameters.getDeck() != null);
-         */
+    public void cardActionPerformance(Options parameters) throws NoSelectedColorException {
 
         TurnManager turnManager = parameters.getTurnManager();
         Card lastCard = turnManager.getLastCardPlayed();
@@ -41,7 +37,14 @@ public class ClassicRules extends UnoGameRules
         if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD)
         {
             //assert (parameters.getColor() != null):"No color provided";
-            ((WildAction) lastCard).changeColor(turnManager, parameters.getColor());
+            Player current = parameters.getPlayers()[turnManager.getPlayer()];
+            CardColor color = parameters.getColor();
+            if (color == null) {
+                if (current instanceof HumanPlayer) throw new NoSelectedColorException();
+                else
+                    color = ((AIPlayer) current).chooseBestColor();
+            }
+            ((WildAction) lastCard).changeColor(turnManager, color);
         }
         if(lastCard instanceof DrawCard)
             parameters.getPlayers()[turnManager.next()].drawCards(parameters.getDeck().draw(((DrawCard) lastCard).getNumberOfCardsToDraw()));

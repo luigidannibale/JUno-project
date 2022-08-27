@@ -95,12 +95,23 @@ public class UnoGameTable extends Observable {
         turnManager.updateLastCardPlayed(card);
 
 //        Options parameters = new Options.OptionsBuilder(turnManager, players, deck).build();
-        ruleManager.cardActionPerformance(getOptions().build());
-        updateObservers();
+        //ruleManager.cardActionPerformance(getOptions().build());
+        //updateObservers();
     }
-    public void cardActionPerformance(Options parameters)
+    public void cardActionPerformance(Options parameters) throws Exception
     {
         ruleManager.cardActionPerformance(parameters);
+        updateObservers();
+    }
+
+    public void cardActionPerformance()
+    {
+        try{
+            ruleManager.cardActionPerformance(getOptions().build());
+        }
+        catch (Exception e){
+
+        }
         updateObservers();
     }
 

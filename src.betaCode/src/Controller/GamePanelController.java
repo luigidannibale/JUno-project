@@ -2,6 +2,8 @@ package Controller;
 
 import Model.Cards.CardColor;
 import Model.Cards.CardValue;
+import Model.Exceptions.NoSelectedColorException;
+import Model.Exceptions.NoSelectedPlayerToSwapException;
 import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
@@ -61,10 +63,11 @@ public class GamePanelController {
                             new Thread( () -> {
                                 if (anim != null){
                                     anim.Join();
-                                    System.out.println("cardgetcard: "+card.getCard());
 
                                     model.playCard(card.getCard());
                                     Options.OptionsBuilder parameters = model.getOptions();
+
+                                    tryCardActionPerformance(parameters);
 
                                     //si puo usare un try catch
 //                                    if(card.getCard().getValue() == CardValue.WILD)
@@ -80,6 +83,27 @@ public class GamePanelController {
                     if (currentPlayer.HasDrew() && view.getSkipTurnPosition().contains(x , y)) model.passTurn();
                 }
                 if (currentPlayer.HasOne() && view.getUnoPosition().contains(x, y)) currentPlayer.setSaidOne(true);
+            }
+
+            private void tryCardActionPerformance(Options.OptionsBuilder parameters) {
+                try
+                {
+                    model.cardActionPerformance(parameters.build());
+                }
+                catch (NoSelectedPlayerToSwapException nspe)
+                {
+                    parameters.playerToSwapCards(view.chosePlayerToSwap());
+                    tryCardActionPerformance(parameters);
+                }
+                catch (NoSelectedColorException nsce)
+                {
+                    parameters.color(view.choseColorByUser());
+                    tryCardActionPerformance(parameters);
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
             }
         });
 
