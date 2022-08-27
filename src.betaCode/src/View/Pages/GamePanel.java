@@ -1,6 +1,5 @@
 package View.Pages;
 
-import Controller.GamePanelController;
 import Model.Cards.Card;
 import Model.Cards.CardColor;
 import Model.Player.AIPlayer;
@@ -91,46 +90,61 @@ public class GamePanel extends JPanel implements Observer {
         gameThread.start();
     }
 
+    /**
+     * When mouse enters a card this one goes up and the others go down
+     * @param e
+     */
     public void animateCardsOnHovering(MouseEvent e)
     {
         int x = e.getX(),
             y = e.getY();
-
-        for (CardImage card : playerHands.get(players[0])) {
-            //if the mouse is hovering on the card, the card goes up, all the others cards goes down
-            card.setOffsetY(card.isInMouse(x, y) ? -30 : 0);
-        }
+        for (CardImage card : playerHands.get(players[0])) card.setOffsetY(card.isInMouse(x, y) ? -30 : 0);
     }
+
+    /**
+     * Show up a dialog in which the user must choose a color among RED, YELLOW, BLUE, GREEN and returns it as a CardColor
+     * used to change color in wild actions
+     * @return
+     */
     public CardColor choseColorByUser()
     {
         String[] colors = new String[]{"RED", "YELLOW", "BLUE", "GREEN"};
-        var choice = JOptionPane.showOptionDialog(
-                null,
-                null,
-                "Chose a card color",
-                2,
-                JOptionPane.QUESTION_MESSAGE,
-                new ImageIcon(imagePath + "wild.png"),
-                colors, colors[0]);
+        int choice = -1;
+        while (choice == -1)
+            choice = JOptionPane.showOptionDialog(
+                            null,
+                            null,
+                            "Chose a card color",
+                            2,
+                            JOptionPane.QUESTION_MESSAGE,
+                            new ImageIcon(imagePath + "wild.png"),
+                            colors, colors[0]);
         return CardColor.valueOf(colors[choice]);
     }
+
+    /**
+     * Show up a dialog in which the user must choose a player among the others players name
+     * @return
+     */
     public Player chosePlayerToSwap()
     {
-        String[] playersNames = new String[players.length];
-        for (int i = 0; i <players.length ; i++)
-            playersNames[i] = players[i].getName();
+        //String[] playersNames = new String[players.length];
+        HashMap<String,Player> playerHashMap = new HashMap<>();
 
-        var choice = JOptionPane.showOptionDialog(
+        Arrays.stream(players).filter(p -> currentPlayer != p).forEach(p -> playerHashMap.put(p.getName(), p));
+        int choice = -1;
+        while (choice == -1)
+            choice = JOptionPane.showOptionDialog(
                 null,
                 null,
                 "Chose the player to swap hand with",
                 2,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
-                playersNames, playersNames[0]);
-
-        return Arrays.stream(players).toList().get(choice);
+                playerHashMap.keySet().toArray(),playerHashMap.keySet().toArray()[0] );
+        return (Player) playerHashMap.values().toArray()[choice];
     }
+
     public void pauseGame()
     {
         currentState = State.PAUSED;
@@ -147,7 +161,8 @@ public class GamePanel extends JPanel implements Observer {
 
     }
 
-    private void InitializeComponents(){
+    private void InitializeComponents()
+    {
         deck = new CardImage();
         playerHands = new HashMap<>();
         animations = new ArrayList<>();
@@ -231,6 +246,12 @@ public class GamePanel extends JPanel implements Observer {
         createCards();
         currentPlayer = model.currentPlayer();
 
+
+        if (currentPlayer.isIncepped()) {
+            currentPlayer.setIncepped(false);
+            model.passTurn();
+        }
+
         currentState = currentPlayer instanceof HumanPlayer ? State.PLAYER_TURN : State.OTHERS_TURN;
 
         if (rotatingAnimation.isAlive())
@@ -243,7 +264,8 @@ public class GamePanel extends JPanel implements Observer {
             asyncAITurn(model);
     }
 
-    public void createCards(){
+    public void createCards()
+    {
         int[] rotations = new int[]{0, 270, 180, 90};
         for (Player player : players)
         {
@@ -261,19 +283,21 @@ public class GamePanel extends JPanel implements Observer {
                 AIPlayer ai = (AIPlayer) currentPlayer;
 
                 Thread.sleep(1500);
-                if ((ai.getValidCards(discard.getCard()).size() == 0)) {
-                    if (!ai.HasDrew()){
+                if ((ai.getValidCards(discard.getCard()).size() == 0))
+                {
+                    if (!ai.hasDrew()){
                         drawCardAnimation(new CardImage()).Join();
                         model.drawCard();
                     }
                     else model.passTurn();
                 }
-                else{
+                else
+                {
                     Card playedCard = ai.getValidCards(discard.getCard()).get(0);
                     CardImage relatedImage = playerHands.get(ai).stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
                     playCardAnimation(relatedImage).Join();
                     model.playCard(ai.getValidCards(discard.getCard()).get(0));
-                    model.cardActionPerformance();
+                    model.cardActionPerformance(model.getOptions().build());
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -356,12 +380,12 @@ public class GamePanel extends JPanel implements Observer {
 
         if (player instanceof HumanPlayer){
             y += height;
-            if (player.HasOne() && !player.HasSaidOne()){
+            if (player.hasOne() && !player.hasSaidOne()){
                 g2.drawString("UNO!", x, y);
                 width = g2.getFontMetrics().stringWidth("UNO!");
                 unoPosition.setRect(x, y - height, width, height);
             }
-            if (player.HasDrew()){
+            if (player.hasDrew()){
                 x += width + 20;
                 g2.drawString("Skip turn", x, y);
                 width = g2.getFontMetrics().stringWidth("Skip Turn");

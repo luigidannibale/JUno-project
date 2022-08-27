@@ -38,11 +38,9 @@ public class MemeRules extends UnoGameRules
     }
 
     @Override
-    public void cardActionPerformance(Options parameters)
+    public ActionPerformResult cardActionPerformance(Options parameters)
     {
-        assert(parameters.getTurnManager() != null);
-        assert(parameters.getPlayers() != null);
-        assert(parameters.getDeck() != null);
+        return ActionPerformResult.SUCCESSFUL;
     }
     @Override
     public void oldCardActionPerformance(TurnManager turnManager, Player[] players, Deck deck)

@@ -2,8 +2,8 @@ package Model;
 
 import Model.Cards.Card;
 import Model.Cards.CardValue;
-import Model.Player.AIPlayer;
 import Model.Player.Player;
+import Model.Rules.ActionPerformResult;
 import Model.Rules.Options;
 import Model.Rules.UnoGameRules;
 
@@ -51,8 +51,7 @@ public class UnoGameTable extends Observable {
         //ruleManager.cardActionPerformance(discards.peek());
         updateObservers();
     }
-    public Player currentPlayer()
-    { return players[turnManager.getPlayer()]; }
+    public Player currentPlayer() { return players[turnManager.getPlayer()]; }
 
     public List<Card> getPLayableCards()
     { return ruleManager.getPlayableCards(currentPlayer().getValidCards(turnManager.getLastCardPlayed()),turnManager.getLastCardPlayed()); }
@@ -71,7 +70,7 @@ public class UnoGameTable extends Observable {
             drewCard = deck.draw();
         }
         currentPlayer().drawCard(drewCard);
-        currentPlayer().setHasDrew(true);
+        currentPlayer().setDrew(true);
         //--test start
         System.out.println(currentPlayer());
         System.out.println("DRAWED: " + drewCard);
@@ -90,7 +89,7 @@ public class UnoGameTable extends Observable {
         System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
         //--test end
         currentPlayer().playCard(card);
-        currentPlayer().setHasDrew(false);
+        currentPlayer().setDrew(false);
         discards.push(card);
         turnManager.updateLastCardPlayed(card);
 
@@ -98,21 +97,11 @@ public class UnoGameTable extends Observable {
         //ruleManager.cardActionPerformance(getOptions().build());
         //updateObservers();
     }
-    public void cardActionPerformance(Options parameters) throws Exception
+    public ActionPerformResult cardActionPerformance(Options parameters)
     {
-        ruleManager.cardActionPerformance(parameters);
-        updateObservers();
-    }
-
-    public void cardActionPerformance()
-    {
-        try{
-            ruleManager.cardActionPerformance(getOptions().build());
-        }
-        catch (Exception e){
-
-        }
-        updateObservers();
+        var a = ruleManager.cardActionPerformance(parameters);
+        if (a == ActionPerformResult.SUCCESSFUL) updateObservers();
+        return a;
     }
 
     public Card peekNextCard(){ return deck.peek(); }
@@ -125,7 +114,7 @@ public class UnoGameTable extends Observable {
         System.out.println("HAND: " + currentPlayer().getHand());
         System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
         //--test end
-        currentPlayer().setHasDrew(false);
+        currentPlayer().setDrew(false);
         turnManager.passTurn();
         updateObservers();
     }

@@ -1,7 +1,5 @@
 package Controller;
 
-import Model.Cards.CardColor;
-import Model.Cards.CardValue;
 import Model.Exceptions.NoSelectedColorException;
 import Model.Exceptions.NoSelectedPlayerToSwapException;
 import Model.Player.AIPlayer;
@@ -10,15 +8,12 @@ import Model.Player.Player;
 import Model.Rules.*;
 import Model.UnoGameTable;
 import View.Animations.Animation;
-import View.Animations.FlipAnimation;
-import View.Animations.PlayAnimation;
 import View.Elements.CardImage;
 import View.Pages.GamePanel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.ArrayList;
 
 public class GamePanelController {
     //UnoGame uno = new tipoDiUno(new Player[] {mario,filippo,marco,gianfranco});
@@ -50,7 +45,7 @@ public class GamePanelController {
 
                 if (view.getCurrentState() == GamePanel.State.PLAYER_TURN)
                 {
-                    if (!currentPlayer.HasDrew() && view.getDeck().isInMouse(x, y))
+                    if (!currentPlayer.hasDrew() && view.getDeck().isInMouse(x, y))
                         drawOutCard(currentPlayer);
 
                     //var iterator = playerHands.get(players[0]).listIterator();
@@ -63,63 +58,46 @@ public class GamePanelController {
                             new Thread( () -> {
                                 if (anim != null){
                                     anim.Join();
-
                                     model.playCard(card.getCard());
-                                    Options.OptionsBuilder parameters = model.getOptions();
-
-                                    tryCardActionPerformance(parameters);
-
-                                    //si puo usare un try catch
-//                                    if(card.getCard().getValue() == CardValue.WILD)
-//                                        parameters.color(view.choseColorByUser());
-//                                    if(card.getCard().getValue() == CardValue.SEVEN && rules instanceof SevenoRules)
-//                                        parameters.playerToSwapCards(view.chosePlayerToSwap());
-//                                    model.cardActionPerformance(parameters.build());
+                                    tryCardActionPerformance(model.getOptions());
                                 }
                             },"playing card").start();
                         }
                     }
 
-                    if (currentPlayer.HasDrew() && view.getSkipTurnPosition().contains(x , y)) model.passTurn();
+                    if (currentPlayer.hasDrew() && view.getSkipTurnPosition().contains(x , y)) model.passTurn();
                 }
-                if (currentPlayer.HasOne() && view.getUnoPosition().contains(x, y)) currentPlayer.setSaidOne(true);
+                if (currentPlayer.hasOne() && view.getUnoPosition().contains(x, y)) currentPlayer.shoutUno();
             }
 
-            private void tryCardActionPerformance(Options.OptionsBuilder parameters) {
-                try
-                {
-                    model.cardActionPerformance(parameters.build());
+            private void tryCardActionPerformance(Options.OptionsBuilder parameters)
+            {
+                ActionPerformResult a = model.cardActionPerformance(parameters.build());
+                switch (a) {
+                    case NO_COLOR_PROVIDED -> parameters.color(view.choseColorByUser());
+                    case NO_PLAYER_PROVIDED -> parameters.playerToSwapCards(view.chosePlayerToSwap());
+                    case SUCCESSFUL -> {
+                        return;
+                    }
                 }
-                catch (NoSelectedPlayerToSwapException nspe)
-                {
-                    parameters.playerToSwapCards(view.chosePlayerToSwap());
-                    tryCardActionPerformance(parameters);
-                }
-                catch (NoSelectedColorException nsce)
-                {
-                    parameters.color(view.choseColorByUser());
-                    tryCardActionPerformance(parameters);
-                }
-                catch (Exception ex)
-                {
-                    ex.printStackTrace();
-                }
+                tryCardActionPerformance(parameters);
             }
         });
 
-        view.addMouseMotionListener(new MouseMotionAdapter() {
+        view.addMouseMotionListener(new MouseMotionAdapter()
+        {
             @Override
-            public void mouseMoved(MouseEvent e) {
-                view.animateCardsOnHovering(e); }
+            public void mouseMoved(MouseEvent e) { view.animateCardsOnHovering(e); }
         });
 
         model.addObserver(view);
         view.setVisible(true);
-        model.startGame();
+
+        startGame();
     }
     private void drawOutCard(Player currentPlayer)
     {
-        currentPlayer.setHasDrew(true);
+        currentPlayer.setDrew(true);
         CardImage drawnCard = new CardImage(model.peekNextCard());
         Animation flipCardAnimation = view.flipCardAnimation(drawnCard);
         new Thread( () -> {
@@ -129,15 +107,7 @@ public class GamePanelController {
             model.drawCard();
         },"drawing card").start();
     }
-    public GamePanel getView() {
-        return view;
-    }
-
-    public void startGame() {
-        model.startGame();
-    }
-
-    public void quitGame(){
-        view.stopTimer();
-    }
+    public GamePanel getView() { return view; }
+    public void startGame() { model.startGame(); }
+    public void quitGame(){ view.stopTimer(); }
 }

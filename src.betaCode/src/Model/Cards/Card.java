@@ -46,6 +46,7 @@ public class Card //implements Comparable<Card>
     @Override
     public boolean equals(Object obj)
     { return (obj instanceof Card && color.equals(((Card) obj).getColor()) && value.equals(((Card) obj).getValue())); }
+
 }
 //nousecode
 //@Override

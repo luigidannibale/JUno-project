@@ -13,8 +13,8 @@ public abstract class Player
 
     //ogni inizio turno deve tornare ad essre false
     protected boolean saidOne = false;
-    protected boolean hasDrew = false;
-    protected boolean hasOne = false;
+    protected boolean drew = false;
+    protected boolean incepped = false;
 
     protected Player(String name){
         this.name = name;
@@ -23,28 +23,20 @@ public abstract class Player
 
     public void drawCard(Card drewCard){
         hand.push(drewCard);
-        hasOne = false;
         saidOne = false;
     }
 
     public void drawCards(List<Card> cards){
         hand.addAll(cards);
-        hasOne = false;
         saidOne = false;
     }
 
-    public void playCard(Card played){
-        hand.remove(played);
-        if (hand.size() == 1) hasOne = true;
-    }
+    public void playCard(Card played){ hand.remove(played); }
 
-    public Stack<Card> getHand(){
-        return hand;
-    }
+    public Stack<Card> getHand(){ return hand; }
 
     public void setHand(Stack<Card> newHand){
         hand = newHand;
-        hasOne = hand.size() == 1;
         saidOne = false;
     }
 
@@ -61,17 +53,15 @@ public abstract class Player
     }
 
     public String getName(){ return name; }
+    public void setName(String name) {this.name = name;}
+    public void shoutUno() { saidOne = true; }
+    public void setDrew(boolean drew) {this.drew = drew;}
+    public void setIncepped(boolean incepped) {this.incepped = incepped;}
 
-    public void shoutUno()
-    { saidOne = true; }
-
-    public void setHasDrew(boolean hasDrew) {this.hasDrew = hasDrew;}
-    public void setSaidOne(boolean saidOne) {this.saidOne = saidOne;}
-
-    public boolean HasDrew(){ return hasDrew; }
-    public boolean HasOne(){ return hasOne; }
-    public boolean HasSaidOne(){ return saidOne; }
-
+    public boolean hasDrew(){ return drew; }
+    public boolean hasOne(){ return hand.size() == 1; }
+    public boolean hasSaidOne(){ return saidOne; }
+    public boolean isIncepped() {return incepped;}
     @Override
     public String toString(){
         return name;

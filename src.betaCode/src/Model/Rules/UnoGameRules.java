@@ -1,8 +1,9 @@
 package Model.Rules;
 
-import Model.Cards.Card;
+import Model.Cards.*;
 import Model.Deck;
-import Model.Cards.CardValue;
+import Model.Player.AIPlayer;
+import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.TurnManager;
 
@@ -49,5 +50,64 @@ public abstract class UnoGameRules {
     public abstract List<Card> getPlayableCards(List<Card> playerHand, Card discardsPick);
 
     public abstract void oldCardActionPerformance(TurnManager turnManager, Player[] players, Deck deck);
-    public abstract void cardActionPerformance(Options parameters) throws Exception;
+
+    public ActionPerformResult cardActionPerformance(Options parameters)
+    {
+        TurnManager turnManager = parameters.getTurnManager();
+        Card lastCard = turnManager.getLastCardPlayed();
+        ActionPerformResult actionPerformResult;
+
+        if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD)
+        {
+            actionPerformResult = _WildAction(parameters);
+            if (actionPerformResult != ActionPerformResult.SUCCESSFUL) return actionPerformResult;
+        }
+        if(lastCard instanceof DrawCard)
+        {
+            actionPerformResult = _DrawAction(parameters, lastCard);
+            if (actionPerformResult != ActionPerformResult.SUCCESSFUL) return actionPerformResult;
+        }
+        if(lastCard instanceof ReverseCard)
+        {
+            actionPerformResult = _ReverseAction(turnManager);
+            if (actionPerformResult != ActionPerformResult.SUCCESSFUL) return actionPerformResult;
+        }
+        if(lastCard instanceof SkipAction)
+        {
+            actionPerformResult = _SkipAction(turnManager, parameters.getPlayers());
+            if (actionPerformResult != ActionPerformResult.SUCCESSFUL) return actionPerformResult;
+        }
+        return ActionPerformResult.SUCCESSFUL;
+    }
+
+    protected ActionPerformResult _WildAction(Options parameters)
+    {
+        TurnManager turnManager = parameters.getTurnManager();
+        Player current = parameters.getPlayers()[turnManager.getPlayer()];
+        CardColor color = parameters.getColor();
+        if (color == null) {
+            if (current instanceof HumanPlayer) return ActionPerformResult.NO_COLOR_PROVIDED;
+            else
+                color = ((AIPlayer) current).chooseBestColor();
+        }
+        ((WildAction) turnManager.getLastCardPlayed()).changeColor(turnManager, color);
+        return ActionPerformResult.SUCCESSFUL;
+    }
+    protected ActionPerformResult _DrawAction(Options parameters, Card card)
+    {
+        TurnManager turnManager = parameters.getTurnManager();
+        parameters.getPlayers()[turnManager.next()].drawCards(parameters.getDeck().draw(((DrawCard) turnManager.getLastCardPlayed()).getNumberOfCardsToDraw()));
+        return ActionPerformResult.SUCCESSFUL;
+    }
+    protected ActionPerformResult _ReverseAction(TurnManager turnManager)
+    {
+        ((ReverseCard) turnManager.getLastCardPlayed()).performReverseAction(turnManager);
+        return ActionPerformResult.SUCCESSFUL;
+    }
+    protected ActionPerformResult _SkipAction(TurnManager turnManager, Player[] players)
+    {
+        ((SkipAction) turnManager.getLastCardPlayed()).performSkipAction(turnManager, players);
+        return ActionPerformResult.SUCCESSFUL;
+    }
+
 }

@@ -43,6 +43,7 @@ public class AIPlayer extends Player
         Map<CardColor, Long> colorWeights = colorWeights();
         var some = hand.stream().filter(c -> c.getColor() != CardColor.WILD).sorted(Comparator.comparing(c -> colorWeights.get(((Card)c).getColor())).reversed()).toList();
         //some.forEach(System.out::println);
-        return some.get(0).getColor();
+        CardColor chosen = some.size() == 0 ? CardColor.values()[new Random().nextInt(0, CardColor.values().length)] : some.get(0).getColor();
+        return chosen;
     }
 }

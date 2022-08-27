@@ -23,42 +23,24 @@ public class ClassicRules extends UnoGameRules
     @Override
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick)
     {
-        //if there is at least one not wild card and one wild card all the wild cards are not playables
-        if(playerPlayableHand.stream().anyMatch(card -> card.getColor()!= CardColor.WILD) && playerPlayableHand.stream().anyMatch(card -> card.getColor()==CardColor.WILD))
-            playerPlayableHand = playerPlayableHand.stream().filter(card -> card.getColor()!=CardColor.WILD).toList();
+//        if there is at least one not wild card and one wild card all the wild cards are not playables
+//        if(playerPlayableHand.stream().anyMatch(card -> card.getColor()!= CardColor.WILD) && playerPlayableHand.stream().anyMatch(card -> card.getColor()==CardColor.WILD))
+//            playerPlayableHand = playerPlayableHand.stream().filter(card -> card.getColor()!=CardColor.WILD).toList();
         return playerPlayableHand;
     }
+
     @Override
-    public void cardActionPerformance(Options parameters) throws NoSelectedColorException {
-
-        TurnManager turnManager = parameters.getTurnManager();
-        Card lastCard = turnManager.getLastCardPlayed();
-
-        if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD)
-        {
-            //assert (parameters.getColor() != null):"No color provided";
-            Player current = parameters.getPlayers()[turnManager.getPlayer()];
-            CardColor color = parameters.getColor();
-            if (color == null) {
-                if (current instanceof HumanPlayer) throw new NoSelectedColorException();
-                else
-                    color = ((AIPlayer) current).chooseBestColor();
-            }
-            ((WildAction) lastCard).changeColor(turnManager, color);
-        }
-        if(lastCard instanceof DrawCard)
-            parameters.getPlayers()[turnManager.next()].drawCards(parameters.getDeck().draw(((DrawCard) lastCard).getNumberOfCardsToDraw()));
-        if(lastCard instanceof ReverseCard)
-            ((ReverseCard) lastCard).performReverseAction(turnManager);
-        if(lastCard instanceof SkipAction)
-            ((SkipAction) lastCard).performSkipAction(turnManager);
-
-        turnManager.passTurn();
+    public ActionPerformResult cardActionPerformance(Options parameters)
+    {
+        var actionPerformResult = super.cardActionPerformance(parameters);
+        if (actionPerformResult == ActionPerformResult.SUCCESSFUL) parameters.getTurnManager().passTurn();
+        return actionPerformResult;
     }
 
     @Override
     public void oldCardActionPerformance(TurnManager turnManager, Player[] players, Deck deck)
     {
+        /*
         Card lastCard = turnManager.getLastCardPlayed();
 
         if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD)
@@ -75,6 +57,8 @@ public class ClassicRules extends UnoGameRules
             ((SkipAction) lastCard).performSkipAction(turnManager);
 
         turnManager.passTurn();
+
+         */
     }
 
 }

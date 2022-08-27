@@ -1,5 +1,6 @@
 package Model.Cards;
 
+import Model.Player.Player;
 import Model.TurnManager;
 
 /**
@@ -12,5 +13,11 @@ public interface SkipAction
      * Skips the turn in a Uno Game match
      * @param turnManager
      */
-    default void performSkipAction(TurnManager turnManager) { turnManager.passTurn(); }
+    default void performSkipAction(TurnManager turnManager, Player[] players) {
+        recursiveSkipper(turnManager, players, turnManager.getPlayer());
+    }
+    private void recursiveSkipper(TurnManager turnManager, Player[] players, int i) {
+        if (players[turnManager.next(i)].isIncepped()) recursiveSkipper(turnManager, players, i+1);
+        else players[turnManager.next(i)].setIncepped(true);
+    }
 }

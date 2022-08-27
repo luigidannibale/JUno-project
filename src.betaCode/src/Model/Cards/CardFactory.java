@@ -22,14 +22,7 @@ public class CardFactory
             throw new IllegalArgumentException("this card combo is not accepted");
         //---------------------------
         //--Card creation------------
-        switch (value)
-        {
-            case DRAW,WILD_DRAW -> { return new DrawCard(color); }
-            case SKIP -> { return new SkipCard(color); }
-            case REVERSE -> { return new ReverseCard(color); }
-            case WILD -> { return new WildCard(); }
-            default -> { return new Card(color, value); }
-        }
+        return createFlowCard(color, value);
         //---------------------------
     }
     /**
@@ -40,5 +33,16 @@ public class CardFactory
      * @param value
      * @return the card
      */
-    public static Card createFlowCard(CardColor color, CardValue value) { return new Card(color,value); }
+    public static Card createFlowCard(CardColor color, CardValue value)
+    {
+        switch (value)
+        {
+            case DRAW -> { return new DrawCard(color); }
+            case WILD_DRAW -> { return new DrawCard(color,value); }
+            case SKIP -> { return new SkipCard(color); }
+            case REVERSE -> { return new ReverseCard(color); }
+            case WILD -> { return new WildCard(); }
+            default -> { return new Card(color, value); }
+        }
+    }
 }
