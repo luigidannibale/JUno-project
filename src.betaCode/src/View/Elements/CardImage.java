@@ -25,7 +25,7 @@ public class CardImage {
     public static int width = 120;
     public static int height = 180;
 
-    private Rectangle position;
+    private Rectangle position = new Rectangle();
     private int offsetY = 0;
     private int rotation;
     private Card card;
@@ -76,9 +76,9 @@ public class CardImage {
     }
 
     public void setPosition(int x, int y, int width, boolean rotated){
-        position = rotated ? new Rectangle(x, y, height, width) : new Rectangle(x, y, width, height);
-        //if (rotated) position.setRect(x, y, height, width);
-        //else position.setRect(x, y, width, height);
+        //position = rotated ? new Rectangle(x, y, height, width) : new Rectangle(x, y, width, height);
+        if (rotated) position.setRect(x, y, height, width);
+        else position.setRect(x, y, width, height);
     }
 
     public Rectangle getPosition() {return position;}

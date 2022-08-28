@@ -41,7 +41,7 @@ public class CardFactory
             case WILD_DRAW -> { return new DrawCard(color,value); }
             case SKIP -> { return new SkipCard(color); }
             case REVERSE -> { return new ReverseCard(color); }
-            case WILD -> { return new WildCard(); }
+            case WILD -> { return new WildCard(color); }
             default -> { return new Card(color, value); }
         }
     }

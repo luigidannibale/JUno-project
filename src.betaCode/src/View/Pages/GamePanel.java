@@ -145,22 +145,6 @@ public class GamePanel extends JPanel implements Observer {
         return (Player) playerHashMap.values().toArray()[choice];
     }
 
-    public void pauseGame()
-    {
-        currentState = State.PAUSED;
-        if (aiThread != null)
-            if (aiThread.isAlive())
-            {
-                try{
-                    aiThread.wait();
-                }
-                catch (Exception e){
-                    System.out.println("non waitano");
-                }
-            }
-
-    }
-
     private void InitializeComponents()
     {
         deck = new CardImage();
@@ -241,8 +225,10 @@ public class GamePanel extends JPanel implements Observer {
         UnoGameTable model = (UnoGameTable) o;
         players = model.getPlayers();
         lastCard = model.getLastCard();
-        System.out.println("LAST CARD " + lastCard);
         deckSize = model.getDeck().size();
+
+        if (Arrays.stream(players).filter(p -> p.getHand().size() == 0).count() == 1) gameRunning = false;
+
         createCards();
         currentPlayer = model.currentPlayer();
 
@@ -250,6 +236,7 @@ public class GamePanel extends JPanel implements Observer {
         if (currentPlayer.isIncepped()) {
             currentPlayer.setIncepped(false);
             model.passTurn();
+            return;
         }
 
         currentState = currentPlayer instanceof HumanPlayer ? State.PLAYER_TURN : State.OTHERS_TURN;
@@ -266,14 +253,19 @@ public class GamePanel extends JPanel implements Observer {
 
     public void createCards()
     {
-        int[] rotations = new int[]{0, 270, 180, 90};
-        for (Player player : players)
-        {
-            assert (player.getHand().size() > 0):"Gamepanel->createcards size <= 0";
-            int rotation = Arrays.stream(players).toList().indexOf(player);
-            playerHands.put(player, player.getHand().stream().map(c -> new CardImage(c, rotations[rotation])).collect(Collectors.toCollection(ArrayList::new)));
+        try{
+            int[] rotations = new int[]{0, 270, 180, 90};
+            for (Player player : players)
+            {
+                //assert (player.getHand().size() > 0):"Gamepanel->createcards size <= 0";
+                int rotation = Arrays.stream(players).toList().indexOf(player);
+                playerHands.put(player, player.getHand().stream().map(c -> new CardImage(c, rotations[rotation])).collect(Collectors.toCollection(ArrayList::new)));
+            }
+            discard = new CardImage(lastCard);
         }
-        discard = new CardImage(lastCard);
+        catch (ConcurrentModificationException cme){
+            System.out.println("Si modificano concurremente");
+        }
     }
 
     public void asyncAITurn(UnoGameTable model)
@@ -395,6 +387,22 @@ public class GamePanel extends JPanel implements Observer {
     }
 
     //controller usage
+    public void pauseGame()
+    {
+        currentState = State.PAUSED;
+        if (aiThread != null)
+            if (aiThread.isAlive())
+            {
+                try{
+                    aiThread.wait();
+                }
+                catch (Exception e){
+                    System.out.println("non waitano");
+                }
+            }
+
+    }
+
     public void stopTimer(){
         animations.forEach(Animation::Stop);
         gameRunning = false;

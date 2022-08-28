@@ -67,7 +67,10 @@ public class GamePanelController {
 
                     if (currentPlayer.hasDrew() && view.getSkipTurnPosition().contains(x , y)) model.passTurn();
                 }
-                if (currentPlayer.hasOne() && view.getUnoPosition().contains(x, y)) currentPlayer.shoutUno();
+                if (currentPlayer.hasOne() && view.getUnoPosition().contains(x, y)){
+                    currentPlayer.shoutUno();
+                    System.out.println("UNOOOOO");
+                }
             }
 
             private void tryCardActionPerformance(Options.OptionsBuilder parameters)
