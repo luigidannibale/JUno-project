@@ -232,7 +232,6 @@ public class GamePanel extends JPanel implements Observer {
         createCards();
         currentPlayer = model.currentPlayer();
 
-
         if (currentPlayer.isIncepped()) {
             currentPlayer.setIncepped(false);
             model.passTurn();
@@ -247,7 +246,11 @@ public class GamePanel extends JPanel implements Observer {
             rotatingAnimation.imageColor(discard.getCard().getColor());
         }
 
-        if (currentState == State.OTHERS_TURN || (aiThread != null && !aiThread.isAlive()))
+        System.out.println(aiThread);
+        if (aiThread != null){
+            System.out.println(aiThread.isAlive());
+        }
+        if (currentState == State.OTHERS_TURN)
             asyncAITurn(model);
     }
 
@@ -275,11 +278,11 @@ public class GamePanel extends JPanel implements Observer {
                 AIPlayer ai = (AIPlayer) currentPlayer;
 
                 Thread.sleep(1500);
-                if ((ai.getValidCards(discard.getCard()).size() == 0))
+                if (model.getPLayableCards().size() == 0)
                 {
                     if (!ai.hasDrew()){
-                        drawCardAnimation(new CardImage()).Join();
-                        model.drawCard();
+                        drawCardAnimation(ai, new CardImage()).Join();
+                        model.drawCard(ai);
                     }
                     else model.passTurn();
                 }
@@ -288,7 +291,7 @@ public class GamePanel extends JPanel implements Observer {
                     Card playedCard = ai.getValidCards(discard.getCard()).get(0);
                     CardImage relatedImage = playerHands.get(ai).stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
                     playCardAnimation(relatedImage).Join();
-                    model.playCard(ai.getValidCards(discard.getCard()).get(0));
+                    model.playCard(model.getPLayableCards().get(0));
                     model.cardActionPerformance(model.getOptions().build());
                 }
             } catch (InterruptedException e) {
@@ -297,6 +300,7 @@ public class GamePanel extends JPanel implements Observer {
                 throw e;
             }
         });
+        aiThread.setName(currentPlayer.getName());
         aiThread.start();
     }
 
@@ -308,7 +312,8 @@ public class GamePanel extends JPanel implements Observer {
         card.setDrawImage(null);
         return playAnimation;
     }
-    public Animation drawCardAnimation(CardImage drawnCard){
+
+    public Animation drawCardAnimation(Player currentPlayer, CardImage drawnCard){
         if (animationRunning(playAnimation)) return null;
         Rectangle lastCardPosition = playerHands.get(currentPlayer).get(playerHands.get(currentPlayer).size() - 1).getPosition();
         playAnimation = new PlayAnimation(deck.getPosition().getX(), deck.getPosition().getY(), lastCardPosition.getX(), lastCardPosition.getY(), drawnCard);
@@ -412,6 +417,7 @@ public class GamePanel extends JPanel implements Observer {
     // GETTER
     public State getCurrentState(){return currentState;}
     public Player getCurrentPlayer() {return currentPlayer;}
+    public Player[] getPlayers() {return players;}
     public CardImage getDeck() {return deck;}
     public HashMap<Player, ArrayList<CardImage>> getPlayerHands() {return playerHands;}
     public Rectangle getSkipTurnPosition() {return skipTurnPosition;}

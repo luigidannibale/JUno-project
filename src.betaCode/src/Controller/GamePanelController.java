@@ -20,7 +20,7 @@ public class GamePanelController {
     private GamePanel view;
     private UnoGameTable model;
 
-
+    boolean hasFinishedDrawing = false;
 
     //qui dentro ci sono anche la view e tutti i suoi eventi
 
@@ -34,11 +34,12 @@ public class GamePanelController {
         }
         model = new UnoGameTable(new Player[]{new HumanPlayer("Piero"),new AIPlayer("Ai 1"),new AIPlayer("Ai 2"),new AIPlayer("Ai 3")}, rules);
         view = new GamePanel();
+
         view.addMouseListener(new MouseAdapter()
         {
             @Override
             public void mouseReleased(MouseEvent e) {
-
+                System.out.println(view.getCurrentState());
                 int x = e.getX();
                 int y = e.getY();
                 Player currentPlayer = view.getCurrentPlayer();
@@ -65,10 +66,13 @@ public class GamePanelController {
                         }
                     }
 
-                    if (currentPlayer.hasDrew() && view.getSkipTurnPosition().contains(x , y)) model.passTurn();
+                    if (currentPlayer.hasDrew() && hasFinishedDrawing && view.getSkipTurnPosition().contains(x , y)) {
+                        hasFinishedDrawing = false;
+                        model.passTurn();
+                    }
                 }
-                if (currentPlayer.hasOne() && view.getUnoPosition().contains(x, y)){
-                    currentPlayer.shoutUno();
+                if (view.getPlayers()[0].hasOne() && view.getUnoPosition().contains(x, y)){
+                    view.getPlayers()[0].shoutUno();
                     System.out.println("UNOOOOO");
                 }
             }
@@ -106,8 +110,9 @@ public class GamePanelController {
         new Thread( () -> {
             if (flipCardAnimation == null) return;
             flipCardAnimation.Join();
-            view.drawCardAnimation(drawnCard).Join();
-            model.drawCard();
+            view.drawCardAnimation(currentPlayer, drawnCard).Join();
+            model.drawCard(currentPlayer);
+            hasFinishedDrawing = true;
         },"drawing card").start();
     }
     public GamePanel getView() { return view; }

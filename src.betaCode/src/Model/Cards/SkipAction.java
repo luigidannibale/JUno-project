@@ -17,14 +17,9 @@ public interface SkipAction
         recursiveSkipper(turnManager, players, turnManager.getPlayer());
     }
     private void recursiveSkipper(TurnManager turnManager, Player[] players, int i) {
-        System.out.println(players[turnManager.next(i)]);
-        if (players[turnManager.next(i)].isIncepped()){
-            System.out.println("E' gia inceppato");
-            recursiveSkipper(turnManager, players, i+1);
-        }
-        else{
-            System.out.println("E' da inceppare");
-            players[turnManager.next(i)].setIncepped(true);
-        }
+        Player next = players[turnManager.next(i)];
+        if (next.isIncepped()) recursiveSkipper(turnManager, players, i+1);
+        else next.setIncepped(true);
+
     }
 }

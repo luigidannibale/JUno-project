@@ -63,6 +63,8 @@ public class UnoGameTable extends Observable {
 
     public void drawCard()
     {
+        drawCard(currentPlayer());
+        /*
         Card drewCard = deck.draw();
         if (drewCard == null)
         {
@@ -76,6 +78,27 @@ public class UnoGameTable extends Observable {
         System.out.println("DRAWED: " + drewCard);
         System.out.println("HAND: " + currentPlayer().getHand());
         System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
+        //--test end
+        updateObservers();
+
+         */
+    }
+
+    public void drawCard(Player currentPlayer)
+    {
+        Card drewCard = deck.draw();
+        if (drewCard == null)
+        {
+            deck.re_shuffle(discards);
+            drewCard = deck.draw();
+        }
+        currentPlayer.drawCard(drewCard);
+        currentPlayer.setDrew(true);
+        //--test start
+        System.out.println(currentPlayer);
+        System.out.println("DRAWED: " + drewCard);
+        System.out.println("HAND: " + currentPlayer.getHand());
+        System.out.println("PLAYABLE: " + currentPlayer.getValidCards(turnManager.getLastCardPlayed()));
         //--test end
         updateObservers();
     }
