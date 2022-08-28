@@ -51,15 +51,6 @@ public class UnoGameTable extends Observable {
         //ruleManager.cardActionPerformance(discards.peek());
         updateObservers();
     }
-    public Player currentPlayer() { return players[turnManager.getPlayer()]; }
-
-    public List<Card> getPLayableCards()
-    { return ruleManager.getPlayableCards(currentPlayer().getValidCards(turnManager.getLastCardPlayed()),turnManager.getLastCardPlayed()); }
-
-    public Player[] getPlayers() { return players; }
-
-    public Deck getDeck() { return deck; }
-    public Card getLastCard(){ return turnManager.getLastCardPlayed(); }
 
     public void drawCard()
     {
@@ -127,8 +118,6 @@ public class UnoGameTable extends Observable {
         return a;
     }
 
-    public Card peekNextCard(){ return deck.peek(); }
-
     public void passTurn()
     {
         //--test start
@@ -142,9 +131,7 @@ public class UnoGameTable extends Observable {
         updateObservers();
     }
 
-    public boolean clockwiseTurn(){
-        return turnManager.clockwiseTurn();
-    }
+    public boolean clockwiseTurn(){ return turnManager.clockwiseTurn();}
 
     private void updateObservers()
     {
@@ -152,46 +139,23 @@ public class UnoGameTable extends Observable {
         notifyObservers();
     }
 
+    public Card peekNextCard(){ return deck.peek(); }
+
     public TurnManager getTurnManager(){ return turnManager; }
 
     public Options.OptionsBuilder getOptions(){
         return new Options.OptionsBuilder(turnManager, players, deck);
     }
-}
-//nousecode
-    /*
-    public void cardActionPerformance(Card card)
-    {
-        if (turnManager.getLastCardPlayed() instanceof WildAction && turnManager.getLastCardPlayed().getColor() == CardColor.WILD) {
-            CardColor c = ((WildAction) turnManager.getLastCardPlayed()).changeColor();
-            turnManager.updateLastCardPlayed(CardBuilder.createFlowCard(c,CardValue.WILD));
-        }
-        if(turnManager.getLastCardPlayed() instanceof DrawCard)
-            ((DrawCard) turnManager.getLastCardPlayed()).drawCards(turnManager,players,deck);
 
-        else if(turnManager.getLastCardPlayed() instanceof ReverseCard)
-            ((ReverseCard) turnManager.getLastCardPlayed()).reverse(turnManager, players);
-        if(turnManager.getLastCardPlayed() instanceof SkipAction)
-            ((SkipAction) turnManager.getLastCardPlayed()).skipTurn(turnManager);
-        /*
-        switch (card.getValue()){
-            case REVERSE -> ((ReverseCard) card).reverse(turnManager,players); //if discard discard.peek == reverse -> il primo gioca e poi cambia giro
-            case DRAW -> {//if discard discard.peek == draw -> il primo pesca due carte
-                players[turnManager.getPlayer()].drawCards(deck.draw(2));
-                ((DrawCard) card).skipTurn(turnManager);
-            }
-            case SKIP -> ((SkipCard) card).skipTurn(turnManager); //if discard discard.peek == skip -> il primo viene skippato
-            case WILD -> {//if discard discard.peek == wild -> il primo sceglie il colore
-                CardColor c = ((WildCard) card).changeColor();
-                turnManager.updateCard(new Card(c,CardValue.WILD));
-            }
-            case WILD_DRAW -> {
-                players[turnManager.getPlayer()].drawCards(deck.draw(4));
-                ((DrawCard) card).skipTurn(turnManager);
-                CardColor c = ((DrawCard) card).changeColor();
-                turnManager.updateCard(new Card(c,CardValue.WILD));
-            }
-            default -> {}
-        }
-    }*/
+    public Player currentPlayer() { return players[turnManager.getPlayer()]; }
+
+    public List<Card> getPLayableCards()
+    { return ruleManager.getPlayableCards(currentPlayer().getValidCards(turnManager.getLastCardPlayed()),turnManager.getLastCardPlayed()); }
+
+    public Player[] getPlayers() { return players; }
+
+    public Deck getDeck() { return deck; }
+    public Card getLastCard(){ return turnManager.getLastCardPlayed(); }
+}
+
 

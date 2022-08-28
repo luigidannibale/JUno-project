@@ -232,8 +232,8 @@ public class GamePanel extends JPanel implements Observer {
         createCards();
         currentPlayer = model.currentPlayer();
 
-        if (currentPlayer.isIncepped()) {
-            currentPlayer.setIncepped(false);
+        if (currentPlayer.isBlocked()) {
+            currentPlayer.setBlocked(false);
             model.passTurn();
             return;
         }
@@ -246,10 +246,6 @@ public class GamePanel extends JPanel implements Observer {
             rotatingAnimation.imageColor(discard.getCard().getColor());
         }
 
-        System.out.println(aiThread);
-        if (aiThread != null){
-            System.out.println(aiThread.isAlive());
-        }
         if (currentState == State.OTHERS_TURN)
             asyncAITurn(model);
     }

@@ -18,8 +18,8 @@ public interface SkipAction
     }
     private void recursiveSkipper(TurnManager turnManager, Player[] players, int i) {
         Player next = players[turnManager.next(i)];
-        if (next.isIncepped()) recursiveSkipper(turnManager, players, i+1);
-        else next.setIncepped(true);
+        if (next.isBlocked()) recursiveSkipper(turnManager, players, i+1);
+        else next.setBlocked(true);
 
     }
 }

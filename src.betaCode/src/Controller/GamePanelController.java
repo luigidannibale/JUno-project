@@ -39,7 +39,6 @@ public class GamePanelController {
         {
             @Override
             public void mouseReleased(MouseEvent e) {
-                System.out.println(view.getCurrentState());
                 int x = e.getX();
                 int y = e.getY();
                 Player currentPlayer = view.getCurrentPlayer();

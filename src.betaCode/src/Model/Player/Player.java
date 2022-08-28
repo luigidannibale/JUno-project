@@ -14,7 +14,7 @@ public abstract class Player
     //ogni inizio turno deve tornare ad essre false
     protected boolean saidOne = false;
     protected boolean drew = false;
-    protected boolean incepped = false;
+    protected boolean isBlocked = false;
 
     protected Player(String name){
         this.name = name;
@@ -56,12 +56,12 @@ public abstract class Player
     public void setName(String name) {this.name = name;}
     public void shoutUno() { saidOne = true; }
     public void setDrew(boolean drew) {this.drew = drew;}
-    public void setIncepped(boolean incepped) {this.incepped = incepped;}
+    public void setBlocked(boolean blocked) {this.isBlocked = blocked;}
 
     public boolean hasDrew(){ return drew; }
     public boolean hasOne(){ return hand.size() == 1; }
     public boolean hasSaidOne(){ return saidOne; }
-    public boolean isIncepped() {return incepped;}
+    public boolean isBlocked() {return isBlocked;}
     @Override
     public String toString(){
         return name;

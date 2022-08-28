@@ -101,6 +101,4 @@ public class HumanPlayer extends Player
             //updateProfile(filePath);
 
     }
-    @Override
-    public void shoutUno() {}
 }
