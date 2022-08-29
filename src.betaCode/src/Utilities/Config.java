@@ -7,7 +7,8 @@ import java.awt.*;
 import java.util.HashMap;
 
 
-public class Config {
+public class Config
+{
     public static int effectsVolume;
     public static int musicVolume;
     public static DeckColor deckStyle;

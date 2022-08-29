@@ -7,10 +7,7 @@ import Model.Rules.ActionPerformResult;
 import Model.Rules.Options;
 import Model.Rules.UnoGameRules;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Observable;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.IntStream;
 
 /**
@@ -53,7 +50,15 @@ public class UnoGameTable extends Observable {
     }
 
     public List<Card> getCurrentPlayerPLayableCards()
-    { return ruleManager.getPlayableCards(currentPlayer().getValidCards(turnManager.getLastCardPlayed()),turnManager.getLastCardPlayed()); }
+    {
+        if (!currentPlayer().hasDrew())
+            return ruleManager.getPlayableCards(currentPlayer().getValidCards(turnManager.getLastCardPlayed()),turnManager.getLastCardPlayed());
+        else
+        {
+            Card drawnCard = currentPlayer().getHand().peek();
+            return ruleManager.getPlayableCards(drawnCard.isValid(turnManager.getLastCardPlayed()) ? List.of(drawnCard) : new ArrayList<>(),turnManager.getLastCardPlayed());
+        }
+    }
 
     public void drawCard()
     {
@@ -74,7 +79,6 @@ public class UnoGameTable extends Observable {
         System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
         //--test end
         updateObservers();
-
          */
     }
 
@@ -92,7 +96,7 @@ public class UnoGameTable extends Observable {
         System.out.println(currentPlayer);
         System.out.println("DRAWED: " + drewCard);
         System.out.println("HAND: " + currentPlayer.getHand());
-        System.out.println("PLAYABLE: " + currentPlayer.getValidCards(turnManager.getLastCardPlayed()));
+        System.out.println("PLAYABLE: " + getCurrentPlayerPLayableCards());
         //--test end
         updateObservers();
     }
@@ -103,7 +107,7 @@ public class UnoGameTable extends Observable {
         System.out.println(currentPlayer());
         System.out.println("PLAYED: " + card);
         System.out.println("HAND: " + currentPlayer().getHand());
-        System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
+        System.out.println("PLAYABLE: " + getCurrentPlayerPLayableCards());
         //--test end
         currentPlayer().playCard(card);
         currentPlayer().setDrew(false);
@@ -151,9 +155,6 @@ public class UnoGameTable extends Observable {
     }
 
     public Player currentPlayer() { return players[turnManager.getPlayer()]; }
-
-    public List<Card> getPLayableCards()
-    { return ruleManager.getPlayableCards(currentPlayer().getValidCards(turnManager.getLastCardPlayed()),turnManager.getLastCardPlayed()); }
 
     public Player[] getPlayers() { return players; }
 

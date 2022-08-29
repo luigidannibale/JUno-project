@@ -49,8 +49,6 @@ public abstract class UnoGameRules {
 
     public abstract List<Card> getPlayableCards(List<Card> playerHand, Card discardsPick);
 
-    public abstract void oldCardActionPerformance(TurnManager turnManager, Player[] players, Deck deck);
-
     public ActionPerformResult cardActionPerformance(Options parameters)
     {
         TurnManager turnManager = parameters.getTurnManager();

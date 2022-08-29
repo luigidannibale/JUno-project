@@ -1,5 +1,6 @@
 package Controller;
 
+import Utilities.AudioManager;
 import View.Pages.GameChoicePanel;
 
 import java.awt.event.MouseAdapter;
@@ -7,9 +8,9 @@ import java.awt.event.MouseEvent;
 
 public class GameChoiceController {
     public enum GameMode{
-        CLASSIC,
-        MEME,
-        SEVENO
+        CLASSIC_RULES,
+        MEME_RULES,
+        SEVENO_RULES
     }
 
     GameChoicePanel view;
@@ -21,21 +22,21 @@ public class GameChoiceController {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //mainFrame.setVisiblePanel(MainFrame.Panels.GAME);
-                createNewGame(mainFrame, GameMode.CLASSIC);
+                createNewGame(mainFrame, GameMode.CLASSIC_RULES);
             }
         });
 
         view.getMemeGame().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                createNewGame(mainFrame, GameMode.MEME);
+                createNewGame(mainFrame, GameMode.MEME_RULES);
             }
         });
 
         view.getSevenoGame().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                createNewGame(mainFrame, GameMode.SEVENO);
+                createNewGame(mainFrame, GameMode.SEVENO_RULES);
             }
         });
 
@@ -47,13 +48,13 @@ public class GameChoiceController {
         });
     }
 
-    private void createNewGame(MainFrameController mainFrame, GameMode gameMode){
+    private void createNewGame(MainFrameController mainFrame, GameMode gameMode)
+    {
+        AudioManager.getInstance().setFolder(gameMode.name());
         mainFrame.createNewGame(gameMode);
     }
 
-    public GameChoicePanel getView() {
-        return view;
-    }
+    public GameChoicePanel getView() { return view; }
 
     public void setVisible(boolean visible){
         view.setVisible(visible);

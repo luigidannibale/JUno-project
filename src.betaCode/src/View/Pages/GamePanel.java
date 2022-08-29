@@ -1,11 +1,13 @@
 package View.Pages;
 
+import Controller.GameChoiceController;
 import Model.Cards.Card;
 import Model.Cards.CardColor;
 import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.UnoGameTable;
+import Utilities.AudioManager;
 import Utilities.Config;
 import Utilities.Utils;
 import View.Animations.Animation;
@@ -237,8 +239,7 @@ public class GamePanel extends JPanel implements Observer {
             return;
         }
 
-        if (currentState != State.GAME_PAUSED)
-            currentState = currentPlayer instanceof HumanPlayer ? State.PLAYER_TURN : State.AI_TURN;
+        if (currentState != State.GAME_PAUSED) currentState = getState();
 
         if (rotatingAnimation.isAlive())
         {
@@ -246,8 +247,10 @@ public class GamePanel extends JPanel implements Observer {
             rotatingAnimation.imageColor(discard.getCard().getColor());
         }
 
-        if (currentState == State.AI_TURN)
+        if (currentState == State.AI_TURN) {
             asyncAITurn(gameTable);
+            players[0].setDrew(false);
+        }
 
     }
 
@@ -274,7 +277,7 @@ public class GamePanel extends JPanel implements Observer {
             try {
                 AIPlayer ai = (AIPlayer) currentPlayer;
                 Thread.sleep(1500);
-                if (gameTable.getPLayableCards().size() == 0) {
+                if (gameTable.getCurrentPlayerPLayableCards().size() == 0) {
                     if (!ai.hasDrew()) {
                         drawCardAnimation(ai, new CardImage()).Join();
                         gameTable.drawCard(ai);
@@ -287,7 +290,7 @@ public class GamePanel extends JPanel implements Observer {
                     CardImage relatedImage = playerHands.get(ai).stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
                     playCardAnimation(relatedImage).Join();
 
-                    gameTable.playCard(gameTable.getPLayableCards().get(0));
+                    gameTable.playCard(gameTable.getCurrentPlayerPLayableCards().get(0));
                     gameTable.cardActionPerformance(gameTable.getOptions().build());
                 }
             }
@@ -307,6 +310,7 @@ public class GamePanel extends JPanel implements Observer {
         movingAnimation = new MovingAnimation(card.getPosition().getX(), card.getPosition().getY(), discard.getPosition().getX(), discard.getPosition().getY(), card);
         animations.add(movingAnimation);
         card.setDrawImage(null);
+        AudioManager.getInstance().setEffects(AudioManager.Effects.PLAY);
         return movingAnimation;
     }
 
@@ -385,7 +389,7 @@ public class GamePanel extends JPanel implements Observer {
                 width = g2.getFontMetrics().stringWidth("UNO!");
                 unoPosition.setRect(x, y - height, width, height);
             }
-            if (player.hasDrew()){
+            if (player.hasDrew() && currentState == State.PLAYER_TURN){
                 x += width + 20;
                 g2.drawString("Skip turn", x, y);
                 width = g2.getFontMetrics().stringWidth("Skip Turn");
@@ -420,7 +424,11 @@ public class GamePanel extends JPanel implements Observer {
     }
 
     // GETTER
+    public State getState()
+    { return currentPlayer instanceof HumanPlayer ? State.PLAYER_TURN : State.AI_TURN; }
+
     public State getCurrentState(){return currentState;}
+    public void setCurrentState(State gameMode){currentState = gameMode;}
     public Player getCurrentPlayer() {return currentPlayer;}
     public Player[] getPlayers() {return players;}
     public CardImage getDeck() {return deck;}

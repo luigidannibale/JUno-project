@@ -9,6 +9,7 @@ import Model.Player.Player;
 import Model.TurnManager;
 import Model.UnoGameTable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,7 +32,8 @@ public class MemeRules extends UnoGameRules
     }
 
     @Override
-    public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick) {
+    public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick)
+    {
         if (discardsPick instanceof SkipAction || discardsPick instanceof WildAction )
             playerPlayableHand = playerPlayableHand.stream().filter(card -> card.getValue()==discardsPick.getValue()).toList();
         return playerPlayableHand;
@@ -42,7 +44,8 @@ public class MemeRules extends UnoGameRules
     {
         return ActionPerformResult.SUCCESSFUL;
     }
-    @Override
+
+    //@Override
     public void oldCardActionPerformance(TurnManager turnManager, Player[] players, Deck deck)
     {   /*
         Card lastCard = turnManager.getLastCardPlayed();

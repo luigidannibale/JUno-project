@@ -28,10 +28,12 @@ public class SettingsController {
         view.getSaveButton().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.backMusic.setVolume(view.getMusicVolumeSlider().getValue());
+                //mainFrame.backMusic.setVolume(view.getMusicVolumeSlider().getValue());
                 //mainFrame.backMusic.setFloatControlVolume();
-                mainFrame.soundEffects.setVolume(view.getEffectsVolumeSlider().getValue());
+                //mainFrame.soundEffects.setVolume(view.getEffectsVolumeSlider().getValue());
                 //mainFrame.soundEffects.setFloatControlVolume();
+                Config.effectsVolume = view.getEffectsVolumeSlider().getValue();
+                Config.musicVolume = view.getMusicVolumeSlider().getValue();
                 Config.deckStyle = deckChanges;
                 Config.graphicQuality = graphicsChanges;
                 if (returnPanel == MainFrameController.Panels.GAME) mainFrame.resumeGame();

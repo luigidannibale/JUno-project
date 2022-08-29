@@ -5,13 +5,12 @@ import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.Rules.*;
 import Model.UnoGameTable;
+import Utilities.AudioManager;
 import View.Animations.Animation;
 import View.Elements.CardImage;
 import View.Pages.GamePanel;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
 
 public class GamePanelController
 {
@@ -25,8 +24,8 @@ public class GamePanelController
     {
         UnoGameRules rules;
         switch (gameMode){
-            case MEME -> rules = new MemeRules();
-            case SEVENO -> rules = new SevenoRules();
+            case MEME_RULES -> rules = new MemeRules();
+            case SEVENO_RULES -> rules = new SevenoRules();
             default -> rules = new ClassicRules();
         }
         gameTable = new UnoGameTable(new Player[]{new HumanPlayer("Piero"),new AIPlayer("Ai 1"),new AIPlayer("Ai 2"),new AIPlayer("Ai 3")}, rules);
@@ -45,7 +44,19 @@ public class GamePanelController
                 @Override
                 public void mouseMoved(MouseEvent e) { if(playersTurn()) view.animateCardsOnHovering(e); }
             });
+        view.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                super.componentShown(e);
+                view.setCurrentState(view.getState());
+            }
 
+            @Override
+            public void componentHidden(ComponentEvent e) {
+                super.componentHidden(e);
+                view.setCurrentState(GamePanel.State.GAME_PAUSED);
+            }
+        });
         gameTable.addObserver(view);
         view.setVisible(true);
 
@@ -68,14 +79,12 @@ public class GamePanelController
             drawCardBranch(currentPlayer);
 
         //see if clicked on a card
-        for (CardImage card : view.getPlayerHands().get(currentPlayer))
-            if (card.isInMouse(x, y))
-                playCardBranch(card);
+        view.getPlayerHands().get(currentPlayer).stream().filter(card -> card.isInMouse(x, y)).forEach(this::playCardBranch);
 
 
         //if clicked on skip
-        if (view.getSkipTurnPosition().contains(x , y) && currentPlayer.hasDrew() )//if has not drew yet player can't skip
-            skipTurnBranch();
+        if (view.getSkipTurnPosition().contains(x , y) )//if has not drew yet player can't skip
+            skipTurnBranch(currentPlayer );
 
 
         //if clicked on uno
@@ -83,11 +92,17 @@ public class GamePanelController
             currentPlayer.shoutUno();
     }
 
-    private void skipTurnBranch() { gameTable.passTurn(); }
+    private void skipTurnBranch(Player currentPlayer)
+    {
+        if(currentPlayer.hasDrew() && hasFinishedDrawing)
+            gameTable.passTurn();
+
+        //view.setCurrentState(view.getCurrentState());
+    }
 
     private void drawCardBranch(Player currentPlayer)
     {
-        if (playerMustDraw() || playerCanDraw(currentPlayer))
+        if (playerCanDraw(currentPlayer) || playerMustDraw())
             drawOutCard(currentPlayer);
     }
 
@@ -110,7 +125,9 @@ public class GamePanelController
     }
 
     private void cardNotPLayable()
-    {}
+    {
+        AudioManager.getInstance().setEffects(AudioManager.Effects.NOT_VALID);
+    }
 
     private void tryCardActionPerformance(Options.OptionsBuilder parameters)
     {
@@ -145,4 +162,8 @@ public class GamePanelController
     public void quitGame(){ view.stopTimer(); }
     private boolean playerMustDraw()  { return gameTable.getCurrentPlayerPLayableCards().size() == 0; }
     private boolean playerCanDraw(Player currentPlayer) { return !currentPlayer.hasDrew(); }
+
+    public void setVisible(boolean visible){
+        view.setVisible(visible);
+    }
 }

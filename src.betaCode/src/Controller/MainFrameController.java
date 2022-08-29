@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 
 public class MainFrameController {
     private final String pathImages = "resources/images/MainFrame/MainframeDesignElements/";
@@ -69,7 +70,9 @@ public class MainFrameController {
                     if (currentPanel == Panels.GAME)  gameController.getView().pauseGame();
 
                     setSettingsReturnPanel();
+
                     setVisiblePanel(Panels.SETTINGS);
+
                 }
             }
         });
@@ -102,6 +105,7 @@ public class MainFrameController {
             case SETTINGS -> settingsController.setVisible(false);
             case PROFILE -> profileController.setVisible(false);
             case GAMECHOICE -> gameChoiceController.setVisible(false);
+            case GAME -> gameController.setVisible(false);
         }
 
         CardLayout c1 = (CardLayout) view.getContentPane().getLayout();
@@ -131,6 +135,7 @@ public class MainFrameController {
                 view.getContentPane().repaint();
                 view.getGameBackground().add(gameController.getView(), BorderLayout.CENTER);
                 c1.show(view.getContentPane(), MainFrame.Cards.GAME.name());
+                gameController.setVisible(true);
                 view.setVisible(true);
             }
         }

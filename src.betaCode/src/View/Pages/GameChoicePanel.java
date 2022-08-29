@@ -9,11 +9,7 @@ import java.awt.*;
 
 public class GameChoicePanel extends ResizablePanel{
 
-    //ImageComponent basicGame;
-
     GifComponent basicGame,memeGame, sevenoGame;
-
-
     JLabel indietro;
 
     public GameChoicePanel() {
