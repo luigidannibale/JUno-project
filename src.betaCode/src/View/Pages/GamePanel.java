@@ -1,6 +1,5 @@
 package View.Pages;
 
-import Controller.GameChoiceController;
 import Model.Cards.Card;
 import Model.Cards.CardColor;
 import Model.Player.AIPlayer;
@@ -14,7 +13,7 @@ import View.Animations.Animation;
 import View.Animations.FlippingAnimation;
 import View.Animations.MovingAnimation;
 import View.Animations.RotatingAnimation;
-import View.Elements.CardImage;
+import View.Elements.ViewCard;
 import View.Elements.GraphicQuality;
 
 import javax.swing.*;
@@ -46,12 +45,12 @@ public class GamePanel extends JPanel implements Observer {
     private final int centerY;
 
     private Player[] players;
-    private HashMap<Player, ArrayList<CardImage>> playerHands;
+    private HashMap<Player, ArrayList<ViewCard>> playerHands;
     private Player currentPlayer;                   //da sistemare?
     private Card lastCard;
-    private CardImage deck;
+    private ViewCard deck;
     private int deckSize;
-    private CardImage discard;
+    private ViewCard discard;
     private State currentState;
     private MovingAnimation movingAnimation;
     private ArrayList<Animation> animations;
@@ -68,8 +67,8 @@ public class GamePanel extends JPanel implements Observer {
         //debug
         setBackground(Color.GREEN);
         InitializeComponents();
-        CardImage.height = (int) (180 * Config.scalingPercentage);
-        CardImage.width = (int) (120 * Config.scalingPercentage);
+        ViewCard.height = (int) (180 * Config.scalingPercentage);
+        ViewCard.width = (int) (120 * Config.scalingPercentage);
         fontNames = new Font("Digital-7", Font.PLAIN, (int) (25 * Config.scalingPercentage));
 
         var screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -97,9 +96,9 @@ public class GamePanel extends JPanel implements Observer {
      */
     public void animateCardsOnHovering(MouseEvent e)
     {
-        int x = e.getX(),
-            y = e.getY();
-        for (CardImage card : playerHands.get(players[0])) card.setOffsetY(card.isInMouse(x, y) ? -30 : 0);
+        Point mouseClickPosition = e.getPoint();
+        for (ViewCard card : playerHands.get(players[0]))
+            card.setOffsetY(card.contains(mouseClickPosition) ? -30 : 0);
     }
 
     /**
@@ -149,7 +148,7 @@ public class GamePanel extends JPanel implements Observer {
 
     private void InitializeComponents()
     {
-        deck = new CardImage();
+        deck = new ViewCard();
         playerHands = new HashMap<>();
         animations = new ArrayList<>();
         skipTurnPosition = new Rectangle();
@@ -176,23 +175,23 @@ public class GamePanel extends JPanel implements Observer {
 
         if (players != null)
         {
-            drawHorizontalHand(players[0], g2, getHeight() - CardImage.height);
+            drawHorizontalHand(players[0], g2, getHeight() - ViewCard.height);
             drawHorizontalHand(players[2], g2, 0);
-            drawVerticalHand(players[1], g2, getWidth() - CardImage.height);
+            drawVerticalHand(players[1], g2, getWidth() - ViewCard.height);
             drawVerticalHand(players[3], g2, 0);
 
-            g2.drawImage(discard.getCardImage(), centerX + 25, centerY - CardImage.height / 2, CardImage.width, CardImage.height, null);
-            discard.setPosition(centerX + 25, centerY - CardImage.height / 2, CardImage.width);
+            g2.drawImage(discard.getCardImage(), centerX + 25, centerY - ViewCard.height / 2, ViewCard.width, ViewCard.height, null);
+            discard.setPosition(centerX + 25, centerY - ViewCard.height / 2, ViewCard.width);
 
             //centerX = getWidth() / 2;
             //centerY = getHeight() / 2;
 
             if (deckSize > 1) {
-                int x = centerX - 25 - CardImage.width;
-                int y = centerY - CardImage.height / 2;
+                int x = centerX - 25 - ViewCard.width;
+                int y = centerY - ViewCard.height / 2;
                 g2.drawString(String.valueOf(deckSize), x, y - 10);
-                g2.drawImage(deck.getCardImage(), x, y, CardImage.width, CardImage.height, null);
-                deck.setPosition(x, y, CardImage.width);
+                g2.drawImage(deck.getCardImage(), x, y, ViewCard.width, ViewCard.height, null);
+                deck.setPosition(x, y, ViewCard.width);
             }
 
             //rotatingAnimation.paint(g2);
@@ -262,9 +261,9 @@ public class GamePanel extends JPanel implements Observer {
             {
                 //assert (player.getHand().size() > 0):"Gamepanel->createcards size <= 0";
                 int rotation = Arrays.stream(players).toList().indexOf(player);
-                playerHands.put(player, player.getHand().stream().map(c -> new CardImage(c, rotations[rotation])).collect(Collectors.toCollection(ArrayList::new)));
+                playerHands.put(player, player.getHand().stream().map(c -> new ViewCard(c, rotations[rotation])).collect(Collectors.toCollection(ArrayList::new)));
             }
-            discard = new CardImage(lastCard);
+            discard = new ViewCard(lastCard);
         }
         catch (ConcurrentModificationException cme){
             System.out.println("Si modificano concurremente");
@@ -279,7 +278,7 @@ public class GamePanel extends JPanel implements Observer {
                 Thread.sleep(1500);
                 if (gameTable.getCurrentPlayerPLayableCards().size() == 0) {
                     if (!ai.hasDrew()) {
-                        drawCardAnimation(ai, new CardImage()).Join();
+                        drawCardAnimation(ai, new ViewCard()).Join();
                         gameTable.drawCard(ai);
                     }
                     else gameTable.passTurn();
@@ -287,7 +286,7 @@ public class GamePanel extends JPanel implements Observer {
                 else
                 {
                     Card playedCard = ai.chooseBestCards(discard.getCard()).get(0);
-                    CardImage relatedImage = playerHands.get(ai).stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
+                    ViewCard relatedImage = playerHands.get(ai).stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
                     playCardAnimation(relatedImage).Join();
 
                     gameTable.playCard(gameTable.getCurrentPlayerPLayableCards().get(0));
@@ -304,17 +303,17 @@ public class GamePanel extends JPanel implements Observer {
         aiThread.start();
     }
 
-    public Animation playCardAnimation(CardImage card)
+    public Animation playCardAnimation(ViewCard card)
     {
         if (animationRunning(movingAnimation)) return null;
         movingAnimation = new MovingAnimation(card.getPosition().getX(), card.getPosition().getY(), discard.getPosition().getX(), discard.getPosition().getY(), card);
         animations.add(movingAnimation);
-        card.setDrawImage(null);
+        card.setPaintedImage(null);
         AudioManager.getInstance().setEffects(AudioManager.Effects.PLAY);
         return movingAnimation;
     }
 
-    public Animation drawCardAnimation(Player currentPlayer, CardImage drawnCard)
+    public Animation drawCardAnimation(Player currentPlayer, ViewCard drawnCard)
     {
         if (animationRunning(movingAnimation)) return null;
 
@@ -324,7 +323,7 @@ public class GamePanel extends JPanel implements Observer {
         return movingAnimation;
     }
 
-    public Animation flipCardAnimation(CardImage drawnCard)
+    public Animation flipCardAnimation(ViewCard drawnCard)
     {
         if (animationRunning(flipAnimation)) return null;
         flipAnimation = new FlippingAnimation(drawnCard, deck.getPosition());
@@ -336,12 +335,12 @@ public class GamePanel extends JPanel implements Observer {
 
     private void drawHorizontalHand(Player player, Graphics2D g2, int y)
     {
-        int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsWidth);
+        int cardsSpace = Math.min(player.getHand().size() * ViewCard.width, maxCardsWidth);
         int startX = (getWidth() - cardsSpace) / 2;
         int cardsWidth = cardsSpace / player.getHand().size();
 
-        int width = CardImage.width;
-        int height = CardImage.height;
+        int width = ViewCard.width;
+        int height = ViewCard.height;
         drawNames(player, maxCardsWidth - 100, y == 0 ? height + 50 : y - 50, g2);
         if (y == 0){
             startX += width;
@@ -350,8 +349,8 @@ public class GamePanel extends JPanel implements Observer {
             height = -height;
         }
 
-        for (CardImage card : playerHands.get(player)){
-            g2.drawImage(card.getDrawImage(), startX, y + card.getOffsetY(), width, height, null);
+        for (ViewCard card : playerHands.get(player)){
+            g2.drawImage(card.getPaintedImage(), startX, y + card.getOffsetY(), width, height, null);
             card.setPosition(startX, y, cardsWidth);
             startX += cardsWidth;
         }
@@ -359,14 +358,14 @@ public class GamePanel extends JPanel implements Observer {
 
     private  void drawVerticalHand(Player player, Graphics2D g2, int x)
     {
-        int cardsSpace = Math.min(player.getHand().size() * CardImage.width, maxCardsHeight);
+        int cardsSpace = Math.min(player.getHand().size() * ViewCard.width, maxCardsHeight);
         int startY = (getHeight() - cardsSpace) / 2;
         int cardsWidth = cardsSpace / player.getHand().size();
 
-        drawNames(player, x == 0 ? CardImage.height + 50 : x - 100, maxCardsHeight - 100, g2);
+        drawNames(player, x == 0 ? ViewCard.height + 50 : x - 100, maxCardsHeight - 100, g2);
 
-        for (CardImage card : playerHands.get(player)){
-            g2.drawImage(card.getDrawImage(), x, startY, CardImage.height, CardImage.width, null);
+        for (ViewCard card : playerHands.get(player)){
+            g2.drawImage(card.getPaintedImage(), x, startY, ViewCard.height, ViewCard.width, null);
             card.setPosition(x, startY, cardsWidth, true);
             startY += cardsWidth;
         }
@@ -431,8 +430,8 @@ public class GamePanel extends JPanel implements Observer {
     public void setCurrentState(State gameMode){currentState = gameMode;}
     public Player getCurrentPlayer() {return currentPlayer;}
     public Player[] getPlayers() {return players;}
-    public CardImage getDeck() {return deck;}
-    public HashMap<Player, ArrayList<CardImage>> getPlayerHands() {return playerHands;}
+    public ViewCard getDeck() {return deck;}
+    public HashMap<Player, ArrayList<ViewCard>> getPlayerHands() {return playerHands;}
     public Rectangle getSkipTurnPosition() {return skipTurnPosition;}
     public Rectangle getUnoPosition() {return unoPosition;}
 }

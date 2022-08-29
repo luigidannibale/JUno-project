@@ -7,9 +7,10 @@ import Model.Rules.*;
 import Model.UnoGameTable;
 import Utilities.AudioManager;
 import View.Animations.Animation;
-import View.Elements.CardImage;
+import View.Elements.ViewCard;
 import View.Pages.GamePanel;
 
+import java.awt.*;
 import java.awt.event.*;
 
 public class GamePanelController
@@ -67,28 +68,27 @@ public class GamePanelController
 
     private void viewPlayerTurn(MouseEvent e)
     {
-        int x = e.getX();
-        int y = e.getY();
+        Point mouseClickPosition = e.getPoint();
 
         if (!playersTurn()) return; // not players turn
         Player currentPlayer = view.getCurrentPlayer();
         if (currentPlayer != gameTable.currentPlayer()) return; //not his turn
 
         //if clicked on deck
-        if (view.getDeck().isInMouse(x, y))
+        if (view.getDeck().contains(mouseClickPosition))
             drawCardBranch(currentPlayer);
 
         //see if clicked on a card
-        view.getPlayerHands().get(currentPlayer).stream().filter(card -> card.isInMouse(x, y)).forEach(this::playCardBranch);
+        view.getPlayerHands().get(currentPlayer).stream().filter(card -> card.contains(mouseClickPosition)).forEach(this::playCardBranch);
 
 
         //if clicked on skip
-        if (view.getSkipTurnPosition().contains(x , y) )//if has not drew yet player can't skip
+        if (view.getSkipTurnPosition().contains(mouseClickPosition) )//if has not drew yet player can't skip
             skipTurnBranch(currentPlayer );
 
 
         //if clicked on uno
-        if (view.getUnoPosition().contains(x, y) && currentPlayer.hasOne())  //can shout uno only if has one card
+        if (view.getUnoPosition().contains(mouseClickPosition) && currentPlayer.hasOne())  //can shout uno only if has one card
             currentPlayer.shoutUno();
     }
 
@@ -106,7 +106,7 @@ public class GamePanelController
             drawOutCard(currentPlayer);
     }
 
-    private void playCardBranch(CardImage card)
+    private void playCardBranch(ViewCard card)
     {
         if (!gameTable.getCurrentPlayerPLayableCards().contains(card.getCard()))
         {
@@ -145,7 +145,7 @@ public class GamePanelController
     private void drawOutCard(Player currentPlayer)
     {
         currentPlayer.setDrew(true);
-        CardImage drawnCard = new CardImage(gameTable.peekNextCard());
+        ViewCard drawnCard = new ViewCard(gameTable.peekNextCard());
         Animation flipCardAnimation = view.flipCardAnimation(drawnCard);
         new Thread( () -> {
             if (flipCardAnimation == null) return;

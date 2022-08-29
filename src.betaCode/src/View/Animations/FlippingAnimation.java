@@ -1,6 +1,6 @@
 package View.Animations;
 
-import View.Elements.CardImage;
+import View.Elements.ViewCard;
 
 import java.awt.*;
 
@@ -11,10 +11,10 @@ public class FlippingAnimation extends Animation
     int increase = 3;
     private int delay = 750;
 
-    CardImage card;
+    ViewCard card;
     Rectangle position;
 
-    public FlippingAnimation(CardImage card, Rectangle position)
+    public FlippingAnimation(ViewCard card, Rectangle position)
     {
         this.card = card;
         this.position = position;
@@ -40,7 +40,7 @@ public class FlippingAnimation extends Animation
                 increase = -increase;
             }
 
-            if(width >= CardImage.width) {
+            if(width >= ViewCard.width) {
                 try
                 {
                     increase = 0;

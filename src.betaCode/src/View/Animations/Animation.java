@@ -1,16 +1,14 @@
 package View.Animations;
 
-import View.Elements.CardImage;
+import View.Elements.ViewCard;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public abstract class Animation extends Thread//implements Runnable
 {
-    protected int width = CardImage.width;
-    protected int height = CardImage.height;
+    protected int width = ViewCard.width;
+    protected int height = ViewCard.height;
     protected BufferedImage image;
     //protected final Timer timer;
     protected final int delay;

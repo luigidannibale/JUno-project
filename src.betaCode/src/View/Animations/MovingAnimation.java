@@ -1,7 +1,7 @@
 package View.Animations;
 
 import Utilities.Utils;
-import View.Elements.CardImage;
+import View.Elements.ViewCard;
 
 import java.awt.*;
 
@@ -13,7 +13,7 @@ public class MovingAnimation extends Animation
     private double endY;
     private final double speed = 40.0;      //più alta è meno veloce va
 
-    public MovingAnimation(double startX, double startY, double endX, double endY, CardImage card)
+    public MovingAnimation(double startX, double startY, double endX, double endY, ViewCard card)
     {
         this.startX = startX;
         this.startY = startY;
@@ -22,8 +22,8 @@ public class MovingAnimation extends Animation
 
         if (card.getRotation() == 90 || card.getRotation() == 270)
         {
-            width = CardImage.height;
-            height = CardImage.width;
+            width = ViewCard.height;
+            height = ViewCard.width;
             image = Utils.rotateImage(card.getCardImage(), card.getRotation());
         }
         else

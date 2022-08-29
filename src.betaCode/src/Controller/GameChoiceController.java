@@ -17,7 +17,6 @@ public class GameChoiceController {
 
     public GameChoiceController(MainFrameController mainFrame){
         view = new GameChoicePanel();
-
         view.getBasicGame().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -25,21 +24,18 @@ public class GameChoiceController {
                 createNewGame(mainFrame, GameMode.CLASSIC_RULES);
             }
         });
-
         view.getMemeGame().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 createNewGame(mainFrame, GameMode.MEME_RULES);
             }
         });
-
         view.getSevenoGame().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 createNewGame(mainFrame, GameMode.SEVENO_RULES);
             }
         });
-
         view.getIndietro().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
