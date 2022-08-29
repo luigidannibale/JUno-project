@@ -22,7 +22,7 @@ public class ViewCard
     public static int height = 180;
 
     private Rectangle position = new Rectangle();
-    private int offsetY = 0;
+    //private int offsetY = 0;
     private int rotation;
     private Card card;
 
@@ -34,9 +34,7 @@ public class ViewCard
         cardImage = BACK_CARD;
     }
 
-    public ViewCard(Card card) {
-        this(card, 0);
-    }
+    public ViewCard(Card card) { this(card, 0); }
 
     public ViewCard(Card card, int rotation)
     {
@@ -77,13 +75,11 @@ public class ViewCard
         return card.toString();
     }
 
-    public int getOffsetY() {
-        return offsetY;
-    }
-
-    public void setOffsetY(int offsetY) {
-        this.offsetY = offsetY;
-    }
+//    public int getOffsetY() { return offsetY; }
+//
+//    public void setOffsetY(int offsetY) {
+//        this.offsetY = offsetY;
+//    }
 
     public Card getCard(){ return card; }
 

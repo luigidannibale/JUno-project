@@ -13,8 +13,10 @@ import View.Animations.Animation;
 import View.Animations.FlippingAnimation;
 import View.Animations.MovingAnimation;
 import View.Animations.RotatingAnimation;
+import View.Elements.ViewAnimableCard;
 import View.Elements.ViewCard;
 import View.Elements.GraphicQuality;
+import View.Elements.ViewRotatableImage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,7 +47,7 @@ public class GamePanel extends JPanel implements Observer {
     private final int centerY;
 
     private Player[] players;
-    private HashMap<Player, ArrayList<ViewCard>> playerHands;
+    private HashMap<Player, ArrayList<ViewAnimableCard>> playerHands;
     private Player currentPlayer;                   //da sistemare?
     private Card lastCard;
     private ViewCard deck;
@@ -97,8 +99,8 @@ public class GamePanel extends JPanel implements Observer {
     public void animateCardsOnHovering(MouseEvent e)
     {
         Point mouseClickPosition = e.getPoint();
-        for (ViewCard card : playerHands.get(players[0]))
-            card.setOffsetY(card.contains(mouseClickPosition) ? -30 : 0);
+        for (ViewAnimableCard card : playerHands.get(players[0]))
+            card.setShiftHeight(card.contains(mouseClickPosition) ? -30 : 0);
     }
 
     /**
@@ -261,7 +263,11 @@ public class GamePanel extends JPanel implements Observer {
             {
                 //assert (player.getHand().size() > 0):"Gamepanel->createcards size <= 0";
                 int rotation = Arrays.stream(players).toList().indexOf(player);
-                playerHands.put(player, player.getHand().stream().map(c -> new ViewCard(c, rotations[rotation])).collect(Collectors.toCollection(ArrayList::new)));
+                if (player instanceof HumanPlayer)
+                    playerHands.put(player, player.getHand().stream().map(c -> new ViewAnimableCard(c, rotations[rotation])).collect(Collectors.toCollection(ArrayList::new)));
+                else
+                    playerHands.put(player, player.getHand().stream().map(c -> new ViewAnimableCard(c, rotations[rotation])).collect(Collectors.toCollection(ArrayList::new)));
+                //qui devono essere solo rotatable
             }
             discard = new ViewCard(lastCard);
         }
@@ -351,8 +357,8 @@ public class GamePanel extends JPanel implements Observer {
             height = -height;
         }
 
-        for (ViewCard card : playerHands.get(player)){
-            g2.drawImage(card.getPaintedImage(), startX, y + card.getOffsetY(), width, height, null);
+        for (ViewAnimableCard card : playerHands.get(player)){
+            g2.drawImage(card.getPaintedImage(), startX, y + (int) card.getShiftHeight(), width, height, null);
             card.setPosition(startX, y, cardsWidth);
             startX += cardsWidth;
         }
@@ -433,7 +439,7 @@ public class GamePanel extends JPanel implements Observer {
     public Player getCurrentPlayer() {return currentPlayer;}
     public Player[] getPlayers() {return players;}
     public ViewCard getDeck() {return deck;}
-    public HashMap<Player, ArrayList<ViewCard>> getPlayerHands() {return playerHands;}
+    public HashMap<Player, ArrayList<ViewAnimableCard>> getPlayerHands() {return playerHands;}
     public Rectangle getSkipTurnPosition() {return skipTurnPosition;}
     public Rectangle getUnoPosition() {return unoPosition;}
 }
