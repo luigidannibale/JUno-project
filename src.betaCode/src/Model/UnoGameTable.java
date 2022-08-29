@@ -52,6 +52,9 @@ public class UnoGameTable extends Observable {
         updateObservers();
     }
 
+    public List<Card> getCurrentPlayerPLayableCards()
+    { return ruleManager.getPlayableCards(currentPlayer().getValidCards(turnManager.getLastCardPlayed()),turnManager.getLastCardPlayed()); }
+
     public void drawCard()
     {
         drawCard(currentPlayer());

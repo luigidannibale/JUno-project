@@ -5,7 +5,7 @@ import View.Elements.CardImage;
 
 import java.awt.*;
 
-public class PlayAnimation extends Animation
+public class MovingAnimation extends Animation
 {
     private double startX;
     private double startY;
@@ -13,7 +13,7 @@ public class PlayAnimation extends Animation
     private double endY;
     private final double speed = 40.0;      //più alta è meno veloce va
 
-    public PlayAnimation(double startX, double startY, double endX, double endY, CardImage card)
+    public MovingAnimation(double startX, double startY, double endX, double endY, CardImage card)
     {
         this.startX = startX;
         this.startY = startY;
@@ -56,15 +56,3 @@ public class PlayAnimation extends Animation
     @Override
     public void paint(Graphics2D g2) { g2.drawImage(image, (int)startX, (int)startY, width, height, null); }
 }
-
-
-
-//        double shiftX = (endX - startX) / speed,
-//               shiftY = (endY - startY) / speed;
-//
-//        timer.addActionListener(e ->{
-//            move(shiftX, shiftY);
-//            if (hasReachedEnd()) timer.stop();
-//
-//        });
-//        timer.start();

@@ -4,7 +4,7 @@ import View.Elements.CardImage;
 
 import java.awt.*;
 
-public class FlipAnimation extends Animation
+public class FlippingAnimation extends Animation
 {
     int x;
     int y;
@@ -14,7 +14,7 @@ public class FlipAnimation extends Animation
     CardImage card;
     Rectangle position;
 
-    public FlipAnimation(CardImage card, Rectangle position)
+    public FlippingAnimation(CardImage card, Rectangle position)
     {
         this.card = card;
         this.position = position;

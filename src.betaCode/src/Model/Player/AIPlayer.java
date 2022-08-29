@@ -25,8 +25,8 @@ public class AIPlayer extends Player
      * @param check: the card that is on top of the discards 
      * @return List<Card> of playable cards
      */
-    @Override
-    public List<Card> getValidCards(Card check)
+    //@Override
+    public List<Card> chooseBestCards(Card check)
     {
         List<Card> playableCards = super.getValidCards(check);
         List<Card> wildCards = playableCards.stream().filter(c -> c.getColor() == CardColor.WILD).toList();
@@ -37,13 +37,24 @@ public class AIPlayer extends Player
         return playableCards;
     }
 
-    public CardColor chooseBestColor(){
-        //funziona ma sembra esageratamente lungo
-        //var some = hand.stream().collect(Collectors.groupingBy(Card::getColor, Collectors.counting())).entrySet().stream().sorted(Map.Entry.comparingByValue()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+    public CardColor chooseBestColor()
+    {
+
         Map<CardColor, Long> colorWeights = colorWeights();
-        var some = hand.stream().filter(c -> c.getColor() != CardColor.WILD).sorted(Comparator.comparing(c -> colorWeights.get(((Card)c).getColor())).reversed()).toList();
-        //some.forEach(System.out::println);
-        CardColor chosen = some.size() == 0 ? CardColor.values()[new Random().nextInt(0, CardColor.values().length)] : some.get(0).getColor();
-        return chosen;
+        colorWeights.remove(CardColor.WILD);
+
+        Long max = Collections.max(colorWeights.values());
+        Optional<CardColor> bestColor = colorWeights.keySet().stream().filter(color -> colorWeights.get(color) == max).findFirst();
+        return (bestColor.isEmpty()) ? randomColor():bestColor.get();
+//        var some = hand.stream().filter(c -> c.getColor() != CardColor.WILD).sorted(Comparator.comparing(c -> colorWeights.get(((Card)c).getColor())).reversed()).toList();
+//        CardColor chosen = some.size() == 0 ? randomColor() : some.get(0).getColor();
+//        return chosen;
+    }
+    private CardColor randomColor()
+    {
+        var colors = Arrays.stream(CardColor.values()).toList();
+        colors.remove(CardColor.WILD);
+        Collections.shuffle(colors);
+        return colors.get(0);
     }
 }

@@ -65,7 +65,7 @@ public class SevenoRules extends UnoGameRules
             //----> i nomi dei player devono essere cliccabili
             if (parameters.getPlayerToSwapCards() == null) return ActionPerformResult.NO_PLAYER_PROVIDED;
             Player currentPlayer = players[turnManager.getPlayer()];
-            currentPlayer.setHand(swapHand(currentPlayer.getHand(),parameters.getPlayerToSwapCards()));
+            currentPlayer.swapHand(swapHand(currentPlayer.getHand(),parameters.getPlayerToSwapCards()));
             return ActionPerformResult.SUCCESSFUL;
         }
         if (lastCard.getValue() == CardValue.ZERO){
@@ -117,10 +117,6 @@ public class SevenoRules extends UnoGameRules
          */
     }
 
-    private Stack<Card> swapHand(Stack<Card> handToGiveAway, Player playerToSwapWith){
-        Stack<Card> handToGet = playerToSwapWith.getHand();
-        playerToSwapWith.setHand(handToGiveAway);
-        return handToGet;
-    }
+    private Stack<Card> swapHand(Stack<Card> handToGiveAway, Player playerToSwapWith) { return playerToSwapWith.swapHand(handToGiveAway); }
 
 }
