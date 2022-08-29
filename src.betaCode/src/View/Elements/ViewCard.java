@@ -26,6 +26,10 @@ public class ViewCard
     private int rotation;
     private Card card;
 
+    //debug
+    boolean carteScoperte = true;
+
+
     public ViewCard(){
         cardImage = BACK_CARD;
     }
@@ -40,6 +44,9 @@ public class ViewCard
         this.rotation = rotation;
         buildCard();
 
+        if (carteScoperte){
+            rotation = 0;
+        }
         switch (rotation){
             case 90 -> paintedImage = BACK_ROTATED_90;
             case 180 -> paintedImage = BACK_CARD;

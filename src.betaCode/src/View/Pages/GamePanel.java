@@ -285,8 +285,10 @@ public class GamePanel extends JPanel implements Observer {
                 }
                 else
                 {
-                    Card playedCard = ai.chooseBestCards(discard.getCard()).get(0);
+                    Card playedCard = gameTable.getCurrentPlayerPLayableCards().get(0);
                     ViewCard relatedImage = playerHands.get(ai).stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
+                    System.out.println("PLAYED CARD ----------> " + playedCard);
+                    System.out.println("RELATED IMAGE ----------> " + relatedImage.getCard());
                     playCardAnimation(relatedImage).Join();
 
                     gameTable.playCard(gameTable.getCurrentPlayerPLayableCards().get(0));

@@ -37,6 +37,9 @@ public class AIPlayer extends Player
         return playableCards;
     }
 
+    @Override
+    public List<Card> getValidCards(Card check){ return chooseBestCards(check); }
+
     public CardColor chooseBestColor()
     {
 

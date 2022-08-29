@@ -61,7 +61,7 @@ public class AudioManager
         {
             effectsTrack = AudioSystem.getClip();                                       //creates an audio clip that plays back an audio (either file or stream)
             effectsTrack.open(AudioSystem.getAudioInputStream(getAudioFile(effects.name()))); //assigns the audio
-            System.out.println(Config.effectsVolume + " ----> " + convert.apply(Config.effectsVolume));
+            //System.out.println(Config.effectsVolume + " ----> " + convert.apply(Config.effectsVolume));
             ((FloatControl) effectsTrack.getControl(FloatControl.Type.MASTER_GAIN)).setValue(convert.apply(Config.effectsVolume));
             effectsTrack.start();
         }
@@ -69,7 +69,7 @@ public class AudioManager
     }
 
     private File getAudioFile(String filename){
-        System.out.println(Path.of(pathAudio, folder, filename.toLowerCase() + ".wav"));
+        //System.out.println(Path.of(pathAudio, folder, filename.toLowerCase() + ".wav"));
         //return Path.of(pathAudio, folder, filename.toLowerCase()).toFile();
         return new File(pathAudio + "/" + folder + "/" + filename.toLowerCase() + ".wav");
     }
