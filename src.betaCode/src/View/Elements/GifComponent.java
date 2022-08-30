@@ -4,7 +4,8 @@ import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class GifComponent extends ImageComponent{
+public class GifComponent extends ImageComponent
+{
 
     private ImageIcon gif;
 
@@ -26,14 +27,9 @@ public class GifComponent extends ImageComponent{
 
         addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseEntered(MouseEvent e) {
-                setIcon(gif);
-            }
-
+            public void mouseEntered(MouseEvent e) { setIcon(gif); }
             @Override
-            public void mouseExited(MouseEvent e) {
-                setIcon(icona);
-            }
+            public void mouseExited(MouseEvent e) { setIcon(icona); }
         });
     }
 }

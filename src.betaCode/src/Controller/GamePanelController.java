@@ -8,10 +8,16 @@ import Model.UnoGameTable;
 import Utilities.AudioManager;
 import View.Animations.Animation;
 import View.Elements.ViewCard;
+import View.Elements.ViewPlayer;
 import View.Pages.GamePanel;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.Stream;
 
 public class GamePanelController
 {
@@ -21,7 +27,7 @@ public class GamePanelController
     boolean hasFinishedDrawing = false;
 
     //qui dentro ci sono anche la view e tutti i suoi eventi
-    public GamePanelController(GameChoiceController.GameMode gameMode)
+    public GamePanelController(GameChoiceController.GameMode gameMode, ViewPlayer player)
     {
         UnoGameRules rules;
         switch (gameMode){
@@ -29,8 +35,15 @@ public class GamePanelController
             case SEVENO_RULES -> rules = new SevenoRules();
             default -> rules = new ClassicRules();
         }
-        gameTable = new UnoGameTable(new Player[]{new HumanPlayer("Piero"),new AIPlayer("Ai 1"),new AIPlayer("Ai 2"),new AIPlayer("Ai 3")}, rules);
-        view = new GamePanel();
+        ViewPlayer[] viewPlayers = new ViewPlayer[]{
+               player,
+               new ViewPlayer(new AIPlayer("Ai 1")),
+               new ViewPlayer(new AIPlayer("Ai 2")),
+               new ViewPlayer(new AIPlayer("Ai 3")),
+        };
+        gameTable = new UnoGameTable(Stream.of(viewPlayers).map(ViewPlayer::getPlayer).toArray(Player[]::new), rules);
+
+        view = new GamePanel(viewPlayers);
 
         view.addMouseListener(new MouseAdapter()
             {
@@ -71,15 +84,16 @@ public class GamePanelController
         Point mouseClickPosition = e.getPoint();
 
         if (!playersTurn()) return; // not players turn
-        Player currentPlayer = view.getCurrentPlayer();
+        ViewPlayer currentViewPlayer = view.getCurrentViewPlayer();
+        Player currentPlayer = currentViewPlayer.getPlayer();
         if (currentPlayer != gameTable.currentPlayer()) return; //not his turn
 
         //if clicked on deck
         if (view.getDeck().contains(mouseClickPosition))
-            drawCardBranch(currentPlayer);
+            drawCardBranch(currentViewPlayer);
 
         //see if clicked on a card
-        view.getPlayerHands().get(currentPlayer).stream().filter(card -> card.contains(mouseClickPosition)).forEach(this::playCardBranch);
+        currentViewPlayer.getImagesHand().stream().filter(card -> card.contains(mouseClickPosition)).forEach(this::playCardBranch);
 
 
         //if clicked on skip
@@ -100,10 +114,10 @@ public class GamePanelController
         //view.setCurrentState(view.getCurrentState());
     }
 
-    private void drawCardBranch(Player currentPlayer)
+    private void drawCardBranch(ViewPlayer currentViewPlayer)
     {
-        if (playerCanDraw(currentPlayer) || playerMustDraw())
-            drawOutCard(currentPlayer);
+        if (playerCanDraw(currentViewPlayer.getPlayer()) || playerMustDraw())
+            drawOutCard(currentViewPlayer);
     }
 
     private void playCardBranch(ViewCard card)
@@ -142,17 +156,17 @@ public class GamePanelController
         tryCardActionPerformance(parameters);
     }
 
-    private void drawOutCard(Player currentPlayer)
+    private void drawOutCard(ViewPlayer currentViewPlayer)
     {
-        currentPlayer.setDrew(true);
+        currentViewPlayer.getPlayer().setDrew(true);
         ViewCard drawnCard = new ViewCard(gameTable.peekNextCard());
         Animation flipCardAnimation = view.flipCardAnimation(drawnCard);
         new Thread( () -> {
             if (flipCardAnimation == null) return;
             flipCardAnimation.Join();
 
-            view.drawCardAnimation(currentPlayer, drawnCard).Join();
-            gameTable.drawCard(currentPlayer);
+            view.drawCardAnimation(currentViewPlayer, drawnCard).Join();
+            gameTable.drawCard(currentViewPlayer.getPlayer());
             hasFinishedDrawing = true;
         },"drawing card").start();
     }

@@ -13,12 +13,10 @@ import View.Animations.Animation;
 import View.Animations.FlippingAnimation;
 import View.Animations.MovingAnimation;
 import View.Animations.RotatingAnimation;
-import View.Elements.ViewAnimableCard;
-import View.Elements.ViewCard;
-import View.Elements.GraphicQuality;
-import View.Elements.ViewRotatableImage;
+import View.Elements.*;
 
 import javax.swing.*;
+import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -46,9 +44,11 @@ public class GamePanel extends JPanel implements Observer {
     private final int centerX;
     private final int centerY;
 
+    private ViewPlayer[] viewPlayers;
     private Player[] players;
-    private HashMap<Player, ArrayList<ViewAnimableCard>> playerHands;
-    private Player currentPlayer;                   //da sistemare?
+    //private HashMap<Player, ArrayList<ViewAnimableCard>> playerHands;
+    private ViewPlayer currentViewPlayer;
+    //private Player currentPlayer;                   //da sistemare?
     private Card lastCard;
     private ViewCard deck;
     private int deckSize;
@@ -57,13 +57,13 @@ public class GamePanel extends JPanel implements Observer {
     private MovingAnimation movingAnimation;
     private ArrayList<Animation> animations;
     private FlippingAnimation flipAnimation;
-    private RotatingAnimation rotatingAnimation;
+    private final RotatingAnimation rotatingAnimation;
     private Rectangle skipTurnPosition;
     private Rectangle unoPosition;
 
-    public GamePanel()
+    public GamePanel(ViewPlayer[] viewPlayers)
     {
-
+        this.viewPlayers = viewPlayers;
         setOpaque(true);
         setDoubleBuffered(true);
         //debug
@@ -99,7 +99,7 @@ public class GamePanel extends JPanel implements Observer {
     public void animateCardsOnHovering(MouseEvent e)
     {
         Point mouseClickPosition = e.getPoint();
-        for (ViewAnimableCard card : playerHands.get(players[0]))
+        for (ViewAnimableCard card : viewPlayers[0].getImagesHand())
             card.setShiftHeight(card.contains(mouseClickPosition) ? -30 : 0);
     }
 
@@ -133,7 +133,7 @@ public class GamePanel extends JPanel implements Observer {
         //String[] playersNames = new String[players.length];
         HashMap<String,Player> playerHashMap = new HashMap<>();
 
-        Arrays.stream(players).filter(p -> currentPlayer != p).forEach(p -> playerHashMap.put(p.getName(), p));
+        Arrays.stream(players).filter(p -> currentViewPlayer.getPlayer() != p).forEach(p -> playerHashMap.put(p.getName(), p));
         int choice = -1;
         while (choice == -1)
             choice = JOptionPane.showOptionDialog(
@@ -151,7 +151,7 @@ public class GamePanel extends JPanel implements Observer {
     private void InitializeComponents()
     {
         deck = new ViewCard();
-        playerHands = new HashMap<>();
+        //playerHands = new HashMap<>();
         animations = new ArrayList<>();
         skipTurnPosition = new Rectangle();
         unoPosition = new Rectangle();
@@ -177,10 +177,10 @@ public class GamePanel extends JPanel implements Observer {
 
         if (players != null)
         {
-            drawHorizontalHand(players[0], g2, getHeight() - ViewCard.height);
-            drawHorizontalHand(players[2], g2, 0);
-            drawVerticalHand(players[1], g2, getWidth() - ViewCard.height);
-            drawVerticalHand(players[3], g2, 0);
+            drawHorizontalHand(viewPlayers[0], g2, getHeight() - ViewCard.height);
+            drawHorizontalHand(viewPlayers[2], g2, 0);
+            drawVerticalHand(viewPlayers[1], g2, getWidth() - ViewCard.height);
+            drawVerticalHand(viewPlayers[3], g2, 0);
 
             g2.drawImage(discard.getCardImage(), centerX + 25, centerY - ViewCard.height / 2, ViewCard.width, ViewCard.height, null);
             discard.setPosition(centerX + 25, centerY - ViewCard.height / 2, ViewCard.width);
@@ -232,10 +232,11 @@ public class GamePanel extends JPanel implements Observer {
         deckSize = gameTable.getDeck().size();
         if (Arrays.stream(players).filter(p -> p.getHand().size() == 0).count() == 1) gameRunning = false;
         createCards();
-        currentPlayer = gameTable.currentPlayer();
 
-        if (currentPlayer.isBlocked()) {
-            currentPlayer.setBlocked(false);
+        currentViewPlayer = Arrays.stream(viewPlayers).filter(c -> c.getPlayer().equals(gameTable.currentPlayer())).toList().get(0);
+
+        if (currentViewPlayer.getPlayer().isBlocked()) {
+            currentViewPlayer.getPlayer().setBlocked(false);
             gameTable.passTurn();
             return;
         }
@@ -250,7 +251,7 @@ public class GamePanel extends JPanel implements Observer {
 
         if (currentState == State.AI_TURN) {
             asyncAITurn(gameTable);
-            players[0].setDrew(false);
+            viewPlayers[0].getPlayer().setDrew(false);
         }
 
     }
@@ -259,6 +260,7 @@ public class GamePanel extends JPanel implements Observer {
     {
         try{
             int[] rotations = new int[]{0, 270, 180, 90};
+            /*
             for (Player player : players)
             {
                 //assert (player.getHand().size() > 0):"Gamepanel->createcards size <= 0";
@@ -268,6 +270,12 @@ public class GamePanel extends JPanel implements Observer {
                 else
                     playerHands.put(player, player.getHand().stream().map(c -> new ViewAnimableCard(c, rotations[rotation])).collect(Collectors.toCollection(ArrayList::new)));
                 //qui devono essere solo rotatable
+            }
+
+             */
+            for (ViewPlayer viewPlayer : viewPlayers){
+                int rotation = Arrays.stream(viewPlayers).toList().indexOf(viewPlayer);
+                viewPlayer.setImagesHand(viewPlayer.getPlayer().getHand().stream().map(c -> new ViewAnimableCard(c, rotations[rotation])).collect(Collectors.toCollection(ArrayList::new)));
             }
             discard = new ViewCard(lastCard);
         }
@@ -280,11 +288,11 @@ public class GamePanel extends JPanel implements Observer {
     {
         aiThread = new Thread(() -> {
             try {
-                AIPlayer ai = (AIPlayer) currentPlayer;
+                AIPlayer ai = (AIPlayer) currentViewPlayer.getPlayer();
                 Thread.sleep(1500);
                 if (gameTable.getCurrentPlayerPLayableCards().size() == 0) {
                     if (!ai.hasDrew()) {
-                        drawCardAnimation(ai, new ViewCard()).Join();
+                        drawCardAnimation(currentViewPlayer, new ViewCard()).Join();
                         gameTable.drawCard(ai);
                     }
                     else gameTable.passTurn();
@@ -292,9 +300,7 @@ public class GamePanel extends JPanel implements Observer {
                 else
                 {
                     Card playedCard = gameTable.getCurrentPlayerPLayableCards().get(0);
-                    ViewCard relatedImage = playerHands.get(ai).stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
-                    System.out.println("PLAYED CARD ----------> " + playedCard);
-                    System.out.println("RELATED IMAGE ----------> " + relatedImage.getCard());
+                    ViewCard relatedImage = currentViewPlayer.getImagesHand().stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
                     playCardAnimation(relatedImage).Join();
 
                     gameTable.playCard(gameTable.getCurrentPlayerPLayableCards().get(0));
@@ -307,7 +313,7 @@ public class GamePanel extends JPanel implements Observer {
                 throw e;
             }
         });
-        aiThread.setName(currentPlayer.getName());
+        aiThread.setName(currentViewPlayer.getPlayer().getName());
         aiThread.start();
     }
 
@@ -321,11 +327,11 @@ public class GamePanel extends JPanel implements Observer {
         return movingAnimation;
     }
 
-    public Animation drawCardAnimation(Player currentPlayer, ViewCard drawnCard)
+    public Animation drawCardAnimation(ViewPlayer currentViewPlayer, ViewCard drawnCard)
     {
         if (animationRunning(movingAnimation)) return null;
 
-        Rectangle lastCardPosition = playerHands.get(currentPlayer).get(playerHands.get(currentPlayer).size() - 1).getPosition();
+        Rectangle lastCardPosition = currentViewPlayer.getImagesHand().get(currentViewPlayer.getImagesHand().size() - 1).getPosition();
         movingAnimation = new MovingAnimation(deck.getPosition().getX(), deck.getPosition().getY(), lastCardPosition.getX(), lastCardPosition.getY(), drawnCard);
         animations.add(movingAnimation);
         return movingAnimation;
@@ -341,11 +347,11 @@ public class GamePanel extends JPanel implements Observer {
 
     public boolean animationRunning(Animation anim){return anim != null && anim.isAlive();}
 
-    private void drawHorizontalHand(Player player, Graphics2D g2, int y)
+    private void drawHorizontalHand(ViewPlayer player, Graphics2D g2, int y)
     {
-        int cardsSpace = Math.min(player.getHand().size() * ViewCard.width, maxCardsWidth);
+        int cardsSpace = Math.min(player.getPlayer().getHand().size() * ViewCard.width, maxCardsWidth);
         int startX = (getWidth() - cardsSpace) / 2;
-        int cardsWidth = cardsSpace / player.getHand().size();
+        int cardsWidth = cardsSpace / player.getPlayer().getHand().size();
 
         int width = ViewCard.width;
         int height = ViewCard.height;
@@ -357,37 +363,40 @@ public class GamePanel extends JPanel implements Observer {
             height = -height;
         }
 
-        for (ViewAnimableCard card : playerHands.get(player)){
+        for (ViewAnimableCard card :player.getImagesHand()){
             g2.drawImage(card.getPaintedImage(), startX, y + (int) card.getShiftHeight(), width, height, null);
             card.setPosition(startX, y, cardsWidth);
             startX += cardsWidth;
         }
     }
 
-    private  void drawVerticalHand(Player player, Graphics2D g2, int x)
+    private  void drawVerticalHand(ViewPlayer player, Graphics2D g2, int x)
     {
-        int cardsSpace = Math.min(player.getHand().size() * ViewCard.width, maxCardsHeight);
+        int cardsSpace = Math.min(player.getPlayer().getHand().size() * ViewCard.width, maxCardsHeight);
         int startY = (getHeight() - cardsSpace) / 2;
-        int cardsWidth = cardsSpace / player.getHand().size();
+        int cardsWidth = cardsSpace / player.getPlayer().getHand().size();
 
         drawNames(player, x == 0 ? ViewCard.height + 50 : x - 100, maxCardsHeight - 100, g2);
 
-        for (ViewCard card : playerHands.get(player)){
+        for (ViewCard card : player.getImagesHand()){
             g2.drawImage(card.getPaintedImage(), x, startY, ViewCard.height, ViewCard.width, null);
             card.setPosition(x, startY, cardsWidth, true);
             startY += cardsWidth;
         }
     }
 
-    private void drawNames(Player player, int x, int y, Graphics g2)
+    private void drawNames(ViewPlayer viewPlayer, int x, int y, Graphics2D g2)
     {
+        Player player = viewPlayer.getPlayer();
         g2.setFont(fontNames);
-        g2.setColor(player.equals(currentPlayer) ? currentPlayerBackground : playerBackground);
+        g2.setColor(player.equals(currentViewPlayer.getPlayer()) ? currentPlayerBackground : playerBackground);
         int width = g2.getFontMetrics().stringWidth(player.getName());
         int height = g2.getFontMetrics().getHeight();
         g2.fillRoundRect(x-5, y - height + 5, width + 10, height, 20, 20);
         g2.setColor(Color.black);
         g2.drawString(player.getName(), x, y);
+
+        viewPlayer.getProfilePicture().paintImage(g2, x - 60, y - 60);
 
         if (player instanceof HumanPlayer){
             y += height;
@@ -432,14 +441,16 @@ public class GamePanel extends JPanel implements Observer {
 
     // GETTER
     public State getState()
-    { return currentPlayer instanceof HumanPlayer ? State.PLAYER_TURN : State.AI_TURN; }
+    { return currentViewPlayer.getPlayer() instanceof HumanPlayer ? State.PLAYER_TURN : State.AI_TURN; }
 
     public State getCurrentState(){return currentState;}
     public void setCurrentState(State gameMode){currentState = gameMode;}
-    public Player getCurrentPlayer() {return currentPlayer;}
+    //public Player getCurrentPlayer() {return currentViewPlayer.getPlayer();}
     public Player[] getPlayers() {return players;}
     public ViewCard getDeck() {return deck;}
-    public HashMap<Player, ArrayList<ViewAnimableCard>> getPlayerHands() {return playerHands;}
+    //public HashMap<Player, ArrayList<ViewAnimableCard>> getPlayerHands() {return playerHands;}
+    //public ViewPlayer[] getViewPlayers() { return viewPlayers; }
+    public ViewPlayer getCurrentViewPlayer() { return currentViewPlayer; }
     public Rectangle getSkipTurnPosition() {return skipTurnPosition;}
     public Rectangle getUnoPosition() {return unoPosition;}
 }

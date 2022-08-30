@@ -1,0 +1,22 @@
+[
+  {
+    "nickname":"luigi",
+    "password":"password",
+    "stats" :
+    {
+      "victories": 1,
+      "level": 1.5,
+      "defeats": 1
+    }
+  },
+  {
+    "nickname":"daniele",
+    "password":"password",
+    "stats" :
+    {
+      "victories": 0,
+      "level": 0,
+      "defeats": 0
+    }
+  }
+]

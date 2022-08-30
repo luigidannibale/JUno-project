@@ -1,6 +1,9 @@
 package Controller;
 
-import View.Pages.ProfilePanel;
+import View.Elements.ViewPlayer;
+import View.Pages.ProfileManagement.InputPanel;
+import View.Pages.ProfileManagement.ProfilePanel;
+import View.Pages.ProfileManagement.UpdatePlayerPanel;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -17,7 +20,8 @@ public class ProfilePanelController {
     private MainFrameController.Panels returnPanel;
 
     public ProfilePanelController(MainFrameController mfc){
-        view = new ProfilePanel(mfc);
+        ViewPlayer player = mfc.getViewPlayer();
+        view = new ProfilePanel(player);
 
         JLabel name = view.getLabelName();
         name.addMouseListener(new MouseAdapter() {
@@ -47,21 +51,24 @@ public class ProfilePanelController {
                 name.setFont(font.deriveFont(attributes));
         }});
 
-        view.getQuit().addMouseListener(new MouseAdapter() {
+        MouseAdapter exitFromProfilePanel = new MouseAdapter()
+        {
             @Override
-            public void mouseReleased(MouseEvent e) {
-                mfc.setVisiblePanel(returnPanel);
-            }
-        });
+            public void mouseClicked(MouseEvent e) { mfc.setVisiblePanel(returnPanel); }
+        };
+
+        view.getUpdateTabbedPanel().getPanels().forEach(pane -> pane.getCloseButton().addMouseListener(exitFromProfilePanel));
+
 
         JFileChooser chooser = new JFileChooser();
         chooser.setFileFilter(new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png"));
-        view.getChangeIcon().addMouseListener(new MouseAdapter() {
+        view.getLblChangeIcon().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 int ret = chooser.showOpenDialog(null);
                 if(ret == JFileChooser.APPROVE_OPTION){
-                    view.getProfilePicture().setCircleImage(chooser.getSelectedFile().getAbsolutePath());
+                    player.getProfilePicture().setCircleImage(chooser.getSelectedFile().getAbsolutePath());
+                    //view.setProfilePicture(player.getProfilePicture());
                 }
             }
         });
@@ -83,6 +90,6 @@ public class ProfilePanelController {
     }
 
     public void setReturnPanel(MainFrameController.Panels returnPanel){
-        if (returnPanel != MainFrameController.Panels.PROFILE) this.returnPanel = returnPanel;
+        if (returnPanel != MainFrameController.Panels.PROFILE && returnPanel != MainFrameController.Panels.SETTINGS) this.returnPanel = returnPanel;
     }
 }

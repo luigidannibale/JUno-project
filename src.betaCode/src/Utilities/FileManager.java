@@ -17,7 +17,7 @@ import java.util.*;
  */
 public class FileManager
 {
-    public boolean writeJson(HashMap<String,Object> datas[], String file)
+    public boolean writeJson(HashMap<Object,Object> datas[], String file)
     {
         JSONArray datasJson = new JSONArray(datas);
         return write(datasJson.toString(), file);
@@ -37,19 +37,22 @@ public class FileManager
         return true;
     }
 
-    public ArrayList<HashMap<String,Object>>  readJson(String file) throws IOException {
+    public ArrayList<HashMap<Object,Object>>  readJson(String file) throws IOException {
         JSONArray datasJson = new JSONArray();
-        try {
+        try
+        {
             datasJson = read(file);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             throw e;
         }
-        ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+        ArrayList<HashMap<Object, Object>> data = new ArrayList<>();
 
         for (Object object : datasJson) {
             assert (object instanceof JSONObject);
             JSONObject jsonObject = (JSONObject) object;
-            HashMap<String, Object> hashMapObject = new HashMap<>();
+            HashMap<Object, Object> hashMapObject = new HashMap<>();
             jsonObject.keys().forEachRemaining(key -> hashMapObject.put(key, jsonObject.get(key)));
             data.add(hashMapObject);
         }

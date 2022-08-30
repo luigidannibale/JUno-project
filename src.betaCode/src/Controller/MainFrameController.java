@@ -2,6 +2,7 @@ package Controller;
 
 import Utilities.AudioManager;
 import Utilities.Config;
+import View.Elements.ViewPlayer;
 import View.Pages.MainFrame;
 
 import javax.swing.*;
@@ -34,11 +35,16 @@ public class MainFrameController {
     private GamePanelController gameController;
     private ProfilePanelController profileController;
 
+    private ViewPlayer viewPlayer;
+
     private Panels currentPanel;
 
     public MainFrameController()
     {
         config = new Config();
+
+        //if last player non in file o last player null
+        viewPlayer = new ViewPlayer("Anonymous");
 
         view = new MainFrame();
 
@@ -147,7 +153,7 @@ public class MainFrameController {
     }
 
     public void createNewGame(GameChoiceController.GameMode gameMode){
-        gameController = new GamePanelController(gameMode);
+        gameController = new GamePanelController(gameMode, viewPlayer);
         setVisiblePanel(MainFrameController.Panels.GAME);
     }
 
@@ -178,6 +184,8 @@ public class MainFrameController {
     public Config getConfig() {
         return config;
     }
+
+    public ViewPlayer getViewPlayer() { return viewPlayer; }
 
     public void resumeGame(){
         gameController.getView().createCards();

@@ -1,5 +1,6 @@
 package Utilities;
 
+import Model.Player.HumanPlayer;
 import View.Elements.DeckColor;
 import View.Elements.GraphicQuality;
 
@@ -13,6 +14,7 @@ public class Config
     public static int musicVolume;
     public static DeckColor deckStyle;
     public static GraphicQuality graphicQuality;
+    public static HumanPlayer savedPlayer;
     public static double scalingPercentage;
     private final String fileName = "config.json";
 
@@ -28,8 +30,7 @@ public class Config
      */
     public Config()
     {
-        if (!loadConfig())
-            assignDefaultValues();
+        loadConfigOrDefault();
     }
 
     public void assignDefaultValues()
@@ -60,16 +61,28 @@ public class Config
         info.put("deckStyle", deckStyle.name());
         info.put("graphicQuality", graphicQuality.name());
 
+        HashMap<String, Object> info2 = new HashMap<>();
+        info2.put("savedPlayer",savedPlayer);
+        info2.put("config",info);
+
         FileManager fm = new FileManager();
-        return fm.writeJson(new HashMap[]{info}, fileName);
+        return fm.writeJson(new HashMap[]{info2}, fileName);
     }
 
+    public boolean loadConfigOrDefault()
+    {
+        boolean success = loadConfig();
+        if(!success) assignDefaultValues();
+        return success;
+    }
     public boolean loadConfig()
     {
         try
         {
             FileManager fm = new FileManager();
-            var info = fm.readJson(fileName).get(0);
+            var datas = fm.readJson(fileName);
+            HashMap<Object,Object> info = (HashMap<Object,Object>) datas.stream().filter(hashMap-> ((HumanPlayer) hashMap.get("player"))==savedPlayer).toList().get(0);
+
             effectsVolume = (int)info.get("effectsVolume");
             musicVolume = (int)info.get("musicVolume");
             graphicQuality = GraphicQuality.valueOf((String) info.get("graphicQuality"));
@@ -79,11 +92,11 @@ public class Config
         }
         catch (Exception e)
         {
-            assignDefaultValues();
             e.printStackTrace();
             return false;
         }
     }
+    public void savePlayer(HumanPlayer playerToSave){ savedPlayer = playerToSave; }
 }
     //#region ---getters and setters
 //    public int getEffectsVolume() { return effectsVolume; }
