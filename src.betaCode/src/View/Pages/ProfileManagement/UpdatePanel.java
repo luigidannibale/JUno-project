@@ -14,7 +14,8 @@ public class UpdatePanel extends InputPanel
     }
 
     @Override
-    protected void save() {
+    protected void save()
+    {
 
     }
 

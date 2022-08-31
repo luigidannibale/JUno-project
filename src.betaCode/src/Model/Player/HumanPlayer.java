@@ -1,15 +1,8 @@
 package Model.Player;
 
-import Utilities.FileManager;
 import org.json.JSONObject;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
-
-import static java.util.HashMap.*;
 
 
 public class HumanPlayer extends Player
@@ -34,7 +27,7 @@ public class HumanPlayer extends Player
     public HumanPlayer(HashMap<Object,Object> hashMap)
     { this((String) hashMap.get("name"), (String) hashMap.get("password"), (JSONObject) hashMap.get("stats")); }
 
-    public HashMap<Object,Object> getHashmap()
+    public HashMap<Object,Object> getHashmapNamePassword()
     {
         return new HashMap<>(){{
             put("name",name);

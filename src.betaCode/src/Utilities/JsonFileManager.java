@@ -15,7 +15,7 @@ import java.util.*;
  *
  * @author D'annibale Luigi, Venturini Daniele
  */
-public class FileManager
+public class JsonFileManager
 {
     public boolean writeJson(HashMap<Object,Object> datas[], String file)
     {

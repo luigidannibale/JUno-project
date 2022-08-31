@@ -1,15 +1,8 @@
 package Model.Player;
 
-import Utilities.FileManager;
-import org.jetbrains.annotations.Nullable;
+import Utilities.JsonFileManager;
 import org.json.JSONObject;
 
-import java.awt.*;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PlayerManager
@@ -20,7 +13,7 @@ public class PlayerManager
     {
         try
         {
-            FileManager fm = new FileManager();
+            JsonFileManager fm = new JsonFileManager();
             return new HumanPlayer ((HashMap) fm.readJson(filePath)
                     .stream()
                     .filter(objectObjectHashMap ->objectObjectHashMap.get("nickname").equals(nickname))

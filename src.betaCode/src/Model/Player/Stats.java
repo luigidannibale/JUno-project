@@ -1,10 +1,7 @@
 package Model.Player;
 
-import Utilities.FileManager;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 

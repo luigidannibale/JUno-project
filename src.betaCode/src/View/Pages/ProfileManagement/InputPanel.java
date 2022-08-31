@@ -13,6 +13,7 @@ import java.util.function.Predicate;
 
 public abstract class InputPanel extends JPanel
 {
+    //da fare con enum
     HashMap<String,String> placeholders = new HashMap<>(){{
         put("nameToolTip","Insert your name");
         put("passwordToolTip","Insert your password");
@@ -156,9 +157,9 @@ public abstract class InputPanel extends JPanel
             textFieldError(txtInsertPassword, "passwordError");
             return false;
         }
-
-        var nicknameRegistered = PlayerManager.findPlayerByNicknameOrDefault(name);
-        return false;
+        return true;
+//        var nicknameRegistered = PlayerManager.findPlayerByNicknameOrDefault(name);
+//        return false;
     }
 
     public GifComponent getCloseButton(){return closeButton;}
