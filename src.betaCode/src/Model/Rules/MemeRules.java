@@ -7,14 +7,13 @@ import Model.Cards.SkipAction;
 import Model.Cards.WildAction;
 import Model.Player.Player;
 import Model.TurnManager;
-import Model.UnoGameTable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class MemeRules extends UnoGameRules
 {
+    private boolean isStacking;
 
     public MemeRules()
     {
@@ -34,15 +33,46 @@ public class MemeRules extends UnoGameRules
     @Override
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick)
     {
-        if (discardsPick instanceof SkipAction || discardsPick instanceof WildAction )
-            playerPlayableHand = playerPlayableHand.stream().filter(card -> card.getValue()==discardsPick.getValue()).toList();
+        if (isStacking){
+
+        }
+        else{
+
+        }
+        //if (discardsPick instanceof SkipAction || discardsPick instanceof WildAction )
+        //    playerPlayableHand = playerPlayableHand.stream().filter(card -> card.getValue() == discardsPick.getValue()).toList();
         return playerPlayableHand;
     }
 
     @Override
     public ActionPerformResult cardActionPerformance(Options parameters)
     {
-        return ActionPerformResult.SUCCESSFUL;
+        TurnManager turnManager = parameters.getTurnManager();
+        Player[] players = parameters.getPlayers();
+        Player currentPlayer = players[turnManager.getPlayer()];
+        CardColor color = parameters.getColor();
+        Card lastCardPlayed = turnManager.getLastCardPlayed();
+
+        Card cartaDaPerformare = null;
+        ActionPerformResult actionPerformResult = ActionPerformResult.SUCCESSFUL;
+
+        if (isStacking) //ribattere o giocare piu carte stesso valore
+        {
+            System.out.println("Sta stackando");
+        }
+        else            //no ribattere e prima carte giocata
+        {
+            var otherValidCards = currentPlayer.getValidCards(lastCardPlayed);
+            System.out.println("Other valid cards " + otherValidCards);
+            if (otherValidCards.size() == 0){
+                cartaDaPerformare = lastCardPlayed;
+            }
+            else isStacking = true;
+        }
+
+        if (cartaDaPerformare != null) actionPerformResult = super.cardActionPerformance(parameters);
+
+        return actionPerformResult;
     }
 
     //@Override

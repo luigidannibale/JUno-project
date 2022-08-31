@@ -154,7 +154,8 @@ public class UnoGameTable extends Observable {
         return new Options.OptionsBuilder(turnManager, players, deck);
     }
 
-    public Player currentPlayer() { return players[turnManager.getPlayer()]; }
+    public Player currentPlayer() { return players[currentPlayerIndex()]; }
+    public int currentPlayerIndex() { return turnManager.getPlayer(); }
 
     public Player[] getPlayers() { return players; }
 

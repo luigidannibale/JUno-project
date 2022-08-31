@@ -42,7 +42,7 @@ public class GamePanelController
                new ViewPlayer(new AIPlayer("Ai 3")),
         };
         gameTable = new UnoGameTable(Stream.of(viewPlayers).map(ViewPlayer::getPlayer).toArray(Player[]::new), rules);
-
+        viewPlayers[0].getPlayer().getHand().removeAllElements();
         view = new GamePanel(viewPlayers);
 
         view.addMouseListener(new MouseAdapter()
@@ -102,7 +102,7 @@ public class GamePanelController
 
 
         //if clicked on uno
-        if (view.getUnoPosition().contains(mouseClickPosition) && currentPlayer.hasOne())  //can shout uno only if has one card
+        if (view.getUnoPosition().contains(mouseClickPosition) && view.getPlayers()[0].hasOne())  //can shout uno only if has one card
             currentPlayer.shoutUno();
     }
 

@@ -233,7 +233,8 @@ public class GamePanel extends JPanel implements Observer {
         if (Arrays.stream(players).filter(p -> p.getHand().size() == 0).count() == 1) gameRunning = false;
         createCards();
 
-        currentViewPlayer = Arrays.stream(viewPlayers).filter(c -> c.getPlayer().equals(gameTable.currentPlayer())).toList().get(0);
+        //currentViewPlayer = Arrays.stream(viewPlayers).filter(c -> c.getPlayer().equals(gameTable.currentPlayer())).toList().get(0);
+        currentViewPlayer = viewPlayers[gameTable.currentPlayerIndex()];
 
         if (currentViewPlayer.getPlayer().isBlocked()) {
             currentViewPlayer.getPlayer().setBlocked(false);

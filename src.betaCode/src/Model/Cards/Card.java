@@ -1,5 +1,7 @@
 package Model.Cards;
 
+import java.util.function.Predicate;
+
 /**
  * Class used to model a generic Uno card
  *
@@ -28,8 +30,15 @@ public class Card //implements Comparable<Card>
      * @param check
      * @return whether the card is valid or not
      */
+    //public boolean isValid(Card check)
+    //{ return getColor() == check.getColor() || getValue() == check.getValue() || getColor() == CardColor.WILD; }
+
     public boolean isValid(Card check)
-    { return getColor() == check.getColor() || getValue() == check.getValue() || getColor() == CardColor.WILD; }
+    { return isColorValid.test(check) || isValueValid.test(check) || isWild.test(check); }
+
+    public Predicate<Card> isColorValid = c -> c.getColor() == getColor();
+    public Predicate<Card> isValueValid = c -> c.getValue() == getValue();
+    public Predicate<Card> isWild = c -> c.getColor() == CardColor.WILD;
 
     /**
      * @return {@link CardValue} - {@link CardColor}
