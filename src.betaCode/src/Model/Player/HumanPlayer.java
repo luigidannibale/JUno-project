@@ -31,6 +31,9 @@ public class HumanPlayer extends Player
         this.password = password;
         this.stats = new Stats(stats);
     }
+    public HumanPlayer(HashMap<Object,Object> hashMap)
+    { this((String) hashMap.get("name"), (String) hashMap.get("password"), (JSONObject) hashMap.get("stats")); }
+
     public HashMap<Object,Object> getHashmap()
     {
         return new HashMap<>(){{

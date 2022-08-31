@@ -157,9 +157,7 @@ public abstract class InputPanel extends JPanel
             return false;
         }
 
-        var nicknameRegistered = PlayerManager.findPlayerByNickname(name);
-        if (nicknameRegistered == null) System.out.println("Il nickname non è registrato");
-        else System.out.println("Il nickname è registrato");
+        var nicknameRegistered = PlayerManager.findPlayerByNicknameOrDefault(name);
         return false;
     }
 

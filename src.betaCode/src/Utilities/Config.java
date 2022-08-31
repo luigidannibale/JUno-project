@@ -10,9 +10,7 @@ import org.json.JSONObject;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 
 public class Config
@@ -39,7 +37,7 @@ public class Config
 
     public void assignDefaultValues()
     {
-        savedPlayer = new HumanPlayer("default","");
+        savedPlayer = PlayerManager.findPlayerByNicknameOrDefault("");
         effectsVolume = 50;
         musicVolume = 50;
         deckStyle = DeckColor.WHITE;
@@ -47,14 +45,14 @@ public class Config
         refreshScalingPercentage();
     }
 
-    public Config(int effectsVolume, int musicVolume, DeckColor deckStyle, GraphicQuality graphicQuality)
-    {
-        this.effectsVolume = effectsVolume;
-        this.musicVolume = musicVolume;
-        this.deckStyle = deckStyle;
-        this.graphicQuality = graphicQuality;
-        refreshScalingPercentage();
-    }
+//    public Config(int effectsVolume, int musicVolume, DeckColor deckStyle, GraphicQuality graphicQuality)
+//    {
+//        this.effectsVolume = effectsVolume;
+//        this.musicVolume = musicVolume;
+//        this.deckStyle = deckStyle;
+//        this.graphicQuality = graphicQuality;
+//        refreshScalingPercentage();
+//    }
     public void refreshScalingPercentage() { scalingPercentage = Toolkit.getDefaultToolkit().getScreenSize().getWidth()/1920; }
 
     public boolean saveConfig()  { return savePlayerConfig() && saveInit(); }
@@ -62,40 +60,28 @@ public class Config
     public boolean savePlayerConfig()
     {
         assert(savedPlayer != null):"savedPlayer is null in saveplayerconfig ";
-        HashMap<String, Object> info = new HashMap<>();
+        HashMap<String, Object> currentConfig = new HashMap<>();
 
-        info.put("effectsVolume", effectsVolume);
-        info.put("musicVolume", musicVolume);
-        info.put("deckStyle", deckStyle.name());
-        info.put("graphicQuality", graphicQuality.name());
+        currentConfig.put("effectsVolume", effectsVolume);
+        currentConfig.put("musicVolume", musicVolume);
+        currentConfig.put("deckStyle", deckStyle.name());
+        currentConfig.put("graphicQuality", graphicQuality.name());
 
-        HashMap<Object, Object> newLine = new HashMap<>();
-        newLine.put("player",new JSONObject(savedPlayer));
-        newLine.put("config",info);
+        HashMap<Object, Object> playerConfig = new HashMap<>();
+        playerConfig.put("player",savedPlayer.getHashmap());
+        playerConfig.put("config",currentConfig);
 
 
         FileManager fm = new FileManager();
         try
         {
             ArrayList<HashMap<Object,Object>> fileLines = fm.readJson(fileName);
-            try
-            {//updates the player setup, if there is not a setup for the player yet it thors nosuchelement exception
-                fileLines.set(fileLines.indexOf(fileLines.stream().filter(line -> ((JSONObject) line.get("player")).get("name") == savedPlayer.getName()).findAny().get()), newLine);
-            }
-            catch (NoSuchElementException e)
-            {// creates the setup for the player
-                fileLines.add(newLine);
-            }
-
-            HashMap[] a = new HashMap[fileLines.size()];
-            int i = 0;
-            for (var line:fileLines) {
-                System.out.println(line);
-                a[i++] = line;
-            }
-
-            System.out.println(a);
-            return fm.writeJson(a,fileName);
+            Optional<HashMap<Object,Object>> optionalPreviousPlayerConfig = fileLines.stream()
+                                                                                      .filter(line -> ((JSONObject) line.get("player")).get("name") == savedPlayer.getName())
+                                                                                      .findAny();
+            if (optionalPreviousPlayerConfig.isPresent()) fileLines.remove(optionalPreviousPlayerConfig.get());
+            fileLines.add(playerConfig);
+            return fm.writeJson((HashMap<Object, Object>[]) fileLines.toArray(),fileName);
         }
         catch (IOException e) { return false; }
     }
@@ -133,11 +119,8 @@ public class Config
             var datas = fm.readJson(initFile).get(0);
 
             JSONObject player = (JSONObject) datas.get("player");
-            var playerData = PlayerManager.findPlayerByNickname((String) player.get("name"));
+            savedPlayer = PlayerManager.findPlayerByNicknameOrDefault((String) player.get("name"));
 
-            savedPlayer = new HumanPlayer((String) playerData.get("name"),
-                                            (String) playerData.get("password"),
-                                            (JSONObject) playerData.get("stats"));
             JSONObject config = (JSONObject) datas.get("config");
             effectsVolume = (int)config.get("effectsVolume");
             musicVolume = (int)config.get("musicVolume");

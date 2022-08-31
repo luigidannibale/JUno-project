@@ -1,6 +1,7 @@
 package Model.Player;
 
 import Utilities.FileManager;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 
 import java.awt.*;
@@ -15,22 +16,27 @@ public class PlayerManager
 {
     private static final String filePath = "resources/saves.json";
 
-    public static HashMap findPlayerByNickname(String nickname)
+    public static HumanPlayer findPlayerByNicknameOrDefault(String nickname)
     {
         try
         {
-            System.out.println(nickname);
             FileManager fm = new FileManager();
-            return (HashMap) fm.readJson(filePath)
+            return new HumanPlayer ((HashMap) fm.readJson(filePath)
                     .stream()
                     .filter(objectObjectHashMap ->objectObjectHashMap.get("nickname").equals(nickname))
-                    .toArray()[0];
+                    .toArray()[0]);
         }
         catch (Exception e)
         {
-            return null;
+            //e.printStackTrace();
+            return new HumanPlayer( new HashMap<>(){{
+                put("name","default");
+                put("password","");
+                put("stats",new JSONObject(new Stats().defaultValues()));
+            }});
         }
     }
+
 
     public static boolean checkPassword(HashMap player, String password)  { return player.get("password") == password; }
 

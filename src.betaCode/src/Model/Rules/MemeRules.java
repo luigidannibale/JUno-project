@@ -120,7 +120,7 @@ public class MemeRules extends UnoGameRules
         isStacking = false;
         stackedCardsToDraw = 0;
         playersToBlock = 0;
-        cardsPlayed = 1;
+        cardsPlayed = 0;
 
         return actionPerformResult;
     }

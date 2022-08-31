@@ -36,7 +36,7 @@ public class Stats
     {
         return new HashMap<Object, Object>()
         {{
-            put("vicories",0);
+            put("victories",0);
             put("defeats",0);
             put("level",0);
         }};
@@ -56,7 +56,7 @@ public class Stats
     {
         return new HashMap<Object, Object>()
         {{
-            put("vicories",victories);
+            put("victories",victories);
             put("defeats",defeats);
             put("level",level);
         }};
