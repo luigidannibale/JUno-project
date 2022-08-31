@@ -1,11 +1,18 @@
 package Utilities;
 
 import Model.Player.HumanPlayer;
+import Model.Player.Player;
+import Model.Player.PlayerManager;
+import Model.Player.Stats;
 import View.Elements.DeckColor;
 import View.Elements.GraphicQuality;
+import org.json.JSONObject;
 
 import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 
 public class Config
@@ -17,7 +24,7 @@ public class Config
     public static HumanPlayer savedPlayer;
     public static double scalingPercentage;
     private final String fileName = "config.json";
-
+    private final String initFile = "init.json";
     /**
      * Tries to read datas from file, if something goes wrong
      * assigns the folowing default values :
@@ -28,13 +35,11 @@ public class Config
      *  <li>graphicQuality = GraphicQuality.LOW;</li>
      * </ul>
      */
-    public Config()
-    {
-        loadConfigOrDefault();
-    }
+    public Config()  { loadConfigOrDefault(); }
 
     public void assignDefaultValues()
     {
+        savedPlayer = new HumanPlayer("default","");
         effectsVolume = 50;
         musicVolume = 50;
         deckStyle = DeckColor.WHITE;
@@ -52,8 +57,11 @@ public class Config
     }
     public void refreshScalingPercentage() { scalingPercentage = Toolkit.getDefaultToolkit().getScreenSize().getWidth()/1920; }
 
-    public boolean saveConfig()
+    public boolean saveConfig()  { return savePlayerConfig() && saveInit(); }
+
+    public boolean savePlayerConfig()
     {
+        assert(savedPlayer != null):"savedPlayer is null in saveplayerconfig ";
         HashMap<String, Object> info = new HashMap<>();
 
         info.put("effectsVolume", effectsVolume);
@@ -61,12 +69,54 @@ public class Config
         info.put("deckStyle", deckStyle.name());
         info.put("graphicQuality", graphicQuality.name());
 
-        HashMap<String, Object> info2 = new HashMap<>();
-        info2.put("savedPlayer",savedPlayer);
-        info2.put("config",info);
+        HashMap<Object, Object> newLine = new HashMap<>();
+        newLine.put("player",new JSONObject(savedPlayer));
+        newLine.put("config",info);
+
 
         FileManager fm = new FileManager();
-        return fm.writeJson(new HashMap[]{info2}, fileName);
+        try
+        {
+            ArrayList<HashMap<Object,Object>> fileLines = fm.readJson(fileName);
+            try
+            {//updates the player setup, if there is not a setup for the player yet it thors nosuchelement exception
+                fileLines.set(fileLines.indexOf(fileLines.stream().filter(line -> ((JSONObject) line.get("player")).get("name") == savedPlayer.getName()).findAny().get()), newLine);
+            }
+            catch (NoSuchElementException e)
+            {// creates the setup for the player
+                fileLines.add(newLine);
+            }
+
+            HashMap[] a = new HashMap[fileLines.size()];
+            int i = 0;
+            for (var line:fileLines) {
+                System.out.println(line);
+                a[i++] = line;
+            }
+
+            System.out.println(a);
+            return fm.writeJson(a,fileName);
+        }
+        catch (IOException e) { return false; }
+    }
+
+    public boolean saveInit()
+    {
+        HashMap<Object, Object> config = new HashMap<>();
+        config.put("effectsVolume", effectsVolume);
+        config.put("musicVolume", musicVolume);
+        config.put("deckStyle", deckStyle.name());
+        config.put("graphicQuality", graphicQuality.name());
+
+        HashMap<Object, Object> player =savedPlayer.getHashmap();
+
+        HashMap<Object, Object> data[] = new HashMap[]{new HashMap<>(){{
+            put("config",config);
+            put("player",player);
+        }}};
+
+        FileManager fm = new FileManager();
+        return fm.writeJson(data, initFile);
     }
 
     public boolean loadConfigOrDefault()
@@ -80,22 +130,29 @@ public class Config
         try
         {
             FileManager fm = new FileManager();
-            var datas = fm.readJson(fileName);
-            HashMap<Object,Object> info = (HashMap<Object,Object>) datas.stream().filter(hashMap-> ((HumanPlayer) hashMap.get("player"))==savedPlayer).toList().get(0);
+            var datas = fm.readJson(initFile).get(0);
 
-            effectsVolume = (int)info.get("effectsVolume");
-            musicVolume = (int)info.get("musicVolume");
-            graphicQuality = GraphicQuality.valueOf((String) info.get("graphicQuality"));
-            deckStyle = DeckColor.valueOf((String)info.get("deckStyle"));
+            JSONObject player = (JSONObject) datas.get("player");
+            var playerData = PlayerManager.findPlayerByNickname((String) player.get("name"));
+
+            savedPlayer = new HumanPlayer((String) playerData.get("name"),
+                                            (String) playerData.get("password"),
+                                            (JSONObject) playerData.get("stats"));
+            JSONObject config = (JSONObject) datas.get("config");
+            effectsVolume = (int)config.get("effectsVolume");
+            musicVolume = (int)config.get("musicVolume");
+            graphicQuality = GraphicQuality.valueOf((String) config.get("graphicQuality"));
+            deckStyle = DeckColor.valueOf((String)config.get("deckStyle"));
             refreshScalingPercentage();
             return true;
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            System.out.println("Cant load config : " + e);
             return false;
         }
     }
+
     public void savePlayer(HumanPlayer playerToSave){ savedPlayer = playerToSave; }
 }
     //#region ---getters and setters

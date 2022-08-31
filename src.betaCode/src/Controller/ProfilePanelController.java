@@ -62,34 +62,30 @@ public class ProfilePanelController {
 
         JFileChooser chooser = new JFileChooser();
         chooser.setFileFilter(new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png"));
-        view.getLblChangeIcon().addMouseListener(new MouseAdapter() {
+        view.getLblChangeIcon().addMouseListener(new MouseAdapter()
+        {
             @Override
-            public void mouseReleased(MouseEvent e) {
-                int ret = chooser.showOpenDialog(null);
-                if(ret == JFileChooser.APPROVE_OPTION){
+            public void mouseReleased(MouseEvent e)
+            {
+                if(chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
                     player.getProfilePicture().setCircleImage(chooser.getSelectedFile().getAbsolutePath());
                     //view.setProfilePicture(player.getProfilePicture());
-                }
             }
         });
     }
 
-    public ProfilePanel getView() {
-        return view;
-    }
+    public ProfilePanel getView() { return view; }
 
-    public JPanel getSmallPanel(){
-        return view.getSmallPanel();
-    }
+    public JPanel getSmallPanel(){ return view.getSmallPanel(); }
 
-    public void setVisible(boolean visible){
+    public void setVisible(boolean visible)
+    {
         view.setVisible(visible);
         view.getSmallPanel().setVisible(!visible);
         if (visible) view.InitializeMainPanel();
         else view.InitializeSmallPanel();
     }
 
-    public void setReturnPanel(MainFrameController.Panels returnPanel){
-        if (returnPanel != MainFrameController.Panels.PROFILE && returnPanel != MainFrameController.Panels.SETTINGS) this.returnPanel = returnPanel;
-    }
+    public void setReturnPanel(MainFrameController.Panels returnPanel)
+    { if (returnPanel != MainFrameController.Panels.PROFILE && returnPanel != MainFrameController.Panels.SETTINGS) this.returnPanel = returnPanel; }
 }

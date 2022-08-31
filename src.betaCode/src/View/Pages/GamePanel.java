@@ -16,7 +16,6 @@ import View.Animations.RotatingAnimation;
 import View.Elements.*;
 
 import javax.swing.*;
-import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -236,7 +235,8 @@ public class GamePanel extends JPanel implements Observer {
         //currentViewPlayer = Arrays.stream(viewPlayers).filter(c -> c.getPlayer().equals(gameTable.currentPlayer())).toList().get(0);
         currentViewPlayer = viewPlayers[gameTable.currentPlayerIndex()];
 
-        if (currentViewPlayer.getPlayer().isBlocked()) {
+        if (currentViewPlayer.getPlayer().isBlocked())
+        {
             currentViewPlayer.getPlayer().setBlocked(false);
             gameTable.passTurn();
             return;
@@ -291,7 +291,8 @@ public class GamePanel extends JPanel implements Observer {
             try {
                 AIPlayer ai = (AIPlayer) currentViewPlayer.getPlayer();
                 Thread.sleep(1500);
-                if (gameTable.getCurrentPlayerPLayableCards().size() == 0) {
+                var playableCards = gameTable.getCurrentPlayerPLayableCards();
+                if (playableCards.size() == 0) {
                     if (!ai.hasDrew()) {
                         drawCardAnimation(currentViewPlayer, new ViewCard()).Join();
                         gameTable.drawCard(ai);
@@ -300,7 +301,7 @@ public class GamePanel extends JPanel implements Observer {
                 }
                 else
                 {
-                    Card playedCard = gameTable.getCurrentPlayerPLayableCards().get(0);
+                    Card playedCard = playableCards.get(0);
                     ViewCard relatedImage = currentViewPlayer.getImagesHand().stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
                     playCardAnimation(relatedImage).Join();
 

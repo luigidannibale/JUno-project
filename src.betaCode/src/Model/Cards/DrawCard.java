@@ -7,7 +7,8 @@ import Model.Player.Player;
  * Specialize the generic class {@link Card}
  * @author D'annibale Luigi, Venturini Daniele
  */
-public class DrawCard extends ActionCard implements WildAction, SkipAction {
+public class DrawCard extends ActionCard implements WildAction, SkipAction
+{
     private int numberOfCardsToDraw;
     /**
      * Creates a draw card

@@ -34,7 +34,7 @@ public class Card //implements Comparable<Card>
     //{ return getColor() == check.getColor() || getValue() == check.getValue() || getColor() == CardColor.WILD; }
 
     public boolean isValid(Card check)
-    { return isColorValid.test(check) || isValueValid.test(check) || isWild.test(check); }
+    { return isColorValid.test(check) || isValueValid.test(check) || isWild.test(this); }
 
     public Predicate<Card> isColorValid = c -> c.getColor() == getColor();
     public Predicate<Card> isValueValid = c -> c.getValue() == getValue();

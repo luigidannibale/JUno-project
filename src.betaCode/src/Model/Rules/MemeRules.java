@@ -10,10 +10,15 @@ import Model.TurnManager;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class MemeRules extends UnoGameRules
 {
     private boolean isStacking;
+    private int stackedCardsToDraw;
+    private int playersToBlock;
+    private int cardsPlayed;
 
     public MemeRules()
     {
@@ -26,7 +31,7 @@ public class MemeRules extends UnoGameRules
             put(CardValue.WILD_DRAW,8);
         }});
         stackableCards = true;
-        numberOfPlayableCards = 5;
+        numberOfPlayableCards = 3;
         numberOfCardsPerPlayer = 11;
     }
 
@@ -34,14 +39,26 @@ public class MemeRules extends UnoGameRules
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick)
     {
         if (isStacking){
-
-        }
-        else{
-
+            playerPlayableHand = filtraValore(playerPlayableHand.stream(), discardsPick).toList();
         }
         //if (discardsPick instanceof SkipAction || discardsPick instanceof WildAction )
         //    playerPlayableHand = playerPlayableHand.stream().filter(card -> card.getValue() == discardsPick.getValue()).toList();
         return playerPlayableHand;
+    }
+
+    private List<Card> getStackableCards(List<Card> playerPlayableHand, Card discardsPick)
+    { return filtraValore(playerPlayableHand.stream(), discardsPick).toList(); }
+
+    private Stream<Card> filtraSkipAndDraw(Stream<Card> stream){
+        return stream.filter(card -> card instanceof DrawCard || card instanceof SkipCard);
+    }
+
+    private Stream<Card> filtraValore(Stream<Card> stream, Card card){
+        return stream.filter(card.isValueValid);
+    }
+
+    private Stream<Card> filtraNonWild(Stream<Card> stream){
+        return stream.filter(c -> !c.isWild.test(c));
     }
 
     @Override
@@ -50,27 +67,60 @@ public class MemeRules extends UnoGameRules
         TurnManager turnManager = parameters.getTurnManager();
         Player[] players = parameters.getPlayers();
         Player currentPlayer = players[turnManager.getPlayer()];
-        CardColor color = parameters.getColor();
         Card lastCardPlayed = turnManager.getLastCardPlayed();
 
-        Card cartaDaPerformare = null;
         ActionPerformResult actionPerformResult = ActionPerformResult.SUCCESSFUL;
 
-        if (isStacking) //ribattere o giocare piu carte stesso valore
-        {
-            System.out.println("Sta stackando");
+        if (lastCardPlayed instanceof ReverseCard) _ReverseAction(turnManager);
+        else if(lastCardPlayed instanceof SkipCard){
+            playersToBlock += 1;
+            System.out.println("PLAYERS TO BLOCK " + playersToBlock);
         }
-        else            //no ribattere e prima carte giocata
+        else if(lastCardPlayed instanceof DrawCard drawCard)
         {
-            var otherValidCards = currentPlayer.getValidCards(lastCardPlayed);
-            System.out.println("Other valid cards " + otherValidCards);
-            if (otherValidCards.size() == 0){
-                cartaDaPerformare = lastCardPlayed;
-            }
-            else isStacking = true;
+            stackedCardsToDraw += drawCard.getNumberOfCardsToDraw();
+            System.out.println("CARTE DA PESCARE " + stackedCardsToDraw);
+            drawCard.setNumberOfCardsToDraw(stackedCardsToDraw);
+            turnManager.updateLastCardPlayed(drawCard);
         }
 
-        if (cartaDaPerformare != null) actionPerformResult = super.cardActionPerformance(parameters);
+
+        var playable = filtraNonWild(filtraValore(currentPlayer.getHand().stream(), lastCardPlayed)).toList();
+        System.out.println("STACKABILI " + playable + " rimanenti da giocare " + (numberOfPlayableCards - cardsPlayed - 1));
+        if (cardsPlayed != numberOfPlayableCards - 1 && playable.size() > 0){
+            System.out.println("CI SONO E NE ASPETTA ALTRE");
+            isStacking = true;
+            cardsPlayed += 1;
+            return ActionPerformResult.SUCCESSFUL;
+        }
+        else {
+            System.out.println("NON CI SONO E CONTROLLA IL PROSSIMO");
+            if (lastCardPlayed instanceof SkipCard || lastCardPlayed instanceof DrawCard){
+                playable = filtraValore(players[turnManager.next()].getHand().stream(), lastCardPlayed).toList();
+                System.out.println("PROSSIMO STACKABILI " + playable);
+                if (playable.size() > 0){
+                    System.out.println("CI SONO DEVE RIBATTERE");
+                    isStacking = true;
+                    cardsPlayed = 0;
+                    turnManager.passTurn();
+                    return ActionPerformResult.SUCCESSFUL;
+                }
+            }
+            else System.out.println("IL PROSSIMO NON DEVE RIBATTERE");
+        }
+
+        System.out.println("NON CI SONO NE' NEL CURRENT NE' NEL PROSSIMO -> FAI L'AZIONE");
+        while(playersToBlock > 1){
+            _SkipAction(turnManager, players);
+            playersToBlock --;
+        }
+        if (!(lastCardPlayed instanceof ReverseCard)) actionPerformResult = super.cardActionPerformance(parameters);
+        turnManager.passTurn();
+
+        isStacking = false;
+        stackedCardsToDraw = 0;
+        playersToBlock = 0;
+        cardsPlayed = 1;
 
         return actionPerformResult;
     }

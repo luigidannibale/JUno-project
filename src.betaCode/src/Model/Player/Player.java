@@ -12,7 +12,7 @@ public abstract class Player
     protected Stack<Card> hand;
     protected boolean saidOne = false;
     protected boolean drew = false;
-    protected boolean isBlocked = false;
+    protected boolean isBlocked;
 
     protected Player(String name)
     {
@@ -66,7 +66,7 @@ public abstract class Player
 
     public void setDrew(boolean drew) {this.drew = drew;}
 
-    public void setBlocked(boolean blocked) {this.isBlocked = blocked;}
+    public void setBlocked(boolean isBlocked) {this.isBlocked = isBlocked;}
 
     public void falseSaidOne(){ saidOne = false; }
 
