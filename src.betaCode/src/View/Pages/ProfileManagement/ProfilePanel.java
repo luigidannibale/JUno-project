@@ -169,6 +169,8 @@ public class ProfilePanel extends ResizablePanel {
         gbc.weightx = 0.9;
         gbc.weighty = 0.85;
         add(updateTabbedPanel, gbc);
+
+        updateTabbedPanel.clearTextField();
     }
 
     public JPanel getSmallPanel()
