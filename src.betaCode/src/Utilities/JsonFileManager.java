@@ -17,7 +17,7 @@ import java.util.*;
  */
 public class JsonFileManager
 {
-    public boolean writeJson(HashMap<Object,Object> datas[], String file)
+    public boolean writeJson(List<HashMap<Object,Object>> datas, String file)
     {
         JSONArray datasJson = new JSONArray(datas);
         return write(datasJson.toString(), file);
@@ -53,10 +53,16 @@ public class JsonFileManager
             assert (object instanceof JSONObject);
             JSONObject jsonObject = (JSONObject) object;
             HashMap<Object, Object> hashMapObject = new HashMap<>();
-            jsonObject.keys().forEachRemaining(key -> hashMapObject.put(key, jsonObject.get(key)));
+            jsonObject.keys().forEachRemaining(key -> hashMapObject.put(key, jsonObject.get(key)instanceof JSONObject? jsonToHashMap((JSONObject) jsonObject.get(key)): jsonObject.get(key)));
             data.add(hashMapObject);
         }
         return data;
+    }
+    private HashMap<Object,Object> jsonToHashMap(JSONObject json)
+    {
+        HashMap<Object,Object> hash = new HashMap<>();
+        json.keys().forEachRemaining(k-> hash.put(k,json.get(k) instanceof JSONObject?jsonToHashMap((JSONObject) json.get(k)):json.get(k)));
+        return hash;
     }
     private JSONArray read(String file) throws IOException
     {

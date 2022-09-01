@@ -24,7 +24,11 @@ public class RegistrationPanel extends InputPanel
 
         boolean nicknameRegistered = PlayerManager.findPlayerByNicknameOrDefault(name).getName() == name;
         if (!nicknameRegistered)
+        {   // non worka perche fa il controllo nel file resources -> saves.json, il quale ancora non viene lavorato quindi quando lo si interpella non worka
             Config.savedPlayer = new HumanPlayer(name,password);
+            System.out.println("lo salvo");
+        }
+
         else textFieldError(txtInsertName,placeholders.get("nameAlreadyExists"));
     }
 

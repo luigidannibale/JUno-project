@@ -6,9 +6,7 @@ import View.Elements.GraphicQuality;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
 
 public class DataAccessManager
 {
@@ -20,36 +18,19 @@ public class DataAccessManager
     {
         assert(Config.savedPlayer != null):"savedPlayer is null in saveplayerconfig ";
 
-        HashMap<Object, Object> currentConfig = Config.getPropertiesHashMapRapresentation();
-        //HashMap<Object, Object> playerConfig = new HashMap<>();
-
-//        playerConfig.put("player",Config.savedPlayer.getHashmapNamePassword());
-//        playerConfig.put("config",currentConfig);
-
-
         JsonFileManager fm = new JsonFileManager();
         try
         {
-            ArrayList<HashMap<Object,Object>> fileLines = fm.readJson(PLAYER_CONFIG_JSON);
-            Optional<HashMap<Object,Object>> optionalPreviousPlayerConfig = fileLines.stream()
-                    .filter(line -> ((JSONObject) line.get("player")).get("name") == Config.savedPlayer.getName())
-                    .findAny();
-            if (optionalPreviousPlayerConfig.isPresent()) fileLines.remove(optionalPreviousPlayerConfig.get());
-            fileLines.add(Config.getPlayerConfig());
-            //fileLines.forEach(l -> System.out.println(l));
-            HashMap<Object, Object>[] a = new HashMap[fileLines.size()];
-            int i = 0;
-            //c'è qualcosa che non va qui nel salvataggio su file
-            for (var l:fileLines) a[i++] = l;
-            for (var l :a)
-                System.out.println(l);
+            //ArrayList<HashMap<Object,Object>> fileLines = fm.readJson(PLAYER_CONFIG_JSON);
+            ArrayList<HashMap<Object,Object>> a = new ArrayList<>();
+            a.addAll(fm.readJson(PLAYER_CONFIG_JSON).stream().filter(l->!(((HashMap<Object, Object>) l.get("player")).get("name").equals(Config.savedPlayer.getName()))).toList());
+            a.add(Config.getPlayerConfig());
             return fm.writeJson(a, PLAYER_CONFIG_JSON);
-            //return fm.writeJson((HashMap<Object, Object>[]) fileLines.toArray(), PLAYER_CONFIG_JSON);
         }
         catch (IOException e) { return false; }
     }
 
-    public boolean saveInit() { return new JsonFileManager().writeJson(new HashMap[]{Config.getPlayerConfig()}, INIT_JSON); }
+    public boolean saveInit() { return new JsonFileManager().writeJson(Arrays.stream((HashMap<Object,Object>[])new HashMap[]{Config.getPlayerConfig()}).toList(), INIT_JSON); }
 
     public boolean loadConfig()
     {
