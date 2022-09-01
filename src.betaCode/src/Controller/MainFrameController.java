@@ -121,6 +121,7 @@ public class MainFrameController {
                 c1.show(view.getContentPane(), MainFrame.Cards.MAIN.name());
             }
             case SETTINGS -> {
+                settingsController.refreshSettings();
                 settingsController.setVisible(true);
                 c1.show(view.getContentPane(), MainFrame.Cards.SETTINGS.name());
             }
@@ -186,8 +187,4 @@ public class MainFrameController {
     }
 
     public ViewPlayer getViewPlayer() { return viewPlayer; }
-
-    public void resumeGame(){
-        gameController.getView().createCards();
-    }
 }

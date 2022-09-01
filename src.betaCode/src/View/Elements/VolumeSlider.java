@@ -10,11 +10,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
-public class VolumeSlider extends JProgressBar {
-    JLabel icon;
-    String[] fileNames;
-    String path;
-
+public class VolumeSlider extends JProgressBar
+{
+    
     public VolumeSlider()
     {
         setPreferredSize(new Dimension((int)(200*Config.scalingPercentage),(int)(20*Config.scalingPercentage)));
@@ -32,29 +30,18 @@ public class VolumeSlider extends JProgressBar {
                 setValue(perc);
             }
         });
-
-        addChangeListener(e -> {
-            if (icon != null){
-                String newImage = path;
-                if (getValue() == 0) newImage += fileNames[0];
-                else if (getValue() < 50) newImage += fileNames[1];
-                else newImage += fileNames[2];
-                var icona = new ImageIcon((newImage));
-                icon.setIcon(ScaleImage(icona, icona.getIconWidth(), icona.getIconHeight()));
-            }
-        });
-    }
-    protected ImageIcon ScaleImage(ImageIcon image, int width, int height){
-        return new ImageIcon(image.getImage().getScaledInstance((int) (width * Config.scalingPercentage), (int) (height * Config.scalingPercentage), Image.SCALE_DEFAULT));
-    }
-    public void setValue(int value){
-        super.setValue(value);
     }
 
+    public void setValue(int value){ super.setValue(value); }
+
+    /*
     public void setChangebleIcon(JLabel icon,String generalPath, String[] fileNames){
         this.icon = icon;
         this.path = generalPath;
         this.fileNames = fileNames;
     }
+
+     */
+
 
 }

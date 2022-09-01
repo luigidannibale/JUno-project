@@ -41,7 +41,7 @@ public class DataAccessManager
             HashMap player = (HashMap) datas.get("player");
             Config.loggedPlayer = PlayerManager.findPlayerByNicknameOrDefault((String) player.get("name"));
 
-            HashMap config = (HashMap) datas.get("config");
+            HashMap<Object, Object> config = (HashMap) datas.get("config");
             Config.effectsVolume = (int)config.get("effectsVolume");
             Config.musicVolume = (int)config.get("musicVolume");
             Config.graphicQuality = GraphicQuality.valueOf((String) config.get("graphicQuality"));

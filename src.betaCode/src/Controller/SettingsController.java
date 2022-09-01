@@ -9,42 +9,28 @@ import View.Pages.SettingsPanel;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class SettingsController {
-
+public class SettingsController
+{
     private final SettingsPanel view;
-
-    //MainFrame.Dimensions dimesionChanges;
     private DeckColor deckChanges;
-    private GraphicQuality graphicsChanges;
     private MainFrameController.Panels returnPanel;
 
     public SettingsController(MainFrameController mainFrame){
         view = new SettingsPanel();
 
-        view.getEffectsVolumeSlider().setValue(mainFrame.soundEffects.getVolume());
-        view.getMusicVolumeSlider().setValue(mainFrame.soundEffects.getVolume());
-        //dimesionChanges = mainFrame.getCurrentDimension();
+        refreshSettings();
 
         view.getSaveButton().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //mainFrame.backMusic.setVolume(view.getMusicVolumeSlider().getValue());
-                //mainFrame.backMusic.setFloatControlVolume();
-                //mainFrame.soundEffects.setVolume(view.getEffectsVolumeSlider().getValue());
-                //mainFrame.soundEffects.setFloatControlVolume();
-                Config.effectsVolume = view.getEffectsVolumeSlider().getValue();
-                Config.musicVolume = view.getMusicVolumeSlider().getValue();
-                Config.deckStyle = deckChanges;
-                Config.graphicQuality = graphicsChanges;
-                if (returnPanel == MainFrameController.Panels.GAME) mainFrame.resumeGame();
-                mainFrame.getConfig().saveConfig();
+                saveConfig();
                 mainFrame.setVisiblePanel(returnPanel);
             }
         });
+
         view.getCloseButton().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //mainFrame.setVisiblePanel(MainFrameController.Panels.STARTMENU);
                 mainFrame.setVisiblePanel(returnPanel);
             }
         });
@@ -56,36 +42,52 @@ public class SettingsController {
             }
         }));
 
-        view.getWhiteDeck().addMouseListener(new MouseAdapter() {
+        MouseAdapter deckColorStyleMouseAdapter = new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e) {
-                changeDeckBack(DeckColor.WHITE);
-            }
-        });
+            public void mouseClicked(MouseEvent e) { changeDeckBack(((SettingsPanel.DeckRectangle) e.getComponent()).getDeckColor()); }
+        };
 
-        view.getDarkDeck().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                changeDeckBack(DeckColor.BLACK);
-            }
-        });
+        view.getWhiteDeck().addMouseListener(deckColorStyleMouseAdapter);
+        view.getDarkDeck().addMouseListener(deckColorStyleMouseAdapter);
 
-        view.getQualityCombo().addActionListener(e -> {
-            GraphicQuality selectedQuality = GraphicQuality.valueOf( ((String) ((JComboBox<String>) e.getSource()).getSelectedItem()).toUpperCase());
-            if (selectedQuality != null) graphicsChanges = selectedQuality;
-        });
-        view.getQualityCombo().setSelectedIndex(ConfigDeprecated.highGraphics ? 0 : 1);
-
-        changeDeckBack(ConfigDeprecated.defaultColor);
+//        view.getEffectsVolumeSlider().addChangeListener(e -> {
+//            if (icon != null){
+//                String newImage = path;
+//                if (getValue() == 0) newImage += fileNames[0];
+//                else if (getValue() < 50) newImage += fileNames[1];
+//                else newImage += fileNames[2];
+//                var icona = new ImageIcon((newImage));
+//                icon.setIcon(ScaleImage(icona, icona.getIconWidth(), icona.getIconHeight()));
+//            }
+//        });
     }
 
-    void changeDeckBack(DeckColor c){
+    private void saveConfig()
+    {
+        Config.effectsVolume = view.getEffectsVolumeSlider().getValue();
+        Config.musicVolume = view.getMusicVolumeSlider().getValue();
+        Config.deckStyle = deckChanges;
+        Config.graphicQuality = (GraphicQuality) view.getQualityCombo().getSelectedItem();
+        //if (returnPanel == MainFrameController.Panels.GAME) mainFrame.resumeGame();
+        Config.saveConfig();
+    }
+
+    public void refreshSettings()
+    {
+        view.getEffectsVolumeSlider().setValue(Config.effectsVolume);
+        view.getMusicVolumeSlider().setValue(Config.musicVolume);
+        view.getQualityCombo().setSelectedItem(Config.graphicQuality);
+        changeDeckBack(Config.deckStyle);
+    }
+
+    void changeDeckBack(DeckColor c) {
         deckChanges = c;
         view.getDarkDeck().setPaintBackground( c==DeckColor.BLACK);
         view.getWhiteDeck().setPaintBackground(c==DeckColor.WHITE);
     }
 
-    public void setReturnPanel(MainFrameController.Panels returnPanel) {
+    public void setReturnPanel(MainFrameController.Panels returnPanel)
+    {
         this.returnPanel = returnPanel;
         view.getQuitButton().setVisible(returnPanel == MainFrameController.Panels.GAME);
     }

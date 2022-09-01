@@ -1,10 +1,7 @@
 package View.Pages;
 
 import Utilities.Utils;
-import View.Elements.GifComponent;
-import View.Elements.GraphicQuality;
-import View.Elements.ImageComponent;
-import View.Elements.VolumeSlider;
+import View.Elements.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +28,7 @@ public class SettingsPanel extends ResizablePanel
     private DeckRectangle darkDeck;
     private DeckRectangle whiteDeck;
     private ImageComponent qualityLabel;
-    private JComboBox<String> qualityCombo;
+    private JComboBox<GraphicQuality> qualityCombo;
 
     public SettingsPanel()
     {
@@ -60,11 +57,11 @@ public class SettingsPanel extends ResizablePanel
         effectsVolumeSlider.setChangebleIcon(effectsLabel,imagePath+"EffectsVolume/", new String[] {"off.png", "low.png", "high.png"});
         musicVolumeSlider = new VolumeSlider();
 
-        whiteDeck = new DeckRectangle(deckPath + "white/ZERORED.png", "White Deck");
-        darkDeck = new DeckRectangle(deckPath + "black/ZERORED.png", "Dark Deck");
+        whiteDeck = new DeckRectangle(deckPath + "white/ZERORED.png", "White Deck", DeckColor.WHITE);
+        darkDeck = new DeckRectangle(deckPath + "black/ZERORED.png", "Dark Deck", DeckColor.BLACK);
 
         qualityCombo = new JComboBox<>();
-        Arrays.stream(GraphicQuality.values()).forEach(g -> qualityCombo.addItem(g.VALUE));
+        Arrays.stream(GraphicQuality.values()).forEach(g -> qualityCombo.addItem(g));
         qualityCombo.setPreferredSize(new Dimension(190, 28));
         qualityCombo.setFont(font);
         ((JLabel)qualityCombo.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
@@ -181,8 +178,11 @@ public class SettingsPanel extends ResizablePanel
         private Color deckRectangleBorder = Color.BLACK;
         private boolean paintBackground = false;
 
-        public DeckRectangle(String imagePath, String title){
+        public DeckColor deckColor;
+
+        public DeckRectangle(String imagePath, String title, DeckColor deckColor){
             this.title = title;
+            this.deckColor = deckColor;
             image = Utils.getBufferedImage(imagePath);
             setSize(width, height);
             setPreferredSize(new Dimension(width, height));
@@ -207,6 +207,8 @@ public class SettingsPanel extends ResizablePanel
             this.paintBackground = paintBackground;
             repaint();
         }
+
+        public DeckColor getDeckColor() { return deckColor; }
 
         @Override
         protected void paintComponent(Graphics g) {

@@ -1,1 +1,6 @@
-[{"config":{"deckStyle":"BLACK","effectsVolume":75,"musicVolume":39,"graphicQuality":"HIGH"},"player":{"name":"daniele","password":"Pass12"}}]
+[
+  {
+    "config":{"deckStyle":"BLACK","effectsVolume":75,"musicVolume":39,"graphicQuality":"HIGH"},
+    "player":{"name":"daniele","password":"Pass12"}
+  }
+]

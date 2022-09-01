@@ -25,19 +25,9 @@ public class UpdatePlayerPanel extends JTabbedPane
         registrationPanel = new RegistrationPanel(backColor,borderColor);
         updatePanel = new UpdatePanel(backColor,borderColor);
 
-        /*
-        for (int i = 0; i < panels.size(); i++) {
-            if (i == currentIndex) continue;
-            InputPanel p = panels.get(i);
-            Arrays.stream(p.getComponents()).filter(c -> c instanceof JTextField).forEach(c -> ((JTextField) c).grabFocus());
-        }
-
-         */
         addChangeListener(e -> clearTextField());
 
-        this.add(loginPanel);
-        this.add(registrationPanel);
-        this.add(updatePanel);
+        getPanels().forEach(this::add);
         this.setTitleAt(0,"Log in");
         this.setTitleAt(1,"Registration");
         this.setTitleAt(2,"Update Profile");
@@ -45,13 +35,11 @@ public class UpdatePlayerPanel extends JTabbedPane
         setSelectedIndex(0);
     }
 
-    public List<InputPanel> getPanels(){
-        return List.of(loginPanel, registrationPanel, updatePanel);
-    }
+    public List<InputPanel> getPanels(){ return List.of(loginPanel, registrationPanel, updatePanel); }
 
-    public void clearTextField(){
-        int currentIndex = getSelectedIndex();
-        InputPanel panel = getPanels().get(currentIndex);
+    public void clearTextField()
+    {
+        InputPanel panel = getPanels().get(getSelectedIndex());
         Arrays.stream(panel.getComponents()).filter(c -> c instanceof JTextField).forEach(c -> {
             var text = (JTextField)c;
             text.grabFocus();

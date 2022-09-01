@@ -62,6 +62,7 @@ public class GamePanelController
             @Override
             public void componentShown(ComponentEvent e) {
                 super.componentShown(e);
+                view.createCards();
                 view.setCurrentState(view.getState());
             }
 
