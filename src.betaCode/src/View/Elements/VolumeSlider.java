@@ -12,7 +12,7 @@ import java.io.File;
 
 public class VolumeSlider extends JProgressBar
 {
-    
+
     public VolumeSlider()
     {
         setPreferredSize(new Dimension((int)(200*Config.scalingPercentage),(int)(20*Config.scalingPercentage)));
