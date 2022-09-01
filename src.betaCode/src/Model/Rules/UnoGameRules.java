@@ -62,7 +62,7 @@ public abstract class UnoGameRules {
         }
         if(lastCard instanceof DrawCard)
         {
-            actionPerformResult = _DrawAction(parameters, lastCard);
+            actionPerformResult = _DrawAction(parameters, (DrawCard) lastCard);
             if (actionPerformResult != ActionPerformResult.SUCCESSFUL) return actionPerformResult;
         }
         if(lastCard instanceof ReverseCard)
@@ -91,10 +91,10 @@ public abstract class UnoGameRules {
         ((WildAction) turnManager.getLastCardPlayed()).changeColor(turnManager, color);
         return ActionPerformResult.SUCCESSFUL;
     }
-    protected ActionPerformResult _DrawAction(Options parameters, Card card)
+    protected ActionPerformResult _DrawAction(Options parameters, DrawCard lastCard)
     {
         TurnManager turnManager = parameters.getTurnManager();
-        parameters.getPlayers()[turnManager.next()].drawCards(parameters.getDeck().draw(((DrawCard) turnManager.getLastCardPlayed()).getNumberOfCardsToDraw()));
+        parameters.getPlayers()[turnManager.next()].drawCards(parameters.getDeck().draw(lastCard.getNumberOfCardsToDraw()));
         return ActionPerformResult.SUCCESSFUL;
     }
     protected ActionPerformResult _ReverseAction(TurnManager turnManager)

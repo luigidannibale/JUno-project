@@ -115,13 +115,15 @@ public class MemeRules extends UnoGameRules
             playersToBlock --;
         }
         if (!(lastCardPlayed instanceof ReverseCard)) actionPerformResult = super.cardActionPerformance(parameters);
-        turnManager.passTurn();
-
-        isStacking = false;
-        stackedCardsToDraw = 0;
-        playersToBlock = 0;
-        cardsPlayed = 0;
-
+        if (actionPerformResult == ActionPerformResult.SUCCESSFUL)
+        {
+            System.out.println("RESETTA I DATI");
+            turnManager.passTurn();
+            isStacking = false;
+            stackedCardsToDraw = 0;
+            playersToBlock = 0;
+            cardsPlayed = 0;
+        }
         return actionPerformResult;
     }
 
