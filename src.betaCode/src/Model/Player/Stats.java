@@ -11,7 +11,7 @@ public class Stats
     private int defeats;
     private float level; //int part is the actual level and the decimal part
 
-    public Stats(JSONObject stats)  { updateStatsFromJson(stats); }
+    public Stats(HashMap<Object, Object> stats)  { updateStatsFromJson(stats); }
 
     public Stats()  { defaultValues(); }
 
@@ -60,7 +60,8 @@ public class Stats
     }
 
     public JSONObject getJsonStats()  { return new JSONObject(values()); }
-    public void updateStatsFromJson(JSONObject stats)
+
+    public void updateStatsFromJson(HashMap<Object, Object> stats)
     {
         this.defeats = (int) stats.get("defeats");
         this.victories = (int) stats.get("victories");

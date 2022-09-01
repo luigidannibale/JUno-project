@@ -1,7 +1,7 @@
 [
   {
-    "nickname":"luigi",
-    "password":"password",
+    "name":"luigi",
+    "password":"Password1",
     "stats" :
     {
       "victories": 1,
@@ -10,8 +10,8 @@
     }
   },
   {
-    "nickname":"daniele",
-    "password":"password",
+    "name":"daniele",
+    "password":"Pass12",
     "stats" :
     {
       "victories": 0,

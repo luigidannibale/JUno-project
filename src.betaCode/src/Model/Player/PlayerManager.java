@@ -1,7 +1,6 @@
 package Model.Player;
 
 import Utilities.JsonFileManager;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -9,15 +8,16 @@ public class PlayerManager
 {
     private static final String filePath = "resources/saves.json";
 
-    public static HumanPlayer findPlayerByNicknameOrDefault(String nickname)
+    public static HumanPlayer findPlayerByNicknameOrDefault(String name)
     {
         try
         {
             JsonFileManager fm = new JsonFileManager();
-            return new HumanPlayer ((HashMap) fm.readJson(filePath)
+
+            return new HumanPlayer (fm.readJson(filePath)
                     .stream()
-                    .filter(objectObjectHashMap ->objectObjectHashMap.get("nickname").equals(nickname))
-                    .toArray()[0]);
+                    .filter(objectObjectHashMap ->objectObjectHashMap.get("name").equals(name))
+                    .findFirst().get());
         }
         catch (Exception e)
         {
@@ -25,7 +25,7 @@ public class PlayerManager
             return new HumanPlayer( new HashMap<>(){{
                 put("name","default");
                 put("password","");
-                put("stats",new JSONObject(new Stats().defaultValues()));
+                put("stats", new Stats().defaultValues());
             }});
         }
     }

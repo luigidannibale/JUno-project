@@ -15,7 +15,8 @@ public class Config
     public static int musicVolume;
     public static DeckColor deckStyle;
     public static GraphicQuality graphicQuality;
-    public static HumanPlayer savedPlayer;
+    public static HumanPlayer loggedPlayer;
+    public static String savedIconPath;
     public static double scalingPercentage;
 
     /**
@@ -35,7 +36,7 @@ public class Config
 
     public static void assignDefaultValues()
     {
-        savedPlayer = PlayerManager.findPlayerByNicknameOrDefault("");
+        loggedPlayer = PlayerManager.findPlayerByNicknameOrDefault("");
         effectsVolume = 50;
         musicVolume = 50;
         deckStyle = DeckColor.WHITE;
@@ -57,7 +58,7 @@ public class Config
     {
         return  new HashMap<>(){{
             put("config",getPropertiesHashMapRapresentation());
-            put("player",savedPlayer.getHashmapNamePassword());
+            put("player", loggedPlayer.getHashmapNamePassword());
         }};
     }
 

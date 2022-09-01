@@ -44,6 +44,7 @@ public class GameChoicePanel extends ResizablePanel{
 
         //memeGame = new GifComponent(imagePath + "SeriousRules", 150, 225);
         //sevenoGame = new GifComponent(imagePath + "SevenO", 150, 225);
+        title = new JLabel("CHOOSE YOUR CHAMPION");
 
         gameModes = new GifComponent[GameChoiceController.GameMode.values().length];
         for (GameChoiceController.GameMode gameMode : GameChoiceController.GameMode.values()){
@@ -54,49 +55,54 @@ public class GameChoicePanel extends ResizablePanel{
         memeInfo = new JLabel("meme info");
         sevenoInfo = new JLabel("seveno info");
 
-
-
         indietro = new JLabel("CLICCA QUI");
 
         //Layout
         GridBagConstraints gbc = new GridBagConstraints();
 
+        //------------Title
+        gbc.gridx = 0;      gbc.gridy = 0;
+        gbc.weightx = 0.15;  gbc.weighty = 0.2;
+        gbc.gridwidth = 3;
+        add(title, gbc);
+
         //------------Center
         gbc.anchor = GridBagConstraints.CENTER;
-        gbc.gridx = 1;      gbc.gridy = 0;
-        gbc.weightx = 0.15;  gbc.weighty = 0.7;
+        gbc.gridx = 1;      gbc.gridy = 1;
+        gbc.weightx = 0.15;  gbc.weighty = 0.4;
+        gbc.gridwidth = 1;
         add(getBasicGame(), gbc);
 
         gbc.anchor = GridBagConstraints.NORTH;
-        gbc.gridx = 1;      gbc.gridy = 1;
+        gbc.gridx = 1;      gbc.gridy = 2;
         gbc.weightx = 0.15;  gbc.weighty = 0.2;
         add(basicInfo, gbc);
 
         //------------Left
         gbc.anchor = GridBagConstraints.CENTER;
-        gbc.gridx = 0;      gbc.gridy = 0;
-        gbc.weightx = 0.15;  gbc.weighty = 0.7;
+        gbc.gridx = 0;      gbc.gridy = 1;
+        gbc.weightx = 0.15;  gbc.weighty = 0.4;
         add(getMemeGame(), gbc);
 
         gbc.anchor = GridBagConstraints.NORTH;
-        gbc.gridx = 0;      gbc.gridy = 1;
+        gbc.gridx = 0;      gbc.gridy = 2;
         gbc.weightx = 0.15;  gbc.weighty = 0.2;
         add(memeInfo, gbc);
 
         //------------Right
         gbc.anchor = GridBagConstraints.CENTER;
-        gbc.gridx = 2;      gbc.gridy = 0;
-        gbc.weightx = 0.15;  gbc.weighty = 0.7;
+        gbc.gridx = 2;      gbc.gridy = 1;
+        gbc.weightx = 0.15;  gbc.weighty = 0.4;
         add(getSevenoGame(), gbc);
 
         gbc.anchor = GridBagConstraints.NORTH;
-        gbc.gridx = 2;      gbc.gridy = 1;
+        gbc.gridx = 2;      gbc.gridy = 2;
         gbc.weightx = 0.15;  gbc.weighty = 0.2;
         add(sevenoInfo, gbc);
 
         //------------Scappa
         gbc.anchor = GridBagConstraints.LINE_END;
-        gbc.gridx = 2;      gbc.gridy = 2;
+        gbc.gridx = 2;      gbc.gridy = 3;
         gbc.weightx = 0.15;  gbc.weighty = 0.1;
         add(indietro, gbc);
     }

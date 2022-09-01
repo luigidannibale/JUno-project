@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Class used to write on files
+ * Class used to read and write on files
  * <h6>For JSON management provides:</h6>
  * <ul>
  *      <li>wirteJson</li>
@@ -17,7 +17,13 @@ import java.util.*;
  */
 public class JsonFileManager
 {
-    public boolean writeJson(List<HashMap<Object,Object>> datas, String file)
+    public boolean writeJson(List<HashMap<Object,Object>> datas, String file) throws IOException
+    {
+        ArrayList<HashMap<Object,Object>> actualData = readJson(file);
+        actualData.addAll(datas);
+        return overWriteJson(actualData,file);
+    }
+    public boolean overWriteJson(List<HashMap<Object,Object>> datas, String file)
     {
         JSONArray datasJson = new JSONArray(datas);
         return write(datasJson.toString(), file);
@@ -36,9 +42,9 @@ public class JsonFileManager
         }
         return true;
     }
-
-    public ArrayList<HashMap<Object,Object>>  readJson(String file) throws IOException {
-        JSONArray datasJson = new JSONArray();
+    public ArrayList<HashMap<Object,Object>>  readJson(String file) throws IOException
+    {
+        JSONArray datasJson;
         try
         {
             datasJson = read(file);
@@ -49,8 +55,8 @@ public class JsonFileManager
         }
         ArrayList<HashMap<Object, Object>> data = new ArrayList<>();
 
-        for (Object object : datasJson) {
-            assert (object instanceof JSONObject);
+        for (Object object : datasJson)
+        {
             JSONObject jsonObject = (JSONObject) object;
             HashMap<Object, Object> hashMapObject = new HashMap<>();
             jsonObject.keys().forEachRemaining(key -> hashMapObject.put(key, jsonObject.get(key)instanceof JSONObject? jsonToHashMap((JSONObject) jsonObject.get(key)): jsonObject.get(key)));

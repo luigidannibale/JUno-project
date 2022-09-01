@@ -5,6 +5,9 @@ import Model.Player.PlayerManager;
 import View.Elements.GifComponent;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.util.Arrays;
 import java.util.List;
 import java.awt.*;
 import java.util.ArrayList;
@@ -21,6 +24,19 @@ public class UpdatePlayerPanel extends JTabbedPane
         loginPanel = new LoginPanel(backColor,borderColor);
         registrationPanel = new RegistrationPanel(backColor,borderColor);
         updatePanel = new UpdatePanel(backColor,borderColor);
+
+        addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int currentIndex = getSelectedIndex();
+                List<InputPanel> panels = getPanels();
+                for (int i = 0; i < panels.size(); i++) {
+                    if (i == currentIndex) continue;
+                    InputPanel p = panels.get(i);
+                    //Arrays.stream(p.getComponents()).filter(c -> c instanceof JTextField).forEach(c -> ((JTextField) c).setText(""));
+                }
+            }
+        });
 
         this.add(loginPanel);
         this.add(registrationPanel);
