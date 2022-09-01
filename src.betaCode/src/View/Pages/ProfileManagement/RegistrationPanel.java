@@ -4,7 +4,6 @@ import Model.Player.HumanPlayer;
 import Model.Player.PlayerManager;
 import Utilities.Config;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class RegistrationPanel extends InputPanel
@@ -29,7 +28,7 @@ public class RegistrationPanel extends InputPanel
             System.out.println("lo salvo");
         }
 
-        else textFieldError(txtInsertName,placeholders.get("nameAlreadyExists"));
+        else textFieldError(txtInsertName, InputMessages.NAME_ALREADY_EXISTING.getMessage());
     }
 
 }

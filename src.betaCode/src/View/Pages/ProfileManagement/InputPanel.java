@@ -1,19 +1,26 @@
 package View.Pages.ProfileManagement;
 
-import Model.Player.PlayerManager;
 import View.Elements.GifComponent;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.function.Predicate;
 
 public abstract class InputPanel extends JPanel
 {
     //da fare con enum
+    public enum InputMessages {
+        NAME_INSERT("Insert your name"),
+        NAME_NOT_VALID("Name is not valid"),
+        NAME_ALREADY_EXISTING("This name is already taken"),
+        PASSWORD_ERROR("Password is not valid");
+        private String associatedMessage;
+        private InputMessages(String associatedMessage){this.associatedMessage = associatedMessage;}
+        public String getMessage(){return associatedMessage;}
+    }
     HashMap<String,String> placeholders = new HashMap<>(){{
         put("nameToolTip","Insert your name");
         put("passwordToolTip","Insert your password");
