@@ -44,6 +44,9 @@ public class MainFrameController {
         config = new Config();
 
         Config.scalingPercentage = 1;
+
+        AudioManager.getInstance().setCommonFolder();
+        AudioManager.getInstance().setAudio(AudioManager.Musics.CALM_BACKGROUND);
         //if last player non in file o last player null
         viewPlayer = new ViewPlayer("Anonymous");
 
@@ -88,6 +91,7 @@ public class MainFrameController {
 
     private boolean confirmDispose()
     {
+        view.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         UIManager.put("OptionPane.background", new ColorUIResource(255,255,255));
         UIManager.put("Panel.background", new ColorUIResource(255,255,255));
         String[] options = new String[]{"Yes", "No"};

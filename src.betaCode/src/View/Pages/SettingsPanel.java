@@ -1,29 +1,23 @@
 package View.Pages;
 
-import Utilities.Config;
 import Utilities.Utils;
 import View.Elements.*;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 
 public class SettingsPanel extends ResizablePanel
 {
-    private static final String deckPath = "resources/images/";
-
     private final Color green = new Color(0, 231, 172);
     private final Font font = new Font("Digital-7", Font.BOLD, 18);
 
     private GifComponent saveButton;
     private GifComponent closeButton;
-    private JLabel quit;
+    private ImageComponent gameOver;
     private ChangebleIcon effectsLabel;
     private VolumeSlider effectsVolumeSlider;
     private ChangebleIcon musicLabel;
@@ -57,7 +51,7 @@ public class SettingsPanel extends ResizablePanel
         qualityLabel = new ChangebleIcon(imagePath+"GraphicQuality/",new String[]{"low","high"},".png");
         qualityLabel.setName("qualityLabel");
         //buttons
-        quit = new JLabel("ESCI DA QUA SALVATI");
+        gameOver = new ImageComponent(imagePath + "game-over.png", 118, 118, false);
         saveButton = new GifComponent(imagePath + "save");
         closeButton =new GifComponent(imagePath + "discard");
 
@@ -122,11 +116,11 @@ public class SettingsPanel extends ResizablePanel
         add(qualityCombo, gbc);
 
         //------------Fifth line
-        gbc.gridx = 1;      gbc.gridy = 4;
+        gbc.gridx = 0;      gbc.gridy = 4;
         gbc.weightx = 0.05; gbc.weighty = 0.1;
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.EAST;
-        add(quit, gbc);
+        add(gameOver, gbc);
 
         gbc.gridx = 2;      gbc.gridy = 4;
         gbc.weightx = 0.05; gbc.weighty = 0.1;
@@ -142,7 +136,7 @@ public class SettingsPanel extends ResizablePanel
 
     public JLabel getCloseButton(){ return closeButton; }
 
-    public JLabel getQuitButton(){ return quit; }
+    public JLabel getGameOverButton(){ return gameOver; }
 
     public VolumeSlider getEffectsVolumeSlider(){ return effectsVolumeSlider; }
 
@@ -151,7 +145,7 @@ public class SettingsPanel extends ResizablePanel
     public DeckRectangle getWhiteDeck() { return whiteDeck; }
 
     public DeckRectangle getDarkDeck() { return darkDeck; }
-    public JComboBox getQualityCombo() { return qualityCombo; }
+    public JComboBox<GraphicQuality> getQualityCombo() { return qualityCombo; }
     public ChangebleIcon getEffectsLabel() { return effectsLabel; }
     public ChangebleIcon getMusicLabel() { return musicLabel; }
     public ChangebleIcon getQualityLabel() { return qualityLabel; }

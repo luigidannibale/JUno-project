@@ -1,20 +1,18 @@
 package View.Pages;
 
 import Controller.GameChoiceController;
-import Controller.MainFrameController;
 import View.Elements.GifComponent;
+import View.Elements.ImageComponent;
 
 import javax.swing.*;
 import java.awt.*;
 
 
 public class GameChoicePanel extends ResizablePanel{
-
-    GifComponent basicGame,memeGame, sevenoGame;
     GifComponent gameModes[];
-    JLabel indietro;
+    ImageComponent back;
 
-    JLabel title;
+    ImageComponent title;
 
     JLabel basicInfo, memeInfo, sevenoInfo;
 
@@ -34,7 +32,7 @@ public class GameChoicePanel extends ResizablePanel{
 
     void InitializeComponents(){
         //Components
-        title = new JLabel("CHOOSE YOUR CHAMPION");
+        title = new ImageComponent(imagePath + "choose gamemode.png", -1, -1, false);
 
         gameModes = new GifComponent[GameChoiceController.GameMode.values().length];
         for (GameChoiceController.GameMode gameMode : GameChoiceController.GameMode.values()){
@@ -45,56 +43,56 @@ public class GameChoicePanel extends ResizablePanel{
         memeInfo = new JLabel("meme info");
         sevenoInfo = new JLabel("seveno info");
 
-        indietro = new JLabel("CLICCA QUI");
+        back = new ImageComponent(imagePath + "back.png", -1, -1, false);
 
         //Layout
         GridBagConstraints gbc = new GridBagConstraints();
 
         //------------Title
         gbc.gridx = 0;      gbc.gridy = 0;
-        gbc.weightx = 0.15;  gbc.weighty = 0.2;
+        gbc.weightx = 0.15;  gbc.weighty = 0.1;
         gbc.gridwidth = 3;
         add(title, gbc);
 
         //------------Center
-        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.anchor = GridBagConstraints.SOUTH;
         gbc.gridx = 1;      gbc.gridy = 1;
-        gbc.weightx = 0.15;  gbc.weighty = 0.4;
+        gbc.weightx = 0.15;  gbc.weighty = 0.3;
         gbc.gridwidth = 1;
         add(getBasicGame(), gbc);
 
-        gbc.anchor = GridBagConstraints.NORTH;
+        gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 1;      gbc.gridy = 2;
-        gbc.weightx = 0.15;  gbc.weighty = 0.2;
+        gbc.weightx = 0.15;  gbc.weighty = 0.3;
         add(basicInfo, gbc);
 
         //------------Left
-        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.anchor = GridBagConstraints.SOUTH;
         gbc.gridx = 0;      gbc.gridy = 1;
-        gbc.weightx = 0.15;  gbc.weighty = 0.4;
+        gbc.weightx = 0.15;  gbc.weighty = 0.3;
         add(getMemeGame(), gbc);
 
-        gbc.anchor = GridBagConstraints.NORTH;
+        gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 0;      gbc.gridy = 2;
-        gbc.weightx = 0.15;  gbc.weighty = 0.2;
+        gbc.weightx = 0.15;  gbc.weighty = 0.3;
         add(memeInfo, gbc);
 
         //------------Right
-        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.anchor = GridBagConstraints.SOUTH;
         gbc.gridx = 2;      gbc.gridy = 1;
-        gbc.weightx = 0.15;  gbc.weighty = 0.4;
+        gbc.weightx = 0.15;  gbc.weighty = 0.3;
         add(getSevenoGame(), gbc);
 
-        gbc.anchor = GridBagConstraints.NORTH;
+        gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 2;      gbc.gridy = 2;
-        gbc.weightx = 0.15;  gbc.weighty = 0.2;
+        gbc.weightx = 0.15;  gbc.weighty = 0.3;
         add(sevenoInfo, gbc);
 
         //------------Scappa
-        gbc.anchor = GridBagConstraints.LINE_END;
-        gbc.gridx = 2;      gbc.gridy = 3;
-        gbc.weightx = 0.15;  gbc.weighty = 0.1;
-        add(indietro, gbc);
+        gbc.anchor = GridBagConstraints.LAST_LINE_END;
+        gbc.gridx = 2;      gbc.gridy = 2;
+        gbc.weightx = 0.15;  gbc.weighty = 0.01;
+        add(back, gbc);
     }
 
     public GifComponent getBasicGame(){
@@ -109,8 +107,8 @@ public class GameChoicePanel extends ResizablePanel{
         return gameModes[GameChoiceController.GameMode.SEVENO_RULES.ordinal()];
     }
 
-    public JLabel getIndietro(){
-        return indietro;
+    public ImageComponent getBack(){
+        return back;
     }
 
     @Override

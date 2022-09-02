@@ -20,6 +20,10 @@ public class AudioManager
         AUDIO_TEST
     }
 
+    public enum Musics{
+        CALM_BACKGROUND
+    }
+
     private static AudioManager instance;
     private String folder;
     private final String pathAudio = "resources/audio/";
@@ -31,7 +35,7 @@ public class AudioManager
     {
         if(instance == null)
             instance = new AudioManager(volume);
-        instance.setAudio(filename);
+        //instance.setAudio(filename);
         instance.setVolume(volume);
         return instance;
     }
@@ -49,14 +53,18 @@ public class AudioManager
 
     public void setFolder(String folder){this.folder = folder;}
 
-    public void setAudio(String filename)
+    public void setAudio(Musics music)
     {
         try
         {
-            audioTrack = AudioSystem.getClip();                                       //creates an audio clip that plays back an audio (either file or stream)
-            audioTrack.open(AudioSystem.getAudioInputStream(getAudioFile(filename))); //assigns the audio
+            audioTrack = AudioSystem.getClip();                                             //creates an audio clip that plays back an audio (either file or stream)
+            audioTrack.open(AudioSystem.getAudioInputStream(getAudioFile(music.name())));   //assigns the audio
+            System.out.println(Config.musicVolume);
+            ((FloatControl) audioTrack.getControl(FloatControl.Type.MASTER_GAIN)).setValue(convert.apply(Config.musicVolume));
+            audioTrack.start();
+            audioTrack.loop(Clip.LOOP_CONTINUOUSLY);
         }
-        catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) { System.out.println("File not found " + filename); }
+        catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) { System.out.println("File not found " + music.name()); }
     }
 
     public void setEffects(Effects effects)
@@ -97,19 +105,19 @@ public class AudioManager
     public void playMusic(String filename)
     {
         assert (volume != null):"Volume is null";
-        setAudio(filename);
+        //setAudio(filename);
         play();
         loop();
     }
     public void playEffect(String filename)
     {
         assert (volume != null):"Volume is null";
-        setAudio(filename);
+        //setAudio(filename);
         play();
     }
     //in teoria il volume va da -80 a 6
     //noi usiamo da -44 a 6 dato che il cambiamento a volumi più bassi è impercettibile
-    Function<Integer,Float> convert = v -> (float) (v * 50 / 100.0) - 44;
+    Function<Integer,Float> convert = v -> v == -0 ? -80 : (v * 50 / 100.0f) - 44;
     Function<Integer,Integer> deconvert = v -> (v+44) * 100/50;
     //private int convert(int volume) { return (volume * 86 / 100) - 80; }
     //nousecode

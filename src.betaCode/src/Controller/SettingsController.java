@@ -6,13 +6,7 @@ import View.Elements.*;
 import View.Pages.SettingsPanel;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.Arrays;
 
 public class SettingsController
 {
@@ -48,7 +42,7 @@ public class SettingsController
             }
         });
 
-        view.getQuitButton().addMouseListener((new CustomMouseAdapter() {
+        view.getGameOverButton().addMouseListener((new CustomMouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
@@ -66,6 +60,8 @@ public class SettingsController
         Config.graphicQuality = (GraphicQuality) view.getQualityCombo().getSelectedItem();
         //if (returnPanel == MainFrameController.Panels.GAME) mainFrame.resumeGame();
         Config.saveConfig();
+
+        AudioManager.getInstance().setVolume(Config.musicVolume);
     }
 
     public void refreshSettings()
@@ -139,7 +135,7 @@ public class SettingsController
     public void setReturnPanel(MainFrameController.Panels returnPanel)
     {
         this.returnPanel = returnPanel;
-        view.getQuitButton().setVisible(returnPanel == MainFrameController.Panels.GAME);
+        view.getGameOverButton().setVisible(returnPanel == MainFrameController.Panels.GAME);
     }
     public void setVisible(boolean visible){ view.setVisible(visible); }
     public SettingsPanel getView() {

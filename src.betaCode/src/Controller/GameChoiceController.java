@@ -4,7 +4,6 @@ import Utilities.AudioManager;
 import View.Elements.CustomMouseAdapter;
 import View.Pages.GameChoicePanel;
 
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class GameChoiceController {
@@ -40,7 +39,7 @@ public class GameChoiceController {
                 createNewGame(mainFrame, GameMode.SEVENO_RULES);
             }
         });
-        view.getIndietro().addMouseListener(new CustomMouseAdapter() {
+        view.getBack().addMouseListener(new CustomMouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);

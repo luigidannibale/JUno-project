@@ -75,42 +75,42 @@ public class MemeRules extends UnoGameRules
         if (lastCardPlayed instanceof ReverseCard) _ReverseAction(turnManager);
         else if(lastCardPlayed instanceof SkipCard){
             playersToBlock += 1;
-            System.out.println("PLAYERS TO BLOCK " + playersToBlock);
+            //System.out.println("PLAYERS TO BLOCK " + playersToBlock);
         }
         else if(lastCardPlayed instanceof DrawCard drawCard && lastAction != ActionPerformResult.NO_COLOR_PROVIDED)
         {
             stackedCardsToDraw += drawCard.getNumberOfCardsToDraw();
-            System.out.println("CARTE DA PESCARE " + stackedCardsToDraw);
+            //System.out.println("CARTE DA PESCARE " + stackedCardsToDraw);
             drawCard.setNumberOfCardsToDraw(stackedCardsToDraw);
             turnManager.updateLastCardPlayed(drawCard);
         }
 
 
         var playable = filtraNonWild(filtraValore(currentPlayer.getHand().stream(), lastCardPlayed)).toList();
-        System.out.println("STACKABILI " + playable + " rimanenti da giocare " + (numberOfPlayableCards - cardsPlayed - 1));
+        //System.out.println("STACKABILI " + playable + " rimanenti da giocare " + (numberOfPlayableCards - cardsPlayed - 1));
         if (cardsPlayed != numberOfPlayableCards - 1 && playable.size() > 0){
-            System.out.println("CI SONO E NE ASPETTA ALTRE");
+            //System.out.println("CI SONO E NE ASPETTA ALTRE");
             isStacking = true;
             cardsPlayed += 1;
             return ActionPerformResult.SUCCESSFUL;
         }
         else {
-            System.out.println("NON CI SONO E CONTROLLA IL PROSSIMO");
+            //System.out.println("NON CI SONO E CONTROLLA IL PROSSIMO");
             if (lastCardPlayed instanceof SkipCard || lastCardPlayed instanceof DrawCard){
                 playable = filtraValore(players[turnManager.next()].getHand().stream(), lastCardPlayed).toList();
-                System.out.println("PROSSIMO STACKABILI " + playable);
+                //System.out.println("PROSSIMO STACKABILI " + playable);
                 if (playable.size() > 0){
-                    System.out.println("CI SONO DEVE RIBATTERE");
+                    //System.out.println("CI SONO DEVE RIBATTERE");
                     isStacking = true;
                     cardsPlayed = 0;
                     turnManager.passTurn();
                     return ActionPerformResult.SUCCESSFUL;
                 }
             }
-            else System.out.println("IL PROSSIMO NON DEVE RIBATTERE");
+            //else System.out.println("IL PROSSIMO NON DEVE RIBATTERE");
         }
 
-        System.out.println("NON CI SONO NE' NEL CURRENT NE' NEL PROSSIMO -> FAI L'AZIONE");
+        //System.out.println("NON CI SONO NE' NEL CURRENT NE' NEL PROSSIMO -> FAI L'AZIONE");
         while(playersToBlock > 1){
             _SkipAction(turnManager, players);
             playersToBlock --;
@@ -118,7 +118,7 @@ public class MemeRules extends UnoGameRules
         if (!(lastCardPlayed instanceof ReverseCard)) actionPerformResult = super.cardActionPerformance(parameters);
         if (actionPerformResult == ActionPerformResult.SUCCESSFUL)
         {
-            System.out.println("RESETTA I DATI");
+            //System.out.println("RESETTA I DATI");
             turnManager.passTurn();
             isStacking = false;
             stackedCardsToDraw = 0;
