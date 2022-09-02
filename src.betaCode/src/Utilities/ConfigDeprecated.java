@@ -5,6 +5,7 @@ import View.Elements.DeckColor;
 
 import java.io.*;
 
+@Deprecated
 public class ConfigDeprecated {
     int defaultVolume =50;
     public static DeckColor defaultColor = DeckColor.WHITE;

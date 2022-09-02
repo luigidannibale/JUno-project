@@ -15,7 +15,9 @@ public class AudioManager
         NOT_VALID,
         ERROR,
         WIN,
-        LOSS
+        LOSS,
+        CLICK,
+        AUDIO_TEST
     }
 
     private static AudioManager instance;
@@ -43,6 +45,8 @@ public class AudioManager
 
     private AudioManager(int volume) { this.volume = volume; }
 
+    public void setCommonFolder(){ setFolder("COMMON"); }
+
     public void setFolder(String folder){this.folder = folder;}
 
     public void setAudio(String filename)
@@ -57,12 +61,17 @@ public class AudioManager
 
     public void setEffects(Effects effects)
     {
+        setEffects(effects, Config.effectsVolume);
+    }
+
+    public void setEffects(Effects effects, int volume)
+    {
         try
         {
             effectsTrack = AudioSystem.getClip();                                       //creates an audio clip that plays back an audio (either file or stream)
             effectsTrack.open(AudioSystem.getAudioInputStream(getAudioFile(effects.name()))); //assigns the audio
             //System.out.println(Config.effectsVolume + " ----> " + convert.apply(Config.effectsVolume));
-            ((FloatControl) effectsTrack.getControl(FloatControl.Type.MASTER_GAIN)).setValue(convert.apply(Config.effectsVolume));
+            ((FloatControl) effectsTrack.getControl(FloatControl.Type.MASTER_GAIN)).setValue(convert.apply(volume));
             effectsTrack.start();
         }
         catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) { System.out.println("File not found " + effects.name()); }

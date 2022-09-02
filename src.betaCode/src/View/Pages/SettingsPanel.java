@@ -43,12 +43,11 @@ public class SettingsPanel extends ResizablePanel
         setVisible(false);
 
         InitializeComponents();
+        resizeComponents();
     }
 
     private void InitializeComponents()
     {
-        //Components
-
         //labels
         effectsLabel = new ChangebleIcon(imagePath+"EffectsVolume/",new String[]{"off","low","high"},".png");
         effectsLabel.setName("effectsLabel");
@@ -74,7 +73,6 @@ public class SettingsPanel extends ResizablePanel
         qualityCombo.setPreferredSize(new Dimension(190, 28));
         qualityCombo.setFont(font);
         ((JLabel) qualityCombo.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
-
 
         //Layout
         GridBagConstraints gbc = new GridBagConstraints();
@@ -166,7 +164,7 @@ public class SettingsPanel extends ResizablePanel
         g.fillRoundRect(0, 0, panelWidth, panelHeight, 15, 15);
     }
 
-    public class DeckRectangle extends JPanel
+    public class DeckRectangle extends JComponent
     {
         private static int width = 114;
         private static int height = 114;
@@ -215,6 +213,12 @@ public class SettingsPanel extends ResizablePanel
         public DeckColor getDeckColor() { return deckColor; }
 
         @Override
+        public void setPreferredSize(Dimension preferredSize) {
+            super.setPreferredSize(preferredSize);
+            repaint();
+        }
+
+        @Override
         protected void paintComponent(Graphics g)
         {
             super.paintComponent(g);
@@ -224,22 +228,22 @@ public class SettingsPanel extends ResizablePanel
             if (paintBackground)
             {
                 g.setColor(Color.GREEN);
-                g.fillRoundRect(0, 0, width, height, radius, radius);
+                g.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
             }
 
             g2.setColor(deckRectangleBorder);
             g2.setStroke(new BasicStroke(2));
-            g2.drawRoundRect(0, 0, width, height,radius, radius);
+            g2.drawRoundRect(0, 0, getWidth(), getHeight(),radius, radius);
 
-            int immWidth = 42;
-            int immHeight = 63;
-            int centerX = width / 2;
-            int centerY = height / 2;
+            int immWidth = getWidth() * 37 / 100;
+            int immHeight = getHeight() * 55 / 100;
+            int centerX = getWidth() / 2;
+            int centerY = getHeight() / 2;
             g2.drawImage(image, centerX - (immWidth / 2), centerY - (immHeight / 4), immWidth, immHeight, null);
 
-            g2.setFont(font);
+            g2.setFont(font.deriveFont(getWidth() * 16 / 100.0f));
             int fontWidth = g.getFontMetrics().stringWidth(title);
-            g2.drawString(title, (width - fontWidth) / 2, 25);
+            g2.drawString(title, (getWidth() - fontWidth) / 2, 25);
         }
     }
 }

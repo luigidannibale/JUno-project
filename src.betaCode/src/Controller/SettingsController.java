@@ -1,10 +1,8 @@
 package Controller;
 
+import Utilities.AudioManager;
 import Utilities.Config;
-import View.Elements.ChangebleIcon;
-import View.Elements.DeckColor;
-import View.Elements.GraphicQuality;
-import View.Elements.VolumeSlider;
+import View.Elements.*;
 import View.Pages.SettingsPanel;
 
 import javax.swing.*;
@@ -28,32 +26,32 @@ public class SettingsController
         addButtonsListeners(mainFrame);
         addChangeableIconListeners();
         refreshSettings();
-        Arrays.stream(view.getComponents()).forEach(component -> {
-            if(component.getPreferredSize().height == 0) System.out.println(component);
-            component.setPreferredSize(new Dimension((int) (component.getPreferredSize().width * Config.scalingPercentage), (int) (component.getPreferredSize().height * Config.scalingPercentage)));
-        });
+
     }
 
     private void addButtonsListeners(MainFrameController mainFrame)
     {
-        view.getSaveButton().addMouseListener(new MouseAdapter() {
+        view.getSaveButton().addMouseListener(new CustomMouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
                 saveConfig();
                 mainFrame.setVisiblePanel(returnPanel);
             }
         });
 
-        view.getCloseButton().addMouseListener(new MouseAdapter() {
+        view.getCloseButton().addMouseListener(new CustomMouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
                 mainFrame.setVisiblePanel(returnPanel);
             }
         });
 
-        view.getQuitButton().addMouseListener((new MouseAdapter() {
+        view.getQuitButton().addMouseListener((new CustomMouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
                 mainFrame.quitGame();
             }
         }));
@@ -83,11 +81,15 @@ public class SettingsController
         view.getDarkDeck().setPaintBackground( c==DeckColor.BLACK);
         view.getWhiteDeck().setPaintBackground(c==DeckColor.WHITE);
     }
+
     private void addChangeableIconListeners()
     {
-        MouseAdapter deckColorStyleMouseAdapter = new MouseAdapter(){
+        MouseAdapter deckColorStyleMouseAdapter = new CustomMouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e) { changeDeckBack(((SettingsPanel.DeckRectangle) e.getComponent()).getDeckColor()); }
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                changeDeckBack(((SettingsPanel.DeckRectangle) e.getComponent()).getDeckColor());
+            }
         };
 
         view.getWhiteDeck().addMouseListener(deckColorStyleMouseAdapter);
@@ -95,53 +97,41 @@ public class SettingsController
 
         VolumeSlider musicVolumeSlider = view.getMusicVolumeSlider();
         ChangebleIcon musicLabel = view.getMusicLabel();
-        musicVolumeSlider.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                System.out.println("done");
-                var val = musicVolumeSlider.getValue();
-                if (val == 0) musicLabel.setIcon("off");
-                else musicLabel.setIcon("on");
-            }
+        musicVolumeSlider.addPropertyChangeListener(evt -> {
+            var val = musicVolumeSlider.getValue();
+            if (val == 0) musicLabel.setIcon("off");
+            else musicLabel.setIcon("on");
         });
-//        musicVolumeSlider.addChangeListener(new ChangeListener() {
-//            @Override
-//            public void stateChanged(ChangeEvent e) {
-//                var val = musicVolumeSlider.getValue();
-//                if (val == 0) musicLabel.setIcon("off");
-//                else musicLabel.setIcon("on");
-//            }
-//        });
+        musicVolumeSlider.addChangeListener(e -> {
+            var val = musicVolumeSlider.getValue();
+            if (val == 0) musicLabel.setIcon("off");
+            else musicLabel.setIcon("on");
+        });
 
-        JComboBox qualityCombo = view.getQualityCombo();
+        JComboBox<GraphicQuality> qualityCombo = view.getQualityCombo();
         ChangebleIcon qualityLabel = view.getQualityLabel();
-        qualityCombo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                var val = (GraphicQuality) qualityCombo.getSelectedItem();
-                if (val == GraphicQuality.HIGH) qualityLabel.setIcon("high");
-                else qualityLabel.setIcon("low");
-            }
+        qualityCombo.addActionListener(e -> {
+            var val = (GraphicQuality) qualityCombo.getSelectedItem();
+            if (val == GraphicQuality.HIGH) qualityLabel.setIcon("high");
+            else qualityLabel.setIcon("low");
         });
+
         VolumeSlider effectsVolumeSlider = view.getEffectsVolumeSlider();
         ChangebleIcon effectsLabel = view.getEffectsLabel();
-        effectsVolumeSlider.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                System.out.println("done");
-                var val = effectsVolumeSlider.getValue();
-                if (val == 0) effectsLabel.setIcon("off");
-                else if (val < 40) effectsLabel.setIcon("low");
-                else effectsLabel.setIcon("high");
-            }
+        effectsVolumeSlider.addPropertyChangeListener(evt -> {
+            var val = effectsVolumeSlider.getValue();
+            if (val == 0) effectsLabel.setIcon("off");
+            else if (val < 40) effectsLabel.setIcon("low");
+            else effectsLabel.setIcon("high");
         });
-        effectsVolumeSlider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                var val = effectsVolumeSlider.getValue();
-                if (val == 0) effectsLabel.setIcon("off");
-                else if (val < 40) effectsLabel.setIcon("low");
-                else effectsLabel.setIcon("high");
+        effectsVolumeSlider.addChangeListener(e -> {
+            var val = effectsVolumeSlider.getValue();
+            if (val == 0) effectsLabel.setIcon("off");
+            else if (val < 40) effectsLabel.setIcon("low");
+            else effectsLabel.setIcon("high");
+            if (view.isVisible()){
+                AudioManager.getInstance().setCommonFolder();
+                AudioManager.getInstance().setEffects(AudioManager.Effects.AUDIO_TEST, val);
             }
         });
 

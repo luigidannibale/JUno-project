@@ -19,6 +19,7 @@ public class MemeRules extends UnoGameRules
     private int stackedCardsToDraw;
     private int playersToBlock;
     private int cardsPlayed;
+    private ActionPerformResult lastAction;
 
     public MemeRules()
     {
@@ -76,7 +77,7 @@ public class MemeRules extends UnoGameRules
             playersToBlock += 1;
             System.out.println("PLAYERS TO BLOCK " + playersToBlock);
         }
-        else if(lastCardPlayed instanceof DrawCard drawCard)
+        else if(lastCardPlayed instanceof DrawCard drawCard && lastAction != ActionPerformResult.NO_COLOR_PROVIDED)
         {
             stackedCardsToDraw += drawCard.getNumberOfCardsToDraw();
             System.out.println("CARTE DA PESCARE " + stackedCardsToDraw);
@@ -124,6 +125,7 @@ public class MemeRules extends UnoGameRules
             playersToBlock = 0;
             cardsPlayed = 0;
         }
+        lastAction = actionPerformResult;
         return actionPerformResult;
     }
 

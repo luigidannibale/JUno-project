@@ -1,6 +1,7 @@
 package Controller;
 
 import Utilities.AudioManager;
+import View.Elements.CustomMouseAdapter;
 import View.Pages.GameChoicePanel;
 
 import java.awt.event.MouseAdapter;
@@ -17,28 +18,32 @@ public class GameChoiceController {
 
     public GameChoiceController(MainFrameController mainFrame){
         view = new GameChoicePanel();
-        view.getBasicGame().addMouseListener(new MouseAdapter() {
+        view.getBasicGame().addMouseListener(new CustomMouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
                 //mainFrame.setVisiblePanel(MainFrame.Panels.GAME);
                 createNewGame(mainFrame, GameMode.CLASSIC_RULES);
             }
         });
-        view.getMemeGame().addMouseListener(new MouseAdapter() {
+        view.getMemeGame().addMouseListener(new CustomMouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
                 createNewGame(mainFrame, GameMode.MEME_RULES);
             }
         });
-        view.getSevenoGame().addMouseListener(new MouseAdapter() {
+        view.getSevenoGame().addMouseListener(new CustomMouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
                 createNewGame(mainFrame, GameMode.SEVENO_RULES);
             }
         });
-        view.getIndietro().addMouseListener(new MouseAdapter() {
+        view.getIndietro().addMouseListener(new CustomMouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
                 mainFrame.setVisiblePanel(MainFrameController.Panels.STARTMENU);
             }
         });

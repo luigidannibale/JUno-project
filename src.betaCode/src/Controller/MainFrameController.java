@@ -43,6 +43,7 @@ public class MainFrameController {
     {
         config = new Config();
 
+        Config.scalingPercentage = 1;
         //if last player non in file o last player null
         viewPlayer = new ViewPlayer("Anonymous");
 

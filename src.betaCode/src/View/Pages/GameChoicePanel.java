@@ -27,23 +27,13 @@ public class GameChoicePanel extends ResizablePanel{
         setOpaque(false);
         setVisible(false);
         InitializeComponents();
+        resizeComponents();
     }
 
     //private static final String path = "resources/images/MainFrame/GameChoicePanel/";
 
     void InitializeComponents(){
         //Components
-        /*
-        ImageComponent2 basicGame = new ImageComponent2(path + "ClassicRules.gif", ImageComponent2.Size.SMALL);
-        ImageComponent2 memeGame = new ImageComponent2("", ImageComponent2.Size.SMALL);
-        ImageComponent2 sevenoGame = new ImageComponent2("", ImageComponent2.Size.SMALL);
-        */
-        //basicGame = new GifComponent(imagePath + "ClassicRules", 150, 225);
-        //basicGame.AddSclingOnHoveringGif();
-        //basicGame = new GifComponent(imagePath + "ClassicRules");
-
-        //memeGame = new GifComponent(imagePath + "SeriousRules", 150, 225);
-        //sevenoGame = new GifComponent(imagePath + "SevenO", 150, 225);
         title = new JLabel("CHOOSE YOUR CHAMPION");
 
         gameModes = new GifComponent[GameChoiceController.GameMode.values().length];

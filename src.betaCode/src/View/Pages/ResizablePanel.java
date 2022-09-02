@@ -4,6 +4,7 @@ import Utilities.Config;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.Arrays;
 
 public class ResizablePanel extends JPanel {
     protected int panelWidth, panelHeight;
@@ -17,6 +18,13 @@ public class ResizablePanel extends JPanel {
 
         int borderPX = this.panelHeight*borderOffset/100;
         setBorder(new EmptyBorder(borderPX,borderPX,borderPX,borderPX));
+    }
+
+    protected void resizeComponents(){
+        Arrays.stream(getComponents()).forEach(component -> {
+            //if(component.getPreferredSize().height == 0) System.out.println(component);
+            component.setPreferredSize(new Dimension((int) (component.getPreferredSize().width * Config.scalingPercentage), (int) (component.getPreferredSize().height * Config.scalingPercentage)));
+        });
     }
 
     @Override

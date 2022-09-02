@@ -13,6 +13,8 @@ public class ChangebleIcon extends JLabel
     {
         for(String fileName:fileNames)
             ICONS.put(fileName,new ImageComponent(path+fileName+fileExtension));
+
+        super.setPreferredSize(ICONS.values().stream().toList().get(0).getPreferredSize());
     }
     public void setIcon(String iconID) { super.setIcon(ICONS.get(iconID).getIcon());}
 

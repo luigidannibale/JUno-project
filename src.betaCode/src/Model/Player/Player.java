@@ -12,6 +12,7 @@ public abstract class Player
     protected Stack<Card> hand;
     protected boolean saidOne = false;
     protected boolean drew = false;
+    protected boolean played = false;
     protected boolean isBlocked;
 
     protected Player(String name)
@@ -36,7 +37,10 @@ public abstract class Player
      * Removes the played card from the hand of the player
      * @param played
      */
-    public void playCard(Card played){ hand.remove(played); }
+    public void playCard(Card played){
+        hand.remove(played);
+        this.played = true;
+    }
 
     /**
      *
@@ -68,9 +72,15 @@ public abstract class Player
 
     public void setBlocked(boolean isBlocked) {this.isBlocked = isBlocked;}
 
+    public void setPlayed(boolean played) {
+        this.played = played;
+    }
+
     public void falseSaidOne(){ saidOne = false; }
 
     public boolean hasDrew(){ return drew; }
+
+    public boolean hasPlayed() { return played; }
 
     public boolean hasOne(){ return hand.size() == 1; }
 

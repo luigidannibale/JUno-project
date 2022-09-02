@@ -32,6 +32,7 @@ public class ImageComponent extends JLabel
         }
         if (height == 0 || width == 0)
             System.out.println(imagePath);
+
         setPreferredSize(new Dimension(width,height));
         //icona = ScaleImage(icona, width, height);
 
@@ -69,7 +70,7 @@ public class ImageComponent extends JLabel
     public void setPreferredSize(Dimension preferredSize)
     {
         super.setPreferredSize(preferredSize);
-        System.out.println(preferredSize);
+        //System.out.println(preferredSize);
 
         icona = ScaleImage(icona,preferredSize.width,preferredSize.height);
         setIcon(icona);

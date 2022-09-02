@@ -26,6 +26,7 @@ public class StartingMenuPanel extends ResizablePanel
         imagePath = "resources/images/MainFrame/StartingMenuPanel/";
         setOpaque(false);
         InitializeComponents();
+        resizeComponents();
     }
 
     private void InitializeComponents()
