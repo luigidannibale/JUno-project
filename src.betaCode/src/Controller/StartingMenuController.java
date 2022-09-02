@@ -1,9 +1,12 @@
 package Controller;
 
+import Utilities.Config;
 import View.Pages.StartingMenuPanel;
 
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 public class StartingMenuController {
 
@@ -36,6 +39,12 @@ public class StartingMenuController {
                 mfc.closeWindow();
             }
         });
+        Arrays.stream(view.getComponents()).forEach(component -> {
+                    component.setPreferredSize(new Dimension((int) (component.getPreferredSize().width * Config.scalingPercentage), (int) (component.getPreferredSize().height * Config.scalingPercentage)));
+                    component.setSize(new Dimension((int) (component.getPreferredSize().width * Config.scalingPercentage), (int) (component.getPreferredSize().height * Config.scalingPercentage)));
+                    view.repaint();
+                }
+        );
     }
 
     public StartingMenuPanel getView() {

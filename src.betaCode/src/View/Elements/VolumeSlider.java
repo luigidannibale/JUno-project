@@ -15,7 +15,7 @@ public class VolumeSlider extends JProgressBar
 
     public VolumeSlider()
     {
-        setPreferredSize(new Dimension((int)(200*Config.scalingPercentage),(int)(20*Config.scalingPercentage)));
+        setPreferredSize(new Dimension((int)(200),(int)(20)));
         setStringPainted(true);
         setFont(new Font("MV Boli", Font.PLAIN, 14));
         setForeground(Color.BLUE);
@@ -32,7 +32,16 @@ public class VolumeSlider extends JProgressBar
         });
     }
 
-    public void setValue(int value){ super.setValue(value); }
+    @Override
+    public void setPreferredSize(Dimension preferredSize) {
+        var oldH = getSize().getHeight();
+        super.setPreferredSize(preferredSize);
+        setSize(preferredSize);
+        var font = getFont();
+        setFont(new Font(font.getFontName(), font.getStyle(), (int) (font.getSize()*(preferredSize.height/oldH))));
+    }
+
+    ///public void setValue(int value){ super.setValue(value); }
 
     /*
     public void setChangebleIcon(JLabel icon,String generalPath, String[] fileNames){

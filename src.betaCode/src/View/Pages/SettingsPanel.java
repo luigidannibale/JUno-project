@@ -1,13 +1,17 @@
 package View.Pages;
 
+import Utilities.Config;
 import Utilities.Utils;
 import View.Elements.*;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 
 public class SettingsPanel extends ResizablePanel
@@ -20,14 +24,14 @@ public class SettingsPanel extends ResizablePanel
     private GifComponent saveButton;
     private GifComponent closeButton;
     private JLabel quit;
-    private ImageComponent effectsLabel;
+    private ChangebleIcon effectsLabel;
     private VolumeSlider effectsVolumeSlider;
-    private ImageComponent musicLabel;
+    private ChangebleIcon musicLabel;
     private VolumeSlider musicVolumeSlider;
     private ImageComponent deckStyleLabel;
     private DeckRectangle darkDeck;
     private DeckRectangle whiteDeck;
-    private ImageComponent qualityLabel;
+    private ChangebleIcon qualityLabel;
     private JComboBox<GraphicQuality> qualityCombo;
 
     public SettingsPanel()
@@ -44,27 +48,33 @@ public class SettingsPanel extends ResizablePanel
     private void InitializeComponents()
     {
         //Components
-        effectsLabel = new ImageComponent(imagePath+"EffectsVolume/high.png", -1, -1, false);
-        musicLabel = new ImageComponent(imagePath+"MusicVolume.png", -1, -1, false);
-        deckStyleLabel = new ImageComponent(imagePath+"DeckStyle.png", -1, -1, false);
-        qualityLabel = new ImageComponent(imagePath+"GraphicQuality/high.png", -1, -1, false);
 
+        //labels
+        effectsLabel = new ChangebleIcon(imagePath+"EffectsVolume/",new String[]{"off","low","high"},".png");
+        effectsLabel.setName("effectsLabel");
+        musicLabel = new ChangebleIcon(imagePath+"MusicVolume/",new String[]{"off","on"},".png");
+        musicLabel.setName("musicLabel");
+        deckStyleLabel = new ImageComponent(imagePath+"DeckStyle.png", -1, -1, false);
+        qualityLabel = new ChangebleIcon(imagePath+"GraphicQuality/",new String[]{"low","high"},".png");
+        qualityLabel.setName("qualityLabel");
+        //buttons
         quit = new JLabel("ESCI DA QUA SALVATI");
         saveButton = new GifComponent(imagePath + "save");
         closeButton =new GifComponent(imagePath + "discard");
 
         effectsVolumeSlider = new VolumeSlider();
-        effectsVolumeSlider.setChangebleIcon(effectsLabel,imagePath+"EffectsVolume/", new String[] {"off.png", "low.png", "high.png"});
+
         musicVolumeSlider = new VolumeSlider();
 
-        whiteDeck = new DeckRectangle(deckPath + "white/ZERORED.png", "White Deck", DeckColor.WHITE);
-        darkDeck = new DeckRectangle(deckPath + "black/ZERORED.png", "Dark Deck", DeckColor.BLACK);
+        whiteDeck = new DeckRectangle(imagePath+"white.png", "White Deck", DeckColor.WHITE);
+        darkDeck = new DeckRectangle(imagePath+"black.png", "Dark Deck", DeckColor.BLACK);
 
         qualityCombo = new JComboBox<>();
         Arrays.stream(GraphicQuality.values()).forEach(g -> qualityCombo.addItem(g));
         qualityCombo.setPreferredSize(new Dimension(190, 28));
         qualityCombo.setFont(font);
-        ((JLabel)qualityCombo.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+        ((JLabel) qualityCombo.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+
 
         //Layout
         GridBagConstraints gbc = new GridBagConstraints();
@@ -130,57 +140,47 @@ public class SettingsPanel extends ResizablePanel
         add(closeButton, gbc);
     }
 
-    public JLabel getSaveButton(){
-        return saveButton;
-    }
+    public JLabel getSaveButton(){ return saveButton; }
 
-    public JLabel getCloseButton(){
-        return closeButton;
-    }
+    public JLabel getCloseButton(){ return closeButton; }
 
-    public JLabel getQuitButton(){
-        return quit;
-    }
+    public JLabel getQuitButton(){ return quit; }
 
-    public VolumeSlider getEffectsVolumeSlider(){
-        return effectsVolumeSlider;
-    }
+    public VolumeSlider getEffectsVolumeSlider(){ return effectsVolumeSlider; }
 
-    public VolumeSlider getMusicVolumeSlider(){
-        return musicVolumeSlider;
-    }
+    public VolumeSlider getMusicVolumeSlider(){ return musicVolumeSlider; }
 
-    public DeckRectangle getWhiteDeck() {
-        return whiteDeck;
-    }
+    public DeckRectangle getWhiteDeck() { return whiteDeck; }
 
-    public DeckRectangle getDarkDeck() {
-        return darkDeck;
-    }
-    public JComboBox getQualityCombo() {
-        return qualityCombo;
-    }
+    public DeckRectangle getDarkDeck() { return darkDeck; }
+    public JComboBox getQualityCombo() { return qualityCombo; }
+    public ChangebleIcon getEffectsLabel() { return effectsLabel; }
+    public ChangebleIcon getMusicLabel() { return musicLabel; }
+    public ChangebleIcon getQualityLabel() { return qualityLabel; }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g)
+    {
         super.paintComponent(g);
         g.setColor(green);
         g.fillRoundRect(0, 0, panelWidth, panelHeight, 15, 15);
     }
 
-    public class DeckRectangle extends JPanel{
+    public class DeckRectangle extends JPanel
+    {
         private static int width = 114;
         private static int height = 114;
         private static int radius = 42;
-
         private final BufferedImage image;
         private final String title;
         private Color deckRectangleBorder = Color.BLACK;
         private boolean paintBackground = false;
-
         public DeckColor deckColor;
 
-        public DeckRectangle(String imagePath, String title, DeckColor deckColor){
+
+
+        public DeckRectangle(String imagePath, String title, DeckColor deckColor)
+        {
             this.title = title;
             this.deckColor = deckColor;
             image = Utils.getBufferedImage(imagePath);
@@ -188,22 +188,26 @@ public class SettingsPanel extends ResizablePanel
             setPreferredSize(new Dimension(width, height));
             setOpaque(false);
 
-            addMouseListener(new MouseAdapter() {
+            addMouseListener(new MouseAdapter()
+            {
                 @Override
-                public void mouseEntered(MouseEvent e) {
+                public void mouseEntered(MouseEvent e)
+                {
                     deckRectangleBorder = Color.ORANGE;
                     repaint();
                 }
 
                 @Override
-                public void mouseExited(MouseEvent e) {
+                public void mouseExited(MouseEvent e)
+                {
                     deckRectangleBorder = Color.BLACK;
                     repaint();
                 }
             });
         }
 
-        public void setPaintBackground(boolean paintBackground) {
+        public void setPaintBackground(boolean paintBackground)
+        {
             this.paintBackground = paintBackground;
             repaint();
         }
@@ -211,12 +215,14 @@ public class SettingsPanel extends ResizablePanel
         public DeckColor getDeckColor() { return deckColor; }
 
         @Override
-        protected void paintComponent(Graphics g) {
+        protected void paintComponent(Graphics g)
+        {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g;
             Utils.applyQualityRenderingHints(g2);
 
-            if (paintBackground) {
+            if (paintBackground)
+            {
                 g.setColor(Color.GREEN);
                 g.fillRoundRect(0, 0, width, height, radius, radius);
             }

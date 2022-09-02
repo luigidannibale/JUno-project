@@ -24,26 +24,19 @@ public class ImageComponent extends JLabel
 
     public ImageComponent(String imagePath, int width, int height, boolean addDefaultScalingListener)
     {
-        /*
-        icona = (width > 0 && height > 0)?  ScaleImage(imagePath, width, height):
-                                            new ImageIcon(imagePath);
-        if (width < 0 && height < 0){
-            width = icona.getIconWidth();
-            height = icona.getIconHeight();
-        }
-         */
-
         icona = new ImageIcon(imagePath);
-        if (width < 0 && height < 0)
+        if (width <= 0 && height <= 0)
         {
             width = icona.getIconWidth();
             height = icona.getIconHeight();
         }
-        icona = ScaleImage(icona, width, height);
+        if (height == 0 || width == 0)
+            System.out.println(imagePath);
+        setPreferredSize(new Dimension(width,height));
+        //icona = ScaleImage(icona, width, height);
 
         if(addDefaultScalingListener) AddScalingOnHovering();
-        setPreferredSize(new Dimension(width, height));
-        setIcon(icona);
+        //setIcon(icona);
     }
 
     public void setBiggerIcon() {   scaleUpIcon();}
@@ -72,9 +65,22 @@ public class ImageComponent extends JLabel
             }});
     };
 
-    protected ImageIcon ScaleImage(ImageIcon image, int width, int height){
-        return new ImageIcon(image.getImage().getScaledInstance((int) (width * Config.scalingPercentage), (int) (height * Config.scalingPercentage), Image.SCALE_DEFAULT));
+    @Override
+    public void setPreferredSize(Dimension preferredSize)
+    {
+        super.setPreferredSize(preferredSize);
+        System.out.println(preferredSize);
+
+        icona = ScaleImage(icona,preferredSize.width,preferredSize.height);
+        setIcon(icona);
+        repaint();
     }
+
+    protected ImageIcon ScaleImage(ImageIcon image, int width, int height){
+        return new ImageIcon(image.getImage().getScaledInstance(getPreferredSize().width, getPreferredSize().height, Image.SCALE_DEFAULT));
+//        return new ImageIcon(image.getImage().getScaledInstance((int) (width * Config.scalingPercentage), (int) (height * Config.scalingPercentage), Image.SCALE_DEFAULT));
+    }
+
 }
 //nouse code
 
