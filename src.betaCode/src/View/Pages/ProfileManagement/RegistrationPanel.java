@@ -9,7 +9,6 @@ import java.util.function.Predicate;
 
 public class RegistrationPanel extends InputPanel
 {
-
     public RegistrationPanel(Color backColor, Color borderColor)
     {
         super(backColor, borderColor);
@@ -22,19 +21,15 @@ public class RegistrationPanel extends InputPanel
         if(!verifyInput()) return;
         String name = txtInsertName.getText(),
                password = txtInsertPassword.getText();
-
-        if (isNicknameRegistered.test(name))
+        if (PlayerManager.findPlayerByNicknameOrDefault(name).getName().equals(name))
         {
             textFieldError(txtInsertName, InputMessages.NAME_ALREADY_EXISTING);
             return;
         }
-
-
-        //implementare salvataggio su file
-        System.out.println("Registrato : "+name);
+        System.out.println("Registrato : "+ name + " con esito " + PlayerManager.savePlayer(new HumanPlayer(name,password)));
+        ((ProfilePanel)getParent().getParent()).update();
     }
 
-    protected Predicate<String> isNicknameRegistered = name -> PlayerManager.findPlayerByNicknameOrDefault(name).getName().equals(name);
 
 
 

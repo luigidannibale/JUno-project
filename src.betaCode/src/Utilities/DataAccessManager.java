@@ -11,12 +11,14 @@ public class DataAccessManager
 {
     private static final String PLAYER_CONFIG_JSON = "config.json";
     private static final String INIT_JSON = "init.json";
-    public boolean saveConfig()  { return savePlayerConfig() && saveInit(); }
+    public boolean saveConfig()
+    {
+        assert(Config.loggedPlayer != null):"savedPlayer is null in saveplayerconfig ";
+        return savePlayerConfig() && saveInit() && PlayerManager.savePlayer(Config.loggedPlayer);
+    }
 
     public boolean savePlayerConfig()
     {
-        assert(Config.loggedPlayer != null):"savedPlayer is null in saveplayerconfig ";
-
         JsonFileManager fm = new JsonFileManager();
         try
         {

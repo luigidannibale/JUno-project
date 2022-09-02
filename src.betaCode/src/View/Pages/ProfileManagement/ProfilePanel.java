@@ -1,5 +1,6 @@
 package View.Pages.ProfileManagement;
 
+import Utilities.Config;
 import Utilities.Utils;
 import View.Elements.CircleImage;
 import View.Elements.ViewPlayer;
@@ -53,11 +54,11 @@ public class ProfilePanel extends ResizablePanel {
     private void InitializedComponents()
     {
         setName("ProfilePanel");
-        lblName = new JLabel(player.getPlayer().getName());
+        lblName = new JLabel();
         lblName.setFont(new Font(lblName.getFont().getName(), Font.PLAIN, 18));
         lblName.setBorder(new EmptyBorder(3,0,0,3));
 
-        lblLevel = new JLabel("Level 0");
+        lblLevel = new JLabel();
         lblLevel.setBorder(new EmptyBorder(0,0,0,3));
 
         levelXpBar = new JProgressBar();
@@ -76,10 +77,15 @@ public class ProfilePanel extends ResizablePanel {
         lblChangeIcon.setFont(new Font(lblName.getFont().getName(), Font.PLAIN, 13));
         lblChangeIcon.setBorder(new LineBorder(Color.BLACK, 1, true));
         lblChangeIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
+        update();
         updateTabbedPanel = new UpdatePlayerPanel(backColor,borderColor);
     }
-
+    public void update()
+    {
+        lblName.setText(Config.loggedPlayer.getName());
+        lblLevel.setText("Livello " + (int) Config.loggedPlayer.getStats().getLevel());
+        levelXpBar.setValue((int)(100*(Config.loggedPlayer.getStats().getLevel() -((int)Config.loggedPlayer.getStats().getLevel()))));
+    }
     public void InitializeSmallPanel()
     {
         GridBagConstraints gbc = new GridBagConstraints();

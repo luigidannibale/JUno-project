@@ -1,22 +1,2 @@
-[
-  {
-    "name":"luigi",
-    "password":"Password1",
-    "stats" :
-    {
-      "victories": 1,
-      "level": 1.5,
-      "defeats": 1
-    }
-  },
-  {
-    "name":"daniele",
-    "password":"Pass12",
-    "stats" :
-    {
-      "victories": 0,
-      "level": 0,
-      "defeats": 0
-    }
-  }
-]
+[{"name":"luigi","stats":{"level":1.5,"defeats":1,"victories":1},"password":"Password1"},
+  {"name":"daniele","stats":{"level":1.4,"defeats":1,"victories":1},"password":"Pass12"}]

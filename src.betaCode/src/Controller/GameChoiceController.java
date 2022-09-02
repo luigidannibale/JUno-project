@@ -6,7 +6,8 @@ import View.Pages.GameChoicePanel;
 
 import java.awt.event.MouseEvent;
 
-public class GameChoiceController {
+public class GameChoiceController
+{
     public enum GameMode{
         CLASSIC_RULES,
         MEME_RULES,

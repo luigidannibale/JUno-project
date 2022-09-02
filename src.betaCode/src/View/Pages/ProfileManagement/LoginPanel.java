@@ -14,23 +14,28 @@ public class LoginPanel extends InputPanel
     }
 
     @Override
-    protected void save() {
+    protected void save()
+    {
+
         if(!verifyInput()) return;
         String name = txtInsertName.getText(),
                password = txtInsertPassword.getText();
 
         var optionalPlayer = PlayerManager.findPlayerByNicknameOrDefault(name);
-        if (!optionalPlayer.getName().equals(name)){
+        if (!optionalPlayer.getName().equals(name))
+        {
             textFieldError(txtInsertName,InputMessages.NAME_NOT_VALID);
             return;
         }
 
-        if (!optionalPlayer.getPassword().equals(password)){
+        if (!optionalPlayer.getPassword().equals(password))
+        {
             textFieldError(txtInsertName,InputMessages.PASSWORD_ERROR);
             return;
         }
 
         Config.loggedPlayer = optionalPlayer;
+        ((ProfilePanel)getParent().getParent()).update();
     }
 
 }

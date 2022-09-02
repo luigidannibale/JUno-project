@@ -29,7 +29,8 @@ public class Config
      *  <li>graphicQuality = GraphicQuality.LOW;</li>
      * </ul>
      */
-    public Config()  {
+    public Config()
+    {
         var DAM = new DataAccessManager();
         DAM.loadConfigOrDefault();
     }

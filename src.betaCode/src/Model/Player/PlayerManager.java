@@ -2,7 +2,9 @@ package Model.Player;
 
 import Utilities.JsonFileManager;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 public class PlayerManager
 {
@@ -29,9 +31,41 @@ public class PlayerManager
             }});
         }
     }
+    public static boolean savePlayer(HumanPlayer playerToSave)
+    {
+        try
+        {
+            JsonFileManager fm = new JsonFileManager();
+            System.out.println("try saving player in saves");
+            HashMap<Object,Object> datas = new HashMap<>(){{
+               put("name",playerToSave.getName());
+                put("password",playerToSave.getPassword());
+                put("stats",playerToSave.getStats().getJsonStats());
+            }};
+            System.out.println(datas);
 
+            return fm.writeJson(List.of(datas),filePath);
+        }
+        catch (IOException e)  { return false; }
+    }
 
-    public static boolean checkPassword(HashMap player, String password)  { return player.get("password") == password; }
+    public static boolean updatePlayer(HumanPlayer playerToSave)
+    {
+        if (!removePlayer(playerToSave.getName(),playerToSave.getPassword())) return false;
+        return savePlayer(playerToSave);
+    }
+    public static boolean removePlayer(String name, String password)
+    {
+        JsonFileManager fm = new JsonFileManager();
+        try
+        {
+            List<HashMap<Object,Object>> lines = fm.readJson(filePath);
+            lines = lines.stream().filter(hashMap -> hashMap.get("name")!=name && hashMap.get("password")!=password).toList();
+            return fm.overWriteJson(lines,filePath);
+        }
+        catch (Exception e){return false;}
+    }
+    //public static boolean checkPassword(HashMap player, String password)  { return player.get("password") == password; }
 
 
 }
