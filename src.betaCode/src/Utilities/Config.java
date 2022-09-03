@@ -6,7 +6,7 @@ import View.Elements.DeckColor;
 import View.Elements.GraphicQuality;
 
 import java.awt.*;
-import java.util.*;
+import java.util.HashMap;
 
 
 public class Config
@@ -16,7 +16,7 @@ public class Config
     public static DeckColor deckStyle;
     public static GraphicQuality graphicQuality;
     public static HumanPlayer loggedPlayer;
-    public static String savedIconPath;
+    public static String savedIconPath = "resources/images/MainFrame/StartingMenuPanel/ProfilePanel/anonymous.png";
     public static double scalingPercentage;
 
     /**
@@ -45,14 +45,6 @@ public class Config
         refreshScalingPercentage();
     }
 
-//    public Config(int effectsVolume, int musicVolume, DeckColor deckStyle, GraphicQuality graphicQuality)
-//    {
-//        this.effectsVolume = effectsVolume;
-//        this.musicVolume = musicVolume;
-//        this.deckStyle = deckStyle;
-//        this.graphicQuality = graphicQuality;
-//        refreshScalingPercentage();
-//    }
     public static void  refreshScalingPercentage() { scalingPercentage = Toolkit.getDefaultToolkit().getScreenSize().getWidth()/1920; }
 
     public static HashMap<Object, Object> getPlayerConfig()

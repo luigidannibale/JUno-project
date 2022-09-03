@@ -17,10 +17,6 @@ public abstract class UnoGameRules {
      */
     protected HashMap<CardValue, Integer> cardsDistribution;
     /**
-     * If more cards of a same value can be stacked by a single player in a single turn.
-     *///stackable card can be replaced controlling if number of playable cards is one or ore than one.
-    protected boolean stackableCards;
-    /**
      * How many cards can be played in a single turn,<br/>
      * to play more than a card in a single turn cards must be the same value.
      */
@@ -39,9 +35,6 @@ public abstract class UnoGameRules {
         return cardsDistribution;
     }
 
-    public boolean isStackableCards() {
-        return stackableCards;
-    }
 
     public int getNumberOfPlayableCards() {
         return numberOfPlayableCards;

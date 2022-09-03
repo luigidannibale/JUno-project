@@ -1,14 +1,9 @@
 package Model.Rules;
 
-import Model.Cards.*;
+import Model.Cards.Card;
+import Model.Cards.CardColor;
 import Model.Deck;
-import Model.Exceptions.NoSelectedColorException;
-import Model.Player.AIPlayer;
-import Model.Player.HumanPlayer;
-import Model.Player.Player;
-import Model.TurnManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClassicRules extends UnoGameRules
@@ -16,7 +11,6 @@ public class ClassicRules extends UnoGameRules
     public ClassicRules()
     {
         cardsDistribution = Deck.classicRules;
-        stackableCards = false;
         numberOfPlayableCards = 1;
         numberOfCardsPerPlayer = 7;
     }

@@ -1,9 +1,9 @@
 package Controller;
 
+import Utilities.Config;
+import View.Elements.CustomMouseAdapter;
 import View.Elements.ViewPlayer;
-import View.Pages.ProfileManagement.InputPanel;
 import View.Pages.ProfileManagement.ProfilePanel;
-import View.Pages.ProfileManagement.UpdatePlayerPanel;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -13,19 +13,19 @@ import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.util.Map;
 
-public class ProfilePanelController {
-
-    private ProfilePanel view;
+public class ProfilePanelController extends Controller<ProfilePanel>
+{
 
     private MainFrameController.Panels returnPanel;
 
-    public ProfilePanelController(MainFrameController mfc){
-        ViewPlayer player = mfc.getViewPlayer();
-        view = new ProfilePanel(player);
+    public ProfilePanelController(MainFrameController mfc,ViewPlayer player){
+        super(new ProfilePanel(player));
+
+
 
         JLabel name = view.getLabelName();
-        name.addMouseListener(new MouseAdapter() {
-
+        name.addMouseListener(new MouseAdapter()
+        {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mfc.setVisiblePanel(MainFrameController.Panels.PROFILE);
@@ -51,10 +51,14 @@ public class ProfilePanelController {
                 name.setFont(font.deriveFont(attributes));
         }});
 
-        MouseAdapter exitFromProfilePanel = new MouseAdapter()
+        MouseAdapter exitFromProfilePanel = new CustomMouseAdapter()
         {
             @Override
-            public void mouseClicked(MouseEvent e) { mfc.setVisiblePanel(returnPanel); }
+            public void mouseClicked(MouseEvent e)
+            {
+                super.mouseClicked(e);
+                mfc.setVisiblePanel(returnPanel);
+            }
         };
 
         view.getUpdateTabbedPanel().getPanels().forEach(pane -> pane.getCloseButton().addMouseListener(exitFromProfilePanel));
@@ -62,22 +66,21 @@ public class ProfilePanelController {
 
         JFileChooser chooser = new JFileChooser();
         chooser.setFileFilter(new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png"));
-        view.getLblChangeIcon().addMouseListener(new MouseAdapter()
+        view.getLblChangeIcon().addMouseListener(new CustomMouseAdapter()
         {
             @Override
-            public void mouseReleased(MouseEvent e)
-            {
-                if(chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
-                    player.getProfilePicture().setCircleImage(chooser.getSelectedFile().getAbsolutePath());
-                    //view.setProfilePicture(player.getProfilePicture());
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+                if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
+                    player.getProfilePicture().setCircleImage(Config.savedIconPath = chooser.getSelectedFile().getAbsolutePath());
             }
         });
     }
 
-    public ProfilePanel getView() { return view; }
 
     public JPanel getSmallPanel(){ return view.getSmallPanel(); }
 
+    @Override
     public void setVisible(boolean visible)
     {
         view.setVisible(visible);

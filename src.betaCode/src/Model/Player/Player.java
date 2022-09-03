@@ -88,6 +88,11 @@ public abstract class Player
 
     public boolean isBlocked() {return isBlocked;}
 
+    public void resetPlayer(){
+        drew = false;
+        isBlocked = false;
+        saidOne = false;
+    }
 
     @Override
     public String toString(){ return name; }

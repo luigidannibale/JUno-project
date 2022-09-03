@@ -1,11 +1,15 @@
 package View.Pages.ProfileManagement;
 
+import View.Elements.CustomMouseAdapter;
 import View.Elements.GifComponent;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -68,7 +72,7 @@ public abstract class InputPanel extends JPanel
         txtInsertPassword.setHorizontalAlignment(JTextField.CENTER);
 
         saveButton = new GifComponent(imagePath + "save",50,50);
-        saveButton.addMouseListener(new MouseAdapter() {
+        saveButton.addMouseListener(new CustomMouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);

@@ -1,7 +1,7 @@
 import Controller.MainFrameController;
 import Model.Cards.Card;
-import Model.Deck;
 import Model.Cards.CardValue;
+import Model.Deck;
 import Utilities.Utils;
 
 import javax.swing.*;
@@ -41,7 +41,7 @@ public class Juno {
             e.printStackTrace();
         }
         loadingWindow.setVisible(false);
-        game.setVisible();
+        game.setVisible(true);
         loadingWindow.dispose();
     }
 

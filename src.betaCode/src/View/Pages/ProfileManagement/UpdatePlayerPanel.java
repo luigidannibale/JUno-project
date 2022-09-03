@@ -1,16 +1,10 @@
 package View.Pages.ProfileManagement;
 
-import Model.Player.Player;
-import Model.Player.PlayerManager;
-import View.Elements.GifComponent;
-
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
-import java.awt.*;
-import java.util.ArrayList;
+
 
 
 public class UpdatePlayerPanel extends JTabbedPane

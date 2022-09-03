@@ -1,53 +1,60 @@
 package Controller;
 
+import Model.Player.AIPlayer;
+import Model.Player.Player;
+import Model.Rules.ClassicRules;
+import Model.Rules.MemeRules;
+import Model.Rules.SevenoRules;
+import Model.Rules.UnoGameRules;
+import Model.UnoGameTable;
 import Utilities.AudioManager;
 import Utilities.Config;
 import Utilities.DataAccessManager;
+import View.Elements.CircleImage;
 import View.Elements.ViewPlayer;
 import View.Pages.MainFrame;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.Arrays;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.stream.Stream;
 
-public class MainFrameController {
-    private final String pathImages = "resources/images/MainFrame/MainframeDesignElements/";
-    public enum Panels{
+public class MainFrameController extends Controller<MainFrame>
+{
+    private final String imagesPath = "resources/images/MainFrame/MainframeDesignElements/";
+    public enum Panels
+    {
         STARTMENU,
         SETTINGS,
         GAMECHOICE,
         PROFILE,
         GAME
     }
-
-    private final MainFrame view;
-
     public AudioManager backMusic;
     public AudioManager soundEffects;
-
     private final StartingMenuController startingMenuController;
     private final SettingsController settingsController;
     private final GameChoiceController gameChoiceController;
     private GamePanelController gameController;
     private final ProfilePanelController profileController;
-
     private ViewPlayer viewPlayer;
-
     private Panels currentPanel;
 
     public MainFrameController()
     {
+        super(new MainFrame());
         DataAccessManager DAM = new DataAccessManager();
         DAM.loadConfigOrDefault();
-
-        Config.scalingPercentage = 1;
+        //Config.scalingPercentage = 1;
 
         //if last player non in file o last player null
-        viewPlayer = new ViewPlayer("Anonymous");
 
-        view = new MainFrame();
+
+        viewPlayer = new ViewPlayer(Config.loggedPlayer, new CircleImage(Config.savedIconPath));
 
         backMusic = AudioManager.getInstance();
         soundEffects = AudioManager.getInstance();
@@ -55,7 +62,7 @@ public class MainFrameController {
         startingMenuController = new StartingMenuController(this);
         settingsController = new SettingsController(this);
         gameChoiceController = new GameChoiceController(this);
-        profileController = new ProfilePanelController(this);
+        profileController = new ProfilePanelController(this,viewPlayer);
 
         view.addCenteredPanels(startingMenuController.getView(), settingsController.getView(), gameChoiceController.getView(), profileController.getView());
         view.addProfilePanel(profileController.getSmallPanel());
@@ -79,12 +86,8 @@ public class MainFrameController {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
                 {
-                    if (currentPanel == Panels.GAME)  gameController.getView().pauseGame();
-
                     setSettingsReturnPanel();
-
                     setVisiblePanel(Panels.SETTINGS);
-
                 }
             }
         });
@@ -105,13 +108,9 @@ public class MainFrameController {
                 "Probably you just miss-clicked",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                new ImageIcon(pathImages + "block.png"),
+                new ImageIcon(imagesPath + "block.png"),
                 options, options[1]);
         return (confirm == JOptionPane.YES_OPTION);
-    }
-
-    public void setVisible(){
-        view.setVisible(true);
     }
 
     public void setVisiblePanel(MainFrameController.Panels panel){
@@ -162,8 +161,16 @@ public class MainFrameController {
         if (currentPanel != Panels.SETTINGS) settingsController.setReturnPanel(currentPanel);
     }
 
-    public void createNewGame(GameChoiceController.GameMode gameMode){
-        gameController = new GamePanelController(gameMode, viewPlayer);
+    public void createNewGame(GameChoiceController.GameMode gameMode)
+    {
+        ViewPlayer[] viewPlayers = new ViewPlayer[]{
+                viewPlayer,
+                new ViewPlayer(new AIPlayer("Ai 1")),
+                new ViewPlayer(new AIPlayer("Ai 2")),
+                new ViewPlayer(new AIPlayer("Ai 3")),
+        };
+
+        gameController = new GamePanelController(gameMode, viewPlayers);
         setVisiblePanel(MainFrameController.Panels.GAME);
     }
 

@@ -123,13 +123,6 @@ public class ProfilePanel extends ResizablePanel {
     {
         GridBagConstraints gbc = new GridBagConstraints();
 
-        gbc.anchor = GridBagConstraints.FIRST_LINE_END;
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.weightx = 0.1;
-        gbc.weighty = 0.01;
-        //add(btnQuit, gbc);
-
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 0;
         gbc.gridy = 0;

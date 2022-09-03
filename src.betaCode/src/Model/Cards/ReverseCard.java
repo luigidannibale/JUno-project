@@ -1,6 +1,5 @@
 package Model.Cards;
 
-import Model.Player.Player;
 import Model.TurnManager;
 
 /**

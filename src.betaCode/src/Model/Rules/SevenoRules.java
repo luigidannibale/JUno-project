@@ -2,15 +2,11 @@ package Model.Rules;
 
 import Model.Cards.*;
 import Model.Deck;
-import Model.Exceptions.NoSelectedPlayerToSwapException;
 import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.TurnManager;
-import Model.UnoGameTable;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
@@ -25,7 +21,6 @@ public class SevenoRules extends UnoGameRules
             put(CardValue.ZERO,3);
             put(CardValue.SEVEN,4);
         }});
-        stackableCards = false;
         numberOfPlayableCards = 1;
         numberOfCardsPerPlayer = 7;
     }
@@ -39,50 +34,43 @@ public class SevenoRules extends UnoGameRules
     @Override
     public ActionPerformResult cardActionPerformance(Options parameters)
     {
-//        assert(parameters.getTurnManager() != null);
-//        assert(parameters.getPlayers() != null);
-//        assert(parameters.getDeck() != null);
         TurnManager turnManager = parameters.getTurnManager();
         Player[] players = parameters.getPlayers();
+        Player currentPlayer = players[turnManager.getPlayer()];
         Card lastCard = turnManager.getLastCardPlayed();
 
-        if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD)
-        {
-            Player current = parameters.getPlayers()[turnManager.getPlayer()];
-            CardColor color = parameters.getColor();
-            if (color == null) {
-                if (current instanceof HumanPlayer) return ActionPerformResult.NO_COLOR_PROVIDED;
-                else
-                    color = ((AIPlayer) current).chooseBestColor();
-            }
-            ((WildAction) lastCard).changeColor(turnManager, color);
-        }
-        if(lastCard instanceof DrawCard)
-            players[turnManager.next()].drawCards(parameters.getDeck().draw(((DrawCard) lastCard).getNumberOfCardsToDraw()));
-        if(lastCard instanceof ReverseCard)
-            ((ReverseCard) lastCard).performReverseAction(turnManager);
-        if(lastCard instanceof SkipAction)
-            ((SkipAction) lastCard).performSkipAction(turnManager, players);
+        var actionPerformResult = super.cardActionPerformance(parameters);
+
         if (lastCard.getValue() == CardValue.SEVEN)
-        {
-            //il giocatore che ha giocato deve scambiare le carte con un altro player di sua scelta
-            //----> i nomi dei player devono essere cliccabili
-            if (parameters.getPlayerToSwapCards() == null) return ActionPerformResult.NO_PLAYER_PROVIDED;
-            Player currentPlayer = players[turnManager.getPlayer()];
-            currentPlayer.swapHand(swapHand(currentPlayer.getHand(),parameters.getPlayerToSwapCards()));
-            return ActionPerformResult.SUCCESSFUL;
+        {//who playes 7 swaps the cards with another player
+
+            Player playerToSwap = parameters.getPlayerToSwapCards();
+            if (playerToSwap == null)
+            {// no player to swap the hand with ahs been provided
+                if (currentPlayer instanceof HumanPlayer) return ActionPerformResult.NO_PLAYER_PROVIDED;
+                else playerToSwap = getBestPlayer(players);
+            }
+
+            currentPlayer.swapHand(swapHand(currentPlayer.getHand(), playerToSwap));
         }
         if (lastCard.getValue() == CardValue.ZERO){
             //i giocatori si scambiano le carte in base al senso del turno
 
-            var newHand = players[0].getHand();
+            Stack<Card> newHand = players[0].getHand();
             for (int i = 0; i < players.length; i++){
                 var nextPlayer = players[turnManager.next(i)];
                 newHand = swapHand(newHand, nextPlayer);
             }
         }
-        turnManager.passTurn();
-        return ActionPerformResult.SUCCESSFUL;
+        if (actionPerformResult == ActionPerformResult.SUCCESSFUL) turnManager.passTurn();
+        return actionPerformResult;
+    }
+
+    private Player getBestPlayer(Player[] players) {
+        var min = players[0].getHand().size();
+        var bestPlayer = players[0];
+        for (Player p: players) if(p.getHand().size()<min) bestPlayer = p;
+        return bestPlayer;
     }
 
     private Stack<Card> swapHand(Stack<Card> handToGiveAway, Player playerToSwapWith) { return playerToSwapWith.swapHand(handToGiveAway); }

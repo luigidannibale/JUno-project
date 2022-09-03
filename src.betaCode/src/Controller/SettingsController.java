@@ -6,17 +6,18 @@ import View.Elements.*;
 import View.Pages.SettingsPanel;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class SettingsController
+public class SettingsController extends Controller<SettingsPanel>
 {
-    private final SettingsPanel view;
     private DeckColor deckChanges;
     private MainFrameController.Panels returnPanel;
 
     public SettingsController(MainFrameController mainFrame)
     {
-        view = new SettingsPanel();
+        super(new SettingsPanel());
+
         addButtonsListeners(mainFrame);
         addChangeableIconListeners();
         refreshSettings();
@@ -136,9 +137,5 @@ public class SettingsController
     {
         this.returnPanel = returnPanel;
         view.getGameOverButton().setVisible(returnPanel == MainFrameController.Panels.GAME);
-    }
-    public void setVisible(boolean visible){ view.setVisible(visible); }
-    public SettingsPanel getView() {
-        return view;
     }
 }

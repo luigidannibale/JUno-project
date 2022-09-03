@@ -53,6 +53,7 @@ public class AIPlayer extends Player
 //        CardColor chosen = some.size() == 0 ? randomColor() : some.get(0).getColor();
 //        return chosen;
     }
+
     private CardColor randomColor()
     {
         var colors = Arrays.stream(CardColor.values()).toList();

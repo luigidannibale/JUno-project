@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.Player.AIPlayer;
-import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.Rules.*;
 import Model.UnoGameTable;
@@ -13,37 +12,29 @@ import View.Pages.GamePanel;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.Stream;
 
-public class GamePanelController
+public class GamePanelController extends Controller<GamePanel>
 {
-    private GamePanel view;
     private UnoGameTable gameTable;
 
-    boolean hasFinishedDrawing = false;
+    /*goes true when a card is drawn out*/
+    private boolean hasFinishedDrawing = false;
 
-    //qui dentro ci sono anche la view e tutti i suoi eventi
-    public GamePanelController(GameChoiceController.GameMode gameMode, ViewPlayer player)
+
+    public GamePanelController(GameChoiceController.GameMode gameMode, ViewPlayer[] players)
     {
+        super(new GamePanel(players));
         UnoGameRules rules;
-        switch (gameMode){
+        switch (gameMode)
+        {
             case MEME_RULES -> rules = new MemeRules();
             case SEVENO_RULES -> rules = new SevenoRules();
             default -> rules = new ClassicRules();
         }
-        ViewPlayer[] viewPlayers = new ViewPlayer[]{
-               player,
-               new ViewPlayer(new AIPlayer("Ai 1")),
-               new ViewPlayer(new AIPlayer("Ai 2")),
-               new ViewPlayer(new AIPlayer("Ai 3")),
-        };
-        gameTable = new UnoGameTable(Stream.of(viewPlayers).map(ViewPlayer::getPlayer).toArray(Player[]::new), rules);
-        viewPlayers[0].getPlayer().getHand().removeAllElements();
-        view = new GamePanel(viewPlayers);
+        gameTable = new UnoGameTable(Stream.of(players).map(ViewPlayer::getPlayer).toArray(Player[]::new), rules);
+        players[0].getPlayer().getHand().removeAllElements();
 
         view.addMouseListener(new MouseAdapter()
             {
@@ -58,18 +49,20 @@ public class GamePanelController
                 @Override
                 public void mouseMoved(MouseEvent e) { if(playersTurn()) view.animateCardsOnHovering(e); }
             });
-        view.addComponentListener(new ComponentAdapter() {
+        view.addComponentListener(new ComponentAdapter()
+        {
             @Override
-            public void componentShown(ComponentEvent e) {
+            public void componentShown(ComponentEvent e)
+            {
                 super.componentShown(e);
-                view.createCards();
-                view.setCurrentState(view.getState());
+                view.resumeGame();
+                view.update(gameTable, null);
             }
-
             @Override
-            public void componentHidden(ComponentEvent e) {
+            public void componentHidden(ComponentEvent e)
+            {
                 super.componentHidden(e);
-                view.setCurrentState(GamePanel.State.GAME_PAUSED);
+                view.pauseGame();
             }
         });
         gameTable.addObserver(view);
@@ -77,6 +70,29 @@ public class GamePanelController
 
         startGame();
     }
+
+    public void startGame() { gameTable.startGame(); }
+
+    public void quitGame(){ view.stopTimer(); }
+
+//    private ViewPlayer[] getViewPlayers(GameChoiceController.GameMode gameMode, ViewPlayer player) {
+//        UnoGameRules rules;
+//        switch (gameMode)
+//        {
+//            case MEME_RULES -> rules = new MemeRules();
+//            case SEVENO_RULES -> rules = new SevenoRules();
+//            default -> rules = new ClassicRules();
+//        }
+//        ViewPlayer[] viewPlayers = new ViewPlayer[]{
+//                player,
+//               new ViewPlayer(new AIPlayer("Ai 1")),
+//               new ViewPlayer(new AIPlayer("Ai 2")),
+//               new ViewPlayer(new AIPlayer("Ai 3")),
+//        };
+//        gameTable = new UnoGameTable(Stream.of(viewPlayers).map(ViewPlayer::getPlayer).toArray(Player[]::new), rules);
+//        viewPlayers[0].getPlayer().getHand().removeAllElements();
+//        return viewPlayers;
+//    }
 
     private boolean playersTurn() { return view.getCurrentState() == GamePanel.State.PLAYER_TURN; }
 
@@ -117,7 +133,10 @@ public class GamePanelController
 
     private void drawCardBranch(ViewPlayer currentViewPlayer)
     {
-        if (playerCanDraw(currentViewPlayer.getPlayer()) || playerMustDraw())
+        boolean canDraw = !currentViewPlayer.getPlayer().hasDrew(),
+                mustDraw = gameTable.getCurrentPlayerPLayableCards().size() == 0;
+
+        if (canDraw || mustDraw)
             drawOutCard(currentViewPlayer);
     }
 
@@ -125,7 +144,7 @@ public class GamePanelController
     {
         if (!gameTable.getCurrentPlayerPLayableCards().contains(card.getCard()))
         {
-            cardNotPLayable();
+            view.cardNotPLayableEffects();
             return;
         }
 
@@ -137,11 +156,6 @@ public class GamePanelController
                 tryCardActionPerformance(gameTable.getOptions());
             }
         },"playing card").start();
-    }
-
-    private void cardNotPLayable()
-    {
-        AudioManager.getInstance().setEffects(AudioManager.Effects.NOT_VALID);
     }
 
     private void tryCardActionPerformance(Options.OptionsBuilder parameters)
@@ -162,23 +176,15 @@ public class GamePanelController
         currentViewPlayer.getPlayer().setDrew(true);
         ViewCard drawnCard = new ViewCard(gameTable.peekNextCard());
         Animation flipCardAnimation = view.flipCardAnimation(drawnCard);
-        new Thread( () -> {
+        new Thread(() -> {
             if (flipCardAnimation == null) return;
             flipCardAnimation.Join();
-
             view.drawCardAnimation(currentViewPlayer, drawnCard).Join();
             gameTable.drawCard(currentViewPlayer.getPlayer());
             hasFinishedDrawing = true;
         },"drawing card").start();
     }
 
-    public GamePanel getView() { return view; }
-    public void startGame() { gameTable.startGame(); }
-    public void quitGame(){ view.stopTimer(); }
-    private boolean playerMustDraw()  { return gameTable.getCurrentPlayerPLayableCards().size() == 0; }
-    private boolean playerCanDraw(Player currentPlayer) { return !currentPlayer.hasDrew(); }
-
-    public void setVisible(boolean visible){
-        view.setVisible(visible);
-    }
+    //private boolean playerMustDraw()  { return gameTable.getCurrentPlayerPLayableCards().size() == 0; }
+    //private boolean playerCanDraw(Player currentPlayer) { return !currentPlayer.hasDrew();}
 }

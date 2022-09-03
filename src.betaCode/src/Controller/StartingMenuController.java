@@ -1,20 +1,15 @@
 package Controller;
 
-import Utilities.Config;
 import View.Elements.CustomMouseAdapter;
 import View.Pages.StartingMenuPanel;
 
-import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
 
-public class StartingMenuController {
-
-    private StartingMenuPanel view;
-
-    public StartingMenuController(MainFrameController mfc){
-        view = new StartingMenuPanel();
+public class StartingMenuController extends Controller<StartingMenuPanel>
+{
+    public StartingMenuController(MainFrameController mfc)
+    {
+        super(new StartingMenuPanel());
 
         //GameChoicePanel
         view.getGameChoiceIcon().addMouseListener(new CustomMouseAdapter() {
@@ -43,13 +38,5 @@ public class StartingMenuController {
                 mfc.closeWindow();
             }
         });
-    }
-
-    public StartingMenuPanel getView() {
-        return view;
-    }
-
-    public void setVisible(boolean visible){
-        view.setVisible(visible);
     }
 }

@@ -30,6 +30,8 @@ public class UnoGameTable extends Observable {
         deck = new Deck(ruleManager.getCardsDistribution());
         discards = new Stack<>();
         this.players = players;
+
+        Arrays.stream(players).forEach(Player::resetPlayer);
     }
 
 

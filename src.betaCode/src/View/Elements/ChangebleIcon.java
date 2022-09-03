@@ -3,8 +3,6 @@ package View.Elements;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
-import java.util.Observer;
-import java.util.function.IntConsumer;
 
 public class ChangebleIcon extends JLabel
 {

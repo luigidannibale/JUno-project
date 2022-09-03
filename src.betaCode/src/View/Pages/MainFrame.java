@@ -35,6 +35,7 @@ public class MainFrame extends JFrame
         //double p = ResizablePanel.SCALING_PERCENTAGE = getToolkit().getScreenSize().getWidth()/1920;
         //ResizablePanel.SCALING_PERCENTAGE = scalingPercentage;
         //System.out.println("Scaling percentage : "+scalingPercentage);
+        Config.refreshScalingPercentage();
         dimension.setSize(dimension.getWidth() * Config.scalingPercentage, dimension.getHeight() * Config.scalingPercentage);
 
         background = Utils.getImage(pathImages + "background.png");

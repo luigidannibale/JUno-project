@@ -6,7 +6,7 @@ import View.Pages.GameChoicePanel;
 
 import java.awt.event.MouseEvent;
 
-public class GameChoiceController
+public class GameChoiceController extends Controller<GameChoicePanel>
 {
     public enum GameMode{
         CLASSIC_RULES,
@@ -14,15 +14,14 @@ public class GameChoiceController
         SEVENO_RULES
     }
 
-    GameChoicePanel view;
+    public GameChoiceController(MainFrameController mainFrame)
+    {
+        super(new GameChoicePanel());
 
-    public GameChoiceController(MainFrameController mainFrame){
-        view = new GameChoicePanel();
         view.getBasicGame().addMouseListener(new CustomMouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
-                //mainFrame.setVisiblePanel(MainFrame.Panels.GAME);
                 createNewGame(mainFrame, GameMode.CLASSIC_RULES);
             }
         });
@@ -53,11 +52,5 @@ public class GameChoiceController
     {
         AudioManager.getInstance().setFolder(gameMode.name());
         mainFrame.createNewGame(gameMode);
-    }
-
-    public GameChoicePanel getView() { return view; }
-
-    public void setVisible(boolean visible){
-        view.setVisible(visible);
     }
 }

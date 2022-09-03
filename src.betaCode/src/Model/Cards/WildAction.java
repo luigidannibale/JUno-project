@@ -1,6 +1,5 @@
 package Model.Cards;
 
-import Model.Cards.CardColor;
 import Model.TurnManager;
 
 /**

@@ -1,7 +1,10 @@
 package Model;
-import Model.Cards.*;
+
+import Model.Cards.Card;
 import Model.Cards.CardColor;
+import Model.Cards.CardFactory;
 import Model.Cards.CardValue;
+
 import java.util.*;
 
 /**

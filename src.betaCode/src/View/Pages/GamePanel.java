@@ -13,11 +13,14 @@ import View.Animations.Animation;
 import View.Animations.FlippingAnimation;
 import View.Animations.MovingAnimation;
 import View.Animations.RotatingAnimation;
-import View.Elements.*;
+import View.Elements.GraphicQuality;
+import View.Elements.ViewAnimableCard;
+import View.Elements.ViewCard;
+import View.Elements.ViewPlayer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -150,7 +153,6 @@ public class GamePanel extends JPanel implements Observer {
     private void InitializeComponents()
     {
         deck = new ViewCard();
-        //playerHands = new HashMap<>();
         animations = new ArrayList<>();
         skipTurnPosition = new Rectangle();
         unoPosition = new Rectangle();
@@ -220,7 +222,6 @@ public class GamePanel extends JPanel implements Observer {
         g2.dispose();
     }
 
-    //trying to generalize
     @Override
     public void update(Observable o, Object arg)
     {
@@ -261,28 +262,14 @@ public class GamePanel extends JPanel implements Observer {
     {
         try{
             int[] rotations = new int[]{0, 270, 180, 90};
-            /*
-            for (Player player : players)
-            {
-                //assert (player.getHand().size() > 0):"Gamepanel->createcards size <= 0";
-                int rotation = Arrays.stream(players).toList().indexOf(player);
-                if (player instanceof HumanPlayer)
-                    playerHands.put(player, player.getHand().stream().map(c -> new ViewAnimableCard(c, rotations[rotation])).collect(Collectors.toCollection(ArrayList::new)));
-                else
-                    playerHands.put(player, player.getHand().stream().map(c -> new ViewAnimableCard(c, rotations[rotation])).collect(Collectors.toCollection(ArrayList::new)));
-                //qui devono essere solo rotatable
-            }
 
-             */
             for (ViewPlayer viewPlayer : viewPlayers){
                 int rotation = Arrays.stream(viewPlayers).toList().indexOf(viewPlayer);
                 viewPlayer.setImagesHand(viewPlayer.getPlayer().getHand().stream().map(c -> new ViewAnimableCard(c, rotations[rotation])).collect(Collectors.toCollection(ArrayList::new)));
             }
             discard = new ViewCard(lastCard);
         }
-        catch (ConcurrentModificationException cme){
-            System.out.println("Si modificano concurremente");
-        }
+        catch (ConcurrentModificationException cme){ }
     }
 
     public void asyncAITurn(UnoGameTable gameTable)
@@ -418,30 +405,22 @@ public class GamePanel extends JPanel implements Observer {
 
     //controller usage
 
-    public void pauseGame()
+    public void resumeGame()
     {
-        currentState = State.GAME_PAUSED;
-        if (aiThread != null)
-            if (aiThread.isAlive())
-            {
-                try{
-                    aiThread.wait();
-                }
-                catch (Exception e){
-                    System.out.println("non waitano");
-                }
-            }
-
+        createCards();
+        currentState = getState();
     }
+
+    public void pauseGame()
+    { currentState = State.GAME_PAUSED; }
 
     public void stopTimer()
     {
-
         animations.forEach(Animation::Stop);
         gameRunning = false;
     }
 
-    // GETTER
+
     public State getState()
     { return currentViewPlayer.getPlayer() instanceof HumanPlayer ? State.PLAYER_TURN : State.AI_TURN; }
 
@@ -455,5 +434,6 @@ public class GamePanel extends JPanel implements Observer {
     public ViewPlayer getCurrentViewPlayer() { return currentViewPlayer; }
     public Rectangle getSkipTurnPosition() {return skipTurnPosition;}
     public Rectangle getUnoPosition() {return unoPosition;}
+    public void cardNotPLayableEffects() { AudioManager.getInstance().setEffects(AudioManager.Effects.NOT_VALID); }
 }
 
