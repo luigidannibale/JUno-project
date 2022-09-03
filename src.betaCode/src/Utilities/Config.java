@@ -31,8 +31,8 @@ public class Config
      */
     public Config()
     {
-        var DAM = new DataAccessManager();
-        DAM.loadConfigOrDefault();
+        //var DAM = new DataAccessManager();
+        //DAM.loadConfigOrDefault();
     }
 
     public static void assignDefaultValues()
@@ -72,6 +72,7 @@ public class Config
             put("graphicQuality", Config.graphicQuality.name());
         }};
     }
+
     public static void saveConfig()
     {
         var DAM = new DataAccessManager();

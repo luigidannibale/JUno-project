@@ -54,19 +54,22 @@ public class UpdatePanel extends InputPanel
     @Override
     protected void save()
     {
-        boolean txtConfirmPasswordVisible = txtConfirmPassword.isVisible();
-        if(txtConfirmPasswordVisible)
+        if(txtConfirmPassword.isVisible())
         {//pass confirmation
             if(!txtConfirmPassword.getText().equals(Config.loggedPlayer.getPassword()))
             {//pass not valid
                 textFieldError(txtConfirmPassword,InputMessages.PASSWORD_ERROR);
                 return;
             }
-            setTxtVisibility(!txtConfirmPasswordVisible);
+            setTxtVisibility(false);
         }
         else
         {//profile update
-            setTxtVisibility(PlayerManager.updatePlayer(Config.loggedPlayer));
+            String oldName = Config.loggedPlayer.getName();
+            String oldPasword = Config.loggedPlayer.getPassword();
+            Config.loggedPlayer.setName(txtInsertName.getText());
+            Config.loggedPlayer.setPassword(txtInsertPassword.getText());
+            setTxtVisibility(PlayerManager.updatePlayer(Config.loggedPlayer, oldName, oldPasword));
         }
         ((ProfilePanel)getParent().getParent()).update();
     }

@@ -14,7 +14,7 @@ public class DataAccessManager
     public boolean saveConfig()
     {
         assert(Config.loggedPlayer != null):"savedPlayer is null in saveplayerconfig ";
-        return savePlayerConfig() && saveInit() && PlayerManager.savePlayer(Config.loggedPlayer);
+        return savePlayerConfig() && saveInit() /*&& PlayerManager.savePlayer(Config.loggedPlayer) */;
     }
 
     public boolean savePlayerConfig()
@@ -23,8 +23,7 @@ public class DataAccessManager
         try
         {
             //ArrayList<HashMap<Object,Object>> fileLines = fm.readJson(PLAYER_CONFIG_JSON);
-            ArrayList<HashMap<Object,Object>> a = new ArrayList<>();
-            a.addAll(fm.readJson(PLAYER_CONFIG_JSON).stream().filter(l->!(((HashMap<Object, Object>) l.get("player")).get("name").equals(Config.loggedPlayer.getName()))).toList());
+            ArrayList<HashMap<Object, Object>> a = new ArrayList<>(fm.readJson(PLAYER_CONFIG_JSON).stream().filter(l -> !(((HashMap<Object, Object>) l.get("player")).get("name").equals(Config.loggedPlayer.getName()))).toList());
             a.add(Config.getPlayerConfig());
             return fm.overWriteJson(a, PLAYER_CONFIG_JSON);
         }

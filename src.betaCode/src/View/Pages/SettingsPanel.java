@@ -51,7 +51,7 @@ public class SettingsPanel extends ResizablePanel
         qualityLabel = new ChangebleIcon(imagePath+"GraphicQuality/",new String[]{"low","high"},".png");
         qualityLabel.setName("qualityLabel");
         //buttons
-        gameOver = new ImageComponent(imagePath + "game-over.png", 118, 118, false);
+        gameOver = new ImageComponent(imagePath + "exit_game.png", 118, 118, false);
         saveButton = new GifComponent(imagePath + "save");
         closeButton =new GifComponent(imagePath + "discard");
 

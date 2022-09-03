@@ -9,7 +9,7 @@ public class Stats
 {
     private int victories;
     private int defeats;
-    private float level; //int part is the actual level and the decimal part
+    private double level; //int part is the actual level and the decimal part
 
     public Stats(HashMap<Object, Object> stats)  { updateStatsFromJson(stats); }
 
@@ -31,7 +31,7 @@ public class Stats
      */
     public HashMap<Object, Object> defaultValues()
     {
-        return new HashMap<Object, Object>()
+        return new HashMap<>()
         {{
             put("victories",0);
             put("defeats",0);
@@ -51,7 +51,7 @@ public class Stats
      */
     public HashMap<Object, Object> values()
     {
-        return new HashMap<Object, Object>()
+        return new HashMap<>()
         {{
             put("victories",victories);
             put("defeats",defeats);
@@ -65,7 +65,7 @@ public class Stats
     {
         this.defeats = (int) stats.get("defeats");
         this.victories = (int) stats.get("victories");
-        this.level = Float.parseFloat(stats.get("level").toString());
+        this.level = Double.parseDouble(stats.get("level").toString());
     }
 
     public int getVictories() { return victories; }
@@ -76,7 +76,7 @@ public class Stats
 
     public void setDefeats(int defeats) { this.defeats = defeats; }
 
-    public float getLevel() { return level; }
+    public double getLevel() { return level; }
 
     public void setLevel(float level) { this.level = level; }
 }

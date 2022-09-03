@@ -49,9 +49,9 @@ public class PlayerManager
         catch (IOException e)  { return false; }
     }
 
-    public static boolean updatePlayer(HumanPlayer playerToSave)
+    public static boolean updatePlayer(HumanPlayer playerToSave, String oldName, String oldPassword)
     {
-        if (!removePlayer(playerToSave.getName(),playerToSave.getPassword())) return false;
+        if (!removePlayer(oldName,oldPassword)) return false;
         return savePlayer(playerToSave);
     }
     public static boolean removePlayer(String name, String password)
@@ -60,7 +60,7 @@ public class PlayerManager
         try
         {
             List<HashMap<Object,Object>> lines = fm.readJson(filePath);
-            lines = lines.stream().filter(hashMap -> hashMap.get("name")!=name && hashMap.get("password")!=password).toList();
+            lines = lines.stream().filter(hashMap -> !hashMap.get("name").equals(name) && !hashMap.get("password").equals(password)).toList();
             return fm.overWriteJson(lines,filePath);
         }
         catch (Exception e){return false;}

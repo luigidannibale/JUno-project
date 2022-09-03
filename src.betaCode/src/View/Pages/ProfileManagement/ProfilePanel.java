@@ -83,8 +83,9 @@ public class ProfilePanel extends ResizablePanel {
     public void update()
     {
         lblName.setText(Config.loggedPlayer.getName());
-        lblLevel.setText("Livello " + (int) Config.loggedPlayer.getStats().getLevel());
-        levelXpBar.setValue((int)(100*(Config.loggedPlayer.getStats().getLevel() -((int)Config.loggedPlayer.getStats().getLevel()))));
+        double livello = Config.loggedPlayer.getStats().getLevel();
+        lblLevel.setText("Livello " + (int) livello);
+        levelXpBar.setValue((int) Math.round(100* (livello - (int)livello)));
     }
     public void InitializeSmallPanel()
     {

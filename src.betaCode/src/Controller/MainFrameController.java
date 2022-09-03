@@ -2,6 +2,7 @@ package Controller;
 
 import Utilities.AudioManager;
 import Utilities.Config;
+import Utilities.DataAccessManager;
 import View.Elements.ViewPlayer;
 import View.Pages.MainFrame;
 
@@ -21,19 +22,16 @@ public class MainFrameController {
         GAME
     }
 
-    private MainFrame view;
+    private final MainFrame view;
 
     public AudioManager backMusic;
     public AudioManager soundEffects;
-    //public DeckColor deckColor = DeckColor.WHITE;
-//    private ConfigDeprecated configDeprecated;
-    private Config config;
 
-    private StartingMenuController startingMenuController;
-    private SettingsController settingsController;
-    private GameChoiceController gameChoiceController;
+    private final StartingMenuController startingMenuController;
+    private final SettingsController settingsController;
+    private final GameChoiceController gameChoiceController;
     private GamePanelController gameController;
-    private ProfilePanelController profileController;
+    private final ProfilePanelController profileController;
 
     private ViewPlayer viewPlayer;
 
@@ -41,12 +39,11 @@ public class MainFrameController {
 
     public MainFrameController()
     {
-        config = new Config();
+        DataAccessManager DAM = new DataAccessManager();
+        DAM.loadConfigOrDefault();
 
         Config.scalingPercentage = 1;
 
-        AudioManager.getInstance().setCommonFolder();
-        AudioManager.getInstance().setAudio(AudioManager.Musics.CALM_BACKGROUND);
         //if last player non in file o last player null
         viewPlayer = new ViewPlayer("Anonymous");
 
@@ -68,7 +65,12 @@ public class MainFrameController {
             @Override
             public void windowClosing(WindowEvent e)
             {
-                if(confirmDispose()) System.exit(0);
+                if(confirmDispose())
+                {
+                    DAM.saveInit();
+                    view.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                    System.exit(0);
+                }
             }
         });
 
@@ -86,12 +88,14 @@ public class MainFrameController {
                 }
             }
         });
+
         setVisiblePanel(Panels.STARTMENU);
+        AudioManager.getInstance().setCommonFolder();
+        AudioManager.getInstance().setAudio(AudioManager.Musics.CALM_BACKGROUND);
     }
 
     private boolean confirmDispose()
     {
-        view.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         UIManager.put("OptionPane.background", new ColorUIResource(255,255,255));
         UIManager.put("Panel.background", new ColorUIResource(255,255,255));
         String[] options = new String[]{"Yes", "No"};
@@ -185,10 +189,6 @@ public class MainFrameController {
         {
             view.dispose();
         }
-    }
-
-    public Config getConfig() {
-        return config;
     }
 
     public ViewPlayer getViewPlayer() { return viewPlayer; }

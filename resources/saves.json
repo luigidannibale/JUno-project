@@ -1,2 +1,1 @@
-[{"name":"luigi","stats":{"level":1.5,"defeats":1,"victories":1},"password":"Password1"},
-  {"name":"daniele","stats":{"level":1.4,"defeats":1,"victories":1},"password":"Pass12"}]
+[{"name":"luigi","stats":{"level":1.5,"defeats":1,"victories":1},"password":"Password1"},{"name":"Daniele","stats":{"defeats":1,"level":1.4,"victories":1},"password":"Pass12"}]

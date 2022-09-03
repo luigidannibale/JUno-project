@@ -59,7 +59,7 @@ public class AudioManager
         {
             audioTrack = AudioSystem.getClip();                                             //creates an audio clip that plays back an audio (either file or stream)
             audioTrack.open(AudioSystem.getAudioInputStream(getAudioFile(music.name())));   //assigns the audio
-            System.out.println(Config.musicVolume);
+            //System.out.println(Config.musicVolume);
             ((FloatControl) audioTrack.getControl(FloatControl.Type.MASTER_GAIN)).setValue(convert.apply(Config.musicVolume));
             audioTrack.start();
             audioTrack.loop(Clip.LOOP_CONTINUOUSLY);
