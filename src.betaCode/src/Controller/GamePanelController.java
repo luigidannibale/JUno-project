@@ -105,31 +105,20 @@ public class GamePanelController extends Controller<GamePanel>
         Player currentPlayer = currentViewPlayer.getPlayer();
         if (currentPlayer != gameTable.currentPlayer()) return; //not his turn
 
-        //if clicked on deck
-        if (view.getDeck().contains(mouseClickPosition))
+        if (view.getDeck().contains(mouseClickPosition)) //clicked on deck
             drawCardBranch(currentViewPlayer);
 
         //see if clicked on a card
         currentViewPlayer.getImagesHand().stream().filter(card -> card.contains(mouseClickPosition)).forEach(this::playCardBranch);
 
+        if (view.getSkipTurnPosition().contains(mouseClickPosition) )//clicked on skip, if has not drew yet player can't skip
+            skipTurnBranch(currentPlayer);
 
-        //if clicked on skip
-        if (view.getSkipTurnPosition().contains(mouseClickPosition) )//if has not drew yet player can't skip
-            skipTurnBranch(currentPlayer );
-
-
-        //if clicked on uno
-        if (view.getUnoPosition().contains(mouseClickPosition) && view.getPlayers()[0].hasOne())  //can shout uno only if has one card
+        if (view.getUnoPosition().contains(mouseClickPosition) && view.getPlayers()[0].hasOne()) //clicked on uno, can shout uno only if has one card
             currentPlayer.shoutUno();
     }
 
-    private void skipTurnBranch(Player currentPlayer)
-    {
-        if(currentPlayer.hasDrew() && hasFinishedDrawing)
-            gameTable.passTurn();
-
-        //view.setCurrentState(view.getCurrentState());
-    }
+    private void skipTurnBranch(Player currentPlayer) { if(currentPlayer.hasDrew() && hasFinishedDrawing) gameTable.passTurn(); }
 
     private void drawCardBranch(ViewPlayer currentViewPlayer)
     {

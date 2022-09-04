@@ -62,36 +62,10 @@ public class UnoGameTable extends Observable {
         }
     }
 
-    public void drawCard()
-    {
-        drawCard(currentPlayer());
-        /*
-        Card drewCard = deck.draw();
-        if (drewCard == null)
-        {
-            deck.re_shuffle(discards);
-            drewCard = deck.draw();
-        }
-        currentPlayer().drawCard(drewCard);
-        currentPlayer().setDrew(true);
-        //--test start
-        System.out.println(currentPlayer());
-        System.out.println("DRAWED: " + drewCard);
-        System.out.println("HAND: " + currentPlayer().getHand());
-        System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
-        //--test end
-        updateObservers();
-         */
-    }
-
     public void drawCard(Player currentPlayer)
     {
+        if (deck.size() == 0)  deck.re_shuffle(discards);
         Card drewCard = deck.draw();
-        if (drewCard == null)
-        {
-            deck.re_shuffle(discards);
-            drewCard = deck.draw();
-        }
         currentPlayer.drawCard(drewCard);
         currentPlayer.setDrew(true);
         //--test start
@@ -115,16 +89,13 @@ public class UnoGameTable extends Observable {
         currentPlayer().setDrew(false);
         discards.push(card);
         turnManager.updateLastCardPlayed(card);
-
-//        Options parameters = new Options.OptionsBuilder(turnManager, players, deck).build();
-        //ruleManager.cardActionPerformance(getOptions().build());
         //updateObservers();
     }
     public ActionPerformResult cardActionPerformance(Options parameters)
     {
-        var a = ruleManager.cardActionPerformance(parameters);
-        if (a == ActionPerformResult.SUCCESSFUL) updateObservers();
-        return a;
+        ActionPerformResult actionPerformResult = ruleManager.cardActionPerformance(parameters);
+        if (actionPerformResult == ActionPerformResult.SUCCESSFUL) updateObservers();
+        return actionPerformResult;
     }
 
     public void passTurn()

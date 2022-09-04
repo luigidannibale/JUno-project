@@ -1,22 +1,30 @@
 package View.Pages;
 
 import Controller.GameChoiceController;
+import View.Elements.CustomMouseAdapter;
 import View.Elements.GifComponent;
 import View.Elements.ImageComponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 
-public class GameChoicePanel extends ResizablePanel{
-    GifComponent gameModes[];
+public class GameChoicePanel extends ResizablePanel
+{
+    GifComponent[] gameModes;
     ImageComponent back;
 
     ImageComponent title;
 
     JLabel basicInfo, memeInfo, sevenoInfo;
 
-    public GameChoicePanel() {
+    JLabel[] infoLabels = new JLabel[3];
+
+    public GameChoicePanel()
+    {
         super(1080, 552, 6);
 
         imagePath = "resources/images/MainFrame/GameChoicePanel/";
@@ -30,18 +38,19 @@ public class GameChoicePanel extends ResizablePanel{
 
     //private static final String path = "resources/images/MainFrame/GameChoicePanel/";
 
-    void InitializeComponents(){
-        //Components
+    void InitializeComponents()
+    {
+
         title = new ImageComponent(imagePath + "choose gamemode.png", -1, -1, false);
 
         gameModes = new GifComponent[GameChoiceController.GameMode.values().length];
-        for (GameChoiceController.GameMode gameMode : GameChoiceController.GameMode.values()){
-            gameModes[gameMode.ordinal()] = new GifComponent(imagePath + gameMode.name().toLowerCase(), 150, 255);
-        }
+        ImageIcon baq = new ImageIcon(imagePath+"baq.png");
+        Arrays.stream(GameChoiceController.GameMode.values()).forEach(gameMode ->
+                {
+                    gameModes[gameMode.ordinal()] = new GifComponent(imagePath + gameMode.name().toLowerCase(), 150, 255);
+                    infoLabels[gameMode.ordinal()] = new JLabel(baq);
+                });
 
-        basicInfo = new JLabel("basic info");
-        memeInfo = new JLabel("meme info");
-        sevenoInfo = new JLabel("seveno info");
 
         back = new ImageComponent(imagePath + "back.png", -1, -1, false);
 
@@ -64,7 +73,7 @@ public class GameChoicePanel extends ResizablePanel{
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 1;      gbc.gridy = 2;
         gbc.weightx = 0.15;  gbc.weighty = 0.3;
-        add(basicInfo, gbc);
+        add(infoLabels[0], gbc);
 
         //------------Left
         gbc.anchor = GridBagConstraints.SOUTH;
@@ -75,7 +84,7 @@ public class GameChoicePanel extends ResizablePanel{
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 0;      gbc.gridy = 2;
         gbc.weightx = 0.15;  gbc.weighty = 0.3;
-        add(memeInfo, gbc);
+        add(infoLabels[1], gbc);
 
         //------------Right
         gbc.anchor = GridBagConstraints.SOUTH;
@@ -86,7 +95,7 @@ public class GameChoicePanel extends ResizablePanel{
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 2;      gbc.gridy = 2;
         gbc.weightx = 0.15;  gbc.weighty = 0.3;
-        add(sevenoInfo, gbc);
+        add(infoLabels[2], gbc);
 
         //------------Scappa
         gbc.anchor = GridBagConstraints.LAST_LINE_END;
@@ -106,6 +115,10 @@ public class GameChoicePanel extends ResizablePanel{
     public GifComponent getSevenoGame(){
         return gameModes[GameChoiceController.GameMode.SEVENO_RULES.ordinal()];
     }
+
+    public GifComponent[] getGameModes() { return gameModes; }
+
+    public JLabel[] getInfoLabels() { return infoLabels; }
 
     public ImageComponent getBack(){
         return back;

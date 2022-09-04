@@ -88,7 +88,8 @@ public abstract class Player
 
     public boolean isBlocked() {return isBlocked;}
 
-    public void resetPlayer(){
+    public void resetPlayer()
+    {
         drew = false;
         isBlocked = false;
         saidOne = false;

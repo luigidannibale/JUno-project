@@ -5,6 +5,7 @@ import View.Elements.CustomMouseAdapter;
 import View.Pages.GameChoicePanel;
 
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 public class GameChoiceController extends Controller<GameChoicePanel>
 {
@@ -18,27 +19,23 @@ public class GameChoiceController extends Controller<GameChoicePanel>
     {
         super(new GameChoicePanel());
 
-        view.getBasicGame().addMouseListener(new CustomMouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                super.mouseReleased(e);
-                createNewGame(mainFrame, GameMode.CLASSIC_RULES);
-            }
+        Arrays.stream(GameChoiceController.GameMode.values()).forEach(gameMode -> {
+            view.getGameModes()[gameMode.ordinal()].addMouseListener(new CustomMouseAdapter(){
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    super.mouseReleased(e);
+                    createNewGame(mainFrame, gameMode);
+                }
+            });
+            view.getInfoLabels()[gameMode.ordinal()].addMouseListener(new CustomMouseAdapter(){
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    super.mouseReleased(e);
+                    System.out.println(gameMode);
+                }
+            });
         });
-        view.getMemeGame().addMouseListener(new CustomMouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                super.mouseReleased(e);
-                createNewGame(mainFrame, GameMode.MEME_RULES);
-            }
-        });
-        view.getSevenoGame().addMouseListener(new CustomMouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                super.mouseReleased(e);
-                createNewGame(mainFrame, GameMode.SEVENO_RULES);
-            }
-        });
+
         view.getBack().addMouseListener(new CustomMouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {

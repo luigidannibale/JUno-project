@@ -24,8 +24,10 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GamePanel extends JPanel implements Observer {
-    public enum State{
+public class GamePanel extends JPanel implements Observer
+{
+    public enum State
+    {
         PLAYER_TURN,
         AI_TURN,
         GAME_PAUSED;
@@ -48,9 +50,7 @@ public class GamePanel extends JPanel implements Observer {
 
     private ViewPlayer[] viewPlayers;
     private Player[] players;
-    //private HashMap<Player, ArrayList<ViewAnimableCard>> playerHands;
     private ViewPlayer currentViewPlayer;
-    //private Player currentPlayer;                   //da sistemare?
     private Card lastCard;
     private ViewCard deck;
     private int deckSize;
@@ -277,10 +277,12 @@ public class GamePanel extends JPanel implements Observer {
         aiThread = new Thread(() -> {
             try {
                 AIPlayer ai = (AIPlayer) currentViewPlayer.getPlayer();
-                Thread.sleep(1500);
+                Thread.sleep(new Random().nextInt(1300, 2500));
                 var playableCards = gameTable.getCurrentPlayerPLayableCards();
-                if (playableCards.size() == 0) {
-                    if (!ai.hasDrew()) {
+                if (playableCards.size() == 0)
+                {
+                    if (!ai.hasDrew())
+                    {
                         drawCardAnimation(currentViewPlayer, new ViewCard()).Join();
                         gameTable.drawCard(ai);
                     }
@@ -297,9 +299,9 @@ public class GamePanel extends JPanel implements Observer {
                 }
             }
             catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("interrupted exception"); e.printStackTrace();
             } catch (Exception e) {
-                throw e;
+                System.out.println(e.getClass());e.printStackTrace();
             }
         });
         aiThread.setName(currentViewPlayer.getPlayer().getName());
@@ -402,6 +404,13 @@ public class GamePanel extends JPanel implements Observer {
             }
         }
     }
+
+    public void endGame()
+    {
+        for (ViewPlayer p: viewPlayers)
+            p.reset();
+    }
+
 
     //controller usage
 

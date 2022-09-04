@@ -27,8 +27,11 @@ public class ViewPlayer
 
     public void updatePlayer(Player player)
     {
-        //magari si aggiorna da solo non server passarlo?
         this.player = player;
+    }
+    public void reset()
+    {
+
     }
 
     public void setProfilePicture(CircleImage profilePicture) { this.profilePicture = profilePicture; }
