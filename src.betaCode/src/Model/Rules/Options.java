@@ -12,6 +12,8 @@ public class Options
     private final Deck deck;
     private final CardColor color;
     private final Player playerToSwapCards;
+    private final int currentPlayer;
+    private final int nextPlayer;
     private Options(OptionsBuilder builder)
     {
         turnManager = builder.turnManager;
@@ -19,12 +21,16 @@ public class Options
         deck = builder.deck;
         color = builder.color;
         playerToSwapCards = builder.playerToSwapCards;
+        currentPlayer = builder.currentPlayer;
+        nextPlayer = builder.nextPlayer;
     }
     public TurnManager getTurnManager() { return turnManager; }
     public Player[] getPlayers() { return players; }
     public Deck getDeck() { return deck; }
     public CardColor getColor() { return color; }
     public Player getPlayerToSwapCards() { return playerToSwapCards; }
+    public int getCurrentPlayer() { return currentPlayer; }
+    public int getNextPlayer() { return nextPlayer; }
 
     public static class OptionsBuilder
     {
@@ -33,11 +39,16 @@ public class Options
         private Deck deck;
         private CardColor color;
         private Player playerToSwapCards;
+        private int currentPlayer;
+        private int nextPlayer;
+
         public OptionsBuilder(TurnManager turnManager, Player[] players, Deck deck)
         {
             this.turnManager = turnManager;
             this.players = players;
             this.deck = deck;
+            this.currentPlayer = turnManager.getPlayer();
+            this.nextPlayer = turnManager.next();
         }
         public OptionsBuilder turnManager(TurnManager turnManager)
         {
@@ -64,9 +75,16 @@ public class Options
             this.playerToSwapCards = playerToSwapCards;
             return this;
         }
-        public Options build()
+        public OptionsBuilder currentPlayer(int currentPlayer)
         {
-            return new Options(this);
+            this.currentPlayer = currentPlayer;
+            return this;
         }
+        public OptionsBuilder nextPlayer(int nextPlayer)
+        {
+            this.nextPlayer = nextPlayer;
+            return this;
+        }
+        public Options build()  { return new Options(this); }
     }
 }

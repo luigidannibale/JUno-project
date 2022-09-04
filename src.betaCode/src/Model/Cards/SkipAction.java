@@ -13,15 +13,17 @@ public interface SkipAction
      * Skips the turn in a Uno Game match
      * @param turnManager
      */
-    default void performSkipAction(TurnManager turnManager, Player[] players) {
-        recursiveSkipper(turnManager, players, turnManager.getPlayer());
-    }
-    private void recursiveSkipper(TurnManager turnManager, Player[] players, int i)
+    default void performSkipAction(TurnManager turnManager, Player[] players, int playerToBlock)
     {
-        Player next = players[turnManager.next(i)];
-        if (next.equals(players[turnManager.getPlayer()])) return;
-        if (next.isBlocked()) recursiveSkipper(turnManager, players, i+1);
-        else next.setBlocked(true);
-
+        recursiveSkipper(turnManager, players, playerToBlock);
     }
+    default void performSkipAction(TurnManager turnManager, Player[] players) { performSkipAction(turnManager, players, turnManager.getPlayer()); }
+    private void recursiveSkipper(TurnManager turnManager, Player[] players, int playerToBlock)
+    {
+        Player next = players[turnManager.next(playerToBlock)];
+        if (next.equals(players[turnManager.getPlayer()])) return;
+        if (next.isBlocked()) recursiveSkipper(turnManager, players, playerToBlock+1);
+        else next.setBlocked(true);
+    }
+
 }

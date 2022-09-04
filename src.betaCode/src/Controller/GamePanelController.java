@@ -1,10 +1,8 @@
 package Controller;
 
-import Model.Player.AIPlayer;
 import Model.Player.Player;
 import Model.Rules.*;
 import Model.UnoGameTable;
-import Utilities.AudioManager;
 import View.Animations.Animation;
 import View.Elements.ViewCard;
 import View.Elements.ViewPlayer;
@@ -12,7 +10,7 @@ import View.Pages.GamePanel;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 public class GamePanelController extends Controller<GamePanel>
@@ -71,7 +69,19 @@ public class GamePanelController extends Controller<GamePanel>
         startGame();
     }
 
-    public void startGame() { gameTable.startGame(); }
+    public void startGame()
+    {
+        ActionPerformResult result = gameTable.startGame();
+        if (result == ActionPerformResult.NO_COLOR_PROVIDED)
+            new Thread(() -> {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(1200);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                gameTable.performFirstCard(gameTable.getOptions().color(view.choseColorByUser()).build());
+            }).start();
+    }
 
     public void quitGame(){ view.stopTimer(); }
 
@@ -150,12 +160,11 @@ public class GamePanelController extends Controller<GamePanel>
     private void tryCardActionPerformance(Options.OptionsBuilder parameters)
     {
         ActionPerformResult a = gameTable.cardActionPerformance(parameters.build());
-        switch (a) {
+        switch (a)
+        {
             case NO_COLOR_PROVIDED -> parameters.color(view.choseColorByUser());
             case NO_PLAYER_PROVIDED -> parameters.playerToSwapCards(view.chosePlayerToSwap());
-            case SUCCESSFUL -> {
-                return;
-            }
+            case SUCCESSFUL -> { return; }
         }
         tryCardActionPerformance(parameters);
     }

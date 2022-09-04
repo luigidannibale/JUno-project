@@ -35,7 +35,7 @@ public class UnoGameTable extends Observable {
     }
 
 
-    public void startGame()
+    public ActionPerformResult startGame()
     {
         win = false;
         deck.shuffle();
@@ -47,8 +47,19 @@ public class UnoGameTable extends Observable {
 
         discards.push(deck.draw());
         turnManager = new TurnManager(discards.peek());
-        //ruleManager.cardActionPerformance(discards.peek());
+
+        //ruleManager.cardActionPerformance(getOptions().build());
         updateObservers();
+
+        return performFirstCard(getOptions().currentPlayer(turnManager.getPlayer()).nextPlayer(turnManager.getPlayer()).build());
+        //if (ruleManager.isStackableCards())
+    }
+
+    public ActionPerformResult performFirstCard(Options parameters)
+    {
+        ActionPerformResult actionPerformResult = ruleManager.startGame(parameters);
+        updateObservers();
+        return actionPerformResult;
     }
 
     public List<Card> getCurrentPlayerPLayableCards()

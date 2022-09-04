@@ -4,7 +4,11 @@ import Utilities.AudioManager;
 import View.Elements.CustomMouseAdapter;
 import View.Pages.GameChoicePanel;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 
 public class GameChoiceController extends Controller<GameChoicePanel>
@@ -19,19 +23,39 @@ public class GameChoiceController extends Controller<GameChoicePanel>
     {
         super(new GameChoicePanel());
 
+        URI filePath = new File("resources/rules.pdf").toURI();
+
         Arrays.stream(GameChoiceController.GameMode.values()).forEach(gameMode -> {
             view.getGameModes()[gameMode.ordinal()].addMouseListener(new CustomMouseAdapter(){
                 @Override
-                public void mouseReleased(MouseEvent e) {
+                public void mouseReleased(MouseEvent e)
+                {
                     super.mouseReleased(e);
                     createNewGame(mainFrame, gameMode);
                 }
             });
-            view.getInfoLabels()[gameMode.ordinal()].addMouseListener(new CustomMouseAdapter(){
+            view.getInfoLabels()[gameMode.ordinal()].addMouseListener(new CustomMouseAdapter() {
                 @Override
-                public void mouseReleased(MouseEvent e) {
+                public void mouseEntered(MouseEvent e)
+                {
+                    super.mouseEntered(e);
+                    view.setCurrentInfo(gameMode.ordinal());
+                    view.repaint();
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e)
+                {
+                    view.setCurrentInfo(-1);
+                    view.repaint();
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e)
+                {
                     super.mouseReleased(e);
-                    System.out.println(gameMode);
+                    try { Desktop.getDesktop().browse(filePath); }
+                    catch (IOException ex)  { System.out.println("CANNOT OPEN FILE " + filePath); }
                 }
             });
         });

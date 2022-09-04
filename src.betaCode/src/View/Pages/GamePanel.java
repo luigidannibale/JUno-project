@@ -234,6 +234,8 @@ public class GamePanel extends JPanel implements Observer
         createCards();
 
         //currentViewPlayer = Arrays.stream(viewPlayers).filter(c -> c.getPlayer().equals(gameTable.currentPlayer())).toList().get(0);
+        if (gameTable.currentPlayerIndex() == -1) return;
+
         currentViewPlayer = viewPlayers[gameTable.currentPlayerIndex()];
 
         if (currentViewPlayer.getPlayer().isBlocked())
@@ -245,8 +247,7 @@ public class GamePanel extends JPanel implements Observer
 
         if (currentState != State.GAME_PAUSED) currentState = getState();
 
-        if (rotatingAnimation.isAlive())
-        {
+        if (rotatingAnimation.isAlive()) {
             rotatingAnimation.changeTurn(gameTable.clockwiseTurn());
             rotatingAnimation.imageColor(discard.getCard().getColor());
         }
@@ -255,7 +256,6 @@ public class GamePanel extends JPanel implements Observer
             asyncAITurn(gameTable);
             viewPlayers[0].getPlayer().setDrew(false);
         }
-
     }
 
     public void createCards()

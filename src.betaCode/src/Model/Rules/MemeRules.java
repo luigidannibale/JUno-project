@@ -32,6 +32,12 @@ public class MemeRules extends UnoGameRules
     }
 
     @Override
+    public ActionPerformResult performFirstCardAction(Options parameters)
+    {
+        return cardActionPerformance(parameters);
+    }
+
+    @Override
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick)
     { return isStacking ? filterByValue(playerPlayableHand.stream(), discardsPick).toList() : playerPlayableHand; }
 

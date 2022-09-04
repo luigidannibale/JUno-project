@@ -10,8 +10,8 @@ import Model.TurnManager;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class UnoGameRules {
-
+public abstract class UnoGameRules
+{
     /**
      * @see Deck
      */
@@ -27,18 +27,16 @@ public abstract class UnoGameRules {
     protected int numberOfCardsPerPlayer;
 
 
-    public int getNumberOfCardsPerPlayer() {
-        return numberOfCardsPerPlayer;
-    }
+    public ActionPerformResult startGame(Options parameters) {return performFirstCardAction(parameters);}
+    public int getNumberOfCardsPerPlayer() { return numberOfCardsPerPlayer; }
 
-    public HashMap<CardValue, Integer> getCardsDistribution() {
-        return cardsDistribution;
-    }
+    public HashMap<CardValue, Integer> getCardsDistribution() { return cardsDistribution; }
 
+    public boolean isStackableCards() { return numberOfPlayableCards > 1; }
 
-    public int getNumberOfPlayableCards() {
-        return numberOfPlayableCards;
-    }
+    public int getNumberOfPlayableCards() { return numberOfPlayableCards; }
+
+    public abstract ActionPerformResult performFirstCardAction(Options parameters);
 
     public abstract List<Card> getPlayableCards(List<Card> playerHand, Card discardsPick);
 
@@ -76,10 +74,10 @@ public abstract class UnoGameRules {
         TurnManager turnManager = parameters.getTurnManager();
         Player current = parameters.getPlayers()[turnManager.getPlayer()];
         CardColor color = parameters.getColor();
-        if (color == null) {
+        if (color == null)
+        {
             if (current instanceof HumanPlayer) return ActionPerformResult.NO_COLOR_PROVIDED;
-            else
-                color = ((AIPlayer) current).chooseBestColor();
+            else color = ((AIPlayer) current).chooseBestColor();
         }
         ((WildAction) turnManager.getLastCardPlayed()).changeColor(turnManager, color);
         return ActionPerformResult.SUCCESSFUL;

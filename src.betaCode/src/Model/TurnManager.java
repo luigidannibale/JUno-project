@@ -14,16 +14,14 @@ public class TurnManager
 {
     private final int numberOfPlayers = 4;
     private int increase = 1;
-    private int player;
+    private int  player = -1;
     private Card lastCardPlayed;
 
     /**
      * Builds a TurnManager
      * @param lastPlayed: the first card of the discards stack
      */
-    public TurnManager(Card lastPlayed){
-        this.lastCardPlayed = lastPlayed;
-    }
+    public TurnManager(Card lastPlayed)  { this.lastCardPlayed = lastPlayed; }
 
     /**
      * Increments the player index to the next
@@ -33,10 +31,7 @@ public class TurnManager
     /**
      * @return nextPlayer: provides the next player index
      */
-    public int next()
-    {
-        return next(player);
-    }
+    public int next()  { return next(player); }
 
     /**
      * @return nextPlayer: provides the next player index of the given player
@@ -49,14 +44,12 @@ public class TurnManager
         return offset + increase;
     }
 
-    public void reverseTurn(){
-        increase = -increase;
-    }
+    public void reverseTurn() { increase = -increase; }
 
     /**
      * @return player: provides the player who has to play the turn
      */
-    public int getPlayer(){ return player; }
+    public int getPlayer(){ return  player==-1?0:player; }
 
     /**
      * @return card: returns the last card played, more precisely a card which has the value of that card and the color (that can be either the same of the card or

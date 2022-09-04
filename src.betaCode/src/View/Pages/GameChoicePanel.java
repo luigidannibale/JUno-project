@@ -1,27 +1,29 @@
 package View.Pages;
 
 import Controller.GameChoiceController;
-import View.Elements.CustomMouseAdapter;
+import Utilities.Config;
+import Utilities.Utils;
 import View.Elements.GifComponent;
 import View.Elements.ImageComponent;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 
 public class GameChoicePanel extends ResizablePanel
 {
-    GifComponent[] gameModes;
-    ImageComponent back;
+    private GifComponent[] gameModes;
+    private JLabel[] infoLabels;
+    private BufferedImage[] infos;
 
-    ImageComponent title;
+    private ImageComponent back;
+    private ImageComponent title;
 
-    JLabel basicInfo, memeInfo, sevenoInfo;
-
-    JLabel[] infoLabels = new JLabel[3];
+    private int currentInfo = -1;
+    private int infosWidth = 280;
+    private int infosHeight = 350;
 
     public GameChoicePanel()
     {
@@ -34,23 +36,32 @@ public class GameChoicePanel extends ResizablePanel
         setVisible(false);
         InitializeComponents();
         resizeComponents();
-    }
 
-    //private static final String path = "resources/images/MainFrame/GameChoicePanel/";
+        infosWidth *= Config.scalingPercentage;
+        infosHeight *= Config.scalingPercentage;
+    }
 
     void InitializeComponents()
     {
 
         title = new ImageComponent(imagePath + "choose gamemode.png", -1, -1, false);
 
-        gameModes = new GifComponent[GameChoiceController.GameMode.values().length];
+        int length = GameChoiceController.GameMode.values().length;
+        gameModes = new GifComponent[length];
+        infoLabels = new JLabel[length];
+        infos = new BufferedImage[length];
         ImageIcon baq = new ImageIcon(imagePath+"baq.png");
         Arrays.stream(GameChoiceController.GameMode.values()).forEach(gameMode ->
-                {
-                    gameModes[gameMode.ordinal()] = new GifComponent(imagePath + gameMode.name().toLowerCase(), 150, 255);
-                    infoLabels[gameMode.ordinal()] = new JLabel(baq);
-                });
-
+        {
+            int index = gameMode.ordinal();
+            String path = imagePath + gameMode.name().toLowerCase();
+            gameModes[index] = new GifComponent(path, 150, 255);
+            infoLabels[index] = new JLabel(baq);
+            //@deprecated       @quarantined
+            //infoLabels[index] = new GifComponent(imagePath+"baq", 50, 52);
+            //@deprecated       @quarantined
+            infos[index] = Utils.getBufferedImage(path + "_info.png");
+        });
 
         back = new ImageComponent(imagePath + "back.png", -1, -1, false);
 
@@ -70,34 +81,29 @@ public class GameChoicePanel extends ResizablePanel
         gbc.gridwidth = 1;
         add(getBasicGame(), gbc);
 
-        gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 1;      gbc.gridy = 2;
         gbc.weightx = 0.15;  gbc.weighty = 0.3;
         add(infoLabels[0], gbc);
 
         //------------Left
-        gbc.anchor = GridBagConstraints.SOUTH;
         gbc.gridx = 0;      gbc.gridy = 1;
         gbc.weightx = 0.15;  gbc.weighty = 0.3;
         add(getMemeGame(), gbc);
 
-        gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 0;      gbc.gridy = 2;
         gbc.weightx = 0.15;  gbc.weighty = 0.3;
         add(infoLabels[1], gbc);
 
         //------------Right
-        gbc.anchor = GridBagConstraints.SOUTH;
         gbc.gridx = 2;      gbc.gridy = 1;
         gbc.weightx = 0.15;  gbc.weighty = 0.3;
         add(getSevenoGame(), gbc);
 
-        gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 2;      gbc.gridy = 2;
         gbc.weightx = 0.15;  gbc.weighty = 0.3;
         add(infoLabels[2], gbc);
 
-        //------------Scappa
+        //------------Quit
         gbc.anchor = GridBagConstraints.LAST_LINE_END;
         gbc.gridx = 2;      gbc.gridy = 2;
         gbc.weightx = 0.15;  gbc.weighty = 0.01;
@@ -124,6 +130,8 @@ public class GameChoicePanel extends ResizablePanel
         return back;
     }
 
+    public void setCurrentInfo(int index) { this.currentInfo = index; }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -134,5 +142,17 @@ public class GameChoicePanel extends ResizablePanel
         g2.setStroke(new BasicStroke(10));
         g2.setColor(new Color(19, 80, 41));
         g2.drawRoundRect(0,0,panelWidth,panelHeight, 50, 50);
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+
+        if (currentInfo != -1){
+            var gameMode = gameModes[currentInfo];
+            int centerX = gameMode.getX() + (gameMode.getWidth() - infos[currentInfo].getWidth()) / 2;
+            int centerY = gameMode.getY() + (gameMode.getHeight() - infos[currentInfo].getHeight()) / 2;
+            g.drawImage(infos[currentInfo], centerX, centerY, infosWidth, infosHeight, null);
+        }
     }
 }

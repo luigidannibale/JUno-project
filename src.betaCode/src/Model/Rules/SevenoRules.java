@@ -20,11 +20,14 @@ public class SevenoRules extends UnoGameRules
         cardsDistribution.putAll(new HashMap<>(){{
             put(CardValue.ZERO,3);
             put(CardValue.SEVEN,4);
+            //put(CardValue.WILD,300);
         }});
         numberOfPlayableCards = 1;
         numberOfCardsPerPlayer = 7;
     }
 
+    @Override
+    public ActionPerformResult performFirstCardAction(Options parameters) { return super.cardActionPerformance(parameters); }
     @Override
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick) { return playerPlayableHand; }
 

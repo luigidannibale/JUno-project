@@ -16,6 +16,12 @@ public class ClassicRules extends UnoGameRules
     }
 
     @Override
+    public ActionPerformResult performFirstCardAction(Options parameters)
+    {
+        return cardActionPerformance(parameters);
+    }
+
+    @Override
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick)
     {
         if(playerPlayableHand.stream().anyMatch(card -> card.getColor()!= CardColor.WILD) && playerPlayableHand.stream().anyMatch(card -> card.getColor()==CardColor.WILD))
@@ -31,4 +37,5 @@ public class ClassicRules extends UnoGameRules
         if (actionPerformResult == ActionPerformResult.SUCCESSFUL) parameters.getTurnManager().passTurn();
         return actionPerformResult;
     }
+
 }

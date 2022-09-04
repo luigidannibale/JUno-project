@@ -10,9 +10,9 @@ public abstract class Player
 {
     protected String name;
     protected Stack<Card> hand;
-    protected boolean saidOne = false;
-    protected boolean drew = false;
-    protected boolean played = false;
+    protected boolean saidOne;
+    protected boolean drew;
+    protected boolean played;
     protected boolean isBlocked;
 
     protected Player(String name)
