@@ -20,7 +20,7 @@ public class CircleImage extends JComponent
     {
         this.width = width;
         this.height = height;
-        setPreferredSize(new Dimension(width, height));
+        super.setPreferredSize(new Dimension(width, height));
         setCircleImage(path);
     }
 
@@ -53,6 +53,15 @@ public class CircleImage extends JComponent
 
         imm = masked;
         //setIcon(new ImageIcon(masked));
+        repaint();
+    }
+
+    @Override
+    public void setPreferredSize(Dimension preferredSize)
+    {
+        System.out.println("i do this");
+        super.setPreferredSize(preferredSize);
+        imm = imm.getScaledInstance(width,height,Image.SCALE_DEFAULT);
         repaint();
     }
 

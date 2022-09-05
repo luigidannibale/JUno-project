@@ -6,7 +6,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Arrays;
 
-public class ResizablePanel extends JPanel {
+public class ResizablePanel extends JPanel
+{
     protected int panelWidth, panelHeight;
     protected String imagePath;
 

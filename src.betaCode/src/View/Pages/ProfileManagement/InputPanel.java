@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 
 public abstract class InputPanel extends JPanel
 {
-    //da fare con enum
     public enum InputMessages
     {
         NAME_INSERT("Insert your name"),
@@ -123,17 +122,8 @@ public abstract class InputPanel extends JPanel
         gbc.weighty = 0.5;
         add(closeButton, gbc);
 
-        //updatePanel.setLayout(gbc);
-
         setBackground(borderColor);
         setVisible(true);
-        //roba del tabbed pane
-//        this.add(updatePanel);
-//        this.add(new JPanel());
-//        this.add(new JPanel());
-//        this.setTitleAt(0,"Registration");
-//        this.setTitleAt(1,"Log in");
-//        this.setTitleAt(2,"Update Profile");
 
     }
     protected abstract void save();
@@ -182,7 +172,7 @@ public abstract class InputPanel extends JPanel
 
     protected Predicate<String> check = toCheck -> toCheck.isEmpty() || ContainedInEnum.test(toCheck);
 
-    protected Predicate<String> isPasswordValid = password -> password.length() >= 6 && contains1capital1lower1digit(password);
+    protected Predicate<String> isPasswordValid = password -> password.length() >= 6 && containsOnecapitalOnelower1digit(password);
 
     protected  void textFieldError(JTextField textField, InputMessages error)
     {
@@ -190,5 +180,5 @@ public abstract class InputPanel extends JPanel
         textField.setForeground(Color.RED);
         textField.transferFocus();
     }
-    public boolean contains1capital1lower1digit (String string){ return Pattern.compile("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])").matcher(string).find(); }
+    public boolean containsOnecapitalOnelower1digit(String string){ return Pattern.compile("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])").matcher(string).find(); }
 }
