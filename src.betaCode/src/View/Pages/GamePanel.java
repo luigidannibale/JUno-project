@@ -321,7 +321,7 @@ public class GamePanel extends JPanel implements Observer
         animations.add(movingAnimation);
         card.setPaintedImage(null);
         AudioManager.getInstance().setEffects(AudioManager.Effects.PLAY);
-        try{ AudioManager.getInstance().setEffects(AudioManager.Effects.valueOf(card.getCard().getValue().name())); }  catch (Exception e){}
+        try{ AudioManager.getInstance().setEffects(AudioManager.Effects.valueOf(card.getCard().getValue().name())); }  catch (Exception ignored){}
         if (currentViewPlayer.getPlayer().getHand().size() == 2) shoutUnoAnimation(currentViewPlayer.getPlayer());
         return movingAnimation;
     }
@@ -353,10 +353,16 @@ public class GamePanel extends JPanel implements Observer
         {
             player.shoutUno();
             AudioManager.getInstance().setEffects(AudioManager.Effects.UNO);
-            animations.add(new TextAnimation(imagePath + "uno.gif", centerX, centerY));
+            animations.add(new TextAnimation(imagePath + "uno.gif", centerX, centerY)); 
         }
         else
             System.out.println("NON HA DETTO UNO");
+    }
+
+    public void exposedAnimation(Player player){
+        AudioManager.getInstance().setEffects(AudioManager.Effects.ERROR);
+        animations.add(new TextAnimation(imagePath + "exposed.gif", centerX, centerY));
+        
     }
 
     public boolean animationRunning(Animation anim){return anim != null && anim.isAlive();}
@@ -411,6 +417,7 @@ public class GamePanel extends JPanel implements Observer
         g2.fillRoundRect(x-5, y - height + 5, width + 10, height, 20, 20);
         g2.setColor(Color.BLACK);
         g2.drawString(player.getName(), x, y);
+        viewPlayer.setNamePosition(x-5, y - height + 5, width + 10, height);
 
         viewPlayer.getProfilePicture().paintImage(g2, x - imageX, y - imageY);
 
@@ -464,7 +471,7 @@ public class GamePanel extends JPanel implements Observer
     public Player[] getPlayers() {return players;}
     public ViewCard getDeck() {return deck;}
     //public HashMap<Player, ArrayList<ViewAnimableCard>> getPlayerHands() {return playerHands;}
-    //public ViewPlayer[] getViewPlayers() { return viewPlayers; }
+    public ViewPlayer[] getViewPlayers() { return viewPlayers; }
     public ViewPlayer getCurrentViewPlayer() { return currentViewPlayer; }
     public Rectangle getSkipTurnPosition() {return skipTurnPosition;}
     public Rectangle getUnoPosition() {return unoPosition;}

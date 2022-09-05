@@ -10,6 +10,7 @@ import View.Pages.GamePanel;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -35,18 +36,18 @@ public class GamePanelController extends Controller<GamePanel>
         players[0].getPlayer().getHand().removeAllElements();
 
         view.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseReleased(MouseEvent e)
             {
-                @Override
-                public void mouseReleased(MouseEvent e)
-                {
-                    viewPlayerTurn(e);
-                }
-            });
+                viewPlayerTurn(e);
+            }
+        });
         view.addMouseMotionListener(new MouseMotionAdapter()
-            {
-                @Override
-                public void mouseMoved(MouseEvent e) { if(playersTurn()) view.animateCardsOnHovering(e); }
-            });
+        {
+            @Override
+            public void mouseMoved(MouseEvent e) { if(playersTurn()) view.animateCardsOnHovering(e); }
+        });
         view.addComponentListener(new ComponentAdapter()
         {
             @Override
@@ -109,25 +110,32 @@ public class GamePanelController extends Controller<GamePanel>
     private void viewPlayerTurn(MouseEvent e)
     {
         Point mouseClickPosition = e.getPoint();
-        Player currentPlayer = view.getPlayers()[0];
+        ViewPlayer humanPlayer = view.getViewPlayers()[0];
 
-        if (view.getUnoPosition().contains(mouseClickPosition) && currentPlayer.hasOne()) //clicked on uno, can shout uno only if has one card
+        if (view.getUnoPosition().contains(mouseClickPosition) && humanPlayer.getPlayer().hasOne()) //clicked on uno, can shout uno only if has one card
             shoutUnoBranch(view.getPlayers()[0]);
+
+        ViewPlayer[] viewPlayers = view.getViewPlayers();
+        for (int i = 0; i < viewPlayers.length; i++) {
+            ViewPlayer p = viewPlayers[i];
+            if (p.getNamePosition().contains(mouseClickPosition) /*&& p.getPlayer().hasOne() && !p.getPlayer().hasSaidOne() */){
+                System.out.println(p.getPlayer());
+                //System.out.println("da controllare se il prossimo ha pescato o giocato");
+            }
+        }
 
         if (!playersTurn()) return; // not players turn
 
-        ViewPlayer currentViewPlayer = view.getCurrentViewPlayer();
-
-        if (currentPlayer != gameTable.currentPlayer()) return; //not his turn
+        if (humanPlayer.getPlayer() != gameTable.currentPlayer()) return; //not his turn
 
         if (view.getDeck().contains(mouseClickPosition)) //clicked on deck
-            drawCardBranch(currentViewPlayer);
+            drawCardBranch(humanPlayer);
 
         //see if clicked on a card
-        currentViewPlayer.getImagesHand().stream().filter(card -> card.contains(mouseClickPosition)).forEach(this::playCardBranch);
+        humanPlayer.getImagesHand().stream().filter(card -> card.contains(mouseClickPosition)).forEach(this::playCardBranch);
 
         if (view.getSkipTurnPosition().contains(mouseClickPosition) )//clicked on skip, if has not drew yet player can't skip
-            skipTurnBranch(currentPlayer);
+            skipTurnBranch(humanPlayer.getPlayer());
     }
 
     private void skipTurnBranch(Player currentPlayer) { if(currentPlayer.hasDrew() && hasFinishedDrawing) gameTable.passTurn(); }
