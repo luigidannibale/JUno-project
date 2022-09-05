@@ -25,7 +25,8 @@ public abstract class Player
      * Adds the drew card to the hand of the player
      * @param drewCard
      */
-    public void drawCard(Card drewCard) {
+    public void drawCard(Card drewCard)
+    {
         hand.push(drewCard);
         saidOne = false;
     }

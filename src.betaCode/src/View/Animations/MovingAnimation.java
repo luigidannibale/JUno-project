@@ -50,7 +50,8 @@ public class MovingAnimation extends Animation
         startY += vY;
     }
 
-    private boolean hasReachedEnd() { return Math.round(startX) == endX || Math.round(startY) == endY; }
+    private boolean hasReachedEnd()
+    { return Math.round(startX) == endX || Math.round(startY) == endY; }
 
     @Override
     public void paint(Graphics2D g2) { g2.drawImage(image, (int)startX, (int)startY, width, height, null); }
