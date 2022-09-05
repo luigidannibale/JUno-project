@@ -63,8 +63,8 @@ public abstract class UnoGameRules
         }
         if(lastCard instanceof SkipAction)
         {
-            actionPerformResult = _SkipAction(turnManager, parameters.getPlayers());
-            if (actionPerformResult != ActionPerformResult.SUCCESSFUL) return actionPerformResult;
+            actionPerformResult = _SkipAction(turnManager, parameters.getPlayers(), parameters.getNextPlayer());
+            return actionPerformResult;
         }
         return ActionPerformResult.SUCCESSFUL;
     }
@@ -72,7 +72,7 @@ public abstract class UnoGameRules
     protected ActionPerformResult _WildAction(Options parameters)
     {
         TurnManager turnManager = parameters.getTurnManager();
-        Player current = parameters.getPlayers()[turnManager.getPlayer()];
+        Player current = parameters.getPlayers()[parameters.getCurrentPlayer()];
         CardColor color = parameters.getColor();
         if (color == null)
         {
@@ -84,8 +84,7 @@ public abstract class UnoGameRules
     }
     protected ActionPerformResult _DrawAction(Options parameters, DrawCard lastCard)
     {
-        TurnManager turnManager = parameters.getTurnManager();
-        parameters.getPlayers()[turnManager.next()].drawCards(parameters.getDeck().draw(lastCard.getNumberOfCardsToDraw()));
+        parameters.getPlayers()[parameters.getNextPlayer()].drawCards(parameters.getDeck().draw(lastCard.getNumberOfCardsToDraw()));
         return ActionPerformResult.SUCCESSFUL;
     }
     protected ActionPerformResult _ReverseAction(TurnManager turnManager)
@@ -93,9 +92,9 @@ public abstract class UnoGameRules
         ((ReverseCard) turnManager.getLastCardPlayed()).performReverseAction(turnManager);
         return ActionPerformResult.SUCCESSFUL;
     }
-    protected ActionPerformResult _SkipAction(TurnManager turnManager, Player[] players)
+    protected ActionPerformResult _SkipAction(TurnManager turnManager, Player[] players, int playerToBlock)
     {
-        ((SkipAction) turnManager.getLastCardPlayed()).performSkipAction(turnManager, players);
+        ((SkipAction) turnManager.getLastCardPlayed()).performSkipAction(turnManager, players, playerToBlock);
         return ActionPerformResult.SUCCESSFUL;
     }
 

@@ -14,7 +14,7 @@ public class TurnManager
 {
     private final int numberOfPlayers = 4;
     private int increase = 1;
-    private int  player = -1;
+    private int player;
     private Card lastCardPlayed;
 
     /**
@@ -68,14 +68,15 @@ public class TurnManager
      */
     public void updateLastCardPlayed(CardValue value, CardColor color){ updateLastCardPlayed(CardFactory.createFlowCard(color,value)); }
 
-    //da vedere se utile
-    public boolean clockwiseTurn() { return increase == 1;}
-}
+    /**
+     *
+     * @return true if the turn goes anti-clockwise
+     */
+    public boolean antiClockwiseTurn() { return increase == 1;}
 
-//    nousecode
-//    ///////////////l'unico utilizzo sensato di setPLayer è nel reverse forse è meglio farli interagire
-//    /**
-//     *
-//     * @param player: the player that has to play the turn
-//     */
-//    public void setPlayer(int player){ this.player = player; }
+    /**
+    *
+    * @param player: the player that has to play the turn
+    */
+    public void setPlayer(int player) {this.player = player<=4&&player>=0?player:this.player;}
+}

@@ -79,7 +79,7 @@ public class GamePanelController extends Controller<GamePanel>
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                gameTable.performFirstCard(gameTable.getOptions().color(view.choseColorByUser()).build());
+                gameTable.performFirstCard(gameTable.getOptions().currentPlayer(0).nextPlayer(0).color(view.choseColorByUser()).build());
             }).start();
     }
 

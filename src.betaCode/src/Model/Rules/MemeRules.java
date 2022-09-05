@@ -24,7 +24,7 @@ public class MemeRules extends UnoGameRules
             put(CardValue.SKIP,4);
             put(CardValue.DRAW,4);
             put(CardValue.REVERSE,4);
-            put(CardValue.WILD,4);
+            put(CardValue.WILD,8);
             put(CardValue.WILD_DRAW,8);
         }});
         numberOfPlayableCards = 3;
@@ -34,7 +34,10 @@ public class MemeRules extends UnoGameRules
     @Override
     public ActionPerformResult performFirstCardAction(Options parameters)
     {
-        return cardActionPerformance(parameters);
+        cardsPlayed -= 1;
+        var result = cardActionPerformance(parameters);
+        if (result == ActionPerformResult.SUCCESSFUL && !isStacking) parameters.getTurnManager().setPlayer(0);
+        return result;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class MemeRules extends UnoGameRules
     {
         TurnManager turnManager = parameters.getTurnManager();
         Player[] players = parameters.getPlayers();
-        Player currentPlayer = players[turnManager.getPlayer()];
+        Player currentPlayer = players[parameters.getCurrentPlayer()];
         Card lastCardPlayed = turnManager.getLastCardPlayed();
 
         if(lastCardPlayed instanceof SkipCard) playersToBlock += 1;
@@ -79,7 +82,7 @@ public class MemeRules extends UnoGameRules
         //no more stackable cards, need to perform card action
         while(playersToBlock > 1)
         {//players to be blocked become actually blocked, 1 must be left the cycle because last action will take care of it
-            _SkipAction(turnManager, players);
+            _SkipAction(turnManager, players, parameters.getNextPlayer());
             playersToBlock --;
         }
 

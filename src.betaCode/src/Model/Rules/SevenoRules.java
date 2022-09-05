@@ -2,13 +2,11 @@ package Model.Rules;
 
 import Model.Cards.*;
 import Model.Deck;
-import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.TurnManager;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SevenoRules extends UnoGameRules
@@ -20,7 +18,6 @@ public class SevenoRules extends UnoGameRules
         cardsDistribution.putAll(new HashMap<>(){{
             put(CardValue.ZERO,3);
             put(CardValue.SEVEN,4);
-            //put(CardValue.WILD,300);
         }});
         numberOfPlayableCards = 1;
         numberOfCardsPerPlayer = 7;
@@ -36,7 +33,7 @@ public class SevenoRules extends UnoGameRules
     {
         TurnManager turnManager = parameters.getTurnManager();
         Player[] players = parameters.getPlayers();
-        Player currentPlayer = players[turnManager.getPlayer()];
+        Player currentPlayer = players[parameters.getCurrentPlayer()];
         Card lastCard = turnManager.getLastCardPlayed();
 
         var actionPerformResult = super.cardActionPerformance(parameters);
@@ -56,7 +53,7 @@ public class SevenoRules extends UnoGameRules
         if (lastCard.getValue() == CardValue.ZERO)
         {//each player gets the hand of the previous player
             List<Stack<Card>> hands = new ArrayList<>(Arrays.stream(players).map(Player::getHand).toList());
-            if (turnManager.clockwiseTurn())
+            if (turnManager.antiClockwiseTurn())
                 hands.add(0 , hands.remove(hands.size() -1));
             else
                 hands.add(hands.remove(0));

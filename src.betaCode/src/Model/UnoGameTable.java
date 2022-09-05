@@ -43,7 +43,8 @@ public class UnoGameTable extends Observable {
         IntStream.range(0, ruleManager.getNumberOfCardsPerPlayer()).forEach(i -> Arrays.stream(players).forEach(p -> p.drawCard(deck.draw())));
 
         //While the first card put on the ground is a wild four it's re-put in the deck, the deck is shuffled, and it is put the first card of the deck on the ground
-        while(deck.peek().getValue() == CardValue.WILD_DRAW){ deck.shuffle(); }
+        //while(deck.peek().getValue() == CardValue.WILD_DRAW){ deck.shuffle(); }
+        while(deck.peek().getValue() != CardValue.SEVEN){ deck.shuffle(); }
 
         discards.push(deck.draw());
         turnManager = new TurnManager(discards.peek());
@@ -122,7 +123,7 @@ public class UnoGameTable extends Observable {
         updateObservers();
     }
 
-    public boolean clockwiseTurn(){ return turnManager.clockwiseTurn();}
+    public boolean clockwiseTurn(){ return turnManager.antiClockwiseTurn();}
 
     private void updateObservers()
     {

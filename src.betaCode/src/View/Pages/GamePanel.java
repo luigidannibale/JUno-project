@@ -117,8 +117,8 @@ public class GamePanel extends JPanel implements Observer
         while (choice == -1)
             choice = JOptionPane.showOptionDialog(
                             null,
-                            null,
-                            "Chose a card color",
+                            "Choose a color to continue",
+                            "Card color choice",
                             2,
                             JOptionPane.QUESTION_MESSAGE,
                             new ImageIcon(imagePath + "wild.png"),
@@ -140,8 +140,8 @@ public class GamePanel extends JPanel implements Observer
         while (choice == -1)
             choice = JOptionPane.showOptionDialog(
                 null,
-                null,
-                "Chose the player to swap hand with",
+                "Who do you want to swap hand with ? ",
+                "Player choice",
                 2,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
@@ -234,7 +234,7 @@ public class GamePanel extends JPanel implements Observer
         createCards();
 
         //currentViewPlayer = Arrays.stream(viewPlayers).filter(c -> c.getPlayer().equals(gameTable.currentPlayer())).toList().get(0);
-        if (gameTable.currentPlayerIndex() == -1) return;
+        //if (gameTable.currentPlayerIndex() == -1) return;
 
         currentViewPlayer = viewPlayers[gameTable.currentPlayerIndex()];
 
@@ -346,13 +346,15 @@ public class GamePanel extends JPanel implements Observer
 
         int width = ViewCard.width;
         int height = ViewCard.height;
-        drawNames(player, maxCardsWidth - 100, y == 0 ? height + 50 : y - 50, g2);
+        int namesY = y - 50;
         if (y == 0){
+            namesY = height + 50;
             startX += width;
             y += height;
             width = -width;
             height = -height;
         }
+        drawNames(player, maxCardsWidth - 100, namesY, g2, 65, 40);
 
         for (ViewAnimableCard card :player.getImagesHand()){
             g2.drawImage(card.getPaintedImage(), startX, y + (int) card.getShiftHeight(), width, height, null);
@@ -367,7 +369,7 @@ public class GamePanel extends JPanel implements Observer
         int startY = (getHeight() - cardsSpace) / 2;
         int cardsWidth = cardsSpace / player.getPlayer().getHand().size();
 
-        drawNames(player, x == 0 ? ViewCard.height + 50 : x - 100, maxCardsHeight - 100, g2);
+        drawNames(player, x == 0 ? ViewCard.height + 50 : x - 100, maxCardsHeight - 100, g2, 5, 80);
 
         for (ViewCard card : player.getImagesHand()){
             g2.drawImage(card.getPaintedImage(), x, startY, ViewCard.height, ViewCard.width, null);
@@ -376,7 +378,7 @@ public class GamePanel extends JPanel implements Observer
         }
     }
 
-    private void drawNames(ViewPlayer viewPlayer, int x, int y, Graphics2D g2)
+    private void drawNames(ViewPlayer viewPlayer, int x, int y, Graphics2D g2, int imageX, int imageY)
     {
         Player player = viewPlayer.getPlayer();
         g2.setFont(fontNames);
@@ -387,7 +389,7 @@ public class GamePanel extends JPanel implements Observer
         g2.setColor(Color.black);
         g2.drawString(player.getName(), x, y);
 
-        viewPlayer.getProfilePicture().paintImage(g2, x - 60, y - 60);
+        viewPlayer.getProfilePicture().paintImage(g2, x - imageX, y - imageY);
 
         if (player instanceof HumanPlayer){
             y += height;

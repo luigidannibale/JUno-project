@@ -49,7 +49,7 @@ public class MainFrameController extends Controller<MainFrame>
         super(new MainFrame());
         DataAccessManager DAM = new DataAccessManager();
         DAM.loadConfigOrDefault();
-        //Config.scalingPercentage = 1;
+        Config.scalingPercentage = 0.7;
 
         //if last player non in file o last player null
 
