@@ -119,11 +119,16 @@ public class UnoGameTable extends Observable {
         System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
         //--test end
         currentPlayer().setDrew(false);
+        currentPlayer().setPlayed(false);
         turnManager.passTurn();
         updateObservers();
     }
 
-    public boolean clockwiseTurn(){ return turnManager.antiClockwiseTurn();}
+    public void checkWin(){
+        if (currentPlayer().getHand().size() == 0){
+
+        }
+    }
 
     private void updateObservers()
     {
@@ -131,19 +136,14 @@ public class UnoGameTable extends Observable {
         notifyObservers();
     }
 
+    public boolean antiClockwiseTurn(){ return turnManager.antiClockwiseTurn();}
     public Card peekNextCard(){ return deck.peek(); }
-
-    public TurnManager getTurnManager(){ return turnManager; }
-
     public Options.OptionsBuilder getOptions(){
         return new Options.OptionsBuilder(turnManager, players, deck);
     }
-
     public Player currentPlayer() { return players[currentPlayerIndex()]; }
     public int currentPlayerIndex() { return turnManager.getPlayer(); }
-
     public Player[] getPlayers() { return players; }
-
     public Deck getDeck() { return deck; }
     public Card getLastCard(){ return turnManager.getLastCardPlayed(); }
 }

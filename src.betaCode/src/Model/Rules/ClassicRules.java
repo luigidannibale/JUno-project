@@ -17,9 +17,7 @@ public class ClassicRules extends UnoGameRules
 
     @Override
     public ActionPerformResult performFirstCardAction(Options parameters)
-    {
-        return super.cardActionPerformance(parameters);
-    }
+    { return super.cardActionPerformance(parameters); }
 
     @Override
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick)

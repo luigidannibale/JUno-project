@@ -15,6 +15,9 @@ public class VolumeSlider extends JProgressBar
         setFont(new Font("MV Boli", Font.PLAIN, 14));
         setForeground(Color.BLUE);
         setBackground(Color.WHITE);
+    }
+
+    public void addMouseListener(){
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {

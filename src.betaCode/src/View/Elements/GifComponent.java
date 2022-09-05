@@ -25,7 +25,7 @@ public class GifComponent extends ImageComponent
         }
 
         gif = ScaleImage(gif, width, height);
-
+        setSize(width,height);
         setPreferredSize(new Dimension(width,height));
 
         addMouseListener(new MouseAdapter() {

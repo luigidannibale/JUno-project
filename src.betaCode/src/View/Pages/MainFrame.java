@@ -51,7 +51,6 @@ public class MainFrame extends JFrame
             }
         });
 
-        //setLayout(new GridBagLayout());
         setLayout(new CardLayout());
         setSize(dimension);
         setPreferredSize(dimension);
@@ -63,36 +62,6 @@ public class MainFrame extends JFrame
 
         gbc = new GridBagConstraints();
 
-
-        /*
-        titleBar = new JPanel(new BorderLayout());
-        titleBar.setBackground(Color.red);
-        titleBar.setSize(getWidth(), 40);
-        titleBar.setPreferredSize(new Dimension(getWidth(), 40));
-        titleBar.addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                setLocation(getX() + e.getX() - mouseX, getY() + e.getY() - mouseY);
-            }
-        });
-        titleBar.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                mouseX = e.getX();
-                mouseY = e.getY();
-            }
-        });
-
-        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-        gbc.weightx = 1;
-        gbc.weighty = 0.1;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-
-        //add(titleBar, gbc);
-
-         */
         mainBackground = new JPanel(new GridBagLayout());
         mainBackground.setOpaque(false);
         add(mainBackground, Cards.MAIN.name());

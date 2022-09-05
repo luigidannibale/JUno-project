@@ -49,9 +49,7 @@ public class MainFrameController extends Controller<MainFrame>
         super(new MainFrame());
         DataAccessManager DAM = new DataAccessManager();
         DAM.loadConfigOrDefault();
-        Config.scalingPercentage = 0.7;
-
-        //if last player non in file o last player null
+        Config.scalingPercentage = 1;
 
 
         viewPlayer = new ViewPlayer(Config.loggedPlayer, new CircleImage(Config.savedIconPath));
@@ -113,8 +111,10 @@ public class MainFrameController extends Controller<MainFrame>
         return (confirm == JOptionPane.YES_OPTION);
     }
 
-    public void setVisiblePanel(MainFrameController.Panels panel){
-        if (currentPanel != null) switch (currentPanel){
+    public void setVisiblePanel(MainFrameController.Panels panel)
+    {
+        if (currentPanel != null) switch (currentPanel)
+        {
             case STARTMENU -> startingMenuController.setVisible(false);
             case SETTINGS -> settingsController.setVisible(false);
             case PROFILE -> profileController.setVisible(false);

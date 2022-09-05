@@ -12,9 +12,6 @@ public class AIPlayer extends Player
         super(name);
     }
 
-    @Override
-    public void shoutUno() {}
-
     /**
      * @return a map with the colors and the count of the occurrencies for each color
      */

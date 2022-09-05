@@ -28,7 +28,7 @@ public class MemeRules extends UnoGameRules
             put(CardValue.WILD_DRAW,8);
         }});
         numberOfPlayableCards = 3;
-        numberOfCardsPerPlayer = 11;
+        numberOfCardsPerPlayer = 2;
     }
 
     @Override
@@ -36,6 +36,8 @@ public class MemeRules extends UnoGameRules
     {
         cardsPlayed -= 1;
         var result = cardActionPerformance(parameters);
+        var card = parameters.getTurnManager().getLastCardPlayed();
+        if (!(card instanceof SkipAction)) isStacking = false;
         if (result == ActionPerformResult.SUCCESSFUL && !isStacking) parameters.getTurnManager().setPlayer(0);
         return result;
     }
@@ -74,8 +76,7 @@ public class MemeRules extends UnoGameRules
         else if (lastCardPlayed instanceof SkipAction && filterByValue(players[turnManager.next()].getHand().stream(), lastCardPlayed).toList().size() > 0)
         {//current player has no more stackable cards, last card played can be stacked and next player has skip or draw cards to stack
             isStacking = true;
-            cardsPlayed = 0;
-            turnManager.passTurn();
+            passTurn(turnManager, currentPlayer);
             return ActionPerformResult.SUCCESSFUL;
         }
 
@@ -90,13 +91,19 @@ public class MemeRules extends UnoGameRules
 
         if (lastAction == ActionPerformResult.SUCCESSFUL)
         {//action perfomed successfully
-            turnManager.passTurn();
+            passTurn(turnManager, currentPlayer);
             isStacking = false;
             stackedCardsToDraw = 0;
             playersToBlock = 0;
-            cardsPlayed = 0;
         }
         return lastAction;
     }
 
+    public void passTurn(TurnManager turnManager, Player currentPlayer)
+    {
+        cardsPlayed = 0;
+        currentPlayer.setDrew(false);
+        currentPlayer.setPlayed(false);
+        turnManager.passTurn();
+    }
 }

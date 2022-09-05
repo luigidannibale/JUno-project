@@ -24,6 +24,7 @@ public class ImageComponent extends JLabel
     public ImageComponent(String imagePath, int width, int height, boolean addDefaultScalingListener)
     {
         icona = new ImageIcon(imagePath);
+        setSize(icona.getIconWidth(), icona.getIconHeight());
         if (width <= 0 && height <= 0)
         {
             width = icona.getIconWidth();

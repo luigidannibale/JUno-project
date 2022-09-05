@@ -2,14 +2,17 @@ package View.Elements;
 
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
+import org.w3c.dom.css.Rect;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class ViewPlayer
 {
-    Player player;
-    ArrayList<ViewAnimableCard> imagesHand;
-    CircleImage profilePicture;
+    private Player player;
+    private ArrayList<ViewAnimableCard> imagesHand;
+    private Rectangle namePosition;
+    private CircleImage profilePicture;
 
     public ViewPlayer(String name) { this(new HumanPlayer(name, "null"), new CircleImage()); }
 

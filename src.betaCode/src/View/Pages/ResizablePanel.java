@@ -17,14 +17,18 @@ public class ResizablePanel extends JPanel
         this.panelHeight = (int) (panelHeight * Config.scalingPercentage);
         setSize(this.panelWidth, this.panelHeight);
 
+
         int borderPX = this.panelHeight*borderOffset/100;
         setBorder(new EmptyBorder(borderPX,borderPX,borderPX,borderPX));
     }
 
-    protected void resizeComponents(){
-        Arrays.stream(getComponents()).forEach(component -> {
+    public void resizeComponents()
+    {
+        Arrays.stream(getComponents()).forEach(component ->
+        {
             //if(component.getPreferredSize().height == 0) System.out.println(component);
             component.setPreferredSize(new Dimension((int) (component.getPreferredSize().width * Config.scalingPercentage), (int) (component.getPreferredSize().height * Config.scalingPercentage)));
+            component.repaint();
         });
     }
 

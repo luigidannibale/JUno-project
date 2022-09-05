@@ -59,8 +59,9 @@ public class CircleImage extends JComponent
     @Override
     public void setPreferredSize(Dimension preferredSize)
     {
-        System.out.println("i do this");
         super.setPreferredSize(preferredSize);
+        width = preferredSize.width;
+        height = preferredSize.height;
         imm = imm.getScaledInstance(width,height,Image.SCALE_DEFAULT);
         repaint();
     }

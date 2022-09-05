@@ -126,10 +126,7 @@ public class SettingsController extends Controller<SettingsPanel>
             if (val == 0) effectsLabel.setIcon("off");
             else if (val < 40) effectsLabel.setIcon("low");
             else effectsLabel.setIcon("high");
-            if (view.isVisible()){
-                AudioManager.getInstance().setCommonFolder();
-                AudioManager.getInstance().setEffects(AudioManager.Effects.AUDIO_TEST, val);
-            }
+            if (view.isVisible()) AudioManager.getInstance().setEffects(AudioManager.Effects.AUDIO_TEST, val);
         });
 
     }

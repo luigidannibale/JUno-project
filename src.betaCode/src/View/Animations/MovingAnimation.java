@@ -28,7 +28,6 @@ public class MovingAnimation extends Animation
         }
         else
             image = card.getCardImage();
-
         start();
     }
 

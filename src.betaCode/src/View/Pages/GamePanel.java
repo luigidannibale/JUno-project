@@ -9,10 +9,7 @@ import Model.UnoGameTable;
 import Utilities.AudioManager;
 import Utilities.Config;
 import Utilities.Utils;
-import View.Animations.Animation;
-import View.Animations.FlippingAnimation;
-import View.Animations.MovingAnimation;
-import View.Animations.RotatingAnimation;
+import View.Animations.*;
 import View.Elements.GraphicQuality;
 import View.Elements.ViewAnimableCard;
 import View.Elements.ViewCard;
@@ -22,6 +19,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class GamePanel extends JPanel implements Observer
@@ -123,6 +121,8 @@ public class GamePanel extends JPanel implements Observer
                             JOptionPane.QUESTION_MESSAGE,
                             new ImageIcon(imagePath + "wild.png"),
                             colors, colors[0]);
+
+        AudioManager.getInstance().setEffects(AudioManager.Effects.valueOf(colors[choice]));
         return CardColor.valueOf(colors[choice]);
     }
 
@@ -248,7 +248,7 @@ public class GamePanel extends JPanel implements Observer
         if (currentState != State.GAME_PAUSED) currentState = getState();
 
         if (rotatingAnimation.isAlive()) {
-            rotatingAnimation.changeTurn(gameTable.clockwiseTurn());
+            rotatingAnimation.changeTurn(gameTable.antiClockwiseTurn());
             rotatingAnimation.imageColor(discard.getCard().getColor());
         }
 
@@ -272,13 +272,22 @@ public class GamePanel extends JPanel implements Observer
         catch (ConcurrentModificationException cme){ }
     }
 
+    public void exposable()
+    {
+
+    }
+
     public void asyncAITurn(UnoGameTable gameTable)
     {
-        aiThread = new Thread(() -> {
-            try {
+        aiThread = new Thread(() ->
+        {
+            try
+            {
                 AIPlayer ai = (AIPlayer) currentViewPlayer.getPlayer();
+
                 Thread.sleep(new Random().nextInt(1300, 2500));
-                var playableCards = gameTable.getCurrentPlayerPLayableCards();
+                List<Card> playableCards = gameTable.getCurrentPlayerPLayableCards();
+
                 if (playableCards.size() == 0)
                 {
                     if (!ai.hasDrew())
@@ -298,11 +307,8 @@ public class GamePanel extends JPanel implements Observer
                     gameTable.cardActionPerformance(gameTable.getOptions().build());
                 }
             }
-            catch (InterruptedException e) {
-                System.out.println("interrupted exception"); e.printStackTrace();
-            } catch (Exception e) {
-                System.out.println(e.getClass());e.printStackTrace();
-            }
+            catch (InterruptedException e) { System.out.println("interrupted exception"); e.printStackTrace(); }
+            catch (Exception e) { System.out.println(e.getClass());e.printStackTrace(); }
         });
         aiThread.setName(currentViewPlayer.getPlayer().getName());
         aiThread.start();
@@ -315,6 +321,8 @@ public class GamePanel extends JPanel implements Observer
         animations.add(movingAnimation);
         card.setPaintedImage(null);
         AudioManager.getInstance().setEffects(AudioManager.Effects.PLAY);
+        try{ AudioManager.getInstance().setEffects(AudioManager.Effects.valueOf(card.getCard().getValue().name())); }  catch (Exception e){}
+        if (currentViewPlayer.getPlayer().getHand().size() == 2) shoutUnoAnimation(currentViewPlayer.getPlayer());
         return movingAnimation;
     }
 
@@ -323,7 +331,9 @@ public class GamePanel extends JPanel implements Observer
         if (animationRunning(movingAnimation)) return null;
 
         Rectangle lastCardPosition = currentViewPlayer.getImagesHand().get(currentViewPlayer.getImagesHand().size() - 1).getPosition();
+        AudioManager.getInstance().setEffects(AudioManager.Effects.DRAW_CARD);
         movingAnimation = new MovingAnimation(deck.getPosition().getX(), deck.getPosition().getY(), lastCardPosition.getX(), lastCardPosition.getY(), drawnCard);
+
         animations.add(movingAnimation);
         return movingAnimation;
     }
@@ -333,7 +343,20 @@ public class GamePanel extends JPanel implements Observer
         if (animationRunning(flipAnimation)) return null;
         flipAnimation = new FlippingAnimation(drawnCard, deck.getPosition());
         animations.add(flipAnimation);
+        AudioManager.getInstance().setEffects(AudioManager.Effects.FLIP);
         return flipAnimation;
+    }
+
+    public void shoutUnoAnimation(Player player)
+    {
+        if ((player instanceof HumanPlayer && player.hasSaidOne()) || (player instanceof AIPlayer && new Random().nextInt(1, 5) > 1))
+        {
+            player.shoutUno();
+            AudioManager.getInstance().setEffects(AudioManager.Effects.UNO);
+            animations.add(new TextAnimation(imagePath + "uno.gif", centerX, centerY));
+        }
+        else
+            System.out.println("NON HA DETTO UNO");
     }
 
     public boolean animationRunning(Animation anim){return anim != null && anim.isAlive();}
@@ -382,11 +405,11 @@ public class GamePanel extends JPanel implements Observer
     {
         Player player = viewPlayer.getPlayer();
         g2.setFont(fontNames);
-        g2.setColor(player.equals(currentViewPlayer.getPlayer()) ? currentPlayerBackground : playerBackground);
+        g2.setColor(player.hasSaidOne() ? Color.RED : player.equals(currentViewPlayer.getPlayer()) ? currentPlayerBackground : playerBackground);
         int width = g2.getFontMetrics().stringWidth(player.getName());
         int height = g2.getFontMetrics().getHeight();
         g2.fillRoundRect(x-5, y - height + 5, width + 10, height, 20, 20);
-        g2.setColor(Color.black);
+        g2.setColor(Color.BLACK);
         g2.drawString(player.getName(), x, y);
 
         viewPlayer.getProfilePicture().paintImage(g2, x - imageX, y - imageY);

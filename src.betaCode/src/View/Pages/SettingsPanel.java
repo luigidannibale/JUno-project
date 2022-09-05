@@ -56,8 +56,9 @@ public class SettingsPanel extends ResizablePanel
         closeButton =new GifComponent(imagePath + "discard");
 
         effectsVolumeSlider = new VolumeSlider();
-
+        effectsVolumeSlider.addMouseListener();
         musicVolumeSlider = new VolumeSlider();
+        musicVolumeSlider.addMouseListener();
 
         whiteDeck = new DeckRectangle(imagePath+"white.png", "White Deck", DeckColor.WHITE);
         darkDeck = new DeckRectangle(imagePath+"black.png", "Dark Deck", DeckColor.BLACK);

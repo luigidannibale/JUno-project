@@ -10,13 +10,23 @@ public class AudioManager
     public enum Effects
     {
         PLAY,
-        DRAW,
+        DRAW_CARD,
+        FLIP,
+        UNO,
         NOT_VALID,
         ERROR,
         WIN,
         LOSS,
         CLICK,
-        AUDIO_TEST
+        AUDIO_TEST,
+        REVERSE,
+        SKIP,
+        DRAW,
+        WILD_DRAW,
+        GREEN,
+        RED,
+        YELLOW,
+        BLUE;
     }
 
     public enum Musics{
@@ -56,6 +66,7 @@ public class AudioManager
     {
         try
         {
+
             audioTrack = AudioSystem.getClip();                                             //creates an audio clip that plays back an audio (either file or stream)
             audioTrack.open(AudioSystem.getAudioInputStream(getAudioFile(music.name())));   //assigns the audio
             //System.out.println(Config.musicVolume);
@@ -66,10 +77,7 @@ public class AudioManager
         catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) { System.out.println("File not found " + music.name()); }
     }
 
-    public void setEffects(Effects effects)
-    {
-        setEffects(effects, Config.effectsVolume);
-    }
+    public void setEffects(Effects effects)  { setEffects(effects, Config.effectsVolume); }
 
     public void setEffects(Effects effects, int volume)
     {
@@ -77,17 +85,20 @@ public class AudioManager
         {
             effectsTrack = AudioSystem.getClip();                                       //creates an audio clip that plays back an audio (either file or stream)
             effectsTrack.open(AudioSystem.getAudioInputStream(getAudioFile(effects.name()))); //assigns the audio
-            //System.out.println(Config.effectsVolume + " ----> " + convert.apply(Config.effectsVolume));
             ((FloatControl) effectsTrack.getControl(FloatControl.Type.MASTER_GAIN)).setValue(convert.apply(volume));
             effectsTrack.start();
         }
         catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) { System.out.println("File not found " + effects.name()); }
     }
 
-    private File getAudioFile(String filename){
-        //System.out.println(Path.of(pathAudio, folder, filename.toLowerCase() + ".wav"));
-        //return Path.of(pathAudio, folder, filename.toLowerCase()).toFile();
-        return new File(pathAudio + "/" + folder + "/" + filename.toLowerCase() + ".wav");
+    private File getCommonAudioFile(String filename)  { return new File(getPathAudio(filename, "COMMON")); }
+    private File getSpecificAudioFile(String filename)  { return new File(getPathAudio(filename,folder)); }
+    private String getPathAudio(String filename, String folder)  { return pathAudio + "/" + folder + "/" + filename.toLowerCase() + ".wav"; }
+
+    private File getAudioFile(String filename)
+    {
+        File commonAudioFile = getSpecificAudioFile(filename);
+        return commonAudioFile.exists() ? commonAudioFile : getCommonAudioFile(filename);
     }
 
     public void play(){ audioTrack.start(); }

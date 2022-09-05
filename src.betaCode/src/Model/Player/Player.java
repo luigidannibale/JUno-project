@@ -25,13 +25,19 @@ public abstract class Player
      * Adds the drew card to the hand of the player
      * @param drewCard
      */
-    public void drawCard(Card drewCard) { hand.push(drewCard); }
+    public void drawCard(Card drewCard) {
+        hand.push(drewCard);
+        saidOne = false;
+    }
 
     /**
      * Adds the drew cards to the hand of the player
      * @param drewCards
      */
-    public void drawCards(List<Card> drewCards){ hand.addAll(drewCards); }
+    public void drawCards(List<Card> drewCards){
+        hand.addAll(drewCards);
+        saidOne = false;
+    }
 
     /**
      * Removes the played card from the hand of the player

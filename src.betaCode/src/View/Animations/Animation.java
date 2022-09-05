@@ -11,7 +11,7 @@ public abstract class Animation extends Thread//implements Runnable
     protected int height = ViewCard.height;
     protected BufferedImage image;
     //protected final Timer timer;
-    protected final int delay;
+    protected int delay;
     protected boolean running = true;
     //protected int delay;
 

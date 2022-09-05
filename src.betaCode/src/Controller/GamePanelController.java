@@ -109,10 +109,15 @@ public class GamePanelController extends Controller<GamePanel>
     private void viewPlayerTurn(MouseEvent e)
     {
         Point mouseClickPosition = e.getPoint();
+        Player currentPlayer = view.getPlayers()[0];
+
+        if (view.getUnoPosition().contains(mouseClickPosition) && currentPlayer.hasOne()) //clicked on uno, can shout uno only if has one card
+            shoutUnoBranch(view.getPlayers()[0]);
 
         if (!playersTurn()) return; // not players turn
+
         ViewPlayer currentViewPlayer = view.getCurrentViewPlayer();
-        Player currentPlayer = currentViewPlayer.getPlayer();
+
         if (currentPlayer != gameTable.currentPlayer()) return; //not his turn
 
         if (view.getDeck().contains(mouseClickPosition)) //clicked on deck
@@ -123,12 +128,15 @@ public class GamePanelController extends Controller<GamePanel>
 
         if (view.getSkipTurnPosition().contains(mouseClickPosition) )//clicked on skip, if has not drew yet player can't skip
             skipTurnBranch(currentPlayer);
-
-        if (view.getUnoPosition().contains(mouseClickPosition) && view.getPlayers()[0].hasOne()) //clicked on uno, can shout uno only if has one card
-            currentPlayer.shoutUno();
     }
 
     private void skipTurnBranch(Player currentPlayer) { if(currentPlayer.hasDrew() && hasFinishedDrawing) gameTable.passTurn(); }
+
+    private void shoutUnoBranch(Player currentPlayer)
+    {
+        currentPlayer.shoutUno();
+        view.shoutUnoAnimation(currentPlayer);
+    }
 
     private void drawCardBranch(ViewPlayer currentViewPlayer)
     {

@@ -2,6 +2,7 @@ package View.Pages.ProfileManagement;
 
 import View.Elements.CustomMouseAdapter;
 import View.Elements.GifComponent;
+import View.Pages.ResizablePanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -14,7 +15,7 @@ import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-public abstract class InputPanel extends JPanel
+public abstract class InputPanel extends ResizablePanel
 {
     public enum InputMessages
     {
@@ -39,14 +40,8 @@ public abstract class InputPanel extends JPanel
 
     public InputPanel(Color backColor, Color borderColor)
     {
-//        addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                super.mouseClicked(e);
-//
-//                System.out.println(jtabbedpane.getSelectedComponent());
-//            }
-//        });
+        super(300,200,1);
+
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {e.getComponent().requestFocus();}

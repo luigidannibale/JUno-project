@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class GameChoicePanel extends ResizablePanel
 {
     private GifComponent[] gameModes;
-    private JLabel[] infoLabels;
+    private ImageComponent[] infoLabels;
     private BufferedImage[] infos;
 
     private ImageComponent back;
@@ -48,7 +48,7 @@ public class GameChoicePanel extends ResizablePanel
 
         int length = GameChoiceController.GameMode.values().length;
         gameModes = new GifComponent[length];
-        infoLabels = new JLabel[length];
+        infoLabels = new ImageComponent[length];
         infos = new BufferedImage[length];
         ImageIcon baq = new ImageIcon(imagePath+"baq.png");
         Arrays.stream(GameChoiceController.GameMode.values()).forEach(gameMode ->
@@ -56,7 +56,7 @@ public class GameChoicePanel extends ResizablePanel
             int index = gameMode.ordinal();
             String path = imagePath + gameMode.name().toLowerCase();
             gameModes[index] = new GifComponent(path, 150, 255);
-            infoLabels[index] = new JLabel(baq);
+            infoLabels[index] = new ImageComponent(imagePath+"baq.png",-1,-1,false);
             //@deprecated       @quarantined
             //infoLabels[index] = new GifComponent(imagePath+"baq", 50, 52);
             //@deprecated       @quarantined
@@ -110,30 +110,23 @@ public class GameChoicePanel extends ResizablePanel
         add(back, gbc);
     }
 
-    public GifComponent getBasicGame(){
-        return gameModes[GameChoiceController.GameMode.CLASSIC_RULES.ordinal()];
-    }
+    public GifComponent getBasicGame(){ return gameModes[GameChoiceController.GameMode.CLASSIC_RULES.ordinal()]; }
 
-    public GifComponent getMemeGame(){
-        return gameModes[GameChoiceController.GameMode.MEME_RULES.ordinal()];
-    }
+    public GifComponent getMemeGame(){ return gameModes[GameChoiceController.GameMode.MEME_RULES.ordinal()]; }
 
-    public GifComponent getSevenoGame(){
-        return gameModes[GameChoiceController.GameMode.SEVENO_RULES.ordinal()];
-    }
+    public GifComponent getSevenoGame(){ return gameModes[GameChoiceController.GameMode.SEVENO_RULES.ordinal()]; }
 
     public GifComponent[] getGameModes() { return gameModes; }
 
     public JLabel[] getInfoLabels() { return infoLabels; }
 
-    public ImageComponent getBack(){
-        return back;
-    }
+    public ImageComponent getBack(){ return back; }
 
     public void setCurrentInfo(int index) { this.currentInfo = index; }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g)
+    {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D)g;
@@ -150,8 +143,8 @@ public class GameChoicePanel extends ResizablePanel
 
         if (currentInfo != -1){
             var gameMode = gameModes[currentInfo];
-            int centerX = gameMode.getX() + (gameMode.getWidth() - infos[currentInfo].getWidth()) / 2;
-            int centerY = gameMode.getY() + (gameMode.getHeight() - infos[currentInfo].getHeight()) / 2;
+            int centerX = gameMode.getX() + (gameMode.getWidth() - infosWidth) / 2;
+            int centerY = gameMode.getY() + (gameMode.getHeight() - infosHeight) / 2;
             g.drawImage(infos[currentInfo], centerX, centerY, infosWidth, infosHeight, null);
         }
     }
