@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class MemeRules extends UnoGameRules
+public class    MemeRules extends UnoGameRules
 {
     private boolean isStacking;
     private int stackedCardsToDraw;

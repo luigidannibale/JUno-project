@@ -44,6 +44,21 @@ public class TurnManager
         return offset + increase;
     }
 
+    /**
+     * @return previousPlayer: provides the previous player index
+     */
+    public int previous() { return previous(player); }
+
+    /**
+     * @return previousPlayer: provides the previous player index of the given player
+     */
+    public int previous(int offset)
+    {
+        if (offset - increase >= numberOfPlayers) return previous(offset - numberOfPlayers);
+        if (offset - increase <= -1) return numberOfPlayers - 1;
+        return offset - increase;
+    }
+
     public void reverseTurn() { increase = -increase; }
 
     /**

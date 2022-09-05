@@ -170,6 +170,12 @@ public class GamePanel extends JPanel implements Observer
 
         long start = System.nanoTime();
 
+        if (currentState == State.WIN)
+        {
+
+            return;
+        }
+
         g.setColor(green);
         g.fillRect(0,0, getWidth(), getHeight());
 
@@ -189,7 +195,8 @@ public class GamePanel extends JPanel implements Observer
             //centerX = getWidth() / 2;
             //centerY = getHeight() / 2;
 
-            if (deckSize > 1) {
+            if (deckSize > 1)
+            {
                 int x = centerX - 25 - ViewCard.width;
                 int y = centerY - ViewCard.height / 2;
                 g2.drawString(String.valueOf(deckSize), x, y - 10);
@@ -225,7 +232,6 @@ public class GamePanel extends JPanel implements Observer
     @Override
     public void update(Observable o, Object arg)
     {
-        //potremmo passare un infomazione come arg per dire quale animazione startare nel caso di pesca carte ai
         UnoGameTable gameTable = (UnoGameTable) o;
         players = gameTable.getPlayers();
         lastCard = gameTable.getLastCard();
@@ -235,6 +241,9 @@ public class GamePanel extends JPanel implements Observer
 
         //currentViewPlayer = Arrays.stream(viewPlayers).filter(c -> c.getPlayer().equals(gameTable.currentPlayer())).toList().get(0);
         //if (gameTable.currentPlayerIndex() == -1) return;
+        int prePreviousPlayer = gameTable.getTurnManager().previous(gameTable.getTurnManager().previous());
+        if(gameTable.isExposable(prePreviousPlayer) )
+            players[prePreviousPlayer].shoutUno();
 
         currentViewPlayer = viewPlayers[gameTable.currentPlayerIndex()];
 
@@ -254,7 +263,6 @@ public class GamePanel extends JPanel implements Observer
 
         if (currentState == State.AI_TURN) {
             asyncAITurn(gameTable);
-            viewPlayers[0].getPlayer().setDrew(false);
         }
     }
 
@@ -272,11 +280,6 @@ public class GamePanel extends JPanel implements Observer
         catch (ConcurrentModificationException cme){ }
     }
 
-    public void exposable()
-    {
-
-    }
-
     public void asyncAITurn(UnoGameTable gameTable)
     {
         aiThread = new Thread(() ->
@@ -286,6 +289,13 @@ public class GamePanel extends JPanel implements Observer
                 AIPlayer ai = (AIPlayer) currentViewPlayer.getPlayer();
 
                 Thread.sleep(new Random().nextInt(1300, 2500));
+                if (gameTable.isExposable(gameTable.getTurnManager().previous()) && new Random().nextInt(1,4)>1)
+                {
+                    Player player = players[gameTable.getTurnManager().previous()];
+                    exposedAnimation(player).Join();
+                    gameTable.expose(player);
+                }
+
                 List<Card> playableCards = gameTable.getCurrentPlayerPLayableCards();
 
                 if (playableCards.size() == 0)
@@ -353,16 +363,18 @@ public class GamePanel extends JPanel implements Observer
         {
             player.shoutUno();
             AudioManager.getInstance().setEffects(AudioManager.Effects.UNO);
-            animations.add(new TextAnimation(imagePath + "uno.gif", centerX, centerY)); 
+            animations.add(new TextAnimation(imagePath + "uno.gif", centerX, centerY));
         }
         else
             System.out.println("NON HA DETTO UNO");
     }
 
-    public void exposedAnimation(Player player){
+    public Animation exposedAnimation(Player player)
+    {
         AudioManager.getInstance().setEffects(AudioManager.Effects.ERROR);
-        animations.add(new TextAnimation(imagePath + "exposed.gif", centerX, centerY));
-        
+        var a = new TextAnimation(imagePath + "exposed.gif", centerX, centerY);
+        animations.add(a);
+        return a;
     }
 
     public boolean animationRunning(Animation anim){return anim != null && anim.isAlive();}
@@ -385,7 +397,8 @@ public class GamePanel extends JPanel implements Observer
         }
         drawNames(player, maxCardsWidth - 100, namesY, g2, 65, 40);
 
-        for (ViewAnimableCard card :player.getImagesHand()){
+        for (ViewAnimableCard card :player.getImagesHand())
+        {
             g2.drawImage(card.getPaintedImage(), startX, y + (int) card.getShiftHeight(), width, height, null);
             card.setPosition(startX, y, cardsWidth);
             startX += cardsWidth;

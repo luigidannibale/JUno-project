@@ -31,6 +31,15 @@ public class UpdatePlayerPanel extends JTabbedPane
 
     public List<InputPanel> getPanels(){ return List.of(loginPanel, registrationPanel, updatePanel); }
 
+//    @Override
+//    public void setPreferredSize(Dimension preferredSize)
+//    {
+//        super.setPreferredSize(preferredSize);
+//        loginPanel.resizeComponents();
+//        updatePanel.resizeComponents();
+//        registrationPanel.resizeComponents();
+//    }
+
     public void clearTextField()
     {
         InputPanel panel = getPanels().get(getSelectedIndex());

@@ -89,6 +89,14 @@ public class UnoGameTable extends Observable {
         updateObservers();
     }
 
+    public void expose(Player playerToExpose)
+    {
+        if (deck.size() == 0)  deck.re_shuffle(discards);
+        ArrayList<Card> drewCard = deck.draw(2);
+        playerToExpose.drawCards(drewCard);
+        updateObservers();
+    }
+
     public void playCard(Card card)
     {
         //--test start
@@ -103,6 +111,7 @@ public class UnoGameTable extends Observable {
         if (checkWin()){
             return;
         }
+
         discards.push(card);
         turnManager.updateLastCardPlayed(card);
         //updateObservers();
@@ -128,7 +137,8 @@ public class UnoGameTable extends Observable {
         updateObservers();
     }
 
-    public boolean checkWin(){
+    public boolean checkWin()
+    {
         return currentPlayer().getHand().size() == 0;
         /*
         if (){
@@ -136,6 +146,12 @@ public class UnoGameTable extends Observable {
         }
 
          */
+    }
+    public boolean isExposable(int player)
+    {
+        Player playerToExpose =players[player],
+               playerAfterHim = players[turnManager.next(player)];
+        return playerToExpose.hasOne() && !playerToExpose.hasSaidOne() && !playerAfterHim.hasDrew() && !playerAfterHim.hasPlayed();
     }
 
     private void updateObservers()
@@ -152,6 +168,7 @@ public class UnoGameTable extends Observable {
     public Player[] getPlayers() { return players; }
     public Deck getDeck() { return deck; }
     public Card getLastCard(){ return turnManager.getLastCardPlayed(); }
+    public TurnManager getTurnManager(){return turnManager;}
 }
 
 

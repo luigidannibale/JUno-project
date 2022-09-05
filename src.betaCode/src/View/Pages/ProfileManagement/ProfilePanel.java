@@ -179,8 +179,10 @@ public class ProfilePanel extends ResizablePanel
     @Override
     public void resizeComponents()
     {
-        for (Component component : getComponents()) {
-            if (component instanceof JLabel lbl) {
+        for (Component component : getComponents())
+        {
+            if (component instanceof JLabel lbl)
+            {
                 component.setFont(lbl.getFont().deriveFont((float) (lbl.getFont().getSize() * Config.scalingPercentage)));
                 component = new JLabel(lbl.getText());
             }

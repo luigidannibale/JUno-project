@@ -43,19 +43,13 @@ public class AIPlayer extends Player
         Map<CardColor, Long> colorWeights = colorWeights();
         colorWeights.remove(CardColor.WILD);
 
-        Long max = Collections.max(colorWeights.values());
-        Optional<CardColor> bestColor = colorWeights.keySet().stream().filter(color -> colorWeights.get(color) == max).findFirst();
+        Long max = colorWeights.isEmpty() ? 1L : Collections.max(colorWeights.values());
+        Optional<CardColor> bestColor = colorWeights.keySet().stream().filter(color -> Objects.equals(colorWeights.get(color), max)).findFirst();
         return (bestColor.isEmpty()) ? randomColor():bestColor.get();
 //        var some = hand.stream().filter(c -> c.getColor() != CardColor.WILD).sorted(Comparator.comparing(c -> colorWeights.get(((Card)c).getColor())).reversed()).toList();
 //        CardColor chosen = some.size() == 0 ? randomColor() : some.get(0).getColor();
 //        return chosen;
     }
 
-    private CardColor randomColor()
-    {
-        var colors = Arrays.stream(CardColor.values()).toList();
-        colors.remove(CardColor.WILD);
-        Collections.shuffle(colors);
-        return colors.get(0);
-    }
+    private CardColor randomColor(){ return CardColor.values()[new Random().nextInt(0,4)]; }
 }

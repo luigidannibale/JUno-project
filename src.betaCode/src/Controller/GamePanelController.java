@@ -112,17 +112,10 @@ public class GamePanelController extends Controller<GamePanel>
         Point mouseClickPosition = e.getPoint();
         ViewPlayer humanPlayer = view.getViewPlayers()[0];
 
-        if (view.getUnoPosition().contains(mouseClickPosition) && humanPlayer.getPlayer().hasOne()) //clicked on uno, can shout uno only if has one card
+        if (view.getUnoPosition().contains(mouseClickPosition) && humanPlayer.getPlayer().hasOne() && !humanPlayer.getPlayer().hasSaidOne()) //clicked on uno, can shout uno only if has one card
             shoutUnoBranch(view.getPlayers()[0]);
 
-        ViewPlayer[] viewPlayers = view.getViewPlayers();
-        for (int i = 0; i < viewPlayers.length; i++) {
-            ViewPlayer p = viewPlayers[i];
-            if (p.getNamePosition().contains(mouseClickPosition) /*&& p.getPlayer().hasOne() && !p.getPlayer().hasSaidOne() */){
-                System.out.println(p.getPlayer());
-                //System.out.println("da controllare se il prossimo ha pescato o giocato");
-            }
-        }
+        exposeBranch(view.getViewPlayers(), mouseClickPosition);
 
         if (!playersTurn()) return; // not players turn
 
@@ -144,6 +137,20 @@ public class GamePanelController extends Controller<GamePanel>
     {
         currentPlayer.shoutUno();
         view.shoutUnoAnimation(currentPlayer);
+    }
+
+    private void exposeBranch(ViewPlayer[] viewPlayers, Point mouseClickPosition){
+        for (int i = 0; i < viewPlayers.length; i++) {
+            ViewPlayer p = viewPlayers[i];
+            if (p.getNamePosition().contains(mouseClickPosition) && gameTable.isExposable(i))
+            {
+                new Thread(() -> {
+                    view.exposedAnimation(p.getPlayer()).Join();
+                    gameTable.expose(p.getPlayer());
+                }).start();
+
+            }
+        }
     }
 
     private void drawCardBranch(ViewPlayer currentViewPlayer)
