@@ -1,71 +1,68 @@
 package Model.Player;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
+import javax.naming.Name;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 
 public class Stats
 {
+    public enum KEYS
+    {
+        VICTORIES("victories"),
+        DEFEATS("defeats"),
+        LEVEL("level");
+        String value;
+
+        KEYS(String val) {value = val;}
+        @Override
+        public String toString() { return value; }
+    }
     private int victories;
     private int defeats;
     private double level; //int part is the actual level and the decimal part
 
-    public Stats(HashMap<Object, Object> stats)  { updateStatsFromJson(stats); }
+    public Stats(HashMap<String, Object> stats) { setStatsFromHashMap(stats); }
 
     public Stats()  { defaultValues(); }
 
     /**
-     * Default values is an hashmap with the following values:
-     * <table>
-     *     <tr>
-     *          <td>"victories":</td>
-     *          <td>0</td>,
-     *          <td>"defeats":</td>
-     *          <td>0</td>,
-     *          <td>"level":</td>
-     *          <td>0</td>
-     *     </tr>
-     * </table>
-     * @return default values
+     * Values are contained into an hashmap the keys are string specified in {@link KEYS}.
+     * @return saved player values
      */
-    public HashMap<Object, Object> defaultValues()
-    {
-        return new HashMap<>()
-        {{
-            put("victories",0);
-            put("defeats",0);
-            put("level",0);
-        }};
-    }
+    public HashMap<String, Object> defaultValues() { return getHashMapValues(0, 0, 0); }
     /**
-     * Values are contained into an hashmap with the following keys:
-     * <table>
-     *     <tr>
-     *          <td>"victories"</td>,
-     *          <td>"defeats"</td>,
-     *          <td>"level"</td>
-     *     </tr>
-     * </table>
-     * @return default values
+     * Values are contained into an hashmap the keys are string specified in {@link KEYS}.
+     * @return saved player values
      */
-    public HashMap<Object, Object> values()
+    public HashMap<String, Object> getValues() { return getHashMapValues(victories, defeats, level); }
+
+    @NotNull
+    private HashMap<String, Object> getHashMapValues(int victories, int defeats, double level)
     {
         return new HashMap<>()
         {{
-            put("victories",victories);
-            put("defeats",defeats);
-            put("level",level);
+            put(KEYS.VICTORIES.toString(), victories);
+            put(KEYS.DEFEATS.toString(), defeats);
+            put(KEYS.LEVEL.toString(), level);
         }};
     }
 
-    public JSONObject getJsonStats()  { return new JSONObject(values()); }
-
-    public void updateStatsFromJson(HashMap<Object, Object> stats)
+    public void setStatsFromHashMap(HashMap<String, Object> stats)
     {
-        this.defeats = (int) stats.get("defeats");
-        this.victories = (int) stats.get("victories");
-        this.level = Double.parseDouble(stats.get("level").toString());
+        this.defeats = (int) stats.get(KEYS.DEFEATS.toString());
+        this.victories = (int) stats.get(KEYS.VICTORIES.toString());
+        this.level = Double.parseDouble(stats.get(KEYS.LEVEL.toString()).toString());
+    }
+
+    public void updateStats(int defeats, int victories, double exp)
+    {
+        this.defeats += defeats;
+        this.victories += victories;
+        this.level += exp;
     }
 
     public int getVictories() { return victories; }

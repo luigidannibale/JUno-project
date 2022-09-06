@@ -1,5 +1,5 @@
 package Model.Cards;
-import Model.Deck;
+import Model.DeckManager;
 import Model.Player.Player;
 
 /**
@@ -33,5 +33,5 @@ public class DrawCard extends ActionCard implements WildAction, SkipAction
     }
     public int getNumberOfCardsToDraw() { return numberOfCardsToDraw; }
     public void setNumberOfCardsToDraw(int numberOfCardsToDraw) { this.numberOfCardsToDraw = numberOfCardsToDraw; }
-    public void performDrawAction(Player player, int cardsToDraw, Deck deck) { player.drawCards(deck.draw(cardsToDraw)); }
+    public void performDrawAction(Player player, int cardsToDraw, DeckManager deckManager) { player.drawCards(deckManager.draw(cardsToDraw)); }
 }

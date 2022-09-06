@@ -16,15 +16,20 @@ public interface SkipAction
     default void performSkipAction(TurnManager turnManager, Player[] players, int playerToBlock)
     {
         if (turnManager.getPlayer() == playerToBlock) players[playerToBlock].setBlocked(true);
-        else recursiveSkipper(turnManager, players, playerToBlock - 1);
+        else recursiveSkipper(turnManager, players, playerToBlock);
     }
+
     default void performSkipAction(TurnManager turnManager, Player[] players) { performSkipAction(turnManager, players, turnManager.getPlayer()); }
+
     private void recursiveSkipper(TurnManager turnManager, Player[] players, int playerToBlock)
     {
-        Player next = players[turnManager.next(playerToBlock)];
-        if (next.equals(players[turnManager.getPlayer()])) return;
-        if (next.isBlocked()) recursiveSkipper(turnManager, players, playerToBlock+1);
-        else next.setBlocked(true);
+        Player playerToCheck = players[playerToBlock];
+        if (playerToCheck.equals(players[turnManager.getPlayer()])) return;
+        if (playerToCheck.isBlocked())
+            recursiveSkipper(turnManager, players, turnManager.next(playerToBlock));
+        else
+            playerToCheck.setBlocked(true);
+
     }
 
 }

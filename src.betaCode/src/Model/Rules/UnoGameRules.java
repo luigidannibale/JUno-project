@@ -1,40 +1,45 @@
 package Model.Rules;
 
 import Model.Cards.*;
-import Model.Deck;
+import Model.DeckManager;
 import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.TurnManager;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public abstract class UnoGameRules
 {
     /**
-     * @see Deck
+     * @see DeckManager
      */
-    protected HashMap<CardValue, Integer> cardsDistribution;
+    protected  HashMap<CardValue, Integer> CARDS_DISTRIBUTION;
     /**
      * How many cards can be played in a single turn,<br/>
      * to play more than a card in a single turn cards must be the same value.
      */
-    protected int numberOfPlayableCards;
+    protected  int NUMBER_OF_PLAYABLE_CARDS;
     /**
      * How many cards are distributed to each player at the start of the game.
      */
-    protected int numberOfCardsPerPlayer;
+    protected  int numberOfCardsPerPlayer;
 
+//    protected UnoGameRules(int numberOfCardsPerPlayer) {
+//        this.numberOfCardsPerPlayer = numberOfCardsPerPlayer;
+//    }
 
-    public ActionPerformResult startGame(Options parameters) {return performFirstCardAction(parameters);}
+    public boolean checkGameWin(Player current){return current.getHand().size() == 0 && current.hasSaidOne();}
+    public boolean checkWin(Player[] players, Player player){ return countPoints(players,player)>=500;}
     public int getNumberOfCardsPerPlayer() { return numberOfCardsPerPlayer; }
 
-    public HashMap<CardValue, Integer> getCardsDistribution() { return cardsDistribution; }
+    public HashMap<CardValue, Integer> getCARDS_DISTRIBUTION() { return CARDS_DISTRIBUTION; }
 
-    public boolean isStackableCards() { return numberOfPlayableCards > 1; }
+    public boolean isStackableCards() { return NUMBER_OF_PLAYABLE_CARDS > 1; }
 
-    public int getNumberOfPlayableCards() { return numberOfPlayableCards; }
+    public int getNUMBER_OF_PLAYABLE_CARDS() { return NUMBER_OF_PLAYABLE_CARDS; }
 
     public abstract ActionPerformResult performFirstCardAction(Options parameters);
 
@@ -68,7 +73,6 @@ public abstract class UnoGameRules
         }
         return ActionPerformResult.SUCCESSFUL;
     }
-
     protected ActionPerformResult _WildAction(Options parameters)
     {
         TurnManager turnManager = parameters.getTurnManager();
@@ -98,4 +102,20 @@ public abstract class UnoGameRules
         return ActionPerformResult.SUCCESSFUL;
     }
 
+    public int countPoints(Player[] players, Player winner)
+    {
+        int points = Arrays.stream(players).filter(p -> !p.equals(winner))
+                .flatMap(p -> p.getHand().stream())
+                .mapToInt(c -> c.getValue().VALUE)
+                .sum();
+        winner.updatePoints(points);
+        return points;
+    }
+
+    public void passTurn(TurnManager turnManager, Player currentPlayer)
+    {
+        currentPlayer.setDrew(false);
+        currentPlayer.setPlayed(false);
+        turnManager.passTurn();
+    }
 }

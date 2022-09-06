@@ -1,7 +1,7 @@
 package Model.Rules;
 
 import Model.Cards.CardColor;
-import Model.Deck;
+import Model.DeckManager;
 import Model.Player.Player;
 import Model.TurnManager;
 
@@ -9,7 +9,7 @@ public class Options
 {
     private final TurnManager turnManager;
     private final Player[] players;
-    private final Deck deck;
+    private final DeckManager deckManager;
     private final CardColor color;
     private final Player playerToSwapCards;
     private final int currentPlayer;
@@ -18,7 +18,7 @@ public class Options
     {
         turnManager = builder.turnManager;
         players = builder.players;
-        deck = builder.deck;
+        deckManager = builder.deckManager;
         color = builder.color;
         playerToSwapCards = builder.playerToSwapCards;
         currentPlayer = builder.currentPlayer;
@@ -26,7 +26,7 @@ public class Options
     }
     public TurnManager getTurnManager() { return turnManager; }
     public Player[] getPlayers() { return players; }
-    public Deck getDeck() { return deck; }
+    public DeckManager getDeck() { return deckManager; }
     public CardColor getColor() { return color; }
     public Player getPlayerToSwapCards() { return playerToSwapCards; }
     public int getCurrentPlayer() { return currentPlayer; }
@@ -36,17 +36,17 @@ public class Options
     {
         private TurnManager turnManager;
         private Player[] players;
-        private Deck deck;
+        private DeckManager deckManager;
         private CardColor color;
         private Player playerToSwapCards;
         private int currentPlayer;
         private int nextPlayer;
 
-        public OptionsBuilder(TurnManager turnManager, Player[] players, Deck deck)
+        public OptionsBuilder(TurnManager turnManager, Player[] players, DeckManager deckManager)
         {
             this.turnManager = turnManager;
             this.players = players;
-            this.deck = deck;
+            this.deckManager = deckManager;
             this.currentPlayer = turnManager.getPlayer();
             this.nextPlayer = turnManager.next();
         }
@@ -60,9 +60,9 @@ public class Options
             this.players = players;
             return this;
         }
-        public OptionsBuilder deck (Deck  deck)
+        public OptionsBuilder deck (DeckManager deckManager)
         {
-            this.deck = deck;
+            this.deckManager = deckManager;
             return this;
         }
         public OptionsBuilder color (CardColor  color)

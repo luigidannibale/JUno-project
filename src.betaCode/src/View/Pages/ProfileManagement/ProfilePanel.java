@@ -2,10 +2,10 @@ package View.Pages.ProfileManagement;
 
 import Utilities.Config;
 import Utilities.Utils;
-import View.Elements.CircleImage;
+import View.Elements.CircularImage;
 import View.Elements.ImageComponent;
 import View.Elements.ViewPlayer;
-import View.Elements.VolumeSlider;
+import View.Elements.ViewSlider;
 import View.Pages.ResizablePanel;
 
 import javax.swing.*;
@@ -23,7 +23,7 @@ public class ProfilePanel extends ResizablePanel
     private final Font fontLevel = new Font("Monsterrat", Font.PLAIN, (int) (13 * Config.scalingPercentage));
     private JLabel lblName;
     private JLabel lblLevel;
-    private VolumeSlider levelXpBar;
+    private ViewSlider levelXpBar;
     //private JButton btnQuit;
     private JLabel lblChangeIcon;
     private ImageComponent lblXp;
@@ -70,10 +70,9 @@ public class ProfilePanel extends ResizablePanel
         lblName.setFont(fontLevel);
         lblLevel.setBorder(new EmptyBorder(0,0,2,3));
 
-
         lblXp = new ImageComponent(imagePath + "xp.png",-1,-1,false);
 
-        levelXpBar = new VolumeSlider();
+        levelXpBar = new ViewSlider();
         levelXpBar.setName("levelXPbar");
         levelXpBar.setPreferredSize(new Dimension(140, 20));
         levelXpBar.setStringPainted(true);
@@ -235,7 +234,7 @@ public class ProfilePanel extends ResizablePanel
     {
         for (Component component : getComponents())
         {
-            System.out.println(component.getClass());
+            //System.out.println(component.getClass());
             if (component instanceof JLabel lbl)
             {
                 component.setFont(lbl.getFont().deriveFont((float) (lbl.getFont().getSize() * Config.scalingPercentage)));
@@ -278,7 +277,7 @@ public class ProfilePanel extends ResizablePanel
         thickness = 2;
         g2.setStroke(new BasicStroke(thickness));
         g2.setColor(Color.BLACK);
-        CircleImage profilePicture = player.getProfilePicture();
+        CircularImage profilePicture = player.getProfilePicture();
         g2.drawOval(profilePicture.getX() - thickness, profilePicture.getY() - thickness, profilePicture.getWidth() + thickness, profilePicture.getHeight() + thickness);
     }
 

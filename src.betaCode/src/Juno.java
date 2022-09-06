@@ -1,7 +1,7 @@
 import Controller.MainFrameController;
 import Model.Cards.Card;
 import Model.Cards.CardValue;
-import Model.Deck;
+import Model.DeckManager;
 import Utilities.Utils;
 
 import javax.swing.*;
@@ -48,12 +48,12 @@ public class Juno {
 
     public static void provaDeck()
     {
-        Deck deck = new Deck();
+        DeckManager deckManager = new DeckManager();
         System.out.print("I'm shuffling deck");
         for(int casualNumberOfTimes = 1; casualNumberOfTimes<(new Random()).nextInt(4,7); casualNumberOfTimes++)
         {
             System.out.print(".");
-            deck.shuffle();
+            deckManager.shuffle();
         }
         System.out.println();
         int i = 0;
@@ -63,7 +63,7 @@ public class Juno {
         int reverse = 0;
         int skip = 0;
         int normal = 0;
-        for (Card c : deck.getDeck()){
+        for (Card c : deckManager.getDeck()){
 
             System.out.print(i + " " + c + " ");
             i++;

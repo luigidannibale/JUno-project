@@ -6,17 +6,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class CircleImage extends JComponent
+public class CircularImage extends JComponent
 {
     private Image imm;
     private int width;
     private int height;
 
-    public CircleImage() { this("resources/images/MainFrame/StartingMenuPanel/ProfilePanel/anonymous.png", 60, 60); }
+    public CircularImage() { this("resources/images/MainFrame/StartingMenuPanel/ProfilePanel/anonymous.png", 60, 60); }
 
-    public CircleImage(String path) { this(path, 60, 60); }
+    public CircularImage(String path) { this(path, 60, 60); }
 
-    public CircleImage(String path, int width, int height)
+    public CircularImage(String path, int width, int height)
     {
         this.width = width;
         this.height = height;

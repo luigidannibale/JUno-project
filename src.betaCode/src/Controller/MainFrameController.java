@@ -1,16 +1,10 @@
 package Controller;
 
 import Model.Player.AIPlayer;
-import Model.Player.Player;
-import Model.Rules.ClassicRules;
-import Model.Rules.MemeRules;
-import Model.Rules.SevenoRules;
-import Model.Rules.UnoGameRules;
-import Model.UnoGameTable;
 import Utilities.AudioManager;
 import Utilities.Config;
 import Utilities.DataAccessManager;
-import View.Elements.CircleImage;
+import View.Elements.CircularImage;
 import View.Elements.ViewPlayer;
 import View.Pages.MainFrame;
 
@@ -21,7 +15,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.stream.Stream;
 
 public class MainFrameController extends Controller<MainFrame>
 {
@@ -52,7 +45,7 @@ public class MainFrameController extends Controller<MainFrame>
         Config.scalingPercentage = 1;
 
 
-        viewPlayer = new ViewPlayer(Config.loggedPlayer, new CircleImage(Config.savedIconPath));
+        viewPlayer = new ViewPlayer(Config.loggedPlayer, new CircularImage(Config.savedIconPath));
 
         backMusic = AudioManager.getInstance();
         soundEffects = AudioManager.getInstance();
@@ -170,7 +163,7 @@ public class MainFrameController extends Controller<MainFrame>
                 new ViewPlayer(new AIPlayer("Ai 3")),
         };
 
-        gameController = new GamePanelController(gameMode, viewPlayers);
+        gameController = new GamePanelController(this, gameMode, viewPlayers);
         setVisiblePanel(MainFrameController.Panels.GAME);
     }
 

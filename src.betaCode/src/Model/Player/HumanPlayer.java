@@ -16,14 +16,16 @@ public class HumanPlayer extends Player
         this.password = password;
         this.stats = new Stats();
     }
-    public HumanPlayer(String nickname,String password, HashMap stats)
+    public HumanPlayer(String nickname,String password, HashMap<String,Object> stats)
     {
         super(nickname);
         this.password = password;
         this.stats = new Stats(stats);
     }
     public HumanPlayer(HashMap<Object,Object> hashMap)
-    { this((String) hashMap.get("name"), (String) hashMap.get("password"), (HashMap) hashMap.get("stats")); }
+    {
+        this((String) hashMap.get("name"), (String) hashMap.get("password"), (HashMap<String, Object>) hashMap.get("stats"));
+    }
 
     public HashMap<Object,Object> getHashmapNamePassword()
     {

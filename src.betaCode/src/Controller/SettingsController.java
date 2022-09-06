@@ -14,11 +14,11 @@ public class SettingsController extends Controller<SettingsPanel>
     private DeckColor deckChanges;
     private MainFrameController.Panels returnPanel;
 
-    public SettingsController(MainFrameController mainFrame)
+    public SettingsController(MainFrameController mfc)
     {
         super(new SettingsPanel());
 
-        addButtonsListeners(mainFrame);
+        addButtonsListeners(mfc);
         addChangeableIconListeners();
         refreshSettings();
 
@@ -92,15 +92,15 @@ public class SettingsController extends Controller<SettingsPanel>
         view.getWhiteDeck().addMouseListener(deckColorStyleMouseAdapter);
         view.getDarkDeck().addMouseListener(deckColorStyleMouseAdapter);
 
-        VolumeSlider musicVolumeSlider = view.getMusicVolumeSlider();
+        ViewSlider musicViewSlider = view.getMusicVolumeSlider();
         ChangebleIcon musicLabel = view.getMusicLabel();
-        musicVolumeSlider.addPropertyChangeListener(evt -> {
-            var val = musicVolumeSlider.getValue();
+        musicViewSlider.addPropertyChangeListener(evt -> {
+            var val = musicViewSlider.getValue();
             if (val == 0) musicLabel.setIcon("off");
             else musicLabel.setIcon("on");
         });
-        musicVolumeSlider.addChangeListener(e -> {
-            var val = musicVolumeSlider.getValue();
+        musicViewSlider.addChangeListener(e -> {
+            var val = musicViewSlider.getValue();
             if (val == 0) musicLabel.setIcon("off");
             else musicLabel.setIcon("on");
         });
@@ -113,16 +113,16 @@ public class SettingsController extends Controller<SettingsPanel>
             else qualityLabel.setIcon("low");
         });
 
-        VolumeSlider effectsVolumeSlider = view.getEffectsVolumeSlider();
+        ViewSlider effectsViewSlider = view.getEffectsVolumeSlider();
         ChangebleIcon effectsLabel = view.getEffectsLabel();
-        effectsVolumeSlider.addPropertyChangeListener(evt -> {
-            var val = effectsVolumeSlider.getValue();
+        effectsViewSlider.addPropertyChangeListener(evt -> {
+            var val = effectsViewSlider.getValue();
             if (val == 0) effectsLabel.setIcon("off");
             else if (val < 40) effectsLabel.setIcon("low");
             else effectsLabel.setIcon("high");
         });
-        effectsVolumeSlider.addChangeListener(e -> {
-            var val = effectsVolumeSlider.getValue();
+        effectsViewSlider.addChangeListener(e -> {
+            var val = effectsViewSlider.getValue();
             if (val == 0) effectsLabel.setIcon("off");
             else if (val < 40) effectsLabel.setIcon("low");
             else effectsLabel.setIcon("high");

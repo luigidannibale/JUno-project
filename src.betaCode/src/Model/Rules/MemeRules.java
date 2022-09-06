@@ -1,7 +1,7 @@
 package Model.Rules;
 
 import Model.Cards.*;
-import Model.Deck;
+import Model.DeckManager;
 import Model.Player.Player;
 import Model.TurnManager;
 
@@ -11,24 +11,26 @@ import java.util.stream.Stream;
 
 public class    MemeRules extends UnoGameRules
 {
+    private final int POINTS_PER_GAME = 1000;
     private boolean isStacking;
-    private int stackedCardsToDraw;
+    private  int stackedCardsToDraw;
     private int playersToBlock;
     private int cardsPlayed;
     private ActionPerformResult lastAction;
 
     public MemeRules()
     {
-        cardsDistribution = Deck.classicRules;
-        cardsDistribution.putAll(new HashMap<>(){{
+
+        CARDS_DISTRIBUTION = DeckManager.classicRules;
+        CARDS_DISTRIBUTION.putAll(new HashMap<>(){{
             put(CardValue.SKIP,4);
             put(CardValue.DRAW,4);
             put(CardValue.REVERSE,4);
             put(CardValue.WILD,8);
             put(CardValue.WILD_DRAW,8);
         }});
-        numberOfPlayableCards = 3;
-        numberOfCardsPerPlayer = 2;
+        NUMBER_OF_PLAYABLE_CARDS = 3;
+        numberOfCardsPerPlayer = 11;
     }
 
     @Override
@@ -44,7 +46,9 @@ public class    MemeRules extends UnoGameRules
 
     @Override
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick)
-    { return isStacking ? filterByValue(playerPlayableHand.stream(), discardsPick).toList() : playerPlayableHand; }
+    {
+        return isStacking ? filterByValue(playerPlayableHand.stream(), discardsPick).toList() : playerPlayableHand;
+    }
 
     private Stream<Card> getStackableCards(Stream<Card> stream, Card card) { return filterByValue(stream,card).filter(c -> !c.isWild.test(c)); }
 
@@ -66,7 +70,7 @@ public class    MemeRules extends UnoGameRules
             turnManager.updateLastCardPlayed(drawCard);
         }
 
-        if (cardsPlayed < numberOfPlayableCards - 1 && getStackableCards(currentPlayer.getHand().stream(), lastCardPlayed).toList().size() > 0)
+        if (cardsPlayed < NUMBER_OF_PLAYABLE_CARDS - 1 && getStackableCards(currentPlayer.getHand().stream(), lastCardPlayed).toList().size() > 0)
         {//current player has more stackable cards
             if (lastCardPlayed instanceof ReverseCard) _ReverseAction(turnManager);
             isStacking = true;
@@ -99,11 +103,17 @@ public class    MemeRules extends UnoGameRules
         return lastAction;
     }
 
+    @Override
+    public int countPoints(Player[] players, Player winner)
+    {
+        winner.updatePoints(POINTS_PER_GAME);
+        return POINTS_PER_GAME;
+    }
+
+    @Override
     public void passTurn(TurnManager turnManager, Player currentPlayer)
     {
+        super.passTurn(turnManager, currentPlayer);
         cardsPlayed = 0;
-        currentPlayer.setDrew(false);
-        currentPlayer.setPlayed(false);
-        turnManager.passTurn();
     }
 }

@@ -19,7 +19,7 @@ public class GameChoiceController extends Controller<GameChoicePanel>
         SEVENO_RULES
     }
 
-    public GameChoiceController(MainFrameController mainFrame)
+    public GameChoiceController(MainFrameController mfc)
     {
         super(new GameChoicePanel());
 
@@ -31,7 +31,7 @@ public class GameChoiceController extends Controller<GameChoicePanel>
                 public void mouseReleased(MouseEvent e)
                 {
                     super.mouseReleased(e);
-                    createNewGame(mainFrame, gameMode);
+                    createNewGame(mfc, gameMode);
                 }
             });
             view.getInfoLabels()[gameMode.ordinal()].addMouseListener(new CustomMouseAdapter() {
@@ -64,7 +64,7 @@ public class GameChoiceController extends Controller<GameChoicePanel>
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
-                mainFrame.setVisiblePanel(MainFrameController.Panels.STARTMENU);
+                mfc.setVisiblePanel(MainFrameController.Panels.STARTMENU);
             }
         });
     }

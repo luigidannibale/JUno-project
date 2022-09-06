@@ -15,9 +15,10 @@ import java.util.*;
  * @see Stack<Card>
  * @author D'annibale Luigi, Venturini Daniele
  */
-public class Deck
+public class DeckManager
 {
     private Stack<Card> deck;
+    private Stack<Card> discards;
     /**
      * <strong>Classic card distrbution of Uno</strong> <br/>
      *108 cards distributed so:
@@ -57,12 +58,7 @@ public class Deck
     /**
      * Creates a deck with classic Uno cards distribution
      * */
-    public Deck()
-    {
-        deck = new Stack<>();
-        createDeck(classicRules);
-        shuffle();
-    }
+    public DeckManager() { this(classicRules); }
     /**
     *
     * @param numberOfCards:
@@ -71,10 +67,11 @@ public class Deck
     *                     number of cards that have to assume that value.
     * @throws IllegalArgumentException : If the size of the numerOfCards is not 15.
     */
-    public Deck(HashMap<CardValue,Integer> numberOfCards)
+    public DeckManager(HashMap<CardValue,Integer> numberOfCards)
     {
         assert (numberOfCards.size() == 15):"Specify one number for each of the CardValue in the deck creation";
         deck = new Stack<>();
+        discards = new Stack<>();
         createDeck(numberOfCards);
         shuffle();
     }
@@ -86,19 +83,18 @@ public class Deck
      */
     private void createDeck(HashMap<CardValue,Integer> cardsDistribution)
     {
-        for (CardColor color : CardColor.values())
+        //adds the wild cards
+        Arrays.stream(CardColor.values()).forEach(color ->
         {
-            //adds the wild cards
             if (color == CardColor.WILD)
             {
-                addManyCards(color,CardValue.WILD,cardsDistribution.get(CardValue.WILD));
-                addManyCards(color,CardValue.WILD_DRAW,cardsDistribution.get(CardValue.WILD_DRAW));
+                addManyCards(color, CardValue.WILD, cardsDistribution.get(CardValue.WILD));
+                addManyCards(color, CardValue.WILD_DRAW, cardsDistribution.get(CardValue.WILD_DRAW));
             }
             //adds the red, blue, green and yellow cards
             else
-                for (CardValue value : Arrays.stream(CardValue.values()).filter(cardValue -> !(cardValue == CardValue.WILD || cardValue == CardValue.WILD_DRAW)).toList())
-                    addManyCards(color, value, cardsDistribution.get(value));
-        }
+                Arrays.stream(CardValue.values()).filter(cardValue -> !(cardValue == CardValue.WILD || cardValue == CardValue.WILD_DRAW)).toList().forEach(value -> addManyCards(color, value, cardsDistribution.get(value)));
+        });
     }
     /**
      *
@@ -117,7 +113,10 @@ public class Deck
      * @return Card : the {@link Card} drawed out
      */
     public Card draw()
-    { return deck.size() >0?  deck.pop():null; }
+    {
+        if (deck.size() == 0) re_shuffle();
+        return deck.pop();
+    }
     /**
      * Pops the first cards on the deck: <br/>
      * the number of cards to pop is specified as param.
@@ -155,28 +154,17 @@ public class Deck
     /**
      * Builds the deck from the discards stack, <br/>
      * this method should be called when the deck goes out of bounds.
-     * @param discards
      */
-    public void re_shuffle(Stack<Card> discards)
+    private void re_shuffle()
     {
-        deck = discards;
+        Card last = discards.pop();
+        deck.addAll(discards);
+        discards.removeAllElements();
+        discards.push(last);
         shuffle();
     }
-}
+    public Stack<Card> getDiscards() { return discards; }
+    public void pushDiscards(Card card) { discards.push(card); }
+    public Card peekDiscards() { return discards.peek(); }
 
-//nousecode
-     /*for (CardColor c : CardColor.values())
-        {//deck creation starts
-            if (c == CardColor.WILD) continue;
-            for (CardValue v : CardValue.values()) {
-                switch (v) {
-                    case DRAW -> deck.addAll(Arrays.asList(new DrawCard(c), new DrawCard(c)));
-                    case SKIP -> deck.addAll(Arrays.asList(new SkipCard(c), new SkipCard(c)));
-                    case REVERSE -> deck.addAll(Arrays.asList(new ReverseCard(c), new ReverseCard(c)));
-                    case WILD -> deck.add(new WildCard());
-                    case WILD_DRAW -> deck.add(new DrawCard(CardColor.WILD));
-                    case ZERO -> deck.add(new Card(c, v));
-                    default -> deck.addAll(Arrays.asList(new Card(c, v), new Card(c, v)));
-                }
-            }
-        }//deck creation ends*/
+}

@@ -5,6 +5,7 @@ import Model.Cards.CardColor;
 import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
+import Model.Rules.ActionPerformResult;
 import Model.UnoGameTable;
 import Utilities.AudioManager;
 import Utilities.Config;
@@ -20,6 +21,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class GamePanel extends JPanel implements Observer
@@ -28,20 +30,26 @@ public class GamePanel extends JPanel implements Observer
     {
         PLAYER_TURN,
         AI_TURN,
-        GAME_PAUSED;
+        GAME_PAUSED,
+        WIN,
+        ACTUAL_WIN
     }
     private static final String imagePath = "resources/images/MainFrame/GamePanel/";
+
     private final Color green = new Color(14, 209, 69);
     private final Color playerBackground = new Color(101, 132, 247, 160);
     private final Color currentPlayerBackground = new Color(255, 209, 26, 160);
     private final Font fontNames;
+    private final Font titleFont;
+    private final Font ladderFont;
 
     private int maxCardsWidth = 1350;
     private int maxCardsHeight = 810;
 
-    Thread aiThread;
-    Thread gameThread;
-    boolean gameRunning = true;
+    private Thread aiThread;
+    private boolean aiIsAlive = false;
+    private Thread gameThread;
+    private boolean gameRunning = true;
 
     private final int centerX;
     private final int centerY;
@@ -60,6 +68,18 @@ public class GamePanel extends JPanel implements Observer
     private final RotatingAnimation rotatingAnimation;
     private Rectangle skipTurnPosition;
     private Rectangle unoPosition;
+    private Rectangle continuePosition;
+
+    //LADDER
+    private List<Player> ladder;
+    final AlphaComposite transparent = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f);
+    int ladderWidth = (int) (550 * Config.scalingPercentage);
+    int ladderHeight = (int) (700 * Config.scalingPercentage);
+    int ladderX;
+    int ladderY;
+    int ladderThickness = 5;
+    BasicStroke a = new BasicStroke(ladderThickness);
+    String continueString = "CONTINUE";
 
     public GamePanel(ViewPlayer[] viewPlayers)
     {
@@ -72,10 +92,15 @@ public class GamePanel extends JPanel implements Observer
         ViewCard.height = (int) (180 * Config.scalingPercentage);
         ViewCard.width = (int) (120 * Config.scalingPercentage);
         fontNames = new Font("Digital-7", Font.PLAIN, (int) (25 * Config.scalingPercentage));
+        titleFont = new Font("Digital-7", Font.BOLD, (int) (60 * Config.scalingPercentage));
+        ladderFont = new Font("Digital-7", Font.BOLD, (int) (40 * Config.scalingPercentage));
 
         var screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         centerX = screenSize.width / 2;
         centerY = screenSize.height / 2;
+
+        ladderX = centerX - ladderWidth / 2;
+        ladderY = centerY - ladderHeight / 2;
 
         maxCardsWidth = (int) (maxCardsWidth * Config.scalingPercentage);
         maxCardsHeight = (int) (maxCardsHeight * Config.scalingPercentage);
@@ -88,7 +113,17 @@ public class GamePanel extends JPanel implements Observer
     }
     private void repaintView()
     {
-        gameThread = new Thread(() -> { while(gameRunning) repaint(); },"gameViewPeriodicRepaint");
+        gameThread = new Thread(() ->
+        {
+            while(gameRunning)
+            {
+                repaint();
+                try {
+                    TimeUnit.MILLISECONDS.sleep(20);
+                } catch (InterruptedException e) {
+                    System.out.println("CHIUso");
+                }
+        } },"gameViewPeriodicRepaint");
         gameThread.start();
     }
 
@@ -156,6 +191,7 @@ public class GamePanel extends JPanel implements Observer
         animations = new ArrayList<>();
         skipTurnPosition = new Rectangle();
         unoPosition = new Rectangle();
+        continuePosition = new Rectangle();
     }
 
     ///debug
@@ -163,6 +199,7 @@ public class GamePanel extends JPanel implements Observer
     int dps;
     double media;
     ///debug
+
     @Override
     protected void paintComponent(Graphics g)
     {
@@ -170,57 +207,45 @@ public class GamePanel extends JPanel implements Observer
 
         long start = System.nanoTime();
 
-//        if (currentState == State.WIN)
-//        {
-//
-//            return;
-//        }
-
         g.setColor(green);
         g.fillRect(0,0, getWidth(), getHeight());
 
         Graphics2D g2 = (Graphics2D) g;
         if (Config.graphicQuality == GraphicQuality.HIGH) Utils.applyQualityRenderingHints(g2);
 
-        if (players != null)
+        drawHorizontalHand(viewPlayers[0], g2, getHeight() - ViewCard.height);
+        drawHorizontalHand(viewPlayers[2], g2, 0);
+        drawVerticalHand(viewPlayers[1], g2, getWidth() - ViewCard.height);
+        drawVerticalHand(viewPlayers[3], g2, 0);
+
+        g2.drawImage(discard.getCardImage(), centerX + 25, centerY - ViewCard.height / 2, ViewCard.width, ViewCard.height, null);
+        discard.setPosition(centerX + 25, centerY - ViewCard.height / 2, ViewCard.width);
+
+        if (deckSize > 1)
         {
-            drawHorizontalHand(viewPlayers[0], g2, getHeight() - ViewCard.height);
-            drawHorizontalHand(viewPlayers[2], g2, 0);
-            drawVerticalHand(viewPlayers[1], g2, getWidth() - ViewCard.height);
-            drawVerticalHand(viewPlayers[3], g2, 0);
-
-            g2.drawImage(discard.getCardImage(), centerX + 25, centerY - ViewCard.height / 2, ViewCard.width, ViewCard.height, null);
-            discard.setPosition(centerX + 25, centerY - ViewCard.height / 2, ViewCard.width);
-
-            //centerX = getWidth() / 2;
-            //centerY = getHeight() / 2;
-
-            if (deckSize > 1)
-            {
-                int x = centerX - 25 - ViewCard.width;
-                int y = centerY - ViewCard.height / 2;
-                g2.drawString(String.valueOf(deckSize), x, y - 10);
-                g2.drawImage(deck.getCardImage(), x, y, ViewCard.width, ViewCard.height, null);
-                deck.setPosition(x, y, ViewCard.width);
-            }
-
-            //rotatingAnimation.paint(g2);
-
-            Iterator<Animation> iter = animations.iterator();
-            while(iter.hasNext()){
-                Animation animation = iter.next();
-                if (animation.isAlive()) animation.paint(g2);
-                else iter.remove();
-            }
+            int x = centerX - 25 - ViewCard.width;
+            int y = centerY - ViewCard.height / 2;
+            g2.drawString(String.valueOf(deckSize), x, y - 10);
+            g2.drawImage(deck.getCardImage(), x, y, ViewCard.width, ViewCard.height, null);
+            deck.setPosition(x, y, ViewCard.width);
         }
+
+        Iterator<Animation> iter = animations.iterator();
+        while(iter.hasNext()){
+            Animation animation = iter.next();
+            if (animation.isAlive()) animation.paint(g2);
+            else iter.remove();
+        }
+
+        if (currentState == State.WIN || currentState == State.ACTUAL_WIN) drawLadder(g2);
 
         ///debug
         long end = System.nanoTime();
         media += (end - start) / 1000000000.0;
         count += 1;
-        if (count == 60){
+        if (count == 60)
+        {
             media /= 60;
-            //System.out.println("Draw time: " + media + "sec");
             count = 0;
             dps = (int) (1 / media);
         }
@@ -233,19 +258,28 @@ public class GamePanel extends JPanel implements Observer
     public void update(Observable o, Object arg)
     {
         UnoGameTable gameTable = (UnoGameTable) o;
-        players = gameTable.getPlayers();
         lastCard = gameTable.getLastCard();
-        deckSize = gameTable.getDeck().size();
-        if (Arrays.stream(players).filter(p -> p.getHand().size() == 0).count() == 1) gameRunning = false;
         createCards();
-
-        //currentViewPlayer = Arrays.stream(viewPlayers).filter(c -> c.getPlayer().equals(gameTable.currentPlayer())).toList().get(0);
-        //if (gameTable.currentPlayerIndex() == -1) return;
-        int prePreviousPlayer = gameTable.getTurnManager().previous(gameTable.getTurnManager().previous());
-        if(gameTable.isExposable(prePreviousPlayer) )
-            players[prePreviousPlayer].shoutUno();
-
         currentViewPlayer = viewPlayers[gameTable.currentPlayerIndex()];
+
+        if(gameTable.hasWin())
+        {
+            boolean win = gameTable.checkWin(currentViewPlayer.getPlayer());
+            ladder = Arrays.stream(viewPlayers).map(ViewPlayer::getPlayer).sorted(Comparator.comparing(Player::getPoints).reversed()).toList();
+            currentState = win ? State.ACTUAL_WIN : State.WIN; //se vince vince sennò vince
+            return;
+        }
+
+        players = gameTable.getPlayers();
+        deckSize = gameTable.getDeck().size();
+
+        int prePreviousPlayer = gameTable.getTurnManager().previous(gameTable.getTurnManager().previous());
+        if(viewPlayers[prePreviousPlayer].getPlayer() instanceof AIPlayer && gameTable.isExposable(prePreviousPlayer) )
+        {
+            System.out.println("E STATO SALVATO");
+            players[prePreviousPlayer].shoutUno();
+        }
+
 
         if (currentViewPlayer.getPlayer().isBlocked())
         {
@@ -254,21 +288,20 @@ public class GamePanel extends JPanel implements Observer
             return;
         }
 
-        if (currentState != State.GAME_PAUSED) currentState = getState();
-
-        if (rotatingAnimation.isAlive()) {
+        if (rotatingAnimation.isAlive())
+        {
             rotatingAnimation.changeTurn(gameTable.antiClockwiseTurn());
             rotatingAnimation.imageColor(discard.getCard().getColor());
         }
 
-        if (currentState == State.AI_TURN) {
-            asyncAITurn(gameTable);
-        }
+        if (currentState != State.GAME_PAUSED) currentState = getState();
+        if (currentState == State.AI_TURN && !aiIsAlive) { asyncAITurn(gameTable); }
     }
 
     public void createCards()
     {
-        try{
+        try
+        {
             int[] rotations = new int[]{0, 270, 180, 90};
 
             for (ViewPlayer viewPlayer : viewPlayers){
@@ -280,45 +313,49 @@ public class GamePanel extends JPanel implements Observer
         catch (ConcurrentModificationException cme){ }
     }
 
+    private void sleep(int min, int max){
+        try { Thread.sleep(new Random().nextInt(min, max)); }
+        catch (InterruptedException e) { System.out.println("interrupted exception"); e.printStackTrace(); }
+    }
+
     public void asyncAITurn(UnoGameTable gameTable)
     {
+        System.out.println("E TURNO AI");
+        aiIsAlive = true;
         aiThread = new Thread(() ->
         {
-            try
+            AIPlayer ai = (AIPlayer) currentViewPlayer.getPlayer();
+
+            sleep(1300, 1500);
+            if (gameTable.isExposable(gameTable.getTurnManager().previous()) && new Random().nextInt(1,4)>1)
             {
-                AIPlayer ai = (AIPlayer) currentViewPlayer.getPlayer();
-
-                Thread.sleep(new Random().nextInt(1300, 2500));
-                if (gameTable.isExposable(gameTable.getTurnManager().previous()) && new Random().nextInt(1,4)>1)
-                {
-                    Player player = players[gameTable.getTurnManager().previous()];
-                    exposedAnimation(player).Join();
-                    gameTable.expose(player);
-                }
-
-                List<Card> playableCards = gameTable.getCurrentPlayerPLayableCards();
-
-                if (playableCards.size() == 0)
-                {
-                    if (!ai.hasDrew())
-                    {
-                        drawCardAnimation(currentViewPlayer, new ViewCard()).Join();
-                        gameTable.drawCard(ai);
-                    }
-                    else gameTable.passTurn();
-                }
-                else
-                {
-                    Card playedCard = playableCards.get(0);
-                    ViewCard relatedImage = currentViewPlayer.getImagesHand().stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
-                    playCardAnimation(relatedImage).Join();
-
-                    gameTable.playCard(gameTable.getCurrentPlayerPLayableCards().get(0));
-                    gameTable.cardActionPerformance(gameTable.getOptions().build());
-                }
+                Player player = players[gameTable.getTurnManager().previous()];
+                exposedAnimation().Join();
+                gameTable.expose(player);
+                sleep(300, 500);
             }
-            catch (InterruptedException e) { System.out.println("interrupted exception"); e.printStackTrace(); }
-            catch (Exception e) { System.out.println(e.getClass());e.printStackTrace(); }
+
+            List<Card> playableCards = gameTable.getCurrentPlayerPLayableCards();
+
+            aiIsAlive = false;
+            if (playableCards.size() == 0)
+            {
+                if (!ai.hasDrew() && !ai.hasPlayed())
+                {
+                    drawCardAnimation(currentViewPlayer, new ViewCard()).Join();
+                    gameTable.drawCard(ai);
+                }
+                else gameTable.passTurn();
+            }
+            else
+            {
+                Card playedCard = playableCards.get(0);
+                ViewCard relatedImage = currentViewPlayer.getImagesHand().stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
+                playCardAnimation(relatedImage).Join();
+
+                ActionPerformResult res = gameTable.playCard(gameTable.getCurrentPlayerPLayableCards().get(0));
+                if (res != ActionPerformResult.WIN) gameTable.cardActionPerformance(gameTable.getOptions().build());
+            }
         });
         aiThread.setName(currentViewPlayer.getPlayer().getName());
         aiThread.start();
@@ -361,6 +398,7 @@ public class GamePanel extends JPanel implements Observer
     {
         if ((player instanceof HumanPlayer && player.hasSaidOne()) || (player instanceof AIPlayer && new Random().nextInt(1, 5) > 1))
         {
+            System.out.println("HA DETTO UNO");
             player.shoutUno();
             AudioManager.getInstance().setEffects(AudioManager.Effects.UNO);
             animations.add(new TextAnimation(imagePath + "uno.gif", centerX, centerY));
@@ -369,7 +407,7 @@ public class GamePanel extends JPanel implements Observer
             System.out.println("NON HA DETTO UNO");
     }
 
-    public Animation exposedAnimation(Player player)
+    public Animation exposedAnimation()
     {
         AudioManager.getInstance().setEffects(AudioManager.Effects.ERROR);
         var a = new TextAnimation(imagePath + "exposed.gif", centerX, centerY);
@@ -379,11 +417,58 @@ public class GamePanel extends JPanel implements Observer
 
     public boolean animationRunning(Animation anim){return anim != null && anim.isAlive();}
 
+    private void drawLadder(Graphics2D g2)
+    {
+        Composite noTransparent = g2.getComposite();
+
+        g2.setColor(Color.BLACK);
+        g2.setComposite(transparent);
+        g2.fillRect(ladderX, ladderY, ladderWidth, ladderHeight);
+
+        g2.setColor(Color.WHITE);
+        g2.setComposite(noTransparent);
+        g2.setStroke(a);
+        g2.drawRect(ladderX, ladderY, ladderWidth, ladderHeight);
+
+        g2.setFont(titleFont);
+        int titleWidth = g2.getFontMetrics().stringWidth("RESULTS");
+        int titleHeight = g2.getFontMetrics().getHeight();
+        int titleX = centerX - titleWidth / 2;
+        int titleY = ladderY + ladderHeight / 10;
+        g2.setColor(Color.YELLOW);
+        g2.drawString("RESULTS", titleX, titleY);
+
+        g2.setFont(ladderFont);
+        g2.setColor(Color.WHITE);
+        int namesX = ladderX + ladderWidth / 10;
+        int namesY = titleY + titleHeight + ladderHeight / 15;
+        int incrementY = g2.getFontMetrics().getHeight() + ladderHeight / 10;
+        int pointsX = namesX + ladderWidth / 2;
+        g2.setColor(Color.GREEN);
+        for (Player p : ladder){
+            String points = String.valueOf(p.getPoints());
+            g2.drawString(p.getName(), namesX, namesY);
+            g2.drawString(points, pointsX, namesY);
+            g2.drawLine(namesX - 10, namesY + 5, pointsX + g2.getFontMetrics().stringWidth(points) + 10, namesY + 5);
+            g2.setColor(Color.WHITE);
+            namesY += incrementY;
+        }
+
+        if (currentState == State.ACTUAL_WIN) continueString = "EXIT";
+        g2.setColor(playerBackground);
+        int continueWidth = g2.getFontMetrics().stringWidth(continueString);
+        int continueHeight = g2.getFontMetrics().getHeight();
+        int continueX = ladderX + ladderWidth - continueWidth - ladderWidth / 10;
+        int continueY = ladderY + ladderHeight - ladderHeight / 15;
+        g2.drawString(continueString, continueX, continueY);
+        continuePosition.setRect(continueX, continueY - continueHeight, continueWidth, continueHeight);
+    }
+
     private void drawHorizontalHand(ViewPlayer player, Graphics2D g2, int y)
     {
         int cardsSpace = Math.min(player.getPlayer().getHand().size() * ViewCard.width, maxCardsWidth);
         int startX = (getWidth() - cardsSpace) / 2;
-        int cardsWidth = cardsSpace / player.getPlayer().getHand().size();
+        int cardsWidth = getCardsWidth(player, cardsSpace);
 
         int width = ViewCard.width;
         int height = ViewCard.height;
@@ -405,11 +490,25 @@ public class GamePanel extends JPanel implements Observer
         }
     }
 
+    private int getCardsWidth(ViewPlayer player, int cardsSpace)
+    {
+        int cardsWidth;
+        try
+        {
+            cardsWidth = cardsSpace / player.getPlayer().getHand().size();
+        }
+        catch (ArithmeticException e)
+        {
+            cardsWidth = cardsSpace;
+        }
+        return cardsWidth;
+    }
+
     private  void drawVerticalHand(ViewPlayer player, Graphics2D g2, int x)
     {
         int cardsSpace = Math.min(player.getPlayer().getHand().size() * ViewCard.width, maxCardsHeight);
         int startY = (getHeight() - cardsSpace) / 2;
-        int cardsWidth = cardsSpace / player.getPlayer().getHand().size();
+        int cardsWidth = getCardsWidth(player,cardsSpace);
 
         drawNames(player, x == 0 ? ViewCard.height + 50 : x - 100, maxCardsHeight - 100, g2, 5, 80);
 
@@ -488,6 +587,7 @@ public class GamePanel extends JPanel implements Observer
     public ViewPlayer getCurrentViewPlayer() { return currentViewPlayer; }
     public Rectangle getSkipTurnPosition() {return skipTurnPosition;}
     public Rectangle getUnoPosition() {return unoPosition;}
+    public Rectangle getContinuePosition() {return continuePosition;}
     public void cardNotPLayableEffects() { AudioManager.getInstance().setEffects(AudioManager.Effects.NOT_VALID); }
 }
 

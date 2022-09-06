@@ -1,7 +1,7 @@
 package Model.Rules;
 
 import Model.Cards.*;
-import Model.Deck;
+import Model.DeckManager;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.TurnManager;
@@ -14,12 +14,13 @@ public class SevenoRules extends UnoGameRules
 
     public SevenoRules()
     {
-        cardsDistribution = Deck.classicRules;
-        cardsDistribution.putAll(new HashMap<>(){{
+
+        CARDS_DISTRIBUTION = DeckManager.classicRules;
+        CARDS_DISTRIBUTION.putAll(new HashMap<>(){{
             put(CardValue.ZERO,3);
             put(CardValue.SEVEN,4);
         }});
-        numberOfPlayableCards = 1;
+        NUMBER_OF_PLAYABLE_CARDS = 1;
         numberOfCardsPerPlayer = 7;
     }
 
@@ -60,7 +61,7 @@ public class SevenoRules extends UnoGameRules
             IntStream.range(0, players.length).forEach(i -> players[i].swapHand(hands.get(i)));
         }
 
-        if (actionPerformResult == ActionPerformResult.SUCCESSFUL) turnManager.passTurn();
+        if (actionPerformResult == ActionPerformResult.SUCCESSFUL) passTurn(turnManager, currentPlayer);
         return actionPerformResult;
     }
 

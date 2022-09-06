@@ -2,7 +2,6 @@ package View.Elements;
 
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
-import org.w3c.dom.css.Rect;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -12,11 +11,11 @@ public class ViewPlayer
     private Player player;
     private ArrayList<ViewAnimableCard> imagesHand;
     private Rectangle namePosition = new Rectangle();
-    private CircleImage profilePicture;
+    private CircularImage profilePicture;
 
-    public ViewPlayer(String name) { this(new HumanPlayer(name, "null"), new CircleImage()); }
+    public ViewPlayer(String name) { this(new HumanPlayer(name, "null"), new CircularImage()); }
 
-    public ViewPlayer(Player player, CircleImage profilePicture)
+    public ViewPlayer(Player player, CircularImage profilePicture)
     {
         this.player = player;
         this.profilePicture = profilePicture;
@@ -25,7 +24,7 @@ public class ViewPlayer
     public ViewPlayer(Player player)
     {
         this.player = player;
-        this.profilePicture = new CircleImage();
+        this.profilePicture = new CircularImage();
     }
 
     public void updatePlayer(Player player)
@@ -41,11 +40,11 @@ public class ViewPlayer
 
     public Rectangle getNamePosition() { return namePosition; }
 
-    public void setProfilePicture(CircleImage profilePicture) { this.profilePicture = profilePicture; }
+    public void setProfilePicture(CircularImage profilePicture) { this.profilePicture = profilePicture; }
 
     public Player getPlayer(){ return player; }
 
-    public CircleImage getProfilePicture() { return profilePicture; }
+    public CircularImage getProfilePicture() { return profilePicture; }
 
     public void setImagesHand(ArrayList<ViewAnimableCard> imagesHand){ this.imagesHand = imagesHand; }
 

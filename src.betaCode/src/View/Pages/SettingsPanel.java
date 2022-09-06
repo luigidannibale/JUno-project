@@ -19,9 +19,9 @@ public class SettingsPanel extends ResizablePanel
     private GifComponent closeButton;
     private ImageComponent gameOver;
     private ChangebleIcon effectsLabel;
-    private VolumeSlider effectsVolumeSlider;
+    private ViewSlider effectsViewSlider;
     private ChangebleIcon musicLabel;
-    private VolumeSlider musicVolumeSlider;
+    private ViewSlider musicViewSlider;
     private ImageComponent deckStyleLabel;
     private DeckRectangle darkDeck;
     private DeckRectangle whiteDeck;
@@ -55,10 +55,10 @@ public class SettingsPanel extends ResizablePanel
         saveButton = new GifComponent(imagePath + "save");
         closeButton =new GifComponent(imagePath + "discard");
 
-        effectsVolumeSlider = new VolumeSlider();
-        effectsVolumeSlider.addMouseListener();
-        musicVolumeSlider = new VolumeSlider();
-        musicVolumeSlider.addMouseListener();
+        effectsViewSlider = new ViewSlider();
+        effectsViewSlider.addMouseListener();
+        musicViewSlider = new ViewSlider();
+        musicViewSlider.addMouseListener();
 
         whiteDeck = new DeckRectangle(imagePath+"white.png", "White Deck", DeckColor.WHITE);
         darkDeck = new DeckRectangle(imagePath+"black.png", "Dark Deck", DeckColor.BLACK);
@@ -80,7 +80,7 @@ public class SettingsPanel extends ResizablePanel
 
         gbc.gridx = 2;      gbc.gridy = 0;
         gbc.weightx = 0.5;  gbc.weighty = 0.5;
-        add(effectsVolumeSlider, gbc);
+        add(effectsViewSlider, gbc);
 
         //------------Second line
         gbc.gridx = 0;      gbc.gridy = 1;
@@ -89,7 +89,7 @@ public class SettingsPanel extends ResizablePanel
 
         gbc.gridx = 2;      gbc.gridy = 1;
         gbc.weightx = 0.5;  gbc.weighty = 0.5;
-        add(musicVolumeSlider, gbc);
+        add(musicViewSlider, gbc);
 
         //------------Third line
         gbc.gridx = 0;      gbc.gridy = 2;
@@ -139,9 +139,9 @@ public class SettingsPanel extends ResizablePanel
 
     public JLabel getGameOverButton(){ return gameOver; }
 
-    public VolumeSlider getEffectsVolumeSlider(){ return effectsVolumeSlider; }
+    public ViewSlider getEffectsVolumeSlider(){ return effectsViewSlider; }
 
-    public VolumeSlider getMusicVolumeSlider(){ return musicVolumeSlider; }
+    public ViewSlider getMusicVolumeSlider(){ return musicViewSlider; }
 
     public DeckRectangle getWhiteDeck() { return whiteDeck; }
 

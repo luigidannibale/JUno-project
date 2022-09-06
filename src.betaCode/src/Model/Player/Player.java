@@ -14,6 +14,7 @@ public abstract class Player
     protected boolean drew;
     protected boolean played;
     protected boolean isBlocked;
+    protected int points;
 
     protected Player(String name)
     {
@@ -35,7 +36,8 @@ public abstract class Player
      * Adds the drew cards to the hand of the player
      * @param drewCards
      */
-    public void drawCards(List<Card> drewCards){
+    public void drawCards(List<Card> drewCards)
+    {
         hand.addAll(drewCards);
         saidOne = false;
     }
@@ -44,7 +46,8 @@ public abstract class Player
      * Removes the played card from the hand of the player
      * @param played
      */
-    public void playCard(Card played){
+    public void playCard(Card played)
+    {
         hand.remove(played);
         this.played = true;
     }
@@ -79,9 +82,7 @@ public abstract class Player
 
     public void setBlocked(boolean isBlocked) {this.isBlocked = isBlocked;}
 
-    public void setPlayed(boolean played) {
-        this.played = played;
-    }
+    public void setPlayed(boolean played) { this.played = played; }
 
     public void falseSaidOne(){ saidOne = false; }
 
@@ -100,8 +101,12 @@ public abstract class Player
         drew = false;
         isBlocked = false;
         saidOne = false;
+        points = 0;
     }
-
+    public int getPoints() { return points; }
+    public void setPoints(int points) { this.points = points; }
+    public void updatePoints(int points) { this.points += points; }
     @Override
     public String toString(){ return name; }
+
 }

@@ -14,11 +14,11 @@ import java.util.stream.IntStream;
  *
  * @author D'annibale Luigi, Venturini Daniele
  */
-public class UnoGameTable extends Observable {
+public class UnoGameTable extends Observable
+{
     protected UnoGameRules ruleManager;
     protected TurnManager turnManager;
-    protected Deck deck;
-    protected Stack<Card> discards;
+    protected DeckManager deckManager;
     protected Player[] players;
 
     //win must be a method
@@ -27,10 +27,7 @@ public class UnoGameTable extends Observable {
     public UnoGameTable(Player[] players, UnoGameRules ruleManager)
     {
         this.ruleManager = ruleManager;
-        deck = new Deck(ruleManager.getCardsDistribution());
-        discards = new Stack<>();
         this.players = players;
-
         Arrays.stream(players).forEach(Player::resetPlayer);
     }
 
@@ -38,27 +35,26 @@ public class UnoGameTable extends Observable {
     public ActionPerformResult startGame()
     {
         win = false;
-        deck.shuffle();
+        deckManager = new DeckManager(ruleManager.getCARDS_DISTRIBUTION());
+        deckManager.shuffle();
+
+        Arrays.stream(players).forEach(p -> p.swapHand(new Stack<>()));
         //Distributing cards to each player
-        IntStream.range(0, ruleManager.getNumberOfCardsPerPlayer()).forEach(i -> Arrays.stream(players).forEach(p -> p.drawCard(deck.draw())));
+        IntStream.range(0, ruleManager.getNumberOfCardsPerPlayer()).forEach(i -> Arrays.stream(players).forEach(p -> p.drawCard(deckManager.draw())));
+        //Can't start with wild draw 4
+        while(deckManager.peek().getValue() == CardValue.WILD_DRAW){ deckManager.shuffle(); }
 
-        //While the first card put on the ground is a wild four it's re-put in the deck, the deck is shuffled, and it is put the first card of the deck on the ground
-        //while(deck.peek().getValue() == CardValue.WILD_DRAW){ deck.shuffle(); }
-        while(deck.peek().getValue() != CardValue.SEVEN){ deck.shuffle(); }
+        deckManager.pushDiscards(deckManager.draw());
 
-        discards.push(deck.draw());
-        turnManager = new TurnManager(discards.peek());
+        turnManager = new TurnManager(deckManager.peekDiscards());
 
-        //ruleManager.cardActionPerformance(getOptions().build());
         updateObservers();
-
         return performFirstCard(getOptions().currentPlayer(turnManager.getPlayer()).nextPlayer(turnManager.getPlayer()).build());
-        //if (ruleManager.isStackableCards())
     }
 
     public ActionPerformResult performFirstCard(Options parameters)
     {
-        ActionPerformResult actionPerformResult = ruleManager.startGame(parameters);
+        ActionPerformResult actionPerformResult = ruleManager.performFirstCardAction(parameters);
         updateObservers();
         return actionPerformResult;
     }
@@ -76,8 +72,8 @@ public class UnoGameTable extends Observable {
 
     public void drawCard(Player currentPlayer)
     {
-        if (deck.size() == 0)  deck.re_shuffle(discards);
-        Card drewCard = deck.draw();
+        //if (deck.size() == 0)  deck.re_shuffle(discards);
+        Card drewCard = deckManager.draw();
         currentPlayer.drawCard(drewCard);
         currentPlayer.setDrew(true);
         //--test start
@@ -91,13 +87,13 @@ public class UnoGameTable extends Observable {
 
     public void expose(Player playerToExpose)
     {
-        if (deck.size() == 0)  deck.re_shuffle(discards);
-        ArrayList<Card> drewCard = deck.draw(2);
+        //if (deck.size() == 0)  deck.re_shuffle(discards);
+        ArrayList<Card> drewCard = deckManager.draw(2);
         playerToExpose.drawCards(drewCard);
         updateObservers();
     }
 
-    public void playCard(Card card)
+    public ActionPerformResult playCard(Card card)
     {
         //--test start
         System.out.println(currentPlayer());
@@ -108,20 +104,27 @@ public class UnoGameTable extends Observable {
         currentPlayer().playCard(card);
         currentPlayer().setDrew(false);
 
-        if (checkWin()){
-            return;
+        if (checkGameWin(currentPlayer()))
+        {
+            System.out.println("HAIVINTO");
+            //current player ha vinto
+            win = true;
+            updateObservers();
+            return ActionPerformResult.WIN;
         }
 
-        discards.push(card);
+        deckManager.pushDiscards(card);
         turnManager.updateLastCardPlayed(card);
-        //updateObservers();
+        return ActionPerformResult.SUCCESSFUL;
     }
+
     public ActionPerformResult cardActionPerformance(Options parameters)
     {
         ActionPerformResult actionPerformResult = ruleManager.cardActionPerformance(parameters);
         if (actionPerformResult == ActionPerformResult.SUCCESSFUL) updateObservers();
         return actionPerformResult;
     }
+
 
     public void passTurn()
     {
@@ -131,22 +134,10 @@ public class UnoGameTable extends Observable {
         System.out.println("HAND: " + currentPlayer().getHand());
         System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
         //--test end
-        currentPlayer().setDrew(false);
-        currentPlayer().setPlayed(false);
-        turnManager.passTurn();
+        ruleManager.passTurn(turnManager,currentPlayer());
         updateObservers();
     }
 
-    public boolean checkWin()
-    {
-        return currentPlayer().getHand().size() == 0;
-        /*
-        if (){
-
-        }
-
-         */
-    }
     public boolean isExposable(int player)
     {
         Player playerToExpose =players[player],
@@ -161,14 +152,86 @@ public class UnoGameTable extends Observable {
     }
 
     public boolean antiClockwiseTurn(){ return turnManager.antiClockwiseTurn();}
-    public Card peekNextCard(){ return deck.peek(); }
-    public Options.OptionsBuilder getOptions()  { return new Options.OptionsBuilder(turnManager, players, deck); }
+    public Card peekNextCard(){ return deckManager.peek(); }
+    public Options.OptionsBuilder getOptions()  { return new Options.OptionsBuilder(turnManager, players, deckManager); }
     public Player currentPlayer() { return players[currentPlayerIndex()]; }
     public int currentPlayerIndex() { return turnManager.getPlayer(); }
     public Player[] getPlayers() { return players; }
-    public Deck getDeck() { return deck; }
+    public DeckManager getDeck() { return deckManager; }
     public Card getLastCard(){ return turnManager.getLastCardPlayed(); }
     public TurnManager getTurnManager(){return turnManager;}
+    public boolean hasWin(){ return win; }
+    public boolean checkWin(Player player){ return ruleManager.checkWin(players, player); }
+    public boolean checkGameWin(Player player){ return ruleManager.checkGameWin(player); }
 }
 
+
+
+//    public void playCard(Card card)
+//    {
+//        //--test start
+//        System.out.println(currentPlayer());
+//        System.out.println("PLAYED: " + card);
+//        System.out.println("HAND: " + currentPlayer().getHand());
+//        System.out.println("PLAYABLE: " + getCurrentPlayerPLayableCards());
+//        //--test end
+//        currentPlayer().playCard(card);
+//        currentPlayer().setDrew(false);
+//
+//        if (checkWin())
+//        {
+//            //current player ha vinto
+//            return;
+//        }
+//
+//        discards.push(card);
+//        turnManager.updateLastCardPlayed(card);
+//
+//        //updateObservers();
+//
+//    }
+    /*
+    public ActionPerformResult playCard(Card card, Options parameters)
+    {
+        Player current = currentPlayer();
+        current.playCard(card);
+        turnManager.updateLastCardPlayed(card);
+
+        if (checkGameWin(current))
+        {
+            System.out.println("HAIVINTO");
+            //current player ha vinto
+            win = true;
+            updateObservers();
+            return ActionPerformResult.WIN;
+        }
+
+        ActionPerformResult actionPerformResult = ruleManager.cardActionPerformance(parameters);
+
+        if (actionPerformResult != ActionPerformResult.SUCCESSFUL){
+            current.drawCard(card);
+            return actionPerformResult;
+        }
+        //--test start
+        System.out.println(current);
+        System.out.println("PLAYED: " + card);
+        System.out.println("HAND: " + current.getHand());
+        System.out.println("PLAYABLE: " + getCurrentPlayerPLayableCards());
+        //--test end
+
+        current.setDrew(false);
+        deckManager.pushDiscards(card);
+        updateObservers();
+
+        return ActionPerformResult.SUCCESSFUL;
+    }
+
+    private ActionPerformResult cardActionPerformance(Options parameters)
+    {
+        ActionPerformResult actionPerformResult = ruleManager.cardActionPerformance(parameters);
+        if (actionPerformResult == ActionPerformResult.SUCCESSFUL) updateObservers();
+        return actionPerformResult;
+    }
+
+     */
 

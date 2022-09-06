@@ -2,7 +2,7 @@ package Model.Rules;
 
 import Model.Cards.Card;
 import Model.Cards.CardColor;
-import Model.Deck;
+import Model.DeckManager;
 
 import java.util.List;
 
@@ -10,8 +10,9 @@ public class ClassicRules extends UnoGameRules
 {
     public ClassicRules()
     {
-        cardsDistribution = Deck.classicRules;
-        numberOfPlayableCards = 1;
+        //super(numberOfCardsPerPlayer);
+        CARDS_DISTRIBUTION = DeckManager.classicRules;
+        NUMBER_OF_PLAYABLE_CARDS = 1;
         numberOfCardsPerPlayer = 7;
     }
 
@@ -32,7 +33,7 @@ public class ClassicRules extends UnoGameRules
     public ActionPerformResult cardActionPerformance(Options parameters)
     {
         var actionPerformResult = super.cardActionPerformance(parameters);
-        if (actionPerformResult == ActionPerformResult.SUCCESSFUL) parameters.getTurnManager().passTurn();
+        if (actionPerformResult == ActionPerformResult.SUCCESSFUL) passTurn(parameters.getTurnManager(), parameters.getPlayers()[parameters.getCurrentPlayer()]);
         return actionPerformResult;
     }
 

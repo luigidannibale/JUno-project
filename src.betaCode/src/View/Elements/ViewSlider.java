@@ -5,10 +5,10 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class VolumeSlider extends JProgressBar
+public class ViewSlider extends JProgressBar
 {
 
-    public VolumeSlider()
+    public ViewSlider()
     {
         setPreferredSize(new Dimension((int)(200),(int)(20)));
         setStringPainted(true);

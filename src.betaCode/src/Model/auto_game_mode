@@ -4,7 +4,7 @@
         while (true){
             var player = players[turnManager.getPlayer()];
             var lastCard = turnManager.getCard();
-            System.out.println("Deck: " + deck.size() + " Discards: " + discards.size());
+            System.out.println("Deck: " + deckManager.size() + " Discards: " + discards.size());
             System.out.println("Player: " + player.getName());
             System.out.println("lastCard: " + lastCard);
 
@@ -12,7 +12,7 @@
             var playable = player.getPlayableCards(lastCard);
             System.out.println("Playable: " + playable);
             if (playable.size() == 0){
-                var drawed = deck.draw();
+                var drawed = deckManager.draw();
                 System.out.println("Drawed: " + drawed);
                 if (drawed.isPlayable(lastCard))
                 {
@@ -56,7 +56,7 @@
                         TurnManager.skipTurn();
                     }*/
                     case DRAW -> {
-                        var drawed = deck.draw(2);
+                        var drawed = deckManager.draw(2);
                         System.out.println("Next player " + players[TurnManager.player].getName() + " drawed 2: " + drawed);
                         System.out.println("Skipped");
                         players[TurnManager.player].drawCards(drawed);
@@ -78,7 +78,7 @@
                         var randomColor = CardColor.values()[r.nextInt(4)];
                         System.out.println("New color: " + randomColor);
                         TurnManager.card = new Card(randomColor, CardValue.WILD_DRAW);*/
-                        var drawed = deck.draw(4);
+                        var drawed = deckManager.draw(4);
                         System.out.println("Next player " + players[TurnManager.player].getName() + " drawed 4: " + drawed);
                         System.out.println("Skipped");
                         players[TurnManager.player].drawCards(drawed);
@@ -90,9 +90,9 @@
 
             TurnManager.skipTurn();
 
-            if (deck.size() == 0){
+            if (deckManager.size() == 0){
                 System.out.println("Deck re-shuffle");
-                deck.re_shuffle(discards);
+                deckManager.re_shuffle(discards);
             }
 
             System.out.println("");

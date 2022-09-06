@@ -4,5 +4,6 @@ public enum ActionPerformResult
 {
     SUCCESSFUL,
     NO_COLOR_PROVIDED,
-    NO_PLAYER_PROVIDED;
+    NO_PLAYER_PROVIDED,
+    WIN;
 }

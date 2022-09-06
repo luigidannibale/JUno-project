@@ -10,7 +10,6 @@ import View.Pages.GamePanel;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -21,10 +20,13 @@ public class GamePanelController extends Controller<GamePanel>
     /*goes true when a card is drawn out*/
     private boolean hasFinishedDrawing = false;
 
+    private Animation exposeAnimation;
+    private MainFrameController mfc;
 
-    public GamePanelController(GameChoiceController.GameMode gameMode, ViewPlayer[] players)
+    public GamePanelController(MainFrameController mfc, GameChoiceController.GameMode gameMode, ViewPlayer[] players)
     {
         super(new GamePanel(players));
+        this.mfc = mfc;
         UnoGameRules rules;
         switch (gameMode)
         {
@@ -40,7 +42,7 @@ public class GamePanelController extends Controller<GamePanel>
             @Override
             public void mouseReleased(MouseEvent e)
             {
-                viewPlayerTurn(e);
+                viewPlayerClick(e);
             }
         });
         view.addMouseMotionListener(new MouseMotionAdapter()
@@ -86,28 +88,9 @@ public class GamePanelController extends Controller<GamePanel>
 
     public void quitGame(){ view.stopTimer(); }
 
-//    private ViewPlayer[] getViewPlayers(GameChoiceController.GameMode gameMode, ViewPlayer player) {
-//        UnoGameRules rules;
-//        switch (gameMode)
-//        {
-//            case MEME_RULES -> rules = new MemeRules();
-//            case SEVENO_RULES -> rules = new SevenoRules();
-//            default -> rules = new ClassicRules();
-//        }
-//        ViewPlayer[] viewPlayers = new ViewPlayer[]{
-//                player,
-//               new ViewPlayer(new AIPlayer("Ai 1")),
-//               new ViewPlayer(new AIPlayer("Ai 2")),
-//               new ViewPlayer(new AIPlayer("Ai 3")),
-//        };
-//        gameTable = new UnoGameTable(Stream.of(viewPlayers).map(ViewPlayer::getPlayer).toArray(Player[]::new), rules);
-//        viewPlayers[0].getPlayer().getHand().removeAllElements();
-//        return viewPlayers;
-//    }
-
     private boolean playersTurn() { return view.getCurrentState() == GamePanel.State.PLAYER_TURN; }
 
-    private void viewPlayerTurn(MouseEvent e)
+    private void viewPlayerClick(MouseEvent e)
     {
         Point mouseClickPosition = e.getPoint();
         ViewPlayer humanPlayer = view.getViewPlayers()[0];
@@ -117,9 +100,13 @@ public class GamePanelController extends Controller<GamePanel>
 
         exposeBranch(view.getViewPlayers(), mouseClickPosition);
 
+        continueBranch(mouseClickPosition);
+
         if (!playersTurn()) return; // not players turn
 
         if (humanPlayer.getPlayer() != gameTable.currentPlayer()) return; //not his turn
+
+        //this is his turn
 
         if (view.getDeck().contains(mouseClickPosition)) //clicked on deck
             drawCardBranch(humanPlayer);
@@ -139,17 +126,31 @@ public class GamePanelController extends Controller<GamePanel>
         view.shoutUnoAnimation(currentPlayer);
     }
 
-    private void exposeBranch(ViewPlayer[] viewPlayers, Point mouseClickPosition){
+    private void exposeBranch(ViewPlayer[] viewPlayers, Point mouseClickPosition)
+    {
+        if (view.animationRunning(exposeAnimation)) return;
         for (int i = 0; i < viewPlayers.length; i++) {
             ViewPlayer p = viewPlayers[i];
             if (p.getNamePosition().contains(mouseClickPosition) && gameTable.isExposable(i))
             {
                 new Thread(() -> {
-                    view.exposedAnimation(p.getPlayer()).Join();
                     gameTable.expose(p.getPlayer());
+                    exposeAnimation = view.exposedAnimation();
+                    exposeAnimation.Join();
                 }).start();
 
             }
+        }
+    }
+
+    private void continueBranch(Point p)
+    {
+        if (view.getContinuePosition().contains(p))
+        {
+            if (view.getCurrentState() == GamePanel.State.WIN)
+                gameTable.startGame();
+            else if(view.getCurrentState() == GamePanel.State.ACTUAL_WIN)
+                mfc.quitGame();
         }
     }
 
@@ -174,8 +175,8 @@ public class GamePanelController extends Controller<GamePanel>
         new Thread( () -> {
             if (anim != null){
                 anim.Join();
-                gameTable.playCard(card.getCard());
-                tryCardActionPerformance(gameTable.getOptions());
+                ActionPerformResult res = gameTable.playCard(card.getCard());
+                if (res != ActionPerformResult.WIN) tryCardActionPerformance(gameTable.getOptions());
             }
         },"playing card").start();
     }
@@ -187,7 +188,7 @@ public class GamePanelController extends Controller<GamePanel>
         {
             case NO_COLOR_PROVIDED -> parameters.color(view.choseColorByUser());
             case NO_PLAYER_PROVIDED -> parameters.playerToSwapCards(view.chosePlayerToSwap());
-            case SUCCESSFUL -> { return; }
+            case SUCCESSFUL, WIN-> { return; }
         }
         tryCardActionPerformance(parameters);
     }
