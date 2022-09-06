@@ -1,5 +1,6 @@
 package View.Pages.ProfileManagement;
 
+import Utilities.Config;
 import View.Elements.CustomMouseAdapter;
 import View.Elements.GifComponent;
 import View.Pages.ResizablePanel;
@@ -51,7 +52,8 @@ public abstract class InputPanel extends ResizablePanel
         txtInsertName.setName("name");
         txtInsertName.setBackground(backColor);
         txtInsertName.setBorder(new EmptyBorder(0,0,0,0));
-        txtInsertName.setPreferredSize(new Dimension(220,30));
+        txtInsertName.setPreferredSize(new Dimension(300,40));
+        txtInsertName.setFont(new Font(getFont().getFontName(),getFont().getStyle(),25));
         txtInsertName.setText(InputMessages.NAME_INSERT.getMessage());
         txtInsertName.setToolTipText(InputMessages.NAME_INSERT.getMessage());
         txtInsertName.setHorizontalAlignment(JTextField.CENTER);
@@ -60,12 +62,14 @@ public abstract class InputPanel extends ResizablePanel
         txtInsertPassword.setName("password");
         txtInsertPassword.setBackground(backColor);
         txtInsertPassword.setBorder(new EmptyBorder(0,0,0,0));
-        txtInsertPassword.setPreferredSize(new Dimension(220,30));
+        txtInsertPassword.setPreferredSize(new Dimension(300,40));
+        txtInsertPassword.setFont(new Font(getFont().getFontName(),getFont().getStyle(),25));
+        System.out.println(txtInsertPassword.getFont());
         txtInsertPassword.setText(InputMessages.PASSWORD_INSERT.getMessage());
         txtInsertPassword.setToolTipText(InputMessages.PASSWORD_TOOLTIP.getMessage());
         txtInsertPassword.setHorizontalAlignment(JTextField.CENTER);
 
-        saveButton = new GifComponent(imagePath + "save",50,50);
+        saveButton = new GifComponent(imagePath + "save",80,80);
         saveButton.addMouseListener(new CustomMouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -73,7 +77,7 @@ public abstract class InputPanel extends ResizablePanel
                 save();
             }
         });
-        closeButton =new GifComponent(imagePath + "discard",50,50);
+        closeButton =new GifComponent(imagePath + "discard",80,80);
 
 
         FocusListener onClickCancelText = onClickCancelTextFocusListener();
@@ -89,6 +93,7 @@ public abstract class InputPanel extends ResizablePanel
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridheight = 1;
+        gbc.gridwidth = 2;
         gbc.weightx = 0.5;
         gbc.weighty = 0.5;
         add(txtInsertName, gbc);
@@ -97,6 +102,7 @@ public abstract class InputPanel extends ResizablePanel
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridheight = 1;
+        gbc.gridwidth = 2;
         gbc.weightx = 0.5;
         gbc.weighty = 0.5;
         add(txtInsertPassword, gbc);
@@ -105,6 +111,7 @@ public abstract class InputPanel extends ResizablePanel
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridheight = 1;
+        gbc.gridwidth = 1;
         gbc.weightx = 0.5;
         gbc.weighty = 0.5;
         add(saveButton, gbc);
@@ -113,6 +120,7 @@ public abstract class InputPanel extends ResizablePanel
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.gridheight = 1;
+        gbc.gridwidth = 1;
         gbc.weightx = 0.5;
         gbc.weighty = 0.5;
         add(closeButton, gbc);
@@ -121,6 +129,30 @@ public abstract class InputPanel extends ResizablePanel
         setVisible(true);
 
     }
+
+
+    @Override
+    public void resizeComponents()
+    {
+        //System.out.println("putting the size");
+        //super.resizeComponents();
+        Arrays.stream(getComponents()).forEach(component ->
+        {
+            //if(component.getPreferredSize().height == 0) System.out.println(component);
+            System.out.println(component.getName()+component.getPreferredSize());
+            component.setPreferredSize(new Dimension((int) (component.getPreferredSize().width * Config.scalingPercentage), (int) (component.getPreferredSize().height * Config.scalingPercentage)));
+            if(component instanceof JTextField) {
+
+                var font = component.getFont();
+                //component.setFont(new Font(font.getFontName(), font.getStyle(),(int) (font.getSize()*Config.scalingPercentage)));
+                component.setFont(font.deriveFont((float) (font.getSize()*Config.scalingPercentage)));
+                System.out.println(component.getName()+component.getPreferredSize()+" old "+font.getSize()+" new "+new Font(font.getFontName(), font.getStyle(), (int) (font.getSize()*Config.scalingPercentage)));
+            }
+            System.out.println();
+            component.repaint();
+        });
+    }
+
     protected abstract void save();
 
     protected FocusListener onClickCancelTextFocusListener()

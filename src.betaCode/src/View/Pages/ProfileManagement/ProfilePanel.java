@@ -3,6 +3,7 @@ package View.Pages.ProfileManagement;
 import Utilities.Config;
 import Utilities.Utils;
 import View.Elements.CircleImage;
+import View.Elements.ImageComponent;
 import View.Elements.ViewPlayer;
 import View.Elements.VolumeSlider;
 import View.Pages.ResizablePanel;
@@ -11,7 +12,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.util.Arrays;
 
 public class ProfilePanel extends ResizablePanel
 {
@@ -19,11 +19,14 @@ public class ProfilePanel extends ResizablePanel
     private ResizablePanel smallPanel;
 
     //private CircleImage profilePicture;
+    private final Font fontName = new Font("Monsterrat", Font.PLAIN, (int) (18 * Config.scalingPercentage));
+    private final Font fontLevel = new Font("Monsterrat", Font.PLAIN, (int) (13 * Config.scalingPercentage));
     private JLabel lblName;
     private JLabel lblLevel;
     private VolumeSlider levelXpBar;
     //private JButton btnQuit;
     private JLabel lblChangeIcon;
+    private ImageComponent lblXp;
     private ViewPlayer player;
     private UpdatePlayerPanel updateTabbedPanel;
     private final Color backColor = new Color(55, 166, 71);
@@ -31,7 +34,7 @@ public class ProfilePanel extends ResizablePanel
 
     public ProfilePanel(ViewPlayer player)
     {
-        super(450, 570, 0);
+        super(450, 620, 0);
         imagePath = "resources/images/MainFrame/StartingMenuPanel/ProfilePanel/";
         this.player = player;
 
@@ -39,14 +42,14 @@ public class ProfilePanel extends ResizablePanel
         setLayout(new GridBagLayout());
         setVisible(false);
 
-        smallPanel = new ResizablePanel(270,110,0){
+        smallPanel = new ResizablePanel(260,110,0){
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 paintPanel(g, this);
             }
         };
-        smallPanel.setPreferredSize(new Dimension(230, 95));
+        //smallPanel.setPreferredSize(new Dimension(100, 100));
         smallPanel.setOpaque(false);
         smallPanel.setLayout(new GridBagLayout());
 
@@ -59,21 +62,25 @@ public class ProfilePanel extends ResizablePanel
         setName("ProfilePanel");
         lblName = new JLabel();
         lblName.setName("lblName");
-        lblName.setFont(new Font(lblName.getFont().getName(), Font.PLAIN, 18));
+        lblName.setFont(fontName);
         lblName.setBorder(new EmptyBorder(3,0,0,3));
 
         lblLevel = new JLabel();
         lblLevel.setName("lblLevel");
-        lblLevel.setBorder(new EmptyBorder(0,0,0,3));
+        lblName.setFont(fontLevel);
+        lblLevel.setBorder(new EmptyBorder(0,0,2,3));
+
+
+        lblXp = new ImageComponent(imagePath + "xp.png",-1,-1,false);
 
         levelXpBar = new VolumeSlider();
         levelXpBar.setName("levelXPbar");
-        levelXpBar.setPreferredSize(new Dimension(80, 15));
+        levelXpBar.setPreferredSize(new Dimension(140, 20));
         levelXpBar.setStringPainted(true);
 
         lblChangeIcon = new JLabel("Change icon");
         lblChangeIcon.setName("lblChangeName");
-        lblChangeIcon.setFont(new Font(lblName.getFont().getName(), Font.PLAIN, 13));
+        lblChangeIcon.setFont(fontLevel);
         lblChangeIcon.setBorder(new LineBorder(Color.BLACK, 1, true));
         lblChangeIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -94,30 +101,57 @@ public class ProfilePanel extends ResizablePanel
     {
         GridBagConstraints gbc = new GridBagConstraints();
 
+        lblName.setFont(fontName);
+        lblName.setText(lblName.getText());
+
+        lblLevel.setFont(fontLevel);
+        lblLevel.setText(lblLevel.getText());
+
+        lblChangeIcon.setFont(fontLevel);
+        lblChangeIcon.setText(lblChangeIcon.getText());
+
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridheight = 3;
-        gbc.weightx = 0.5;
-        gbc.weighty = 0.6;
+        gbc.gridheight = 4;
+        gbc.gridwidth = 2;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
         smallPanel.add(player.getProfilePicture(), gbc);
 
-        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+
+        gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.gridheight = 1;
-        gbc.weightx = 0.7;
+        gbc.gridwidth = 1;
+        gbc.weightx = 0.6;
         gbc.weighty = 0.5;
         smallPanel.add(lblName, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.gridy = 1;
-        gbc.weightx = 0.7;
+        gbc.gridheight = 1;
+        gbc.gridwidth = 1;
+        gbc.weightx = 0.6;
         gbc.weighty = 0.5;
         smallPanel.add(lblLevel, gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridheight = 1;
-        gbc.weightx = 0.7;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        gbc.weightx = 0.2;
+        gbc.weighty = 0.5;
+        smallPanel.add(lblXp, gbc);
+
+        //gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 2;
+        gbc.gridy = 3;
+        gbc.gridheight = 1;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.weightx = 0.2;
         gbc.weighty = 0.5;
         smallPanel.add(levelXpBar, gbc);
     }
@@ -126,11 +160,20 @@ public class ProfilePanel extends ResizablePanel
     {
         GridBagConstraints gbc = new GridBagConstraints();
 
+        lblName.setFont(fontName.deriveFont(fontName.getSize() * 2f));
+        lblName.setText(lblName.getText());
+
+        lblLevel.setFont(fontLevel.deriveFont(fontLevel.getSize() * 2f));
+        lblLevel.setText(lblLevel.getText());
+
+        lblChangeIcon.setFont(fontLevel.deriveFont(fontLevel.getSize() * 1.f));
+        lblChangeIcon.setText(lblChangeIcon.getText());
+
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridheight = 4;
-        gbc.weightx = 0.5;
+        gbc.weightx = 0.9;
         gbc.weighty = 0.03;
         add(player.getProfilePicture(), gbc);
 
@@ -142,15 +185,16 @@ public class ProfilePanel extends ResizablePanel
         gbc.weighty = 0.01;
         add(lblChangeIcon, gbc);
 
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+//        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.gridheight = 2;
         gbc.weightx = 0.5;
         gbc.weighty = 0.07;
         add(lblName, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.gridy = 2;
         gbc.gridheight = 1;
         gbc.weightx = 0.5;
@@ -160,15 +204,25 @@ public class ProfilePanel extends ResizablePanel
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        gbc.weightx = 0.01;
+        gbc.weighty = 0.01;
+        add(lblXp, gbc);
+
+        gbc.gridx = 2;
+        gbc.gridy = 3;
+        gbc.gridheight = 1;
+        //gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.LINE_START;
         gbc.weightx = 0.5;
         gbc.weighty = 0.01;
         add(levelXpBar, gbc);
 
+        gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.gridheight = 1;
         gbc.gridwidth = 3;
-
         gbc.weightx = 0.9;
         gbc.weighty = 0.85;
         add(updateTabbedPanel, gbc);
@@ -181,6 +235,7 @@ public class ProfilePanel extends ResizablePanel
     {
         for (Component component : getComponents())
         {
+            System.out.println(component.getClass());
             if (component instanceof JLabel lbl)
             {
                 component.setFont(lbl.getFont().deriveFont((float) (lbl.getFont().getSize() * Config.scalingPercentage)));

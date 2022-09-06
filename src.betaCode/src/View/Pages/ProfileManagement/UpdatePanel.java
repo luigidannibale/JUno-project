@@ -22,7 +22,8 @@ public class UpdatePanel extends InputPanel
         txtConfirmPassword.setName("confirm_password");
         txtConfirmPassword.setBackground(backColor);
         txtConfirmPassword.setBorder(new EmptyBorder(0,0,0,0));
-        txtConfirmPassword.setPreferredSize(new Dimension(220,30));
+        txtConfirmPassword.setPreferredSize(new Dimension(300,40));
+        txtConfirmPassword.setFont(new Font(getFont().getFontName(),getFont().getStyle(),25));
         txtConfirmPassword.setText(InputMessages.CONFIRM_PASSWORD.getMessage());
         txtConfirmPassword.setToolTipText(InputMessages.CONFIRM_PASSWORD.getMessage());
         txtConfirmPassword.setHorizontalAlignment(JTextField.CENTER);
@@ -33,6 +34,7 @@ public class UpdatePanel extends InputPanel
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridheight = 1;
+        gbc.gridwidth = 2;
         gbc.weightx = 0.5;
         gbc.weighty = 0.5;
         add(txtConfirmPassword, gbc);

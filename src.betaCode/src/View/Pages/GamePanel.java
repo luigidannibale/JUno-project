@@ -170,11 +170,11 @@ public class GamePanel extends JPanel implements Observer
 
         long start = System.nanoTime();
 
-        if (currentState == State.WIN)
-        {
-
-            return;
-        }
+//        if (currentState == State.WIN)
+//        {
+//
+//            return;
+//        }
 
         g.setColor(green);
         g.fillRect(0,0, getWidth(), getHeight());
