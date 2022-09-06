@@ -9,28 +9,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class    MemeRules extends UnoGameRules
+public class MemeRules extends UnoGameRules
 {
-    private final int POINTS_PER_GAME = 1000;
+    private final int pointsPerGame = 1000;
     private boolean isStacking;
-    private  int stackedCardsToDraw;
+    private int stackedCardsToDraw;
     private int playersToBlock;
     private int cardsPlayed;
     private ActionPerformResult lastAction;
 
     public MemeRules()
     {
-
-        CARDS_DISTRIBUTION = DeckManager.classicRules;
-        CARDS_DISTRIBUTION.putAll(new HashMap<>(){{
+        super(11,3, new HashMap<>(){{
+            putAll(DeckManager.classicRules);
             put(CardValue.SKIP,4);
             put(CardValue.DRAW,4);
             put(CardValue.REVERSE,4);
             put(CardValue.WILD,8);
             put(CardValue.WILD_DRAW,8);
         }});
-        NUMBER_OF_PLAYABLE_CARDS = 3;
-        numberOfCardsPerPlayer = 11;
     }
 
     @Override
@@ -70,7 +67,7 @@ public class    MemeRules extends UnoGameRules
             turnManager.updateLastCardPlayed(drawCard);
         }
 
-        if (cardsPlayed < NUMBER_OF_PLAYABLE_CARDS - 1 && getStackableCards(currentPlayer.getHand().stream(), lastCardPlayed).toList().size() > 0)
+        if (cardsPlayed < numberOfPlayableCards - 1 && getStackableCards(currentPlayer.getHand().stream(), lastCardPlayed).toList().size() > 0)
         {//current player has more stackable cards
             if (lastCardPlayed instanceof ReverseCard) _ReverseAction(turnManager);
             isStacking = true;
@@ -106,8 +103,8 @@ public class    MemeRules extends UnoGameRules
     @Override
     public int countPoints(Player[] players, Player winner)
     {
-        winner.updatePoints(POINTS_PER_GAME);
-        return POINTS_PER_GAME;
+        winner.updatePoints(pointsPerGame);
+        return pointsPerGame;
     }
 
     @Override

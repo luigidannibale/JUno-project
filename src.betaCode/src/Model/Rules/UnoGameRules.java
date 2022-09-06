@@ -16,30 +16,33 @@ public abstract class UnoGameRules
     /**
      * @see DeckManager
      */
-    protected  HashMap<CardValue, Integer> CARDS_DISTRIBUTION;
+    protected final HashMap<CardValue, Integer> cardsDistribution;
     /**
      * How many cards can be played in a single turn,<br/>
      * to play more than a card in a single turn cards must be the same value.
      */
-    protected  int NUMBER_OF_PLAYABLE_CARDS;
+    protected final int numberOfPlayableCards;
     /**
      * How many cards are distributed to each player at the start of the game.
      */
-    protected  int numberOfCardsPerPlayer;
+    protected final int numberOfCardsPerPlayer;
 
-//    protected UnoGameRules(int numberOfCardsPerPlayer) {
-//        this.numberOfCardsPerPlayer = numberOfCardsPerPlayer;
-//    }
+    protected UnoGameRules(int numberOfCardsPerPlayer, int numberOfPlayableCards, HashMap<CardValue, Integer> cardsDistribution)
+    {
+        this.numberOfCardsPerPlayer = numberOfCardsPerPlayer;
+        this.numberOfPlayableCards = numberOfPlayableCards;
+        this.cardsDistribution = cardsDistribution;
+    }
 
-    public boolean checkGameWin(Player current){return current.getHand().size() == 0 && current.hasSaidOne();}
+    public boolean checkGameWin(Player current){ return current.getHand().size() == 0; }
     public boolean checkWin(Player[] players, Player player){ return countPoints(players,player)>=500;}
     public int getNumberOfCardsPerPlayer() { return numberOfCardsPerPlayer; }
 
-    public HashMap<CardValue, Integer> getCARDS_DISTRIBUTION() { return CARDS_DISTRIBUTION; }
+    public HashMap<CardValue, Integer> getCardsDistribution() { return cardsDistribution; }
 
-    public boolean isStackableCards() { return NUMBER_OF_PLAYABLE_CARDS > 1; }
+    public boolean isStackableCards() { return numberOfPlayableCards > 1; }
 
-    public int getNUMBER_OF_PLAYABLE_CARDS() { return NUMBER_OF_PLAYABLE_CARDS; }
+    public int getNumberOfPlayableCards() { return numberOfPlayableCards; }
 
     public abstract ActionPerformResult performFirstCardAction(Options parameters);
 

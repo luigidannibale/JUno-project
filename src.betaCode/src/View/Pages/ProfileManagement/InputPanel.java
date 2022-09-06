@@ -64,7 +64,7 @@ public abstract class InputPanel extends ResizablePanel
         txtInsertPassword.setBorder(new EmptyBorder(0,0,0,0));
         txtInsertPassword.setPreferredSize(new Dimension(300,40));
         txtInsertPassword.setFont(new Font(getFont().getFontName(),getFont().getStyle(),25));
-        System.out.println(txtInsertPassword.getFont());
+
         txtInsertPassword.setText(InputMessages.PASSWORD_INSERT.getMessage());
         txtInsertPassword.setToolTipText(InputMessages.PASSWORD_TOOLTIP.getMessage());
         txtInsertPassword.setHorizontalAlignment(JTextField.CENTER);

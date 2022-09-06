@@ -18,38 +18,34 @@ public class ProfilePanelController extends Controller<ProfilePanel>
 
     private MainFrameController.Panels returnPanel;
 
-    public ProfilePanelController(MainFrameController mfc,ViewPlayer player){
+    public ProfilePanelController(MainFrameController mfc,ViewPlayer player)
+    {
         super(new ProfilePanel(player));
-
-
 
         JLabel name = view.getLabelName();
         name.addMouseListener(new MouseAdapter()
         {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                mfc.setVisiblePanel(MainFrameController.Panels.PROFILE);
-            }
-
+            public void mouseClicked(MouseEvent e) { mfc.setVisiblePanel(MainFrameController.Panels.PROFILE); }
             @Override
-            public void mouseEntered(MouseEvent e) {
+            public void mouseEntered(MouseEvent e)
+            {
                 setFont(0);
                 name.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
-
             @Override
-            public void mouseExited(MouseEvent e) {
-                setFont(-1);
-            }
+            public void mouseExited(MouseEvent e) { setFont(-1); }
 
             //UNDERLINE 0 = sottolineato
             //UNDERLINE -1 = non sottolineato
-            void setFont(int onOff){
+            private void setFont(int onOff)
+            {
                 Font font = name.getFont();
                 Map attributes = font.getAttributes();
                 attributes.put(TextAttribute.UNDERLINE, onOff);
                 name.setFont(font.deriveFont(attributes));
-        }});
+            }
+        });
 
         MouseAdapter exitFromProfilePanel = new CustomMouseAdapter()
         {

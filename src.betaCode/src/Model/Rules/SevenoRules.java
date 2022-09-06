@@ -2,6 +2,7 @@ package Model.Rules;
 
 import Model.Cards.*;
 import Model.DeckManager;
+import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.TurnManager;
@@ -14,14 +15,11 @@ public class SevenoRules extends UnoGameRules
 
     public SevenoRules()
     {
-
-        CARDS_DISTRIBUTION = DeckManager.classicRules;
-        CARDS_DISTRIBUTION.putAll(new HashMap<>(){{
+        super(7,1, new HashMap<>(){{
+            putAll(DeckManager.classicRules);
             put(CardValue.ZERO,3);
             put(CardValue.SEVEN,4);
         }});
-        NUMBER_OF_PLAYABLE_CARDS = 1;
-        numberOfCardsPerPlayer = 7;
     }
 
     @Override
@@ -46,7 +44,7 @@ public class SevenoRules extends UnoGameRules
             if (playerToSwap == null)
             {// no player to swap the hand with ahs been provided
                 if (currentPlayer instanceof HumanPlayer) return ActionPerformResult.NO_PLAYER_PROVIDED;
-                else playerToSwap = getBestPlayer(players, turnManager.getPlayer());
+                else if (currentPlayer instanceof AIPlayer aiCurrentPLayer) playerToSwap = aiCurrentPLayer.chooseBestPlayerToSwap(players, turnManager.getPlayer());
             }
 
             currentPlayer.swapHand(swapHand(currentPlayer.getHand(), playerToSwap));
@@ -63,17 +61,6 @@ public class SevenoRules extends UnoGameRules
 
         if (actionPerformResult == ActionPerformResult.SUCCESSFUL) passTurn(turnManager, currentPlayer);
         return actionPerformResult;
-    }
-
-    private Player getBestPlayer(Player[] players, int current)
-    {
-        int min = players[0].getHand().size();
-        Player bestPlayer = players[0];
-        for (Player p: players){
-            if (p.equals(players[current])) continue;
-            if (p.getHand().size()<min) bestPlayer = p;
-        }
-        return bestPlayer;
     }
 
     private Stack<Card> swapHand(Stack<Card> handToGiveAway, Player playerToSwapWith) { return playerToSwapWith.swapHand(handToGiveAway); }

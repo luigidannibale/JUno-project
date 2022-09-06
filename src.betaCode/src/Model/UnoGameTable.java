@@ -35,7 +35,7 @@ public class UnoGameTable extends Observable
     public ActionPerformResult startGame()
     {
         win = false;
-        deckManager = new DeckManager(ruleManager.getCARDS_DISTRIBUTION());
+        deckManager = new DeckManager(ruleManager.getCardsDistribution());
         deckManager.shuffle();
 
         Arrays.stream(players).forEach(p -> p.swapHand(new Stack<>()));

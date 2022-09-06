@@ -40,7 +40,6 @@ public class Stats
      */
     public HashMap<String, Object> getValues() { return getHashMapValues(victories, defeats, level); }
 
-    @NotNull
     private HashMap<String, Object> getHashMapValues(int victories, int defeats, double level)
     {
         return new HashMap<>()

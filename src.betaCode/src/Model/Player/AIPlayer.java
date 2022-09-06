@@ -8,9 +8,7 @@ import java.util.stream.Collectors;
 
 public class AIPlayer extends Player
 {
-    public AIPlayer(String name) {
-        super(name);
-    }
+    public AIPlayer(String name) { super(name); }
 
     /**
      * @return a map with the colors and the count of the occurrencies for each color
@@ -39,16 +37,34 @@ public class AIPlayer extends Player
 
     public CardColor chooseBestColor()
     {
-
         Map<CardColor, Long> colorWeights = colorWeights();
         colorWeights.remove(CardColor.WILD);
 
         Long max = colorWeights.isEmpty() ? 1L : Collections.max(colorWeights.values());
         Optional<CardColor> bestColor = colorWeights.keySet().stream().filter(color -> Objects.equals(colorWeights.get(color), max)).findFirst();
         return (bestColor.isEmpty()) ? randomColor():bestColor.get();
-//        var some = hand.stream().filter(c -> c.getColor() != CardColor.WILD).sorted(Comparator.comparing(c -> colorWeights.get(((Card)c).getColor())).reversed()).toList();
-//        CardColor chosen = some.size() == 0 ? randomColor() : some.get(0).getColor();
-//        return chosen;
+    }
+    public Player chooseBestPlayerToSwap(Player[] players, int current)
+    {
+        int min = players[0].getHand().size();
+        Player bestPlayer = players[0];
+        for (Player p: players) if (p.getHand().size()<min && !p.equals(players[current])) bestPlayer = p;
+        return bestPlayer;
+    }
+    public boolean chooseToSayUno()
+    {
+        boolean choice = choiceFactor();
+        if (choice) shoutUno();
+        return choice;
+    }
+
+    /**
+     * 25% false, 75%true
+     * @return
+     */
+    public boolean choiceFactor()
+    {
+        return new Random().nextInt(1,4)>1;
     }
 
     private CardColor randomColor(){ return CardColor.values()[new Random().nextInt(0,4)]; }
