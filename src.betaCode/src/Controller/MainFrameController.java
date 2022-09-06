@@ -49,7 +49,7 @@ public class MainFrameController extends Controller<MainFrame>
         super(new MainFrame());
         DataAccessManager DAM = new DataAccessManager();
         DAM.loadConfigOrDefault();
-        Config.scalingPercentage = 0.7;
+        Config.scalingPercentage = 1;
 
 
         viewPlayer = new ViewPlayer(Config.loggedPlayer, new CircleImage(Config.savedIconPath));
