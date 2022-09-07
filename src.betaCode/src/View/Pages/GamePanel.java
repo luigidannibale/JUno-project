@@ -263,7 +263,7 @@ public class GamePanel extends JPanel implements Observer
         {
             boolean win = gameTable.checkWin(currentViewPlayer.getPlayer());
             ladder = Arrays.stream(viewPlayers).map(ViewPlayer::getPlayer).sorted(Comparator.comparing(Player::getPoints).reversed()).toList();
-            currentState = win ? State.ACTUAL_WIN : State.WIN; //se vince vince sennò vince
+            currentState = win ? State.ACTUAL_WIN : State.WIN;
             AudioManager.getInstance().setEffect(AudioManager.Effect.WIN);
             return;
         }

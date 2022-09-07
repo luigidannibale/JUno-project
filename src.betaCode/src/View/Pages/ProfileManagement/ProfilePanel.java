@@ -102,7 +102,6 @@ public class ProfilePanel extends ResizablePanel
         double livello = Config.loggedPlayer.getStats().getLevel();
         lblLevel.setText("Level " + (int) livello);
         levelXpBar.setValue((int) Math.round(100* (livello - (int)livello)));
-        System.out.println(Config.savedIconPath);
         if (profilePicture != null)
             profilePicture.setCircleImage(Config.savedIconPath);
         else
