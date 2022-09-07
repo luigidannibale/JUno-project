@@ -1,1 +1,13 @@
-[{"config":{"deckStyle":"WHITE","effectsVolume":74,"musicVolume":0,"graphicQuality":"HIGH"},"player":{"name":"Daniele","password":"Pass12"}}]
+[{
+  "config": {
+   "deckStyle": "WHITE",
+   "effectsVolume": 50,
+   "savedIconPath": "resources/images/MainFrame/ProfilePanel/anonymous.png",
+   "musicVolume": 50,
+   "graphicQuality": "LOW"
+  },
+  "player": {
+   "name": "Ginano",
+   "password": "Pasnana12"
+  }
+ }]

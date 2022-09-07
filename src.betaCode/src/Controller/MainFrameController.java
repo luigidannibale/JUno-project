@@ -18,6 +18,8 @@ import java.awt.event.WindowEvent;
 
 public class MainFrameController extends Controller<MainFrame>
 {
+    private static MainFrameController instance = null;
+
     private final String imagesPath = "resources/images/MainFrame/MainframeDesignElements/";
     public enum Panels
     {
@@ -27,33 +29,37 @@ public class MainFrameController extends Controller<MainFrame>
         PROFILE,
         GAME
     }
-    public AudioManager backMusic;
-    public AudioManager soundEffects;
-    private final StartingMenuController startingMenuController;
-    private final SettingsController settingsController;
-    private final GameChoiceController gameChoiceController;
+    private StartingMenuController startingMenuController;
+    private SettingsController settingsController;
+    private GameChoiceController gameChoiceController;
     private GamePanelController gameController;
-    private final ProfilePanelController profileController;
+    private ProfilePanelController profileController;
     private ViewPlayer viewPlayer;
     private Panels currentPanel;
 
-    public MainFrameController()
-    {
-        super(new MainFrame());
-        DataAccessManager DAM = new DataAccessManager();
-        DAM.loadConfigOrDefault();
-        Config.scalingPercentage = 1;
+    public static MainFrameController getInstance(){
+        if (instance == null){
+            instance = new MainFrameController();
+            instance.initilizeMainFrameController();
+        }
+        return instance;
+    }
 
+    private MainFrameController()
+    { super(new MainFrame()); }
+
+    private void initilizeMainFrameController()
+    {
+        DataAccessManager DAM = new DataAccessManager();
+        DAM.loadInitOrDefault();
+        //Config.scalingPercentage = 1;
 
         viewPlayer = new ViewPlayer(Config.loggedPlayer, new CircularImage(Config.savedIconPath));
 
-        backMusic = AudioManager.getInstance();
-        soundEffects = AudioManager.getInstance();
-
-        startingMenuController = new StartingMenuController(this);
-        settingsController = new SettingsController(this);
-        gameChoiceController = new GameChoiceController(this);
-        profileController = new ProfilePanelController(this,viewPlayer);
+        startingMenuController = new StartingMenuController();
+        settingsController = new SettingsController();
+        gameChoiceController = new GameChoiceController();
+        profileController = new ProfilePanelController();
 
         view.addCenteredPanels(startingMenuController.getView(), settingsController.getView(), gameChoiceController.getView(), profileController.getView());
         view.addProfilePanel(profileController.getSmallPanel());
@@ -65,7 +71,7 @@ public class MainFrameController extends Controller<MainFrame>
             {
                 if(confirmDispose())
                 {
-                    DAM.saveInit();
+                    DAM.saveProfile(Config.loggedPlayer);
                     view.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     System.exit(0);
                 }
@@ -84,7 +90,7 @@ public class MainFrameController extends Controller<MainFrame>
         });
 
         setVisiblePanel(Panels.STARTMENU);
-        AudioManager.getInstance().setCommonFolder();
+
         AudioManager.getInstance().setAudio(AudioManager.Musics.CALM_BACKGROUND);
     }
 
@@ -163,12 +169,13 @@ public class MainFrameController extends Controller<MainFrame>
                 new ViewPlayer(new AIPlayer("Ai 3")),
         };
 
-        gameController = new GamePanelController(this, gameMode, viewPlayers);
+        gameController = new GamePanelController(gameMode, viewPlayers);
         setVisiblePanel(MainFrameController.Panels.GAME);
     }
 
     public void quitGame(){
         gameController.quitGame();
+        profileController.getView().update();
         view.getGameBackground().remove(gameController.getView());
         view.dispose();
         view.setUndecorated(false);
@@ -192,4 +199,6 @@ public class MainFrameController extends Controller<MainFrame>
     }
 
     public ViewPlayer getViewPlayer() { return viewPlayer; }
+
+    public void setViewPlayer(ViewPlayer viewPlayer) { this.viewPlayer = viewPlayer; }
 }

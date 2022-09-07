@@ -1,7 +1,6 @@
 package View.Pages.ProfileManagement;
 
 import Utilities.Config;
-import View.Elements.CustomMouseAdapter;
 import View.Elements.GifComponent;
 import View.Pages.ResizablePanel;
 
@@ -22,7 +21,7 @@ public abstract class InputPanel extends ResizablePanel
     {
         NAME_INSERT("Insert your name"),
         NAME_NOT_VALID("Name is not valid"),
-        NAME_ALREADY_EXISTING("This name is already taken"),
+        NAME_ALREADY_EXISTS("This name is already taken"),
         CONFIRM_PASSWORD_INSERT("Confirm your password"),
         PASSWORD_INSERT("Insert your password"),
         PASSWORD_TOOLTIP("Password must have 6 character with 1 capital letter and 1 lowercase"),
@@ -33,11 +32,12 @@ public abstract class InputPanel extends ResizablePanel
         public String getMessage(){return associatedMessage;}
     }
 
+
     JTextField txtInsertName;
     JTextField txtInsertPassword;
     GifComponent saveButton;
     GifComponent closeButton;
-    private static final String imagePath = "resources/images/MainFrame/StartingMenuPanel/ProfilePanel/UpdatePanel/";
+    public static final String IMAGE_PATH = ProfilePanel.IMAGE_PATH+"UpdatePanel/";
 
     public InputPanel(Color backColor, Color borderColor)
     {
@@ -69,15 +69,8 @@ public abstract class InputPanel extends ResizablePanel
         txtInsertPassword.setToolTipText(InputMessages.PASSWORD_TOOLTIP.getMessage());
         txtInsertPassword.setHorizontalAlignment(JTextField.CENTER);
 
-        saveButton = new GifComponent(imagePath + "save",80,80);
-        saveButton.addMouseListener(new CustomMouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                save();
-            }
-        });
-        closeButton =new GifComponent(imagePath + "discard",80,80);
+        saveButton = new GifComponent(IMAGE_PATH + "save",80,80);
+        closeButton =new GifComponent(IMAGE_PATH + "discard",80,80);
 
 
         FocusListener onClickCancelText = onClickCancelTextFocusListener();
@@ -130,7 +123,6 @@ public abstract class InputPanel extends ResizablePanel
 
     }
 
-
     @Override
     public void resizeComponents()
     {
@@ -152,8 +144,6 @@ public abstract class InputPanel extends ResizablePanel
             component.repaint();
         });
     }
-
-    protected abstract void save();
 
     protected FocusListener onClickCancelTextFocusListener()
     {
@@ -177,7 +167,7 @@ public abstract class InputPanel extends ResizablePanel
                 }
             }};
     }
-    protected boolean verifyInput()
+    public boolean verifyInput()
     {
         String name = txtInsertName.getText(), password = txtInsertPassword.getText();
         if (check.test(name))
@@ -195,13 +185,19 @@ public abstract class InputPanel extends ResizablePanel
 
     public GifComponent getCloseButton(){return closeButton;}
 
+    public GifComponent getSaveButton(){return saveButton;}
+
+    public JTextField getTxtInsertName() { return txtInsertName; }
+
+    public JTextField getTxtInsertPassword() { return txtInsertPassword; }
+
     protected Predicate<String> ContainedInEnum = toCheck -> Arrays.stream(InputMessages.values()).anyMatch(v -> v.getMessage().equals(toCheck));
 
     protected Predicate<String> check = toCheck -> toCheck.isEmpty() || ContainedInEnum.test(toCheck);
 
     protected Predicate<String> isPasswordValid = password -> password.length() >= 6 && containsOnecapitalOnelower1digit(password);
 
-    protected  void textFieldError(JTextField textField, InputMessages error)
+    public  void textFieldError(JTextField textField, InputMessages error)
     {
         textField.setText(error.getMessage());
         textField.setForeground(Color.RED);

@@ -3,6 +3,7 @@ package Controller;
 import Model.Player.Player;
 import Model.Rules.*;
 import Model.UnoGameTable;
+import Utilities.AudioManager;
 import View.Animations.Animation;
 import View.Elements.ViewCard;
 import View.Elements.ViewPlayer;
@@ -21,12 +22,11 @@ public class GamePanelController extends Controller<GamePanel>
     private boolean hasFinishedDrawing = false;
 
     private Animation exposeAnimation;
-    private MainFrameController mfc;
 
-    public GamePanelController(MainFrameController mfc, GameChoiceController.GameMode gameMode, ViewPlayer[] players)
+    public GamePanelController(GameChoiceController.GameMode gameMode, ViewPlayer[] players)
     {
         super(new GamePanel(players));
-        this.mfc = mfc;
+
         UnoGameRules rules;
         switch (gameMode)
         {
@@ -86,7 +86,10 @@ public class GamePanelController extends Controller<GamePanel>
             }).start();
     }
 
-    public void quitGame(){ view.stopTimer(); }
+    public void quitGame(){
+        AudioManager.getInstance().stopEffect();
+        view.stopTimer();
+    }
 
     private boolean playersTurn() { return view.getCurrentState() == GamePanel.State.PLAYER_TURN; }
 
@@ -150,7 +153,7 @@ public class GamePanelController extends Controller<GamePanel>
             if (view.getCurrentState() == GamePanel.State.WIN)
                 gameTable.startGame();
             else if(view.getCurrentState() == GamePanel.State.ACTUAL_WIN)
-                mfc.quitGame();
+                MainFrameController.getInstance().quitGame();
         }
     }
 

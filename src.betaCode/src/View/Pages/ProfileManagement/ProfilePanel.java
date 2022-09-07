@@ -1,11 +1,13 @@
 package View.Pages.ProfileManagement;
 
+import Controller.MainFrameController;
 import Utilities.Config;
 import Utilities.Utils;
 import View.Elements.CircularImage;
 import View.Elements.ImageComponent;
 import View.Elements.ViewPlayer;
 import View.Elements.ViewSlider;
+import View.Pages.MainFrame;
 import View.Pages.ResizablePanel;
 
 import javax.swing.*;
@@ -15,28 +17,24 @@ import java.awt.*;
 
 public class ProfilePanel extends ResizablePanel
 {
-
+    public static final String IMAGE_PATH = "resources/images/MainFrame/ProfilePanel/";
     private ResizablePanel smallPanel;
-
-    //private CircleImage profilePicture;
     private final Font fontName = new Font("Monsterrat", Font.PLAIN, (int) (18 * Config.scalingPercentage));
     private final Font fontLevel = new Font("Monsterrat", Font.PLAIN, (int) (13 * Config.scalingPercentage));
+    private CircularImage profilePicture;
     private JLabel lblName;
     private JLabel lblLevel;
     private ViewSlider levelXpBar;
-    //private JButton btnQuit;
     private JLabel lblChangeIcon;
     private ImageComponent lblXp;
-    private ViewPlayer player;
-    private UpdatePlayerPanel updateTabbedPanel;
+
+    private PlayerInputTabbedPanels playerInputTabbedPanel;
     private final Color backColor = new Color(55, 166, 71);
     private final Color borderColor = new Color(55, 100, 71);
 
-    public ProfilePanel(ViewPlayer player)
+    public ProfilePanel()
     {
         super(450, 620, 0);
-        imagePath = "resources/images/MainFrame/StartingMenuPanel/ProfilePanel/";
-        this.player = player;
 
         //setLayout(new FlowLayout());
         setLayout(new GridBagLayout());
@@ -49,12 +47,10 @@ public class ProfilePanel extends ResizablePanel
                 paintPanel(g, this);
             }
         };
-        //smallPanel.setPreferredSize(new Dimension(100, 100));
         smallPanel.setOpaque(false);
         smallPanel.setLayout(new GridBagLayout());
 
         initializedComponents();
-
     }
 
     private void initializedComponents()
@@ -70,7 +66,7 @@ public class ProfilePanel extends ResizablePanel
         lblName.setFont(fontLevel);
         lblLevel.setBorder(new EmptyBorder(0,0,2,3));
 
-        lblXp = new ImageComponent(imagePath + "xp.png",-1,-1,false);
+        lblXp = new ImageComponent(IMAGE_PATH + "xp.png",-1,-1,false);
 
         levelXpBar = new ViewSlider();
         levelXpBar.setName("levelXPbar");
@@ -84,20 +80,27 @@ public class ProfilePanel extends ResizablePanel
         lblChangeIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         update();
-        updateTabbedPanel = new UpdatePlayerPanel(backColor,borderColor);
+        playerInputTabbedPanel = new PlayerInputTabbedPanels(backColor,borderColor);
 
         initializeMainPanel();
         resizeComponents();
     }
+
     public void update()
     {
         lblName.setText(Config.loggedPlayer.getName());
         double livello = Config.loggedPlayer.getStats().getLevel();
         lblLevel.setText("Livello " + (int) livello);
         levelXpBar.setValue((int) Math.round(100* (livello - (int)livello)));
+        if (profilePicture != null)
+            profilePicture.setCircleImage(Config.savedIconPath);
+        else
+            profilePicture = MainFrameController.getInstance().getViewPlayer().getProfilePicture();
     }
+
     public void initializeSmallPanel()
     {
+        removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
 
         lblName.setFont(fontName);
@@ -115,7 +118,7 @@ public class ProfilePanel extends ResizablePanel
         gbc.gridwidth = 2;
         gbc.weightx = 1;
         gbc.weighty = 1;
-        smallPanel.add(player.getProfilePicture(), gbc);
+        smallPanel.add(profilePicture, gbc);
 
         gbc.anchor = GridBagConstraints.LINE_START;
 
@@ -157,6 +160,7 @@ public class ProfilePanel extends ResizablePanel
 
     public void initializeMainPanel()
     {
+        smallPanel.removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
 
         lblName.setFont(fontName.deriveFont(fontName.getSize() * 2f));
@@ -174,7 +178,7 @@ public class ProfilePanel extends ResizablePanel
         gbc.gridheight = 4;
         gbc.weightx = 0.9;
         gbc.weighty = 0.03;
-        add(player.getProfilePicture(), gbc);
+        add(profilePicture, gbc);
 
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 0;
@@ -224,9 +228,9 @@ public class ProfilePanel extends ResizablePanel
         gbc.gridwidth = 3;
         gbc.weightx = 0.9;
         gbc.weighty = 0.85;
-        add(updateTabbedPanel, gbc);
+        add(playerInputTabbedPanel, gbc);
 
-        updateTabbedPanel.clearTextField();
+        playerInputTabbedPanel.clearTextField();
     }
 
     @Override
@@ -251,16 +255,11 @@ public class ProfilePanel extends ResizablePanel
         return smallPanel;
     }
 
-    public UpdatePlayerPanel getUpdateTabbedPanel(){return updateTabbedPanel;}
+    public PlayerInputTabbedPanels getPlayerInputTabbedPanel(){return playerInputTabbedPanel;}
+
     public JLabel getLabelName(){ return lblName; }
 
-    //public JButton getBtnQuit(){ return btnQuit; }
-
     public JLabel getLblChangeIcon(){ return lblChangeIcon; }
-
-//    public CircleImage getProfilePicture(){ return profilePicture; }
-//
-//    public void setProfilePicture(CircleImage profilePicture) { this.profilePicture = profilePicture; }
 
     private void paintPanel(Graphics g, JPanel panel)
     {
@@ -277,7 +276,6 @@ public class ProfilePanel extends ResizablePanel
         thickness = 2;
         g2.setStroke(new BasicStroke(thickness));
         g2.setColor(Color.BLACK);
-        CircularImage profilePicture = player.getProfilePicture();
         g2.drawOval(profilePicture.getX() - thickness, profilePicture.getY() - thickness, profilePicture.getWidth() + thickness, profilePicture.getHeight() + thickness);
     }
 

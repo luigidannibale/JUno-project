@@ -23,6 +23,7 @@ public class ViewCard
 
     private Rectangle position = new Rectangle();
     //private int offsetY = 0;
+
     private int rotation;
     private Card card;
 
@@ -30,9 +31,7 @@ public class ViewCard
     boolean carteScoperte = true;
 
 
-    public ViewCard(){
-        cardImage = BACK_CARD;
-    }
+    public ViewCard(){ cardImage = BACK_CARD; }
 
     public ViewCard(Card card) { this(card, 0); }
 
@@ -42,9 +41,7 @@ public class ViewCard
         this.rotation = rotation;
         buildCard();
 
-        if (carteScoperte){
-            rotation = 0;
-        }
+        if (carteScoperte){ rotation = 0; }
         switch (rotation){
             case 90 -> paintedImage = BACK_ROTATED_90;
             case 180 -> paintedImage = BACK_CARD;
@@ -71,15 +68,7 @@ public class ViewCard
     public boolean contains(Point point){ return position != null && position.contains(point); }
 
     @Override
-    public String toString() {
-        return card.toString();
-    }
-
-//    public int getOffsetY() { return offsetY; }
-//
-//    public void setOffsetY(int offsetY) {
-//        this.offsetY = offsetY;
-//    }
+    public String toString() { return card.toString(); }
 
     public Card getCard(){ return card; }
 
@@ -90,13 +79,3 @@ public class ViewCard
      */
     private void buildCard() { cardImage = Utils.getBufferedImage(path + Config.deckStyle + "/" + card.getValue().name() + card.getColor().name() + ".png"); }
 }
-//nousecode
-//@Deprecated
-//private void oldGetCard(){
-//    int num = 0;
-//    if (card.getColor() != CardColor.WILD) num = card.getColor().VALUE * 14 + card.getValue().ordinal() + 1;
-//    else num = card.getValue() == CardValue.WILD ? 14 : 14 * 5;
-//    String numero = String.format("%02d", num) + ".png";
-//
-//    img = Utils.getBufferedImage(path + Config.deckStyle + "/" + numero);
-//}

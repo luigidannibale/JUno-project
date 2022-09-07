@@ -27,7 +27,7 @@ public class PlayerManager
      * Seaerches for an existing played with the given nane,
      * if the player is found it is returned else a default player is returned.
      * @param name
-     * @return
+     * @return true if the operation is successful, false otherwise
      */
     public static HumanPlayer findPlayerByNicknameOrDefault(String name)
     {
@@ -40,7 +40,6 @@ public class PlayerManager
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             return new HumanPlayer(getHashMap( "default","", new Stats().defaultValues()));
         }
     }
@@ -59,7 +58,7 @@ public class PlayerManager
     /**
      * Saves the player on the database.
      * @param playerToSave
-     * @return
+     * @return true if the operation is successful, false otherwise
      */
     public static boolean savePlayer(HumanPlayer playerToSave)
     {
@@ -68,11 +67,11 @@ public class PlayerManager
             HashMap<Object,Object> datas = new HashMap<>(){{
                put("name",playerToSave.getName());
                put("password",playerToSave.getPassword());
-               put("stats",playerToSave.getStats());
+               put("stats",playerToSave.getStats().getValues());
             }};
             return new JsonFileManager().writeJson(List.of(datas), FILE_PATH);
         }
-        catch (IOException e)  { return false; }
+        catch (Exception e)  { return false; }
     }
 
     /**
@@ -80,11 +79,21 @@ public class PlayerManager
      * @param playerToSave
      * @param oldName
      * @param oldPassword
-     * @return
+     * @return true if the operation is successful, false otherwise
      */
     public static boolean updatePlayer(HumanPlayer playerToSave, String oldName, String oldPassword)
     {
         if (!removePlayer(oldName,oldPassword)) return false;
+        return savePlayer(playerToSave);
+    }
+    /**
+     * Removes the old player values and then saves the updated values.
+     * @param playerToSave
+     * @return true if the operation is successful, false otherwise
+     */
+    public static boolean updatePlayer(HumanPlayer playerToSave)
+    {
+        if (!removePlayer(playerToSave.getName(), playerToSave.getPassword())) return false;
         return savePlayer(playerToSave);
     }
 
@@ -92,7 +101,7 @@ public class PlayerManager
      * Removes the player from the database.
      * @param name
      * @param password
-     * @return
+     * @return true if the operation is successful, false otherwise
      */
     public static boolean removePlayer(String name, String password)
     {

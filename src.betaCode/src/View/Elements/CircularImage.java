@@ -60,6 +60,7 @@ public class CircularImage extends JComponent
     public void setPreferredSize(Dimension preferredSize)
     {
         super.setPreferredSize(preferredSize);
+        if (imm == null) return;
         width = preferredSize.width;
         height = preferredSize.height;
         imm = imm.getScaledInstance(width,height,Image.SCALE_DEFAULT);

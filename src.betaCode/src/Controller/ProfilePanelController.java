@@ -1,9 +1,13 @@
 package Controller;
 
+import Model.Player.HumanPlayer;
+import Model.Player.PlayerManager;
 import Utilities.Config;
+import Utilities.DataAccessManager;
+import View.Elements.CircularImage;
 import View.Elements.CustomMouseAdapter;
 import View.Elements.ViewPlayer;
-import View.Pages.ProfileManagement.ProfilePanel;
+import View.Pages.ProfileManagement.*;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -18,9 +22,11 @@ public class ProfilePanelController extends Controller<ProfilePanel>
 
     private MainFrameController.Panels returnPanel;
 
-    public ProfilePanelController(MainFrameController mfc,ViewPlayer player)
+    public ProfilePanelController()
     {
-        super(new ProfilePanel(player));
+        super(new ProfilePanel());
+
+        MainFrameController mfc = MainFrameController.getInstance();
 
         JLabel name = view.getLabelName();
         name.addMouseListener(new MouseAdapter()
@@ -57,9 +63,11 @@ public class ProfilePanelController extends Controller<ProfilePanel>
             }
         };
 
-        view.getUpdateTabbedPanel().getPanels().forEach(pane -> pane.getCloseButton().addMouseListener(exitFromProfilePanel));
+        view.getPlayerInputTabbedPanel().getPanels().forEach(inputPanel -> {
+            inputPanel.getCloseButton().addMouseListener(exitFromProfilePanel);
+            inputPanel.getSaveButton().addMouseListener(getSave(inputPanel, mfc));
 
-
+        });
         JFileChooser chooser = new JFileChooser();
         chooser.setFileFilter(new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png"));
         view.getLblChangeIcon().addMouseListener(new CustomMouseAdapter()
@@ -68,11 +76,108 @@ public class ProfilePanelController extends Controller<ProfilePanel>
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
                 if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
-                    player.getProfilePicture().setCircleImage(Config.savedIconPath = chooser.getSelectedFile().getAbsolutePath());
+                {
+                    mfc.getViewPlayer().getProfilePicture().setCircleImage(Config.savedIconPath = chooser.getSelectedFile().getAbsolutePath());
+                    DataAccessManager DAM = new DataAccessManager();
+                    DAM.saveProfile(Config.loggedPlayer);
+                }
             }
         });
     }
 
+    private CustomMouseAdapter getSave(InputPanel inputPanel, MainFrameController mfc)
+    {
+        return new CustomMouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                JTextField txtInsertName = inputPanel.getTxtInsertName(),
+                        txtInsertPassword = inputPanel.getTxtInsertPassword();
+                //InputPanel inputPanel = (InputPanel) e.getComponent().getParent();
+
+                if (inputPanel instanceof UpdatePanel)
+                {//have to put also the "delete me" button
+                    update((UpdatePanel) inputPanel, txtInsertName, txtInsertPassword);
+                    return;
+                }
+
+                if(!inputPanel.verifyInput()) return;
+
+                if (inputPanel instanceof LoginPanel)
+                    login((LoginPanel) inputPanel, txtInsertName, txtInsertPassword, mfc);
+                else if (inputPanel instanceof RegistrationPanel)
+                    registrate((RegistrationPanel) inputPanel, txtInsertName, txtInsertPassword);
+                view.update();
+            }
+        };
+    }
+
+    private void update(UpdatePanel panel, JTextField txtInsertName, JTextField txtInsertPassword)
+    {
+        JTextField txtConfirmPassword = panel.getTxtConfirmPassword();
+        if(txtConfirmPassword.isVisible())
+        {//pass confirmation
+            if(!txtConfirmPassword.getText().equals(Config.loggedPlayer.getPassword()))
+            {//pass not valid
+                panel.textFieldError(txtConfirmPassword, InputPanel.InputMessages.PASSWORD_ERROR);
+                return;
+            }
+            panel.setTxtVisibility(false);
+        }
+        else
+        {//profile update
+            String oldName = Config.loggedPlayer.getName();
+            String oldPasword = Config.loggedPlayer.getPassword();
+            Config.loggedPlayer.setName(txtInsertName.getText());
+            Config.loggedPlayer.setPassword(txtInsertPassword.getText());
+            DataAccessManager DAM = new DataAccessManager();
+            panel.setTxtVisibility(DAM.updateModelProfile(oldName, oldPasword));
+        }
+    }
+
+    private void login(LoginPanel panel, JTextField txtInsertName, JTextField txtInsertPassword, MainFrameController mfc)
+    {
+        String name = txtInsertName.getText(),
+                password = txtInsertPassword.getText();
+
+        DataAccessManager DAM = new DataAccessManager();
+        HumanPlayer optionalPlayer = DAM.getModelProfile(name);
+
+        if (!optionalPlayer.getName().equals(name))
+        {
+            panel.textFieldError(txtInsertName, InputPanel.InputMessages.NAME_NOT_VALID);
+            return;
+        }
+
+        if (!optionalPlayer.getPassword().equals(password))
+        {
+            panel.textFieldError(txtInsertName, InputPanel.InputMessages.PASSWORD_ERROR);
+            return;
+        }
+
+        Config.loggedPlayer = optionalPlayer;
+        if (DAM.loadPlayerProfile(optionalPlayer.getName())) MainFrameController.getInstance().setViewPlayer(new ViewPlayer(optionalPlayer, new CircularImage(Config.savedIconPath)));
+    }
+
+    private void registrate(RegistrationPanel panel, JTextField txtInsertName, JTextField txtInsertPassword)
+    {
+        String name = txtInsertName.getText(),
+                password = txtInsertPassword.getText();
+        HumanPlayer player = PlayerManager.findPlayerByNicknameOrDefault(name);
+        if (player.getName().equals(name))
+        {
+            panel.textFieldError(txtInsertName, InputPanel.InputMessages.NAME_ALREADY_EXISTS);
+            return;
+        }
+        player = new HumanPlayer(name, password);
+        DataAccessManager DAM = new DataAccessManager();
+        System.out.println("Registrato : "+ name + " con esito " + DAM.saveModelProfile(player));
+        Config.assignDefaultValues();
+        Config.loggedPlayer = player;
+        if (DAM.saveProfile(player)) MainFrameController.getInstance().setViewPlayer(new ViewPlayer(player, new CircularImage(Config.savedIconPath)));
+    }
 
     public JPanel getSmallPanel(){ return view.getSmallPanel(); }
 

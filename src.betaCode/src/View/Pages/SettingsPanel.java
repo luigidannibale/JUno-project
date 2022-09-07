@@ -12,9 +12,9 @@ import java.util.Arrays;
 
 public class SettingsPanel extends ResizablePanel
 {
+    private final String pathImages = MainFrame.IMAGE_PATH +"SettingsPanel/";
     private final Color green = new Color(0, 231, 172);
     private final Font font = new Font("Digital-7", Font.BOLD, 18);
-
     private GifComponent saveButton;
     private GifComponent closeButton;
     private ImageComponent gameOver;
@@ -31,7 +31,6 @@ public class SettingsPanel extends ResizablePanel
     public SettingsPanel()
     {
         super(900, 600,0);
-        imagePath = "resources/images/MainFrame/SettingsPanel/";
         setLayout(new GridBagLayout());
         setOpaque(false);
         setVisible(false);
@@ -43,25 +42,25 @@ public class SettingsPanel extends ResizablePanel
     private void InitializeComponents()
     {
         //labels
-        effectsLabel = new ChangebleIcon(imagePath+"EffectsVolume/",new String[]{"off","low","high"},".png");
+        effectsLabel = new ChangebleIcon(pathImages +"EffectsVolume/",new String[]{"off","low","high"},".png");
         effectsLabel.setName("effectsLabel");
-        musicLabel = new ChangebleIcon(imagePath+"MusicVolume/",new String[]{"off","on"},".png");
+        musicLabel = new ChangebleIcon(pathImages +"MusicVolume/",new String[]{"off","on"},".png");
         musicLabel.setName("musicLabel");
-        deckStyleLabel = new ImageComponent(imagePath+"DeckStyle.png", -1, -1, false);
-        qualityLabel = new ChangebleIcon(imagePath+"GraphicQuality/",new String[]{"low","high"},".png");
+        deckStyleLabel = new ImageComponent(pathImages +"DeckStyle.png", -1, -1, false);
+        qualityLabel = new ChangebleIcon(pathImages +"GraphicQuality/",new String[]{"low","high"},".png");
         qualityLabel.setName("qualityLabel");
         //buttons
-        gameOver = new ImageComponent(imagePath + "exit_game.png", 118, 118, false);
-        saveButton = new GifComponent(imagePath + "save");
-        closeButton =new GifComponent(imagePath + "discard");
+        gameOver = new ImageComponent(pathImages + "exit_game.png", 118, 118, false);
+        saveButton = new GifComponent(pathImages + "save");
+        closeButton =new GifComponent(pathImages + "discard");
 
         effectsViewSlider = new ViewSlider();
         effectsViewSlider.addMouseListener();
         musicViewSlider = new ViewSlider();
         musicViewSlider.addMouseListener();
 
-        whiteDeck = new DeckRectangle(imagePath+"white.png", "White Deck", DeckColor.WHITE);
-        darkDeck = new DeckRectangle(imagePath+"black.png", "Dark Deck", DeckColor.BLACK);
+        whiteDeck = new DeckRectangle(pathImages +"white.png", "White Deck", DeckColor.WHITE);
+        darkDeck = new DeckRectangle(pathImages +"black.png", "Dark Deck", DeckColor.BLACK);
 
         qualityCombo = new JComboBox<>();
         Arrays.stream(GraphicQuality.values()).forEach(g -> qualityCombo.addItem(g));

@@ -7,9 +7,10 @@ import java.awt.event.MouseEvent;
 
 public class StartingMenuController extends Controller<StartingMenuPanel>
 {
-    public StartingMenuController(MainFrameController mfc)
+    public StartingMenuController()
     {
         super(new StartingMenuPanel());
+        MainFrameController mfc = MainFrameController.getInstance();
 
         //GameChoicePanel
         view.getGameChoiceIcon().addMouseListener(new CustomMouseAdapter() {

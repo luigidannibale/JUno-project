@@ -7,13 +7,13 @@ import java.util.List;
 
 
 
-public class UpdatePlayerPanel extends JTabbedPane
+public class PlayerInputTabbedPanels extends JTabbedPane
 {
     LoginPanel loginPanel;
     RegistrationPanel registrationPanel;
     UpdatePanel updatePanel;
 
-    public UpdatePlayerPanel(Color backColor, Color borderColor)
+    public PlayerInputTabbedPanels(Color backColor, Color borderColor)
     {
 
         loginPanel = new LoginPanel(backColor,borderColor);

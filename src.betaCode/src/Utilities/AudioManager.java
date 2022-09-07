@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 public class AudioManager
 {
-    public enum Effects
+    public enum Effect
     {
         PLAY,
         DRAW_CARD,
@@ -58,8 +58,6 @@ public class AudioManager
 
     private AudioManager(int volume) { this.volume = volume; }
 
-    public void setCommonFolder(){ setFolder("COMMON"); }
-
     public void setFolder(String folder){this.folder = folder;}
 
     public void setAudio(Musics music)
@@ -69,26 +67,26 @@ public class AudioManager
 
             audioTrack = AudioSystem.getClip();                                             //creates an audio clip that plays back an audio (either file or stream)
             audioTrack.open(AudioSystem.getAudioInputStream(getAudioFile(music.name())));   //assigns the audio
-            //System.out.println(Config.musicVolume);
             ((FloatControl) audioTrack.getControl(FloatControl.Type.MASTER_GAIN)).setValue(convert.apply(Config.musicVolume));
             audioTrack.start();
             audioTrack.loop(Clip.LOOP_CONTINUOUSLY);
         }
-        catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) { System.out.println("File not found " + music.name()); }
+        catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) {}
+        catch (Exception e){}
     }
 
-    public void setEffects(Effects effects)  { setEffects(effects, Config.effectsVolume); }
+    public void setEffect(Effect effect)  { setEffect(effect, Config.effectsVolume); }
 
-    public void setEffects(Effects effects, int volume)
+    public void setEffect(Effect effect, int volume)
     {
         try
         {
             effectsTrack = AudioSystem.getClip();                                       //creates an audio clip that plays back an audio (either file or stream)
-            effectsTrack.open(AudioSystem.getAudioInputStream(getAudioFile(effects.name()))); //assigns the audio
+            effectsTrack.open(AudioSystem.getAudioInputStream(getAudioFile(effect.name()))); //assigns the audio
             ((FloatControl) effectsTrack.getControl(FloatControl.Type.MASTER_GAIN)).setValue(convert.apply(volume));
             effectsTrack.start();
         }
-        catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) { System.out.println("File not found " + effects.name()); }
+        catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) { System.out.println("File not found " + effect.name()); }
     }
 
     private File getCommonAudioFile(String filename)  { return new File(getPathAudio(filename, "COMMON")); }
@@ -104,6 +102,7 @@ public class AudioManager
     public void play(){ audioTrack.start(); }
     public void loop(){ audioTrack.loop(Clip.LOOP_CONTINUOUSLY); }
     public void stop(){ audioTrack.stop(); }
+    public void stopEffect() { effectsTrack.stop(); }
     public void setVolume(int value)
     {
         volume = value;

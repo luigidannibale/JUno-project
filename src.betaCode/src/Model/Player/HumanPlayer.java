@@ -6,13 +6,12 @@ import java.util.HashMap;
 public class HumanPlayer extends Player
 {
     private static final String filePath = "resources/info.json";
-
     private Stats stats;
     private String password;
 
-    public HumanPlayer(String nickname,String password)
+    public HumanPlayer(String name,String password)
     {
-        super(nickname);
+        super(name);
         this.password = password;
         this.stats = new Stats();
     }
@@ -40,6 +39,7 @@ public class HumanPlayer extends Player
     public void setPassword(String password) { this.password = password; }
 
     public Stats getStats() { return stats; }
+
 
     public void setStats(Stats stats) { this.stats = stats; }
 }

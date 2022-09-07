@@ -19,9 +19,11 @@ public class GameChoiceController extends Controller<GameChoicePanel>
         SEVENO_RULES
     }
 
-    public GameChoiceController(MainFrameController mfc)
+    public GameChoiceController()
     {
         super(new GameChoicePanel());
+
+        MainFrameController mfc = MainFrameController.getInstance();
 
         URI filePath = new File("resources/rules.pdf").toURI();
 

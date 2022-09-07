@@ -3,6 +3,7 @@ import Model.Cards.Card;
 import Model.Cards.CardValue;
 import Model.DeckManager;
 import Utilities.Utils;
+import com.sun.tools.javac.Main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +35,7 @@ public class Juno {
         loadingWindow.setBackground(new Color(0,0,0,0));
         loadingWindow.setLocationRelativeTo(null);
         loadingWindow.setVisible(true);
-        game = new MainFrameController();
+        game = MainFrameController.getInstance();
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {

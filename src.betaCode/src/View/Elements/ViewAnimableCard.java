@@ -4,7 +4,7 @@ import Model.Cards.Card;
 
 import java.awt.*;
 
-public class ViewAnimableCard extends ViewRotatableImage
+public class ViewAnimableCard extends ViewRotatableCard
 {
     private Dimension shiftAmount = new Dimension(0,0);
 

@@ -12,8 +12,11 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 
+
+
 public class GameChoicePanel extends ResizablePanel
 {
+    private final String pathImages = MainFrame.IMAGE_PATH +"GameChoicePanel/";
     private GifComponent[] gameModes;
     private ImageComponent[] infoLabels;
     private BufferedImage[] infos;
@@ -29,8 +32,6 @@ public class GameChoicePanel extends ResizablePanel
     {
         super(1080, 552, 6);
 
-        imagePath = "resources/images/MainFrame/GameChoicePanel/";
-
         setLayout(new GridBagLayout());
         setOpaque(false);
         setVisible(false);
@@ -44,26 +45,26 @@ public class GameChoicePanel extends ResizablePanel
     void InitializeComponents()
     {
 
-        title = new ImageComponent(imagePath + "choose gamemode.png", -1, -1, false);
+        title = new ImageComponent(pathImages + "choose gamemode.png", -1, -1, false);
 
         int length = GameChoiceController.GameMode.values().length;
         gameModes = new GifComponent[length];
         infoLabels = new ImageComponent[length];
         infos = new BufferedImage[length];
-        ImageIcon baq = new ImageIcon(imagePath+"baq.png");
+        ImageIcon baq = new ImageIcon(pathImages +"baq.png");
         Arrays.stream(GameChoiceController.GameMode.values()).forEach(gameMode ->
         {
             int index = gameMode.ordinal();
-            String path = imagePath + gameMode.name().toLowerCase();
+            String path = pathImages + gameMode.name().toLowerCase();
             gameModes[index] = new GifComponent(path, 150, 255);
-            infoLabels[index] = new ImageComponent(imagePath+"baq.png",-1,-1,false);
+            infoLabels[index] = new ImageComponent(pathImages +"baq.png",-1,-1,false);
             //@deprecated       @quarantined
             //infoLabels[index] = new GifComponent(imagePath+"baq", 50, 52);
             //@deprecated       @quarantined
             infos[index] = Utils.getBufferedImage(path + "_info.png");
         });
 
-        back = new ImageComponent(imagePath + "back.png", -1, -1, false);
+        back = new ImageComponent(pathImages + "back.png", -1, -1, false);
 
         //Layout
         GridBagConstraints gbc = new GridBagConstraints();

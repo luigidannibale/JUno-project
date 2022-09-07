@@ -2,9 +2,7 @@ package Model.Rules;
 
 import Model.Cards.*;
 import Model.DeckManager;
-import Model.Player.AIPlayer;
-import Model.Player.HumanPlayer;
-import Model.Player.Player;
+import Model.Player.*;
 import Model.TurnManager;
 
 import java.util.Arrays;
@@ -13,6 +11,7 @@ import java.util.List;
 
 public abstract class UnoGameRules
 {
+    public static final int WIN_POINTS_THRESHOLD = 500;
     /**
      * @see DeckManager
      */
@@ -35,7 +34,29 @@ public abstract class UnoGameRules
     }
 
     public boolean checkGameWin(Player current){ return current.getHand().size() == 0; }
-    public boolean checkWin(Player[] players, Player player){ return countPoints(players,player)>=500;}
+
+    public boolean checkWin(Player[] players, Player player)
+    {
+        boolean win = countPoints(players,player) >= WIN_POINTS_THRESHOLD;
+        if (win) {
+            for (Player p: players)
+                if (p instanceof HumanPlayer humanPlayer)
+                {
+                    Stats statsToUpdate = humanPlayer.getStats();
+                    if (humanPlayer.equals(player)) //he won
+                        statsToUpdate.setVictories(statsToUpdate.getVictories()+1);
+                    else //he lost
+                        statsToUpdate.setDefeats(statsToUpdate.getDefeats() + 1);
+                    statsToUpdate.setLevel((float) (statsToUpdate.getLevel() + humanPlayer.getPoints() / 1000));
+                    humanPlayer.setStats(statsToUpdate);
+
+                    PlayerManager.updatePlayer(humanPlayer);
+                    break;
+                }
+        }
+        return win;
+    }
+
     public int getNumberOfCardsPerPlayer() { return numberOfCardsPerPlayer; }
 
     public HashMap<CardValue, Integer> getCardsDistribution() { return cardsDistribution; }

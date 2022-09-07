@@ -7,6 +7,7 @@ import java.awt.*;
 
 public class StartingMenuPanel extends ResizablePanel
 {
+    private final String pathImages = MainFrame.IMAGE_PATH +"StartingMenuPanel/";
     //Components
     private ImageComponent startGameLabel;
     private ImageComponent settingLabel;
@@ -22,8 +23,9 @@ public class StartingMenuPanel extends ResizablePanel
     public StartingMenuPanel()
     {
         super(480, 500, 6);
+        setName("Starting menu panel");
         setLayout(new BorderLayout());
-        imagePath = "resources/images/MainFrame/StartingMenuPanel/";
+
         setOpaque(false);
         InitializeComponents();
         resizeComponents();
@@ -31,9 +33,9 @@ public class StartingMenuPanel extends ResizablePanel
 
     private void InitializeComponents()
     {
-        startGameLabel = new ImageComponent(imagePath + "Startgame.png");
-        settingLabel = new ImageComponent(imagePath + "Settings.png");
-        quitLabel = new ImageComponent(imagePath + "Quit.png");
+        startGameLabel = new ImageComponent(pathImages + "Startgame.png");
+        settingLabel = new ImageComponent(pathImages + "Settings.png");
+        quitLabel = new ImageComponent(pathImages + "Quit.png");
         quitLabel.setBorder(new EmptyBorder(5,0,0,0));
 
         add(startGameLabel, BorderLayout.NORTH);

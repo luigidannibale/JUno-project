@@ -14,10 +14,11 @@ public class SettingsController extends Controller<SettingsPanel>
     private DeckColor deckChanges;
     private MainFrameController.Panels returnPanel;
 
-    public SettingsController(MainFrameController mfc)
+    public SettingsController()
     {
         super(new SettingsPanel());
 
+        MainFrameController mfc = MainFrameController.getInstance();
         addButtonsListeners(mfc);
         addChangeableIconListeners();
         refreshSettings();
@@ -60,7 +61,7 @@ public class SettingsController extends Controller<SettingsPanel>
         Config.deckStyle = deckChanges;
         Config.graphicQuality = (GraphicQuality) view.getQualityCombo().getSelectedItem();
         //if (returnPanel == MainFrameController.Panels.GAME) mainFrame.resumeGame();
-        Config.saveConfig();
+        Config.storeConfig();
 
         AudioManager.getInstance().setVolume(Config.musicVolume);
     }
@@ -126,7 +127,7 @@ public class SettingsController extends Controller<SettingsPanel>
             if (val == 0) effectsLabel.setIcon("off");
             else if (val < 40) effectsLabel.setIcon("low");
             else effectsLabel.setIcon("high");
-            if (view.isVisible()) AudioManager.getInstance().setEffects(AudioManager.Effects.AUDIO_TEST, val);
+            if (view.isVisible()) AudioManager.getInstance().setEffect(AudioManager.Effect.AUDIO_TEST, val);
         });
 
     }

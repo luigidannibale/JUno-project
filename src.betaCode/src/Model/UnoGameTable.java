@@ -102,7 +102,6 @@ public class UnoGameTable extends Observable
         System.out.println("PLAYABLE: " + getCurrentPlayerPLayableCards());
         //--test end
         currentPlayer().playCard(card);
-        currentPlayer().setDrew(false);
 
         if (checkGameWin(currentPlayer()))
         {

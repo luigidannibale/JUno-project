@@ -9,7 +9,7 @@ import java.util.Arrays;
 public class ResizablePanel extends JPanel
 {
     protected int panelWidth, panelHeight;
-    protected String imagePath;
+    //protected String IMAGE_PATH;
 
     public ResizablePanel(int panelWidth,int panelHeight, int borderOffset)
     {

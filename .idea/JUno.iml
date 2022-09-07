@@ -12,5 +12,6 @@
     <orderEntry type="library" name="17.0" level="project" />
     <orderEntry type="library" name="openjfx" level="application" />
     <orderEntry type="library" name="javafx-base-17.0.1-sources" level="application" />
+    <orderEntry type="library" name="javax.json-api-1.0-javadoc" level="project" />
   </component>
 </module>

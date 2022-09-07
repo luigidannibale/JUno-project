@@ -30,6 +30,6 @@ public class CustomMouseAdapter extends MouseAdapter {
 
     private void playClick(){
         //AudioManager.getInstance().setCommonFolder();
-        AudioManager.getInstance().setEffects(AudioManager.Effects.CLICK);
+        AudioManager.getInstance().setEffect(AudioManager.Effect.CLICK);
     }
 }

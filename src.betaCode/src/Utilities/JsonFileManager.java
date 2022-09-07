@@ -1,13 +1,10 @@
 package Utilities;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
+import org.json.*;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,32 +22,14 @@ import java.util.List;
  */
 public class JsonFileManager
 {
-    public boolean writeJson(List<HashMap<Object,Object>> datas, String file) throws IOException
-    {
-        ArrayList<HashMap<Object,Object>> actualData = readJson(file);
-        actualData.addAll(datas);
-        return overWriteJson(actualData,file);
-    }
-    public boolean overWriteJson(List<HashMap<Object,Object>> datas, String file)
-    {
-        JSONArray datasJson = new JSONArray(datas);
-        return write(datasJson.toString(), file);
-    }
-    private boolean write(String data, String file)
-    {
-        try (FileWriter fw = new FileWriter(file))
-        {
-            fw.write(data);
-            fw.flush();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-    public ArrayList<HashMap<Object,Object>>  readJson(String file) throws IOException
+    //READ DATA
+    /**
+     *
+     * @param file
+     * @return the read data
+     * @throws Exception
+     */
+    public ArrayList<HashMap<Object,Object>>  readJson(String file) throws Exception
     {
         JSONArray datasJson;
         try
@@ -58,9 +37,8 @@ public class JsonFileManager
             datasJson = read(file);
         }
         catch (Exception e)
-        {
-            throw e;
-        }
+        { throw e; }
+
         ArrayList<HashMap<Object, Object>> data = new ArrayList<>();
 
         for (Object object : datasJson)
@@ -72,13 +50,74 @@ public class JsonFileManager
         }
         return data;
     }
+    //---------
+
+    //WRITE DATA
+    /**
+     * Takes the data as {@link HashMap} and the file path, and writes the data as {@link JSONArray} on the file, appending them to the data that already are written there.
+     * @param datas
+     * @param file
+     * @return true if the operation is successful, false otherwise
+     * @throws Exception
+     */
+    public boolean writeJson(List<HashMap<Object,Object>> datas, String file) throws Exception
+    {
+        ArrayList<HashMap<Object,Object>> actualData = readJson(file);
+        actualData.addAll(datas);
+        return overWriteJson(actualData,file);
+    }
+
+    /**
+     * Takes the data as {@link HashMap} and the file path, and writes the data as {@link JSONArray} on the file overwriting the existing content.
+     * @param datas
+     * @param file
+     * @return true if the operation is successful, false otherwise
+     */
+    public boolean overWriteJson(List<HashMap<Object,Object>> datas, String file)
+    {
+        JSONArray datasJson = new JSONArray(datas);
+        return write(datasJson, file);
+    }
+    //----------
+
+
+
+    /**
+     * Writes a {@link JSONArray} on a file.
+     * @param data
+     * @param file
+     * @return true if the operation is successful, false otherwise
+     */
+    private boolean write(JSONArray data, String file)
+    {
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(file)))
+        {
+            data.write(writer,1,1);
+        }
+        catch (Exception e)
+        { return false; }
+        return true;
+    }
+
+    /**
+     * Converts from {@link JSONObject} to {@link HashMap}
+     * @param json
+     * @return the corresponding {@link HashMap}
+     */
     private HashMap<Object,Object> jsonToHashMap(JSONObject json)
     {
         HashMap<Object,Object> hash = new HashMap<>();
         json.keys().forEachRemaining(k-> hash.put(k,json.get(k) instanceof JSONObject?jsonToHashMap((JSONObject) json.get(k)):json.get(k)));
         return hash;
     }
-    private JSONArray read(String file) throws IOException
+
+    /**
+     * Reads a {@link JSONArray} from a file.
+     * @param file
+     * @return
+     * @throws Exception
+     */
+    private JSONArray read(String file) throws Exception
     {
         try(BufferedReader br = new BufferedReader(new FileReader(file)))
         {
@@ -86,10 +125,7 @@ public class JsonFileManager
             JSONArray jsonArray  =  new JSONArray(tokener);
             return jsonArray;
         }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            throw e;
-        }
+        catch (Exception e)
+        { throw e; }
     }
 }

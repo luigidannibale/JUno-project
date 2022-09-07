@@ -33,7 +33,7 @@ public class GamePanel extends JPanel implements Observer
         WIN,
         ACTUAL_WIN
     }
-    private static final String imagePath = "resources/images/MainFrame/GamePanel/";
+    private static final String imagePath = MainFrame.IMAGE_PATH+"GamePanel/";
 
     private final Color green = new Color(14, 209, 69);
     private final Color playerBackground = new Color(101, 132, 247, 160);
@@ -149,7 +149,7 @@ public class GamePanel extends JPanel implements Observer
                             new ImageIcon(imagePath + "wild.png"),
                             colors, colors[0]);
 
-        AudioManager.getInstance().setEffects(AudioManager.Effects.valueOf(colors[choice]));
+        AudioManager.getInstance().setEffect(AudioManager.Effect.valueOf(colors[choice]));
         return CardColor.valueOf(colors[choice]);
     }
 
@@ -264,7 +264,7 @@ public class GamePanel extends JPanel implements Observer
             boolean win = gameTable.checkWin(currentViewPlayer.getPlayer());
             ladder = Arrays.stream(viewPlayers).map(ViewPlayer::getPlayer).sorted(Comparator.comparing(Player::getPoints).reversed()).toList();
             currentState = win ? State.ACTUAL_WIN : State.WIN; //se vince vince sennò vince
-            AudioManager.getInstance().setEffects(AudioManager.Effects.WIN);
+            AudioManager.getInstance().setEffect(AudioManager.Effect.WIN);
             return;
         }
 
@@ -309,7 +309,7 @@ public class GamePanel extends JPanel implements Observer
     private void randomSleep(int min, int max)
     {
         try { Thread.sleep(new Random().nextInt(min, max)); }
-        catch (InterruptedException e) { System.out.println("interrupted exception"); e.printStackTrace(); }
+        catch (InterruptedException e) {}
     }
 
     public void asyncAITurn(UnoGameTable gameTable)
@@ -358,8 +358,8 @@ public class GamePanel extends JPanel implements Observer
         movingAnimation = new MovingAnimation(card.getPosition().getX(), card.getPosition().getY(), discard.getPosition().getX(), discard.getPosition().getY(), card);
         animations.add(movingAnimation);
         card.setPaintedImage(null);
-        AudioManager.getInstance().setEffects(AudioManager.Effects.PLAY);
-        try{ AudioManager.getInstance().setEffects(AudioManager.Effects.valueOf(card.getCard().getValue().name())); }  catch (Exception ignored){}
+        AudioManager.getInstance().setEffect(AudioManager.Effect.PLAY);
+        try{ AudioManager.getInstance().setEffect(AudioManager.Effect.valueOf(card.getCard().getValue().name())); }  catch (Exception ignored){}
         if (currentViewPlayer.getPlayer().getHand().size() == 2) shoutUnoAnimation(currentViewPlayer.getPlayer());
         return movingAnimation;
     }
@@ -369,7 +369,7 @@ public class GamePanel extends JPanel implements Observer
         if (animationRunning(movingAnimation)) return null;
 
         Rectangle lastCardPosition = currentViewPlayer.getImagesHand().get(currentViewPlayer.getImagesHand().size() - 1).getPosition();
-        AudioManager.getInstance().setEffects(AudioManager.Effects.DRAW_CARD);
+        AudioManager.getInstance().setEffect(AudioManager.Effect.DRAW_CARD);
         movingAnimation = new MovingAnimation(deck.getPosition().getX(), deck.getPosition().getY(), lastCardPosition.getX(), lastCardPosition.getY(), drawnCard);
 
         animations.add(movingAnimation);
@@ -381,7 +381,7 @@ public class GamePanel extends JPanel implements Observer
         if (animationRunning(flipAnimation)) return null;
         flipAnimation = new FlippingAnimation(drawnCard, deck.getPosition());
         animations.add(flipAnimation);
-        AudioManager.getInstance().setEffects(AudioManager.Effects.FLIP);
+        AudioManager.getInstance().setEffect(AudioManager.Effect.FLIP);
         return flipAnimation;
     }
 
@@ -389,14 +389,14 @@ public class GamePanel extends JPanel implements Observer
     {
         if ((player instanceof HumanPlayer && player.hasSaidOne()) || (player instanceof AIPlayer a && a.chooseToSayUno()))
         {//player said one
-            AudioManager.getInstance().setEffects(AudioManager.Effects.UNO);
+            AudioManager.getInstance().setEffect(AudioManager.Effect.UNO);
             animations.add(new TextAnimation(imagePath + "uno.gif", centerX, centerY));
         }
     }
 
     public Animation exposedAnimation()
     {
-        AudioManager.getInstance().setEffects(AudioManager.Effects.ERROR);
+        AudioManager.getInstance().setEffect(AudioManager.Effect.ERROR);
         Animation animation = new TextAnimation(imagePath + "exposed.gif", centerX, centerY);
         animations.add(animation);
         return animation;
@@ -571,6 +571,6 @@ public class GamePanel extends JPanel implements Observer
 
     public Rectangle getContinuePosition() {return continuePosition;}
 
-    public void cardNotPLayableEffects() { AudioManager.getInstance().setEffects(AudioManager.Effects.NOT_VALID); }
+    public void cardNotPLayableEffects() { AudioManager.getInstance().setEffect(AudioManager.Effect.NOT_VALID); }
 }
 
