@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ClassicRules extends UnoGameRules
 {
-    public ClassicRules()  { super(1,1,DeckManager.classicRules); }
+    public ClassicRules()  { super(7,1,DeckManager.classicRules); }
 
     @Override
     public ActionPerformResult performFirstCardAction(Options parameters)  { return super.cardActionPerformance(parameters); }
