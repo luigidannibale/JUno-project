@@ -125,6 +125,8 @@ public class JsonFileManager
             JSONArray jsonArray  =  new JSONArray(tokener);
             return jsonArray;
         }
+        catch (JSONException e)
+        {if (e.getMessage().equals("A JSONArray text must start with '[' at 0 [character 1 line 1]")) write(new JSONArray(){}, file);throw e;}
         catch (Exception e)
         { throw e; }
     }

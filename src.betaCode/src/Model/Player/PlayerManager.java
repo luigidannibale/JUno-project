@@ -44,7 +44,6 @@ public class PlayerManager
         }
     }
 
-    @NotNull
     private static HashMap<Object, Object> getHashMap(String name, String password, HashMap stats)
     {
         return new HashMap<>()

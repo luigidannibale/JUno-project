@@ -1,5 +1,5 @@
 package View.Pages.ProfileManagement;
-
+import java.util.List;
 import Model.Player.PlayerManager;
 import Utilities.Config;
 
@@ -57,7 +57,7 @@ public class UpdatePanel extends InputPanel
         else{
             resetTextField(txtConfirmPassword);
         }
-        //resetTextField( !ConfirmPassword ?new JTextField(){txtInsertName,txtInsertPassword} : txtConfirmPassword);
+
 
     }
 
