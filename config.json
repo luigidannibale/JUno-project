@@ -1,41 +1,13 @@
-[
-  {
-   "config": {
-    "deckStyle": "WHITE",
-    "effectsVolume": 85,
-    "savedIconPath": "C:\\Users\\luigi\\Pictures\\wallpaper\\iwa.png",
-    "musicVolume": 60,
-    "graphicQuality": "HIGH"
-   },
-   "player": {
-    "name": "Daniele",
-    "password": "Pass12"
-   }
+[{
+  "config": {
+   "deckStyle": "BLACK",
+   "effectsVolume": 69,
+   "savedIconPath": "C:\\Users\\luigi\\Pictures\\wallpaper\\konhoa.png",
+   "musicVolume": 67,
+   "graphicQuality": "HIGH"
   },
-  {
-   "config": {
-    "deckStyle": "WHITE",
-    "effectsVolume": 85,
-    "savedIconPath": "C:\\Users\\luigi\\Pictures\\wallpaper\\sfondo.jpg",
-    "musicVolume": 60,
-    "graphicQuality": "HIGH"
-   },
-   "player": {
-    "name": "luigi",
-    "password": "Password1"
-   }
-  },
-  {
-   "config": {
-    "deckStyle": "WHITE",
-    "effectsVolume": 50,
-    "savedIconPath": "resources/images/MainFrame/ProfilePanel/anonymous.png",
-    "musicVolume": 50,
-    "graphicQuality": "LOW"
-   },
-   "player": {
-    "name": "Ginano",
-    "password": "Pasnana12"
-   }
+  "player": {
+   "name": "Luigi",
+   "password": "Password123"
   }
- ]
+ }]

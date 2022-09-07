@@ -6,6 +6,7 @@ import Utilities.Config;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.Arrays;
 
 public class UpdatePanel extends InputPanel
 {
@@ -49,6 +50,24 @@ public class UpdatePanel extends InputPanel
         txtConfirmPassword.setVisible(ConfirmPassword);
         txtInsertName.setVisible(!ConfirmPassword);
         txtInsertPassword.setVisible(!ConfirmPassword);
+
+        if (!ConfirmPassword){
+            resetTextField(txtInsertName, txtInsertPassword);
+        }
+        else{
+            resetTextField(txtConfirmPassword);
+        }
+        //resetTextField( !ConfirmPassword ?new JTextField(){txtInsertName,txtInsertPassword} : txtConfirmPassword);
+
+    }
+
+    private void resetTextField(JTextField... textfields)
+    {
+        Arrays.stream(textfields).forEach(textfield -> {
+            textfield.grabFocus();
+            textfield.transferFocus();
+        });
+
     }
 
     public JTextField getTxtConfirmPassword() { return txtConfirmPassword; }

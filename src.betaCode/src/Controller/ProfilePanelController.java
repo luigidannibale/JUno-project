@@ -16,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.util.Map;
+import java.util.Random;
 
 public class ProfilePanelController extends Controller<ProfilePanel>
 {
@@ -32,7 +33,19 @@ public class ProfilePanelController extends Controller<ProfilePanel>
         name.addMouseListener(new MouseAdapter()
         {
             @Override
-            public void mouseClicked(MouseEvent e) { mfc.setVisiblePanel(MainFrameController.Panels.PROFILE); }
+            public void mouseClicked(MouseEvent e) {
+                mfc.setVisiblePanel(MainFrameController.Panels.PROFILE);
+                Color c;
+                switch (new Random().nextInt(1,10))
+                {
+                    case 1 -> c = Color.BLACK;
+                    case 2 -> c = Color.RED;
+                    case 3 -> c = Color.BLUE;
+                    case 4 -> c = Color.YELLOW;
+                    case 5 -> c = Color.GREEN;
+                    default -> c = Color.BLACK;
+                }
+                name.setForeground(c);}
             @Override
             public void mouseEntered(MouseEvent e)
             {
@@ -95,11 +108,11 @@ public class ProfilePanelController extends Controller<ProfilePanel>
 
                 JTextField txtInsertName = inputPanel.getTxtInsertName(),
                         txtInsertPassword = inputPanel.getTxtInsertPassword();
-                //InputPanel inputPanel = (InputPanel) e.getComponent().getParent();
 
                 if (inputPanel instanceof UpdatePanel)
                 {//have to put also the "delete me" button
                     update((UpdatePanel) inputPanel, txtInsertName, txtInsertPassword);
+                    view.update();
                     return;
                 }
 
@@ -117,6 +130,7 @@ public class ProfilePanelController extends Controller<ProfilePanel>
     private void update(UpdatePanel panel, JTextField txtInsertName, JTextField txtInsertPassword)
     {
         JTextField txtConfirmPassword = panel.getTxtConfirmPassword();
+        
         if(txtConfirmPassword.isVisible())
         {//pass confirmation
             if(!txtConfirmPassword.getText().equals(Config.loggedPlayer.getPassword()))
@@ -124,16 +138,18 @@ public class ProfilePanelController extends Controller<ProfilePanel>
                 panel.textFieldError(txtConfirmPassword, InputPanel.InputMessages.PASSWORD_ERROR);
                 return;
             }
+            //view.getPlayerInputTabbedPanel().clearTextField();
             panel.setTxtVisibility(false);
         }
-        else
+        else if (panel.verifyInput())
         {//profile update
             String oldName = Config.loggedPlayer.getName();
             String oldPasword = Config.loggedPlayer.getPassword();
+            DataAccessManager DAM = new DataAccessManager();
             Config.loggedPlayer.setName(txtInsertName.getText());
             Config.loggedPlayer.setPassword(txtInsertPassword.getText());
-            DataAccessManager DAM = new DataAccessManager();
-            panel.setTxtVisibility(DAM.updateModelProfile(oldName, oldPasword));
+            //view.getPlayerInputTabbedPanel().clearTextField();
+            panel.setTxtVisibility(DAM.updateProfile(Config.loggedPlayer,oldName, oldPasword));
         }
     }
 

@@ -45,10 +45,10 @@ public class PlayerInputTabbedPanels extends JTabbedPane
     {
         InputPanel panel = getPanels().get(getSelectedIndex());
         Arrays.stream(panel.getComponents()).filter(c -> c instanceof JTextField).forEach(c -> {
-            var text = (JTextField)c;
+            var text = (JTextField) c;
             text.grabFocus();
             text.setText("");
-            panel.requestFocusInWindow();
+            requestFocusInWindow();
         });
     }
 }

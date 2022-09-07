@@ -27,7 +27,7 @@ public abstract class InputPanel extends ResizablePanel
         PASSWORD_TOOLTIP("Password must have 6 character with 1 capital letter and 1 lowercase"),
         PASSWORD_ERROR("Password is not valid"),
         CONFIRM_PASSWORD("Confirm old password");
-        private String associatedMessage;
+        private final String associatedMessage;
         InputMessages(String associatedMessage){this.associatedMessage = associatedMessage;}
         public String getMessage(){return associatedMessage;}
     }
@@ -71,7 +71,6 @@ public abstract class InputPanel extends ResizablePanel
 
         saveButton = new GifComponent(IMAGE_PATH + "save",80,80);
         closeButton =new GifComponent(IMAGE_PATH + "discard",80,80);
-
 
         FocusListener onClickCancelText = onClickCancelTextFocusListener();
         txtInsertName.addFocusListener(onClickCancelText);
@@ -158,7 +157,8 @@ public abstract class InputPanel extends ResizablePanel
                 }
             }
             @Override
-            public void focusLost(FocusEvent e) {
+            public void focusLost(FocusEvent e)
+            {
                 JTextField textfield = ((JTextField) e.getComponent());
                 if (textfield.getText().isEmpty())
                 {
@@ -167,10 +167,11 @@ public abstract class InputPanel extends ResizablePanel
                 }
             }};
     }
+
     public boolean verifyInput()
     {
         String name = txtInsertName.getText(), password = txtInsertPassword.getText();
-        if (check.test(name))
+        if (check.test(name) || name.length() > 12)
         {
             textFieldError(txtInsertName, InputMessages.NAME_NOT_VALID);
             return false;

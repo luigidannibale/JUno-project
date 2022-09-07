@@ -1,5 +1,6 @@
 package View.Elements;
 
+import Utilities.Config;
 import Utilities.Utils;
 
 import javax.swing.*;
@@ -12,7 +13,7 @@ public class CircularImage extends JComponent
     private int width;
     private int height;
 
-    public CircularImage() { this("resources/images/MainFrame/StartingMenuPanel/ProfilePanel/anonymous.png", 60, 60); }
+    public CircularImage() { this(Config.DEFAULT_ICON_PATH, 60, 60); }
 
     public CircularImage(String path) { this(path, 60, 60); }
 

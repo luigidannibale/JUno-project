@@ -24,6 +24,8 @@ public class ProfilePanel extends ResizablePanel
     private CircularImage profilePicture;
     private JLabel lblName;
     private JLabel lblLevel;
+    private JLabel lblVictories;
+    private JLabel lblDefeats;
     private ViewSlider levelXpBar;
     private JLabel lblChangeIcon;
     private ImageComponent lblXp;
@@ -79,6 +81,14 @@ public class ProfilePanel extends ResizablePanel
         lblChangeIcon.setBorder(new LineBorder(Color.BLACK, 1, true));
         lblChangeIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
+        lblVictories = new JLabel("");
+        lblVictories.setName("lblVictories");
+        lblVictories.setFont(fontLevel);
+
+        lblDefeats = new JLabel("");
+        lblDefeats.setName("lblDefeats");
+        lblDefeats.setFont(fontLevel);
+
         update();
         playerInputTabbedPanel = new PlayerInputTabbedPanels(backColor,borderColor);
 
@@ -90,12 +100,15 @@ public class ProfilePanel extends ResizablePanel
     {
         lblName.setText(Config.loggedPlayer.getName());
         double livello = Config.loggedPlayer.getStats().getLevel();
-        lblLevel.setText("Livello " + (int) livello);
+        lblLevel.setText("Level " + (int) livello);
         levelXpBar.setValue((int) Math.round(100* (livello - (int)livello)));
+        System.out.println(Config.savedIconPath);
         if (profilePicture != null)
             profilePicture.setCircleImage(Config.savedIconPath);
         else
             profilePicture = MainFrameController.getInstance().getViewPlayer().getProfilePicture();
+        lblVictories.setText("Wins  " + Config.loggedPlayer.getStats().getVictories());
+        lblDefeats.setText("Lost  " + Config.loggedPlayer.getStats().getDefeats());
     }
 
     public void initializeSmallPanel()
@@ -166,8 +179,15 @@ public class ProfilePanel extends ResizablePanel
         lblName.setFont(fontName.deriveFont(fontName.getSize() * 2f));
         lblName.setText(lblName.getText());
 
-        lblLevel.setFont(fontLevel.deriveFont(fontLevel.getSize() * 2f));
+        Font font = fontLevel.deriveFont(fontLevel.getSize() * 1.5f);
+        lblLevel.setFont(font);
         lblLevel.setText(lblLevel.getText());
+
+        lblVictories.setFont(font);
+        lblVictories.setText(lblVictories.getText());
+
+        lblDefeats.setFont(font);
+        lblDefeats.setText(lblDefeats.getText());
 
         lblChangeIcon.setFont(fontLevel.deriveFont(fontLevel.getSize() * 1.f));
         lblChangeIcon.setText(lblChangeIcon.getText());
@@ -176,7 +196,7 @@ public class ProfilePanel extends ResizablePanel
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridheight = 4;
-        gbc.weightx = 0.9;
+        gbc.weightx = 0.5;
         gbc.weighty = 0.03;
         add(profilePicture, gbc);
 
@@ -189,17 +209,35 @@ public class ProfilePanel extends ResizablePanel
         add(lblChangeIcon, gbc);
 
         gbc.anchor = GridBagConstraints.LINE_START;
-//        gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 2;
         gbc.gridy = 0;
-        gbc.gridheight = 2;
-        gbc.weightx = 0.5;
+        gbc.gridheight = 1;
+        gbc.gridwidth = 2;
+        gbc.weightx = 0.6;
         gbc.weighty = 0.07;
         add(lblName, gbc);
+
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.gridheight = 1;
+        gbc.gridwidth = 1;
+        gbc.weightx = 0.2;
+        gbc.weighty = 0.07;
+        add(lblVictories, gbc);
+
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 3;
+        gbc.gridy = 1;
+        gbc.gridheight = 1;
+        gbc.weightx = 0.4;
+        gbc.weighty = 0.07;
+        add(lblDefeats, gbc);
 
         gbc.gridx = 2;
         gbc.gridy = 2;
         gbc.gridheight = 1;
+        gbc.gridwidth = 2;
         gbc.weightx = 0.5;
         gbc.weighty = 0.01;
         add(lblLevel, gbc);
@@ -207,6 +245,7 @@ public class ProfilePanel extends ResizablePanel
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.gridheight = 1;
+        gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.LINE_END;
         gbc.weightx = 0.01;
         gbc.weighty = 0.01;
@@ -215,19 +254,22 @@ public class ProfilePanel extends ResizablePanel
         gbc.gridx = 2;
         gbc.gridy = 3;
         gbc.gridheight = 1;
+        gbc.gridwidth = 2;
         //gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.weightx = 0.5;
         gbc.weighty = 0.01;
         add(levelXpBar, gbc);
 
+
+
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.gridheight = 1;
-        gbc.gridwidth = 3;
-        gbc.weightx = 0.9;
-        gbc.weighty = 0.85;
+        gbc.gridwidth = 4;
+        gbc.weightx = 1;
+        gbc.weighty = 0.8;
         add(playerInputTabbedPanel, gbc);
 
         playerInputTabbedPanel.clearTextField();

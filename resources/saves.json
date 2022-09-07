@@ -1,29 +1,9 @@
-[
-  {
-   "name": "luigi",
-   "stats": {
-    "level": 1.78,
-    "defeats": 1,
-    "victories": 1
-   },
-   "password": "Password1"
+[{
+  "name": "Luigi",
+  "stats": {
+   "defeats": 1,
+   "level": 0,
+   "victories": 0
   },
-  {
-   "name": "Daniele",
-   "stats": {
-    "level": 3.4000000953674316,
-    "defeats": 6,
-    "victories": 3
-   },
-   "password": "Pass12"
-  },
-  {
-   "name": "Ginano",
-   "stats": {
-    "defeats": 0,
-    "level": 0,
-    "victories": 0
-   },
-   "password": "Pasnana12"
-  }
- ]
+  "password": "Password123"
+ }]

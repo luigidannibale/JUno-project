@@ -75,14 +75,18 @@ public class DataAccessManager
         { return false; }
     }
 
-    /**
-     * This method saves the player personal config, it sets it as default config for next start.
-     * @return
-     */
-//    public boolean registerProfile(HumanPlayer player)
-//    {
-//        //saveProfile(player, )
-//    }
+
+    public boolean updatePlayerConfig(HumanPlayer player, String oldName)
+    {
+        JsonFileManager fm = new JsonFileManager();
+        try {
+            ArrayList<HashMap<Object, Object>> fileLines = new ArrayList<>(fm.readJson(PLAYER_CONFIG_JSON).stream().filter(l -> !(((HashMap<Object, Object>) l.get("player")).get("name").toString().equals(oldName))).toList());
+            fileLines.add(Config.getPlayerConfig(player));
+            return fm.overWriteJson(fileLines, PLAYER_CONFIG_JSON);
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     /**
      * This method saves the player personal config, it sets it as default config for next start.
@@ -94,20 +98,27 @@ public class DataAccessManager
         return savePlayerConfig(player) && saveInit(player);
     }
 
+    public boolean updateProfile(HumanPlayer player, String oldName, String oldPassword)
+    {
+        if (player.getName().equals("default")) return false;
+        return updatePlayerConfig(player, oldName) && updateModelProfile(oldName, oldPassword) && saveInit(player);
+    }
+
     /**
      * Stores player personal config.
      * @return true if the operation is successful, false otherwise.
      */
     public boolean savePlayerConfig(HumanPlayer player)
     {
-        JsonFileManager fm = new JsonFileManager();
-        try
-        {
-            ArrayList<HashMap<Object, Object>> fileLines = new ArrayList<>(fm.readJson(PLAYER_CONFIG_JSON).stream().filter(l -> !(((HashMap<Object, Object>) l.get("player")).get("name").toString().equals(player.getName()))).toList());
-            fileLines.add(Config.getPlayerConfig(player));
-            return fm.overWriteJson(fileLines, PLAYER_CONFIG_JSON);
-        }
-        catch (Exception e){return false;}
+        return updatePlayerConfig(player, player.getName());
+//        JsonFileManager fm = new JsonFileManager();
+//        try
+//        {
+//            ArrayList<HashMap<Object, Object>> fileLines = new ArrayList<>(fm.readJson(PLAYER_CONFIG_JSON).stream().filter(l -> !(((HashMap<Object, Object>) l.get("player")).get("name").toString().equals(player.getName()))).toList());
+//            fileLines.add(Config.getPlayerConfig(player));
+//            return fm.overWriteJson(fileLines, PLAYER_CONFIG_JSON);
+//        }
+//        catch (Exception e){return false;}
     }
     //------------------------
 
