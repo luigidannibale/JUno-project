@@ -93,6 +93,7 @@ public class ProfilePanelController extends Controller<ProfilePanel>
                     mfc.getViewPlayer().getProfilePicture().setCircleImage(Config.savedIconPath = chooser.getSelectedFile().getAbsolutePath());
                     DataAccessManager DAM = new DataAccessManager();
                     DAM.saveProfile(Config.loggedPlayer);
+                    view.update();
                 }
             }
         });
