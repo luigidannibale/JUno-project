@@ -34,7 +34,7 @@ public class FlippingAnimation extends Animation
             x += increase;
             width -= 2*increase;
 
-            if (width == 0)
+            if (width <= 0)
             {
                 image = card.getCardImage();
                 increase = -increase;

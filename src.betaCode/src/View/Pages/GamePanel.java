@@ -197,7 +197,9 @@ public class GamePanel extends JPanel implements Observer
     {
         super.paintComponent(g);
 
-        long start = System.nanoTime();
+
+        ///Debug
+        //long start = System.nanoTime();
 
         g.setColor(green);
         g.fillRect(0,0, getWidth(), getHeight());
@@ -259,8 +261,10 @@ public class GamePanel extends JPanel implements Observer
         lastCard = gameTable.getLastCard();
         createCards();
         currentViewPlayer = viewPlayers[gameTable.currentPlayerIndex()];
+
         if(gameTable.hasWin())
         {
+            System.out.println("CHECK WIN CON " + currentViewPlayer.getPlayer());
             boolean win = gameTable.checkWin(currentViewPlayer.getPlayer());
             ladder = Arrays.stream(viewPlayers).map(ViewPlayer::getPlayer).sorted(Comparator.comparing(Player::getPoints).reversed()).toList();
             currentState = win ? State.ACTUAL_WIN : State.WIN;

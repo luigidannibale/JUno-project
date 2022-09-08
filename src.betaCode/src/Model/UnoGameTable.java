@@ -105,7 +105,7 @@ public class UnoGameTable extends Observable
 
         if (checkGameWin(currentPlayer()))
         {
-            System.out.println("HAIVINTO");
+            System.out.println("HAI VINTO " + currentPlayer());
             //current player ha vinto
             win = true;
             updateObservers();

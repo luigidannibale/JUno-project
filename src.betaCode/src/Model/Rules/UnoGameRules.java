@@ -37,8 +37,9 @@ public abstract class UnoGameRules
 
     public boolean checkWin(Player[] players, Player player)
     {
-        boolean win = countPoints(players,player) >= WIN_POINTS_THRESHOLD;
+        boolean win = player.getPoints() + countPoints(players,player) >= WIN_POINTS_THRESHOLD;
         if (win) {
+            System.out.println("HA VINTO DAVVERO");
             for (Player p: players)
                 if (p instanceof HumanPlayer humanPlayer)
                 {
@@ -50,10 +51,13 @@ public abstract class UnoGameRules
                     statsToUpdate.setLevel((float) (statsToUpdate.getLevel() + humanPlayer.getPoints() / 1000));
                     humanPlayer.setStats(statsToUpdate);
 
+                    System.out.println("PRIMA UPDATE");
                     PlayerManager.updatePlayer(humanPlayer);
+                    System.out.println("DOPO UPDATE");
                     break;
                 }
         }
+        System.out.println("ACTUAL WIN " + win);
         return win;
     }
 

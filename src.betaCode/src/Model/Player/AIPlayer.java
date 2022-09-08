@@ -44,6 +44,7 @@ public class AIPlayer extends Player
         Optional<CardColor> bestColor = colorWeights.keySet().stream().filter(color -> Objects.equals(colorWeights.get(color), max)).findFirst();
         return (bestColor.isEmpty()) ? randomColor():bestColor.get();
     }
+
     public Player chooseBestPlayerToSwap(Player[] players, int current)
     {
         int min = players[0].getHand().size();
@@ -51,6 +52,7 @@ public class AIPlayer extends Player
         for (Player p: players) if (p.getHand().size()<min && !p.equals(players[current])) bestPlayer = p;
         return bestPlayer;
     }
+
     public boolean chooseToSayUno()
     {
         boolean choice = choiceFactor();
