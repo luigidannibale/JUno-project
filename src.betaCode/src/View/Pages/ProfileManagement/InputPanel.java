@@ -124,21 +124,15 @@ public abstract class InputPanel extends ResizablePanel
     @Override
     public void resizeComponents()
     {
-        //System.out.println("putting the size");
-        //super.resizeComponents();
         Arrays.stream(getComponents()).forEach(component ->
         {
-            //if(component.getPreferredSize().height == 0) System.out.println(component);
-            //System.out.println(component.getName()+component.getPreferredSize());
-            component.setPreferredSize(new Dimension((int) (component.getPreferredSize().width * Config.scalingPercentage), (int) (component.getPreferredSize().height * Config.scalingPercentage)));
-            if(component instanceof JTextField) {
-
-                var font = component.getFont();
-                //component.setFont(new Font(font.getFontName(), font.getStyle(),(int) (font.getSize()*Config.scalingPercentage)));
-                component.setFont(font.deriveFont((float) (font.getSize()*Config.scalingPercentage)));
-                //System.out.println(component.getName()+component.getPreferredSize()+" old "+font.getSize()+" new "+new Font(font.getFontName(), font.getStyle(), (int) (font.getSize()*Config.scalingPercentage)));
+            if(component instanceof JTextField){
+                component.setPreferredSize(new Dimension((int) (getPreferredSize().width * Config.scalingPercentage), (int) (getPreferredSize().height / 5.0 * Config.scalingPercentage)));
+                component.setFont(component.getFont().deriveFont((float) (component.getFont().getSize()*Config.scalingPercentage)));
+                //System.out.println(getPreferredSize().width + " " + getPreferredSize().height);
+                //System.out.println(component.getPreferredSize().width + " " + component.getPreferredSize().height);
             }
-            //System.out.println();
+            else component.setPreferredSize(new Dimension((int) (component.getPreferredSize().width * Config.scalingPercentage), (int) (component.getPreferredSize().height * Config.scalingPercentage)));
             component.repaint();
         });
     }

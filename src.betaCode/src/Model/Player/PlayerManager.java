@@ -56,7 +56,7 @@ public class PlayerManager
         {
             return new HumanPlayer (new JsonFileManager().readJson(FILE_PATH)
                     .stream()
-                    .filter(objectObjectHashMap ->objectObjectHashMap.get(KEYS.NAME.VALUE).equals(name))
+                    .filter(objectObjectHashMap ->objectObjectHashMap.get("name").equals(name))
                     .findFirst().get());
         }
         catch (Exception e)
@@ -91,9 +91,9 @@ public class PlayerManager
         try
         {
             HashMap<Object,Object> datas = new HashMap<>(){{
-               put(KEYS.NAME.VALUE,playerToSave.getName());
-               put(KEYS.PASSWORD.VALUE,playerToSave.getPassword());
-               put(KEYS.STATS,playerToSave.getStats().getValues());
+               put(KEYS.NAME.VALUE, playerToSave.getName());
+               put(KEYS.PASSWORD.VALUE, playerToSave.getPassword());
+               put(KEYS.STATS.VALUE, playerToSave.getStats().getValues());
             }};
             return new JsonFileManager().writeJson(List.of(datas), FILE_PATH);
         }
@@ -140,5 +140,4 @@ public class PlayerManager
         }
         catch (Exception e){return false;}
     }
-
 }

@@ -19,7 +19,7 @@ public class DataAccessManager
      * @return true if the operation is successful, false otherwise.
      */
     public boolean saveModelProfile(HumanPlayer playerToSave)
-    { return PlayerManager.savePlayer(playerToSave); }
+    { return PlayerManager.findPlayerByNicknameOrDefault(playerToSave.getName()).getName().equals(playerToSave.getName()) ? PlayerManager.updatePlayer(playerToSave) : PlayerManager.savePlayer(playerToSave); }
 
     /**
      * Delegates the storing of player (model) data to the model.
@@ -35,6 +35,7 @@ public class DataAccessManager
     public HumanPlayer getModelProfile(String name)
     { return PlayerManager.findPlayerByNicknameOrDefault(name); }
     //------------------------
+
     //Init data
     /**
      * Stores player personal config as default for next start.
@@ -54,6 +55,7 @@ public class DataAccessManager
         return success;
     }
     //------------------------
+
     //Config data
     /**
      * Loads stored player config when this logs in.

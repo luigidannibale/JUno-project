@@ -242,9 +242,9 @@ public class GamePanel extends JPanel implements Observer
         createCards();
         currentViewPlayer = viewPlayers[gameTable.currentPlayerIndex()];
 
+        //CHECK SOMEONE HAS WON
         if(gameTable.hasWin())
         {
-            System.out.println("CHECK WIN CON " + currentViewPlayer.getPlayer());
             boolean win = gameTable.checkWin(currentViewPlayer.getPlayer());
             ladder = Arrays.stream(viewPlayers).map(ViewPlayer::getPlayer).sorted(Comparator.comparing(Player::getPoints).reversed()).toList();
             currentState = win ? State.MATCH_WIN : State.WIN;
