@@ -24,7 +24,7 @@ public class GifComponent extends ImageComponent
             height = gif.getIconHeight();
         }
 
-        gif = ScaleImage(gif, width, height);
+        gif = ScaleImage(gif);
         setSize(width,height);
         setPreferredSize(new Dimension(width,height));
 
@@ -39,6 +39,6 @@ public class GifComponent extends ImageComponent
     @Override
     public void setPreferredSize(Dimension preferredSize) {
         super.setPreferredSize(preferredSize);
-        if (gif != null) gif = ScaleImage(gif, preferredSize.width, preferredSize.height);
+        if (gif != null) gif = ScaleImage(gif);
     }
 }

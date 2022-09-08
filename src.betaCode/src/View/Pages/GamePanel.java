@@ -391,6 +391,7 @@ public class GamePanel extends JPanel implements Observer
 
     /**
      * Method called to display the play card {@link Animation}, given the {@link ViewCard}.
+     * The {@link ViewCard} in the hand of the player becomes invisible, to give the feeling of instant playing, while the animation uses another {@link ViewCard}
      * If the animation is already running, it does nothing
      * @param card the card to play
      * @return the running animation that can be waited

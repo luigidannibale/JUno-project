@@ -29,6 +29,8 @@ public class MainFrame extends JFrame
     private final Dimension dimension = new Dimension(1440,920);
     private final Image background;
 
+    private GridBagConstraints gbc;
+
     private final JPanel mainBackground;
     private final JPanel settingBackground;
     private final JPanel gameBackground;
@@ -58,7 +60,7 @@ public class MainFrame extends JFrame
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setIconImage(Utils.getImage(pathImages + "icon.png"));
 
-        GridBagConstraints gbc = new GridBagConstraints();
+        gbc = new GridBagConstraints();
 
         mainBackground = new JPanel(new GridBagLayout());
         mainBackground.setOpaque(false);
@@ -80,8 +82,6 @@ public class MainFrame extends JFrame
      */
     public void addCenteredPanels(JPanel... panels)
     {
-        GridBagConstraints gbc = new GridBagConstraints();
-
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.weightx = 1;    gbc.weighty = 1;
         gbc.gridx = 0;      gbc.gridy = 2;
@@ -98,7 +98,6 @@ public class MainFrame extends JFrame
      */
     public void addProfilePanel(JPanel pp)
     {
-        GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.FIRST_LINE_END;
         gbc.weightx = 0.1;
         gbc.weighty = 0.1;
@@ -109,6 +108,5 @@ public class MainFrame extends JFrame
 
     //GETTERS
     public JPanel getGameBackground() { return gameBackground; }
-
     public Dimension getDimension(){ return dimension; }
 }

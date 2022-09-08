@@ -14,7 +14,6 @@ public class ImageComponent extends JLabel
 
     private int scaleX = 15;
     private int scaleY = 5;
-    //protected double scalingPercentage = Config.scalingPercentage;
 
     public ImageComponent(String imagePath)
     {
@@ -35,9 +34,6 @@ public class ImageComponent extends JLabel
 
         setPreferredSize(new Dimension(width,height));
     }
-
-    public void setBiggerIcon() {   scaleUpIcon();}
-    public void setSmallerIcon() {  setIcon(icona);}
 
     private void scaleUpIcon()
     {
@@ -66,53 +62,10 @@ public class ImageComponent extends JLabel
     public void setPreferredSize(Dimension preferredSize)
     {
         super.setPreferredSize(preferredSize);
-        //System.out.println(preferredSize);
-
-        icona = ScaleImage(icona,preferredSize.width,preferredSize.height);
+        icona = ScaleImage(icona);
         setIcon(icona);
         repaint();
     }
 
-    protected ImageIcon ScaleImage(ImageIcon image, int width, int height){
-        return new ImageIcon(image.getImage().getScaledInstance(getPreferredSize().width, getPreferredSize().height, Image.SCALE_DEFAULT));
-//        return new ImageIcon(image.getImage().getScaledInstance((int) (width * Config.scalingPercentage), (int) (height * Config.scalingPercentage), Image.SCALE_DEFAULT));
-    }
-
+    protected ImageIcon ScaleImage(ImageIcon image){ return new ImageIcon(image.getImage().getScaledInstance(getPreferredSize().width, getPreferredSize().height, Image.SCALE_DEFAULT)); }
 }
-//nouse code
-
-    /*public void AddSclingOnHoveringGif(){
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                showGif();
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                setIcon(icona);
-                showgif = false;
-            }});
-    };
-    private void showGif()
-    {
-        showgif = true;
-        repaint();
-    }*/
-    /*@Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        int width = 100;
-        int height= 100;
-        g.drawImage(icona.getImage(), 0, 0, width, height, this);
-        if(showgif)
-            g.drawImage(new ImageIcon(iconaPath+GIF).getImage(), 0, 0, width, height, this);
-    }*/
-    /*public void resetIcon()
-    {
-        setIcon(getImageIcon());
-    }
-    public void setIcon()
-    {
-        setIcon(getImageIcon());
-    }*/
-

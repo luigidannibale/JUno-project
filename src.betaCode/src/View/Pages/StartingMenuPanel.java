@@ -24,6 +24,9 @@ public class StartingMenuPanel extends ResizablePanel
     private final int offset = 20;
     private final int angle = 15;
 
+    /**
+     * Instantiate the {@link StartingMenuPanel} and the components it contains
+     */
     public StartingMenuPanel()
     {
         super(480, 500, 6);
@@ -55,15 +58,9 @@ public class StartingMenuPanel extends ResizablePanel
     }
 
     //GETTERS
-    public ImageComponent getGameChoiceIcon(){
-        return startGameLabel;
-    }
-    public ImageComponent getSettingIcon(){
-        return settingLabel;
-    }
-    public ImageComponent getQuitIcon(){
-        return quitLabel;
-    }
+    public ImageComponent getGameChoiceIcon(){ return startGameLabel; }
+    public ImageComponent getSettingIcon(){ return settingLabel; }
+    public ImageComponent getQuitIcon(){ return quitLabel; }
 
     @Override
     protected void paintComponent(Graphics g) {

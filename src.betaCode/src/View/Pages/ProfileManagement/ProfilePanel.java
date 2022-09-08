@@ -17,8 +17,14 @@ public class ProfilePanel extends ResizablePanel
 {
     public static final String IMAGE_PATH = "resources/images/MainFrame/ProfilePanel/";
     private ResizablePanel smallPanel;
+
+    //PAINT VARIABLES
     private final Font fontName = new Font("Monsterrat", Font.PLAIN, (int) (18 * Config.scalingPercentage));
     private final Font fontLevel = new Font("Monsterrat", Font.PLAIN, (int) (13 * Config.scalingPercentage));
+    private final Color backColor = new Color(55, 166, 71);
+    private final Color borderColor = new Color(55, 100, 71);
+
+    //COMPONENTS
     private CircularImage profilePicture;
     private JLabel lblName;
     private JLabel lblLevel;
@@ -29,14 +35,15 @@ public class ProfilePanel extends ResizablePanel
     private ImageComponent lblXp;
 
     private PlayerInputTabbedPanels playerInputTabbedPanel;
-    private final Color backColor = new Color(55, 166, 71);
-    private final Color borderColor = new Color(55, 100, 71);
 
+
+    /**
+     * Instantiate the {@link ProfilePanel} and the small panel that it contains
+     */
     public ProfilePanel()
     {
         super(450, 620, 0);
 
-        //setLayout(new FlowLayout());
         setLayout(new GridBagLayout());
         setVisible(false);
 
@@ -44,16 +51,20 @@ public class ProfilePanel extends ResizablePanel
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                paintPanel(g, this);
+                paintPanel(g);
             }
         };
         smallPanel.setOpaque(false);
         smallPanel.setLayout(new GridBagLayout());
 
-        initializedComponents();
+        InitializedComponents();
     }
 
-    private void initializedComponents()
+    /**
+     * Initializes and adds the components of the {@link ProfilePanel}, updated with the logged player.
+     * Then it initializes the main profile panel, and it resizes all components based on the scaling percentage
+     */
+    private void InitializedComponents()
     {
         setName("ProfilePanel");
         lblName = new JLabel();
@@ -90,10 +101,13 @@ public class ProfilePanel extends ResizablePanel
         update();
         playerInputTabbedPanel = new PlayerInputTabbedPanels(backColor,borderColor);
 
-        initializeMainPanel();
+        InitializeMainPanel();
         resizeComponents();
     }
 
+    /**
+     * Updates the name, level, xp, wins, lost and profile picture of the logged player
+     */
     public void update()
     {
         lblName.setText(Config.loggedPlayer.getName());
@@ -108,7 +122,10 @@ public class ProfilePanel extends ResizablePanel
         lblDefeats.setText("Lost  " + Config.loggedPlayer.getStats().getDefeats());
     }
 
-    public void initializeSmallPanel()
+    /**
+     * Removes the components from the main profile panel and adds them to the small profile panel
+     */
+    public void InitializeSmallPanel()
     {
         removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -157,7 +174,6 @@ public class ProfilePanel extends ResizablePanel
         gbc.weighty = 0.5;
         smallPanel.add(lblXp, gbc);
 
-        //gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 2;
         gbc.gridy = 3;
         gbc.gridheight = 1;
@@ -168,7 +184,10 @@ public class ProfilePanel extends ResizablePanel
         smallPanel.add(levelXpBar, gbc);
     }
 
-    public void initializeMainPanel()
+    /**
+     * Removes the components from the small profile panell and adds them to the main profile panel
+     */
+    public void InitializeMainPanel()
     {
         smallPanel.removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -272,12 +291,15 @@ public class ProfilePanel extends ResizablePanel
         playerInputTabbedPanel.clearTextField();
     }
 
+    /**
+     * Resizes every component inside based on the scaling percentage.
+     * If the component is a {@link JLabel} even the font is scaled.
+     */
     @Override
     public void resizeComponents()
     {
         for (Component component : getComponents())
         {
-            //System.out.println(component.getClass());
             if (component instanceof JLabel lbl)
             {
                 component.setFont(lbl.getFont().deriveFont((float) (lbl.getFont().getSize() * Config.scalingPercentage)));
@@ -288,19 +310,21 @@ public class ProfilePanel extends ResizablePanel
         }
     }
 
+    //GETTERS
     public JPanel getSmallPanel()
     {
-        initializeSmallPanel();
+        InitializeSmallPanel();
         return smallPanel;
     }
-
     public PlayerInputTabbedPanels getPlayerInputTabbedPanel(){return playerInputTabbedPanel;}
-
     public JLabel getLabelName(){ return lblName; }
-
     public JLabel getLblChangeIcon(){ return lblChangeIcon; }
 
-    private void paintPanel(Graphics g, JPanel panel)
+    /**
+     * Paints the profile panel background and a border to the profile picture
+     * @param g
+     */
+    private void paintPanel(Graphics g)
     {
         Graphics2D g2 = (Graphics2D)g;
         Utils.applyQualityRenderingHints(g2);
@@ -322,7 +346,7 @@ public class ProfilePanel extends ResizablePanel
     protected void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        paintPanel(g, this);
+        paintPanel(g);
     }
 
 

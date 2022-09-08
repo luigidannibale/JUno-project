@@ -40,8 +40,8 @@ public abstract class InputPanel extends ResizablePanel
     GifComponent closeButton;
 
     /**
-     * Initialize the {@link InputPanel} with the given back color and border color and
-     * initialize the common components of the class
+     * Instantiate the {@link InputPanel} with the given back color and border color and
+     * initialize the common components of the subclass
      * @param backColor
      * @param borderColor
      */
@@ -127,7 +127,10 @@ public abstract class InputPanel extends ResizablePanel
         setVisible(true);
     }
 
-
+    /**
+     * Resizes every component inside based on the scaling percentage.
+     * If the component is a {@link JTextField} even the font is scaled.
+     */
     @Override
     public void resizeComponents()
     {
@@ -142,6 +145,11 @@ public abstract class InputPanel extends ResizablePanel
         });
     }
 
+    /**
+     * {@link FocusListener} for the {@link JTextField} in the {@link InputPanel}s
+     * On focus lost the text-field displays an info message, while on focus gained the text is emptied.
+     * @return the focus listener
+     */
     protected FocusListener onClickCancelTextFocusListener()
     {
         return new FocusListener() {
@@ -166,6 +174,10 @@ public abstract class InputPanel extends ResizablePanel
             }};
     }
 
+    /**
+     * Checks if the name and password in the related {@link JTextField} are valid.
+     * @return true if valid, false otherwise
+     */
     public boolean verifyInput()
     {
         String name = txtInsertName.getText(), password = txtInsertPassword.getText();
@@ -182,6 +194,11 @@ public abstract class InputPanel extends ResizablePanel
         return true;
     }
 
+    /**
+     * Sets in the given {@link JTextField} the given text {@link InputMessages} error.
+     * @param textField
+     * @param error
+     */
     public  void textFieldError(JTextField textField, InputMessages error)
     {
         textField.setText(error.getMessage());
@@ -189,11 +206,23 @@ public abstract class InputPanel extends ResizablePanel
         textField.transferFocus();
     }
 
+    /**
+     * Checks if the given string has one capital, lower letter and one number
+     */
     public boolean containsOnecapitalOnelower1digit(String string){ return Pattern.compile("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])").matcher(string).find(); }
 
     //PREDICATES
+    /**
+     * Checks if the given string is contained in the {@link InputMessages} enum
+     */
     protected Predicate<String> ContainedInEnum = toCheck -> Arrays.stream(InputMessages.values()).anyMatch(v -> v.getMessage().equals(toCheck));
+    /**
+     * Checks if the given string is empty or contained in the enum {@link InputMessages}
+     */
     protected Predicate<String> check = toCheck -> toCheck.isEmpty() || ContainedInEnum.test(toCheck);
+    /**
+     * Checks if the password has more than 6 letters and if it has one capital, lower letter and one number
+     */
     protected Predicate<String> isPasswordValid = password -> password.length() >= 6 && containsOnecapitalOnelower1digit(password);
 
     //GETTERS

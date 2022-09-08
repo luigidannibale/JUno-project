@@ -203,8 +203,8 @@ public class ProfilePanelController extends Controller<ProfilePanel>
     {
         view.setVisible(visible);
         view.getSmallPanel().setVisible(!visible);
-        if (visible) view.initializeMainPanel();
-        else view.initializeSmallPanel();
+        if (visible) view.InitializeMainPanel();
+        else view.InitializeSmallPanel();
     }
 
     public void setReturnPanel(MainFrameController.Panels returnPanel)

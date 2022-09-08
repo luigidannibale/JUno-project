@@ -5,7 +5,7 @@ import java.awt.*;
 public class RegistrationPanel extends InputPanel
 {
     /**
-     * Initialize the {@link RegistrationPanel} with the given back color and border color
+     * Instantiate the {@link RegistrationPanel} with the given back color and border color
      * @param backColor
      * @param borderColor
      */

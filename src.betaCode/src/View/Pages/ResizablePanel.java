@@ -11,7 +11,7 @@ public class ResizablePanel extends JPanel
     protected int panelWidth, panelHeight;
 
     /**
-     * Initialize the panel with the given width, height and border
+     * Instantiate the {@link ResizablePanel} with the given width, height and border
      * @param panelWidth the width of the panel
      * @param panelHeight the height of the panel
      * @param borderOffset the width of the empty border

@@ -10,7 +10,7 @@ public class UpdatePanel extends InputPanel
     JTextField txtConfirmPassword;
 
     /**
-     * Initialize the {@link UpdatePanel} with the given back color and border color
+     * Instantiate the {@link UpdatePanel} with the given back color and border color
      * @param backColor
      * @param borderColor
      */

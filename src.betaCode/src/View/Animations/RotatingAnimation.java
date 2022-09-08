@@ -2,12 +2,19 @@ package View.Animations;
 
 import Model.Cards.Color;
 import Controller.Utilities.Config;
+import View.Elements.ViewCard;
 import View.Utils;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
+/**
+ * Class used to draw an image rotating on its center.
+ * Used to permanently draw the direction of the turn.
+ * Specialize the abstract class {@link Animation}
+ * @author Luigi D'Annibale, Daniele Venturini
+ */
 public class RotatingAnimation extends Animation{
 
     private final AlphaComposite transparent = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f);
@@ -28,7 +35,13 @@ public class RotatingAnimation extends Animation{
 
     BufferedImage image;
 
-
+    /**
+     * Creates a new {@link RotatingAnimation} with the path of the image to draw at the given x and y.
+     * It scales the image with the scaling percentage. If the image is not found then the Animation doesn't start
+     * @param path the path of the image to draw
+     * @param x
+     * @param y
+     */
     public RotatingAnimation(String path, int x, int y){
         this.x = x;
         this.y = y;
@@ -46,24 +59,35 @@ public class RotatingAnimation extends Animation{
         start();
     }
 
+    /**
+     * Adds to the degree of the image the related increment.
+     * If the degrees are becoming big numbers, they are resetted
+     */
     @Override
     public void run(){
         while(running){
             degree += Math.toRadians(increment);
             //System.out.println(degree);
-            if (degree > 360) degree = 0;
+            if (Math.abs(degree) > 360) degree = 0;
 
             super.sleep();
         }
     }
 
+    /**
+     * Changes the image color to the given {@link Model.Cards.Card} {@link Color}
+     * @param c
+     */
     public void imageColor(Color c)
     {
         if (c == Color.WILD) image = Utils.getBufferedImage(path + "four/four.png");
         else image = Utils.getBufferedImage(path + "four/" + c.name() + ".png");
     }
 
-    //dont like this
+    /**
+     * Rotates how the image is drawn by 180 degrees based on the direction of the turn
+     * @param clockwise true if the turn is clockwise, false otherwise
+     */
     public void changeTurn(boolean clockwise){
         if (!clockwise) {
             imageX = x + imageWidth;
@@ -77,6 +101,10 @@ public class RotatingAnimation extends Animation{
         }
     }
 
+    /**
+     * Paints the image
+     * @param g
+     */
     @Override
     public void paint(Graphics2D g) {
         AffineTransform oldAT = g.getTransform();

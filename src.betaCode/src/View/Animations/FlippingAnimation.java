@@ -4,101 +4,66 @@ import View.Elements.ViewCard;
 
 import java.awt.*;
 
-public class FlippingAnimation extends Animation
-{
+/**
+ * Class used to draw the {@link ViewCard} flipping when drawn from the user.
+ * Specialize the abstract class {@link Animation}
+ * @author Luigi D'Annibale, Daniele Venturini
+ */
+public class FlippingAnimation extends Animation {
     int x;
     int y;
     int increase = 3;
-    private int delay = 750;
 
     ViewCard card;
     Rectangle position;
 
-    public FlippingAnimation(ViewCard card, Rectangle position)
-    {
+    /**
+     * Creates a new {@link FlippingAnimation} with the given {@link ViewCard} to draw and the Deck {@link Rectangle} position
+     * @param card
+     * @param position
+     */
+    public FlippingAnimation(ViewCard card, Rectangle position) {
         this.card = card;
         this.position = position;
 
         start();
     }
 
+    /**
+     * Decrements the width of the back image of the {@link ViewCard} while increasing the x.
+     * When the width is less than 0 it changes the image with the card image and
+     * starts increasing the width while decreasing the x, until the width is more than the width of the {@link ViewCard}
+     */
     @Override
-    public void run()
-    {
+    public void run() {
         x = (int) position.getX();
         y = (int) position.getY();
 
-        image = card.getBackCard();
+        image = ViewCard.BACK_CARD;
 
-        while(running){
+        while (running) {
             x += increase;
-            width -= 2*increase;
+            width -= 2 * increase;
 
-            if (width <= 0)
-            {
+            if (width <= 0) {
                 image = card.getCardImage();
                 increase = -increase;
             }
 
-            if(width >= ViewCard.width) {
-                try
-                {
-                    increase = 0;
-                    Thread.sleep(delay);
-                    running = false;
-                }
-                catch (InterruptedException ie)
-                {
-                    ie.printStackTrace();
-                }
+            if (width >= ViewCard.width) {
+                increase = 0;
+                delay = 750;
+                sleep();
+                running = false;
+                return;
             }
-
-            super.sleep();
+            sleep();
         }
-
     }
 
-    public void paint(Graphics2D g){
-        g.drawImage(image, x, y, width, height, null);
-    }
-
-    //public boolean isRunning(){
-    //    return timer.isRunning();
-    //}
-
+    /**
+     * Paints the image
+     * @param g
+     */
+    public void paint(Graphics2D g) { g.drawImage(image, x, y, width, height, null); }
 }
-
- /*
-        x = (int) position.getX();
-        y = (int) position.getY();
-
-        image = card.getBackCard();
-
-        timer.addActionListener(e -> {
-            x += increase;
-            width -= 2*increase;
-
-            if (width == 0)
-            {
-                image = card.getCardImage();
-                increase = -increase;
-            }
-
-            if(width == CardImage.width) {
-                new Thread(() -> {
-                    try
-                    {
-                        increase = 0;
-                        Thread.sleep(delay);
-                        timer.stop();
-                    }
-                    catch (InterruptedException ie)
-                    {
-                        ie.printStackTrace();
-                    }
-                }).start();
-            }
-        });
-        timer.start();
-
-         */

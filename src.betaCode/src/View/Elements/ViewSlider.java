@@ -5,18 +5,29 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Class used to customize a {@link JProgressBar}.
+ * @author Luigi D'Annibale, Daniele Venturini
+ */
 public class ViewSlider extends JProgressBar
 {
 
+    /**
+     * Creates a new {@link ViewSlider} with the common attributes
+     */
     public ViewSlider()
     {
-        setPreferredSize(new Dimension((int)(200),(int)(20)));
+        setPreferredSize(new Dimension(200, 20));
         setStringPainted(true);
         setFont(new Font("MV Boli", Font.PLAIN, 14));
         setForeground(Color.BLUE);
         setBackground(Color.WHITE);
     }
 
+    /**
+     * Method used to make the {@link ViewSlider} clickable, changing its value based on where it has been clicked.
+     * Used to change volume.
+     */
     public void addMouseListener(){
         addMouseListener(new MouseAdapter() {
             @Override
@@ -30,6 +41,7 @@ public class ViewSlider extends JProgressBar
         });
     }
 
+    //needed to resize with the scaling percentage
     @Override
     public void setPreferredSize(Dimension preferredSize) {
         var oldH = getSize().getHeight();
@@ -38,17 +50,4 @@ public class ViewSlider extends JProgressBar
         var font = getFont();
         setFont(new Font(font.getFontName(), font.getStyle(), (int) (font.getSize()*(preferredSize.height/oldH))));
     }
-
-    ///public void setValue(int value){ super.setValue(value); }
-
-    /*
-    public void setChangebleIcon(JLabel icon,String generalPath, String[] fileNames){
-        this.icon = icon;
-        this.path = generalPath;
-        this.fileNames = fileNames;
-    }
-
-     */
-
-
 }

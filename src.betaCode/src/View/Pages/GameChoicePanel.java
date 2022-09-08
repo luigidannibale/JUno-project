@@ -28,6 +28,10 @@ public class GameChoicePanel extends ResizablePanel
     private int infosWidth = 280;
     private int infosHeight = 350;
 
+    /**
+     * Instantiate the {@link GameChoicePanel} and the components it contains.
+     * It also changes the width and height of the info images
+     */
     public GameChoicePanel()
     {
         super(1080, 552, 6);

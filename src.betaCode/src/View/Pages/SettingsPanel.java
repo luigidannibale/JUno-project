@@ -33,6 +33,9 @@ public class SettingsPanel extends ResizablePanel
     private ChangebleIcon qualityLabel;
     private JComboBox<GraphicQuality> qualityCombo;
 
+    /**
+     * Instantiate the {@link SettingsPanel} and the components it contains
+     */
     public SettingsPanel()
     {
         super(900, 600,0);

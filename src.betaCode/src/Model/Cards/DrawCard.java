@@ -11,7 +11,7 @@ public class DrawCard extends ActionCard implements WildAction, SkipAction
 {
     private int numberOfCardsToDraw;
     /**
-     * Creates a {@link DrawCard} by a {@link Color} and the number of cards to draw associated,<br/>
+     * Creates a {@link DrawCard} with a {@link Color} and the number of cards to draw associated,<br/>
      * automatically detects the {@link Value}. <br/>
      *
      * It's recommendable to use {@link CardFactory}
@@ -24,7 +24,7 @@ public class DrawCard extends ActionCard implements WildAction, SkipAction
         setNumberOfCardsToDraw(numberOfCardsToDraw);
     }
     /**
-     * Creates a {@link DrawCard} by a {@link Color} <br/>
+     * Creates a {@link DrawCard} with a {@link Color} <br/>
      * automatically calculates the {@link Value}, but must assign number of cards to draw. <br/>
      * It's recommendable to use {@link CardFactory}
      * @param color
