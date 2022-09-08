@@ -9,7 +9,8 @@ import java.awt.*;
  * Specialize the abstract class {@link Animation}
  * @author Luigi D'Annibale, Daniele Venturini
  */
-public class FlippingAnimation extends Animation {
+public class FlippingAnimation extends CardAnimation
+{
     int x;
     int y;
     int increase = 3;
@@ -65,5 +66,5 @@ public class FlippingAnimation extends Animation {
      * Paints the image
      * @param g
      */
-    public void paint(Graphics2D g) { g.drawImage(image, x, y, width, height, null); }
+    public void paint(Graphics2D g) { g.drawImage(image, x + 5, y - 10, width, height, null); }
 }

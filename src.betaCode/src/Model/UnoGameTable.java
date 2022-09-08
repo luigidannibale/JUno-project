@@ -2,7 +2,7 @@ package Model;
 
 import Model.Cards.Card;
 import Model.Cards.Value;
-import Model.Player.Player;
+import Model.Players.Player;
 import Model.Rules.ActionPerformResult;
 import Model.Rules.Options;
 import Model.Rules.UnoGameRules;
@@ -16,13 +16,11 @@ import java.util.stream.IntStream;
  */
 public class UnoGameTable extends Observable
 {
-    protected UnoGameRules ruleManager;
-    protected TurnManager turnManager;
-    protected DeckManager deckManager;
-    protected Player[] players;
-
-    //win must be a method
-    protected boolean win;
+    private UnoGameRules ruleManager;
+    private TurnManager turnManager;
+    private DeckManager deckManager;
+    private Player[] players;
+    private boolean win;
 
     public UnoGameTable(Player[] players, UnoGameRules ruleManager)
     {
@@ -163,74 +161,3 @@ public class UnoGameTable extends Observable
     public boolean checkWin(Player player){ return ruleManager.checkWin(players, player); }
     public boolean checkGameWin(Player player){ return ruleManager.checkGameWin(player); }
 }
-
-
-
-//    public void playCard(Card card)
-//    {
-//        //--test start
-//        System.out.println(currentPlayer());
-//        System.out.println("PLAYED: " + card);
-//        System.out.println("HAND: " + currentPlayer().getHand());
-//        System.out.println("PLAYABLE: " + getCurrentPlayerPLayableCards());
-//        //--test end
-//        currentPlayer().playCard(card);
-//        currentPlayer().setDrew(false);
-//
-//        if (checkWin())
-//        {
-//            //current player ha vinto
-//            return;
-//        }
-//
-//        discards.push(card);
-//        turnManager.updateLastCardPlayed(card);
-//
-//        //updateObservers();
-//
-//    }
-    /*
-    public ActionPerformResult playCard(Card card, Options parameters)
-    {
-        Player current = currentPlayer();
-        current.playCard(card);
-        turnManager.updateLastCardPlayed(card);
-
-        if (checkGameWin(current))
-        {
-            System.out.println("HAIVINTO");
-            //current player ha vinto
-            win = true;
-            updateObservers();
-            return ActionPerformResult.WIN;
-        }
-
-        ActionPerformResult actionPerformResult = ruleManager.cardActionPerformance(parameters);
-
-        if (actionPerformResult != ActionPerformResult.SUCCESSFUL){
-            current.drawCard(card);
-            return actionPerformResult;
-        }
-        //--test start
-        System.out.println(current);
-        System.out.println("PLAYED: " + card);
-        System.out.println("HAND: " + current.getHand());
-        System.out.println("PLAYABLE: " + getCurrentPlayerPLayableCards());
-        //--test end
-
-        current.setDrew(false);
-        deckManager.pushDiscards(card);
-        updateObservers();
-
-        return ActionPerformResult.SUCCESSFUL;
-    }
-
-    private ActionPerformResult cardActionPerformance(Options parameters)
-    {
-        ActionPerformResult actionPerformResult = ruleManager.cardActionPerformance(parameters);
-        if (actionPerformResult == ActionPerformResult.SUCCESSFUL) updateObservers();
-        return actionPerformResult;
-    }
-
-     */
-

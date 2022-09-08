@@ -2,7 +2,7 @@ package Model.Rules;
 
 import Model.Cards.Color;
 import Model.DeckManager;
-import Model.Player.Player;
+import Model.Players.Player;
 import Model.TurnManager;
 
 public class Options

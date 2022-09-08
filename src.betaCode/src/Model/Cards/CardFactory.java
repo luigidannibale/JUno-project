@@ -1,7 +1,5 @@
 package Model.Cards;
 
-import java.util.function.Predicate;
-
 /**
  * Class used to provide methods to build cards
  * @author D'annibale Luigi, Venturini Daniele
@@ -18,7 +16,7 @@ public class CardFactory
      */
     public static Card createCard(Color color, Value value) throws IllegalArgumentException
     {
-        if(!systaxValidityControl(color, value))  throw new IllegalArgumentException("this card combo is not accepted");
+        if(!syntaxValidityControl(color, value))  throw new IllegalArgumentException("this card combo is not accepted");
         return createFlowCard(color, value);
     }
 
@@ -28,7 +26,7 @@ public class CardFactory
      * @param value
      * @return true if {@link Color} - {@link Value} combination is accepted, false otherwise
      */
-    private static boolean systaxValidityControl(Color color, Value value)
+    private static boolean syntaxValidityControl(Color color, Value value)
     { return !(color == Color.WILD && value != Value.WILD && value != Value.WILD_DRAW || color != Color.WILD && (value == Value.WILD || value == Value.WILD_DRAW)); }
 
     /**

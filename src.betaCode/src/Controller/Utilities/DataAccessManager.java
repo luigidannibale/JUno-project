@@ -1,7 +1,7 @@
 package Controller.Utilities;
 
-import Model.Player.HumanPlayer;
-import Model.Player.PlayerManager;
+import Model.Players.HumanPlayer;
+import Model.Players.PlayerManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,7 +66,7 @@ public class DataAccessManager
         try
         {
             JsonFileManager fm = new JsonFileManager();
-            HashMap<Object, Object> datas = fm.readJson(PLAYER_CONFIG_JSON).stream().filter(hashMap -> ((HashMap)hashMap.get("player")).get("name").equals(name)).toList().get(0);
+            HashMap<Object, Object> datas = fm.readJson(PLAYER_CONFIG_JSON).stream().filter(hashMap -> ((HashMap)hashMap.get(Config.KEYS.LOGGED_PLAYER.VALUE)).get(PlayerManager.KEYS.NAME.VALUE).equals(name)).toList().get(0);
             loadConfig(datas);
             return true;
         }
@@ -79,7 +79,7 @@ public class DataAccessManager
     {
         JsonFileManager fm = new JsonFileManager();
         try {
-            ArrayList<HashMap<Object, Object>> fileLines = new ArrayList<>(fm.readJson(PLAYER_CONFIG_JSON).stream().filter(l -> !(((HashMap<Object, Object>) l.get("player")).get("name").toString().equals(oldName))).toList());
+            ArrayList<HashMap<Object, Object>> fileLines = new ArrayList<>(fm.readJson(PLAYER_CONFIG_JSON).stream().filter(l -> !(((HashMap<Object, Object>) l.get(Config.KEYS.LOGGED_PLAYER.VALUE)).get(PlayerManager.KEYS.NAME.VALUE).toString().equals(oldName))).toList());
             fileLines.add(Config.getPlayerConfig(player));
             return fm.overWriteJson(fileLines, PLAYER_CONFIG_JSON);
         } catch (Exception e) {
@@ -108,17 +108,7 @@ public class DataAccessManager
      * @return true if the operation is successful, false otherwise.
      */
     public boolean savePlayerConfig(HumanPlayer player)
-    {
-        return updatePlayerConfig(player, player.getName());
-//        JsonFileManager fm = new JsonFileManager();
-//        try
-//        {
-//            ArrayList<HashMap<Object, Object>> fileLines = new ArrayList<>(fm.readJson(PLAYER_CONFIG_JSON).stream().filter(l -> !(((HashMap<Object, Object>) l.get("player")).get("name").toString().equals(player.getName()))).toList());
-//            fileLines.add(Config.getPlayerConfig(player));
-//            return fm.overWriteJson(fileLines, PLAYER_CONFIG_JSON);
-//        }
-//        catch (Exception e){return false;}
-    }
+    { return updatePlayerConfig(player, player.getName()); }
     //------------------------
 
     /**
@@ -145,12 +135,12 @@ public class DataAccessManager
      */
     private void loadConfig(HashMap<Object, Object> data) throws Exception
     {
-        HashMap player = (HashMap) data.get("player");
-        HumanPlayer foundPlayer = getModelProfile((String) player.get("name"));
-        if (!foundPlayer.getName().equals(player.get("name"))) throw new Exception("Player Not Found");
+        HashMap player = (HashMap) data.get(Config.KEYS.LOGGED_PLAYER.VALUE);
+        HumanPlayer foundPlayer = getModelProfile((String) player.get(PlayerManager.KEYS.NAME.VALUE));
+        if (!foundPlayer.getName().equals(player.get(PlayerManager.KEYS.NAME.VALUE))) throw new Exception("Player Not Found");
         Config.loggedPlayer = foundPlayer;
 
-        HashMap<Object, Object> config = (HashMap) data.get("config");
+        HashMap<Object, Object> config = (HashMap) data.get(Config.KEYS.CONFIG.VALUE);
 
         Config.setHashMap(config);
         Config.refreshScalingPercentage();

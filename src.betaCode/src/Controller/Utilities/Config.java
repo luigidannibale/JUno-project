@@ -1,6 +1,6 @@
 package Controller.Utilities;
 
-import Model.Player.HumanPlayer;
+import Model.Players.HumanPlayer;
 import View.Elements.DeckColor;
 import View.Elements.GraphicQuality;
 
@@ -20,12 +20,10 @@ public class Config
         LOGGED_PLAYER("player"),
         CONFIG("config");
 
-        String value;
-
-        KEYS(String val) {value = val;}
-        @Override
-        public String toString() { return value; }
+        public final String VALUE;
+        KEYS(String val) { VALUE = val;}
     }
+
     public static int effectsVolume;
     public static int musicVolume;
     public static DeckColor deckStyle;
@@ -53,28 +51,28 @@ public class Config
     public static HashMap<Object, Object> getPlayerConfig(HumanPlayer player)
     {
         return  new HashMap<>(){{
-            put(KEYS.CONFIG.toString(),getSettings());
-            put(KEYS.LOGGED_PLAYER.toString(), player.getHashmapNamePassword());
+            put(KEYS.CONFIG.VALUE,getSettings());
+            put(KEYS.LOGGED_PLAYER.VALUE, player.getHashmapNamePassword());
         }};
     }
 
     private static HashMap<Object, Object> getHashMap(int effectsVolume, int musicVolume, DeckColor deckStyle, GraphicQuality graphicQuality, String savedIconPath) {
         return new HashMap<>(){{
-            put(KEYS.EFFECTS_VOLUME.toString(), effectsVolume);
-            put(KEYS.MUSIC_VOLUME.toString(), musicVolume);
-            put(KEYS.DECK_STYLE.toString(), deckStyle.name());
-            put(KEYS.GRAPHIC_QUALITY.toString(), graphicQuality.name());
-            put(KEYS.SAVED_ICON_PATH.toString(), savedIconPath);
+            put(KEYS.EFFECTS_VOLUME.VALUE, effectsVolume);
+            put(KEYS.MUSIC_VOLUME.VALUE, musicVolume);
+            put(KEYS.DECK_STYLE.VALUE, deckStyle.name());
+            put(KEYS.GRAPHIC_QUALITY.VALUE, graphicQuality.name());
+            put(KEYS.SAVED_ICON_PATH.VALUE, savedIconPath);
         }};
     }
 
     public static void setHashMap(HashMap<Object, Object> config) throws Exception
     {
-        Object effectsVolume = config.get(KEYS.EFFECTS_VOLUME.toString()),
-                musicVolume = config.get(KEYS.MUSIC_VOLUME.toString()),
-                graphicQuality = config.get(KEYS.GRAPHIC_QUALITY.toString()),
-                deckStyle = config.get(KEYS.DECK_STYLE.toString()),
-                savedIconPath = config.get(KEYS.SAVED_ICON_PATH.toString());
+        Object effectsVolume = config.get(KEYS.EFFECTS_VOLUME.VALUE),
+                musicVolume = config.get(KEYS.MUSIC_VOLUME.VALUE),
+                graphicQuality = config.get(KEYS.GRAPHIC_QUALITY.VALUE),
+                deckStyle = config.get(KEYS.DECK_STYLE.VALUE),
+                savedIconPath = config.get(KEYS.SAVED_ICON_PATH.VALUE);
 
         if (effectsVolume == null) throw new Exception("Effects volume not found");
         if (musicVolume == null) throw new Exception("Music volume not found");

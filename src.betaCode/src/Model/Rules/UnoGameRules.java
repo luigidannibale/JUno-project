@@ -2,7 +2,7 @@ package Model.Rules;
 
 import Model.Cards.*;
 import Model.DeckManager;
-import Model.Player.*;
+import Model.Players.*;
 import Model.TurnManager;
 
 import java.util.Arrays;

@@ -15,7 +15,8 @@ import java.awt.image.BufferedImage;
  * Specialize the abstract class {@link Animation}
  * @author Luigi D'Annibale, Daniele Venturini
  */
-public class RotatingAnimation extends Animation{
+public class RotatingAnimation extends Animation
+{
 
     private final AlphaComposite transparent = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f);
 

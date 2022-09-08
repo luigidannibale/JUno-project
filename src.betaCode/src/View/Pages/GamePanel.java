@@ -2,22 +2,18 @@ package View.Pages;
 
 import Model.Cards.Card;
 import Model.Cards.Color;
-import Model.Player.AIPlayer;
-import Model.Player.HumanPlayer;
-import Model.Player.Player;
+import Model.Players.AIPlayer;
+import Model.Players.HumanPlayer;
+import Model.Players.Player;
 import Model.Rules.ActionPerformResult;
 import Model.UnoGameTable;
 import Controller.Utilities.AudioManager;
 import Controller.Utilities.Config;
+import View.Elements.*;
 import View.Utils;
 import View.Animations.*;
-import View.Elements.GraphicQuality;
-import View.Elements.ViewAnimableCard;
-import View.Elements.ViewCard;
-import View.Elements.ViewPlayer;
 
 import javax.swing.*;
-import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.*;
@@ -356,7 +352,7 @@ public class GamePanel extends JPanel implements Observer
             if (gameTable.isExposable(gameTable.getTurnManager().previous()) && ai.choiceFactor())
             {
                 Player player = players[gameTable.getTurnManager().previous()];
-                exposedAnimation().Join();
+                exposedAnimation().selfJoin();
                 gameTable.expose(player);
                 randomSleep(400, 600);
             }
@@ -370,7 +366,7 @@ public class GamePanel extends JPanel implements Observer
             {
                 if (!ai.hasDrew() && !ai.hasPlayed())
                 {
-                    drawCardAnimation(currentViewPlayer, new ViewCard()).Join();
+                    drawCardAnimation(currentViewPlayer, new ViewRotatableCard()).selfJoin();
                     gameTable.drawCard(ai);
                 }
                 else gameTable.passTurn();
@@ -378,8 +374,8 @@ public class GamePanel extends JPanel implements Observer
             else  //HAS PLAYABLE CARDS
             {
                 Card playedCard = playableCards.get(0);
-                ViewCard relatedImage = currentViewPlayer.getImagesHand().stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
-                playCardAnimation(relatedImage).Join();
+                ViewRotatableCard relatedImage = currentViewPlayer.getImagesHand().stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
+                playCardAnimation(relatedImage).selfJoin();
 
                 ActionPerformResult res = gameTable.playCard(gameTable.getCurrentPlayerPLayableCards().get(0));
                 if (res != ActionPerformResult.PLAYER_WON) gameTable.cardActionPerformance(gameTable.getOptions().build());
@@ -396,7 +392,7 @@ public class GamePanel extends JPanel implements Observer
      * @param card the card to play
      * @return the running animation that can be waited
      */
-    public Animation playCardAnimation(ViewCard card)
+    public Animation playCardAnimation(ViewRotatableCard card)
     {
         if (animationRunning(movingAnimation)) return null;
 
@@ -418,7 +414,7 @@ public class GamePanel extends JPanel implements Observer
      * @param drawnCard the card drawed
      * @return the running animation that can be waited
      */
-    public Animation drawCardAnimation(ViewPlayer currentViewPlayer, ViewCard drawnCard)
+    public Animation drawCardAnimation(ViewPlayer currentViewPlayer, ViewRotatableCard drawnCard)
     {
         if (animationRunning(movingAnimation)) return null;
 
@@ -668,7 +664,7 @@ public class GamePanel extends JPanel implements Observer
      */
     public void stopTimer()
     {
-        animations.forEach(Animation::Stop);
+        animations.forEach(Animation::selfStop);
         gameRunning = false;
     }
 

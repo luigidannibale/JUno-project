@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.Player.AIPlayer;
+import Model.Players.AIPlayer;
 import Controller.Utilities.AudioManager;
 import Controller.Utilities.Config;
 import Controller.Utilities.DataAccessManager;
@@ -18,9 +18,6 @@ import java.awt.event.WindowEvent;
 
 public class MainFrameController extends Controller<MainFrame>
 {
-    private static MainFrameController instance = null;
-
-    private final String imagesPath = "resources/images/MainFrame/MainframeDesignElements/";
     public enum Panels
     {
         STARTMENU,
@@ -29,6 +26,9 @@ public class MainFrameController extends Controller<MainFrame>
         PROFILE,
         GAME
     }
+    private static MainFrameController instance;
+
+    private final String imagesPath = "resources/images/MainFrame/MainframeDesignElements/";
     private StartingMenuController startingMenuController;
     private SettingsController settingsController;
     private GameChoiceController gameChoiceController;
@@ -40,7 +40,7 @@ public class MainFrameController extends Controller<MainFrame>
     public static MainFrameController getInstance(){
         if (instance == null){
             instance = new MainFrameController();
-            instance.initilizeMainFrameController();
+            instance.initializeMainFrameController();
         }
         return instance;
     }
@@ -48,7 +48,7 @@ public class MainFrameController extends Controller<MainFrame>
     private MainFrameController()
     { super(new MainFrame()); }
 
-    private void initilizeMainFrameController()
+    private void initializeMainFrameController()
     {
         DataAccessManager DAM = new DataAccessManager();
         DAM.loadInitOrDefault();
@@ -91,7 +91,7 @@ public class MainFrameController extends Controller<MainFrame>
 
         setVisiblePanel(Panels.STARTMENU);
 
-        AudioManager.getInstance().setAudio(AudioManager.Musics.CALM_BACKGROUND);
+        AudioManager.getInstance().setAudio(AudioManager.Music.CALM_BACKGROUND);
     }
 
     private boolean confirmDispose()

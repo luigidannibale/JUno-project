@@ -22,5 +22,5 @@ public enum Color implements Comparable<Color>
     BLUE(3),
     WILD(4);
     public final int VALUE;
-    private Color(int num){ this.VALUE = num; }
+    Color(int num){ this.VALUE = num; }
 }

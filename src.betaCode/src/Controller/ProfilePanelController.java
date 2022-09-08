@@ -1,7 +1,7 @@
 package Controller;
 
-import Model.Player.HumanPlayer;
-import Model.Player.PlayerManager;
+import Model.Players.HumanPlayer;
+import Model.Players.PlayerManager;
 import Controller.Utilities.Config;
 import Controller.Utilities.DataAccessManager;
 import View.Elements.CircularImage;
@@ -20,21 +20,18 @@ import java.util.Random;
 
 public class ProfilePanelController extends Controller<ProfilePanel>
 {
-
     private MainFrameController.Panels returnPanel;
 
     public ProfilePanelController()
     {
         super(new ProfilePanel());
 
-        MainFrameController mfc = MainFrameController.getInstance();
-
         JLabel name = view.getLabelName();
         name.addMouseListener(new MouseAdapter()
         {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mfc.setVisiblePanel(MainFrameController.Panels.PROFILE);
+                MainFrameController.getInstance().setVisiblePanel(MainFrameController.Panels.PROFILE);
                 Color c;
                 switch (new Random().nextInt(1,10))
                 {
@@ -72,13 +69,13 @@ public class ProfilePanelController extends Controller<ProfilePanel>
             public void mouseClicked(MouseEvent e)
             {
                 super.mouseClicked(e);
-                mfc.setVisiblePanel(returnPanel);
+                MainFrameController.getInstance().setVisiblePanel(returnPanel);
             }
         };
 
         view.getPlayerInputTabbedPanel().getPanels().forEach(inputPanel -> {
             inputPanel.getCloseButton().addMouseListener(exitFromProfilePanel);
-            inputPanel.getSaveButton().addMouseListener(getSave(inputPanel, mfc));
+            inputPanel.getSaveButton().addMouseListener(getSave(inputPanel));
 
         });
         JFileChooser chooser = new JFileChooser();
@@ -90,7 +87,7 @@ public class ProfilePanelController extends Controller<ProfilePanel>
                 super.mouseReleased(e);
                 if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
                 {
-                    mfc.getViewPlayer().getProfilePicture().setCircleImage(Config.savedIconPath = chooser.getSelectedFile().getAbsolutePath());
+                    MainFrameController.getInstance().getViewPlayer().getProfilePicture().setCircleImage(Config.savedIconPath = chooser.getSelectedFile().getAbsolutePath());
                     DataAccessManager DAM = new DataAccessManager();
                     DAM.saveProfile(Config.loggedPlayer);
                     view.update();
@@ -99,7 +96,7 @@ public class ProfilePanelController extends Controller<ProfilePanel>
         });
     }
 
-    private CustomMouseAdapter getSave(InputPanel inputPanel, MainFrameController mfc)
+    private CustomMouseAdapter getSave(InputPanel inputPanel)
     {
         return new CustomMouseAdapter()
         {
@@ -120,7 +117,7 @@ public class ProfilePanelController extends Controller<ProfilePanel>
                 if(!inputPanel.verifyInput()) return;
 
                 if (inputPanel instanceof LoginPanel)
-                    login((LoginPanel) inputPanel, txtInsertName, txtInsertPassword, mfc);
+                    login((LoginPanel) inputPanel, txtInsertName, txtInsertPassword);
                 else if (inputPanel instanceof RegistrationPanel)
                     registrate((RegistrationPanel) inputPanel, txtInsertName, txtInsertPassword);
                 view.update();
@@ -154,7 +151,7 @@ public class ProfilePanelController extends Controller<ProfilePanel>
         }
     }
 
-    private void login(LoginPanel panel, JTextField txtInsertName, JTextField txtInsertPassword, MainFrameController mfc)
+    private void login(LoginPanel panel, JTextField txtInsertName, JTextField txtInsertPassword)
     {
         String name = txtInsertName.getText(),
                 password = txtInsertPassword.getText();

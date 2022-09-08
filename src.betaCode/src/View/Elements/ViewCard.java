@@ -21,13 +21,13 @@ public class ViewCard
 
     private final Rectangle position = new Rectangle();
 
-    private BufferedImage cardImage;
-    private BufferedImage paintedImage;
+    protected BufferedImage cardImage;
+    protected BufferedImage paintedImage;
 
     public static int width = 120;
     public static int height = 180;
 
-    private int rotation;
+
     private Card card;
 
     //debug
@@ -42,7 +42,7 @@ public class ViewCard
      * Creates a new {@link ViewCard} of the given {@link Card} with no rotation.
      * @param card the card to represent
      */
-    public ViewCard(Card card) { this(card, 0); }
+    //public ViewCard(Card card) { this(card); }
 
     /**
      * Creates a new {@link ViewCard} of the given {@link Card} with the given rotation.
@@ -50,19 +50,22 @@ public class ViewCard
      * @param card
      * @param rotation
      */
-    public ViewCard(Card card, int rotation)
+    public ViewCard(Card card)
     {
         this.card = card;
-        this.rotation = rotation;
+        //this.rotation = rotation;
         buildCard();
 
-        if (carteScoperte){ rotation = 0; }
+        //if (carteScoperte){ rotation = 0; }
+        /*
         switch (rotation){
             case 90 -> paintedImage = BACK_ROTATED_90;
             case 180 -> paintedImage = BACK_CARD;
             case 270 -> paintedImage = BACK_ROTATED_270;
             default -> paintedImage = cardImage;
         }
+
+         */
 
     }
 
@@ -81,7 +84,6 @@ public class ViewCard
 
     //GETTERS
     public Card getCard(){ return card; }
-    public int getRotation(){ return rotation; }
     public BufferedImage getCardImage() { return cardImage; }
     public BufferedImage getPaintedImage() { return paintedImage; }
     public Rectangle getPosition() {return position;}

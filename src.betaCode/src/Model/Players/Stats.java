@@ -1,4 +1,4 @@
-package Model.Player;
+package Model.Players;
 
 import java.util.HashMap;
 

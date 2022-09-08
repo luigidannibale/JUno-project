@@ -1,6 +1,6 @@
 package View.Elements;
 
-import Model.Player.Player;
+import Model.Players.Player;
 
 import java.awt.*;
 import java.util.ArrayList;

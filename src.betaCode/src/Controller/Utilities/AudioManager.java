@@ -59,7 +59,8 @@ public class AudioManager
      *
      * @author D'annibale Luigi, Venturini Daniele
      */
-    public enum Musics{
+    public enum Music
+    {
         CALM_BACKGROUND
     }
 
@@ -68,8 +69,6 @@ public class AudioManager
     private final String pathAudio = "resources/audio/";
     private Clip audioTrack;
     private Clip effectsTrack;
-    private Integer volume;
-
     /**
      * If the static instance is null, it initializes the instance of {@link AudioManager}, otherwise it returns the static instance
      * @return the static instance of AudioManager
@@ -77,7 +76,7 @@ public class AudioManager
     public static AudioManager getInstance()
     {
         if(instance == null)
-            instance = new AudioManager(50);
+            instance = new AudioManager();
         return instance;
     }
 
@@ -85,7 +84,7 @@ public class AudioManager
      * Private constructor because only one instance of {@link AudioManager} can be instantiated
      * @param volume - to volume of the effects
      */
-    private AudioManager(int volume) { this.volume = volume; }
+    private AudioManager() { }
 
     /**
      * Sets the gamemode specific folder
@@ -94,10 +93,10 @@ public class AudioManager
     public void setFolder(String folder){this.folder = folder;}
 
     /**
-     * Starts playing the given {@link Musics} with the config volume
+     * Starts playing the given {@link Music} with the config volume
      * @param music - the enum constant to play
      */
-    public void setAudio(Musics music)
+    public void setAudio(Music music)
     {
         try
         {
@@ -179,16 +178,12 @@ public class AudioManager
      * @param value - the volume from 0 to 100
      */
     public void setVolume(int value)
-    {
-        volume = value;
-        if(audioTrack != null)
-            ((FloatControl) audioTrack.getControl(FloatControl.Type.MASTER_GAIN)).setValue(convert.apply(volume));
-    }
+    { if(audioTrack != null) ((FloatControl) audioTrack.getControl(FloatControl.Type.MASTER_GAIN)).setValue(convert.apply(value)); }
 
     /**
      * The range of values available for the {@link FloatControl} volume goes from -80 to 6.
      * Under -50 the volume is almost mute so we convert the volume from 0 to 100 to the corresponding from -50 to 6.
      * If the volume is 0, then -80 is returned.
      */
-    Function<Integer,Float> convert = v -> v == -0 ? -80 : (v * 50 / 100.0f) - 44;
+    private Function<Integer,Float> convert = v -> v == -0 ? -80 : (v * 50 / 100.0f) - 44;
 }

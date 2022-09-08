@@ -1,6 +1,6 @@
 package Model.Cards;
 import Model.DeckManager;
-import Model.Player.Player;
+import Model.Players.Player;
 
 /**
  * Class used to model a Uno card : Draw  <br/>

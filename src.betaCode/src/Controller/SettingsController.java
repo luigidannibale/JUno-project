@@ -18,21 +18,21 @@ public class SettingsController extends Controller<SettingsPanel>
     {
         super(new SettingsPanel());
 
-        MainFrameController mfc = MainFrameController.getInstance();
-        addButtonsListeners(mfc);
+
+        addButtonsListeners();
         addChangeableIconListeners();
         refreshSettings();
 
     }
 
-    private void addButtonsListeners(MainFrameController mainFrame)
+    private void addButtonsListeners()
     {
         view.getSaveButton().addMouseListener(new CustomMouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
                 saveConfig();
-                mainFrame.setVisiblePanel(returnPanel);
+                MainFrameController.getInstance().setVisiblePanel(returnPanel);
             }
         });
 
@@ -40,7 +40,7 @@ public class SettingsController extends Controller<SettingsPanel>
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
-                mainFrame.setVisiblePanel(returnPanel);
+                MainFrameController.getInstance().setVisiblePanel(returnPanel);
             }
         });
 
@@ -48,7 +48,7 @@ public class SettingsController extends Controller<SettingsPanel>
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
-                mainFrame.quitGame();
+                MainFrameController.getInstance().quitGame();
             }
         }));
 
@@ -129,8 +129,8 @@ public class SettingsController extends Controller<SettingsPanel>
             else effectsLabel.setIcon("high");
             if (view.isVisible()) AudioManager.getInstance().setEffect(AudioManager.Effect.AUDIO_TEST, val);
         });
-
     }
+
     public void setReturnPanel(MainFrameController.Panels returnPanel)
     {
         this.returnPanel = returnPanel;

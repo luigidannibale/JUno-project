@@ -1,12 +1,12 @@
 package Controller;
 
-import Model.Player.Player;
+import Model.Players.Player;
 import Model.Rules.*;
 import Model.UnoGameTable;
 import Controller.Utilities.AudioManager;
 import View.Animations.Animation;
-import View.Elements.ViewCard;
 import View.Elements.ViewPlayer;
+import View.Elements.ViewRotatableCard;
 import View.Pages.GamePanel;
 
 import java.awt.*;
@@ -132,6 +132,7 @@ public class GamePanelController extends Controller<GamePanel>
     private void exposeBranch(ViewPlayer[] viewPlayers, Point mouseClickPosition)
     {
         if (view.animationRunning(exposeAnimation)) return;
+
         for (int i = 0; i < viewPlayers.length; i++) {
             ViewPlayer p = viewPlayers[i];
             if (p.getNamePosition().contains(mouseClickPosition) && gameTable.isExposable(i))
@@ -139,7 +140,6 @@ public class GamePanelController extends Controller<GamePanel>
                 new Thread(() -> {
                     gameTable.expose(p.getPlayer());
                     exposeAnimation = view.exposedAnimation();
-                    exposeAnimation.Join();
                 }).start();
 
             }
@@ -160,7 +160,7 @@ public class GamePanelController extends Controller<GamePanel>
     private void drawCardBranch(ViewPlayer currentViewPlayer)
     { if (!currentViewPlayer.getPlayer().hasDrew()) drawOutCard(currentViewPlayer); }
 
-    private void playCardBranch(ViewCard card)
+    private void playCardBranch(ViewRotatableCard card)
     {
         if (!gameTable.getCurrentPlayerPLayableCards().contains(card.getCard()))
         {
@@ -171,7 +171,7 @@ public class GamePanelController extends Controller<GamePanel>
         Animation anim = view.playCardAnimation(card);
         new Thread( () -> {
             if (anim != null){
-                anim.Join();
+                anim.selfJoin();
                 ActionPerformResult res = gameTable.playCard(card.getCard());
                 if (res != ActionPerformResult.PLAYER_WON) tryCardActionPerformance(gameTable.getOptions());
             }
@@ -193,17 +193,14 @@ public class GamePanelController extends Controller<GamePanel>
     private void drawOutCard(ViewPlayer currentViewPlayer)
     {
         currentViewPlayer.getPlayer().setDrew(true);
-        ViewCard drawnCard = new ViewCard(gameTable.peekNextCard());
+        ViewRotatableCard drawnCard = new ViewRotatableCard(gameTable.peekNextCard());
         Animation flipCardAnimation = view.flipCardAnimation(drawnCard);
         new Thread(() -> {
             if (flipCardAnimation == null) return;
-            flipCardAnimation.Join();
-            view.drawCardAnimation(currentViewPlayer, drawnCard).Join();
+            flipCardAnimation.selfJoin();
+            view.drawCardAnimation(currentViewPlayer, drawnCard).selfJoin();
             gameTable.drawCard(currentViewPlayer.getPlayer());
             hasFinishedDrawing = true;
         },"drawing card").start();
     }
-
-    //private boolean playerMustDraw()  { return gameTable.getCurrentPlayerPLayableCards().size() == 0; }
-    //private boolean playerCanDraw(Player currentPlayer) { return !currentPlayer.hasDrew();}
 }

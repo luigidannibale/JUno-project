@@ -1,4 +1,4 @@
-package Model.Player;
+package Model.Players;
 import java.util.HashMap;
 
 /**
@@ -37,14 +37,14 @@ public class HumanPlayer extends Player
 
     /**
      * Creates a new {@link HumanPlayer} by a {@link HashMap} representation.
-     * @param hashMap a {@link HashMap} representation that uses {@link Model.Player.PlayerManager.KEYS}.VALUE as keys.
+     * @param hashMap a {@link HashMap} representation that uses {@link Model.Players.PlayerManager.KEYS}.VALUE as keys.
      */
     protected HumanPlayer(HashMap<Object,Object> hashMap)
     { this((String) hashMap.get(PlayerManager.KEYS.NAME.VALUE), (String) hashMap.get(PlayerManager.KEYS.PASSWORD.VALUE), (HashMap<String, Object>) hashMap.get("stats")); }
 
     /**
      * A {@link HashMap} with values: name, password.
-     * @return a {@link HashMap} representation that uses {@link Model.Player.PlayerManager.KEYS}.VALUE as keys.
+     * @return a {@link HashMap} representation that uses {@link Model.Players.PlayerManager.KEYS}.VALUE as keys.
      */
     public HashMap<Object,Object> getHashmapNamePassword()
     {

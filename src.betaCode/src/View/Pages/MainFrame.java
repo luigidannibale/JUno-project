@@ -1,7 +1,6 @@
 package View.Pages;
 
 import Controller.Utilities.Config;
-import Model.Player.Player;
 import View.Utils;
 
 import javax.swing.*;

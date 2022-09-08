@@ -12,17 +12,16 @@ import java.awt.image.BufferedImage;
  */
 public abstract class Animation extends Thread
 {
-    protected int width = ViewCard.width;
-    protected int height = ViewCard.height;
 
     protected BufferedImage image;
     protected int delay;
     protected boolean running;
 
     /**
-     * Instantiate a new Thread Animation and calculates the delay between every update of the run method
+     * Creates a new Thread Animation and calculates the delay between every update of the run method
      */
-    protected Animation(){
+    protected Animation()
+    {
         int framesPerSecond = 100;
         delay = 1000 / framesPerSecond;
         running = true;
@@ -30,6 +29,7 @@ public abstract class Animation extends Thread
 
     /**
      * Delegates the implementation of the paint method to the subclasses
+     * @param g
      */
     public abstract void paint(Graphics2D g);
 
@@ -41,8 +41,9 @@ public abstract class Animation extends Thread
 
     /**
      * Causes the currently executing thread to sleep (temporarily cease execution) for the specified delay of milliseconds calculated in the constructor.
+     * @throws RuntimeException
      */
-    protected void sleep()
+    protected void sleep() throws  RuntimeException
     {
         try
         {
@@ -56,12 +57,13 @@ public abstract class Animation extends Thread
 
     /**
      * Waits for this thread to end.
+     * @throws RuntimeException
      */
-    public void Join()
+    public void selfJoin() throws RuntimeException
     {
         try
         {
-            join();
+            super.join();
         }
         catch (InterruptedException e)
         {
@@ -72,7 +74,5 @@ public abstract class Animation extends Thread
     /**
      * Stops the cycle in the run method
      */
-    public void Stop(){
-        running = false;
-    }
+    public void selfStop(){ running = false; }
 }

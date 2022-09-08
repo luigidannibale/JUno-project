@@ -2,9 +2,9 @@ package Model.Rules;
 
 import Model.Cards.*;
 import Model.DeckManager;
-import Model.Player.AIPlayer;
-import Model.Player.HumanPlayer;
-import Model.Player.Player;
+import Model.Players.AIPlayer;
+import Model.Players.HumanPlayer;
+import Model.Players.Player;
 import Model.TurnManager;
 
 import java.util.*;

@@ -1,5 +1,6 @@
 package View.Animations;
 
+import View.Elements.ViewRotatableCard;
 import View.Utils;
 import View.Elements.ViewCard;
 
@@ -11,7 +12,7 @@ import java.awt.*;
  * Specialize the abstract class {@link Animation}
  * @author Luigi D'Annibale, Daniele Venturini
  */
-public class MovingAnimation extends Animation
+public class MovingAnimation extends CardAnimation
 {
     private double startX;
     private double startY;
@@ -28,7 +29,7 @@ public class MovingAnimation extends Animation
      * @param endY the y of the end point
      * @param card the card to draw
      */
-    public MovingAnimation(double startX, double startY, double endX, double endY, ViewCard card)
+    public MovingAnimation(double startX, double startY, double endX, double endY, ViewRotatableCard card)
     {
         this.startX = startX;
         this.startY = startY;

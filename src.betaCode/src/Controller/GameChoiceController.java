@@ -23,8 +23,6 @@ public class GameChoiceController extends Controller<GameChoicePanel>
     {
         super(new GameChoicePanel());
 
-        MainFrameController mfc = MainFrameController.getInstance();
-
         URI filePath = new File("resources/rules.pdf").toURI();
 
         Arrays.stream(GameChoiceController.GameMode.values()).forEach(gameMode -> {
@@ -33,7 +31,7 @@ public class GameChoiceController extends Controller<GameChoicePanel>
                 public void mouseReleased(MouseEvent e)
                 {
                     super.mouseReleased(e);
-                    createNewGame(mfc, gameMode);
+                    createNewGame(gameMode);
                 }
             });
             view.getInfoLabels()[gameMode.ordinal()].addMouseListener(new CustomMouseAdapter() {
@@ -66,14 +64,14 @@ public class GameChoiceController extends Controller<GameChoicePanel>
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
-                mfc.setVisiblePanel(MainFrameController.Panels.STARTMENU);
+                MainFrameController.getInstance().setVisiblePanel(MainFrameController.Panels.STARTMENU);
             }
         });
     }
 
-    private void createNewGame(MainFrameController mainFrame, GameMode gameMode)
+    private void createNewGame(GameMode gameMode)
     {
         AudioManager.getInstance().setFolder(gameMode.name());
-        mainFrame.createNewGame(gameMode);
+        MainFrameController.getInstance().createNewGame(gameMode);
     }
 }

@@ -1,9 +1,9 @@
 [{
   "config": {
    "deckStyle": "WHITE",
-   "effectsVolume": 50,
+   "effectsVolume": 62,
    "savedIconPath": "resources/images/MainFrame/ProfilePanel/anonymous.png",
-   "musicVolume": 14,
+   "musicVolume": 40,
    "graphicQuality": "LOW"
   },
   "player": {

@@ -11,7 +11,8 @@ import java.awt.*;
  * Specialize the abstract class {@link Animation}
  * @author Luigi D'Annibale, Daniele Venturini
  */
-public class TextAnimation extends Animation{
+public class TextAnimation extends Animation
+{
 
     private final Image gif;
 

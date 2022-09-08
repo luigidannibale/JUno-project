@@ -55,5 +55,5 @@ public enum Value
     WILD(50),
     WILD_DRAW(50);
     public final int VALUE;
-    private Value(int value){ this.VALUE = value; }
+    Value(int value){ this.VALUE = value; }
 }
