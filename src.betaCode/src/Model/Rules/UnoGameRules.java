@@ -66,8 +66,19 @@ public abstract class UnoGameRules
 
     public abstract ActionPerformResult performFirstCardAction(Options parameters);
 
+    /**
+     * The playability is defined in the rules for each game mode
+     * @param playerHand
+     * @param discardsPick
+     * @return all the playable {@link Card} cards in the hand
+     */
     public abstract List<Card> getPlayableCards(List<Card> playerHand, Card discardsPick);
 
+    /**
+     * Performs the actions associated with the {@link Card}
+     * @param parameters
+     * @return the {@link ActionPerformResult} of the operation
+     */
     public ActionPerformResult cardActionPerformance(Options parameters)
     {
         TurnManager turnManager = parameters.getTurnManager();
@@ -96,6 +107,13 @@ public abstract class UnoGameRules
         }
         return ActionPerformResult.SUCCESSFUL;
     }
+
+    /**
+     * Perform the wild action
+     * @param parameters needs a color in parameters
+     * @return the {@link ActionPerformResult} of the operation, if no color has been provided returns NO_COLOR_PROVIDED
+     * @see WildAction
+     */
     protected ActionPerformResult _WildAction(Options parameters)
     {
         TurnManager turnManager = parameters.getTurnManager();
@@ -109,23 +127,50 @@ public abstract class UnoGameRules
         ((WildAction) turnManager.getLastCardPlayed()).changeColor(turnManager, color);
         return ActionPerformResult.SUCCESSFUL;
     }
+
+    /**
+     * Perform the draw action
+     * @param parameters
+     * @return the {@link ActionPerformResult} of the operation
+     * @see DrawCard
+     */
     protected ActionPerformResult _DrawAction(Options parameters, DrawCard lastCard)
     {
         ((DrawCard) parameters.getTurnManager().getLastCardPlayed()).performDrawAction(parameters.getPlayers()[parameters.getNextPlayer()],lastCard.getNumberOfCardsToDraw(),parameters.getDeck());
         return ActionPerformResult.SUCCESSFUL;
     }
+
+    /**
+     * Perform the reverse action
+     * @return the {@link ActionPerformResult} of the operation
+     * @see ReverseCard
+     */
     protected ActionPerformResult _ReverseAction(TurnManager turnManager)
     {
         ((ReverseCard) turnManager.getLastCardPlayed()).performReverseAction(turnManager);
         return ActionPerformResult.SUCCESSFUL;
     }
+
+    /**
+     * Performs the skip action
+     * @param turnManager
+     * @param players
+     * @param playerToBlock
+     * @return the {@link ActionPerformResult} of the operation
+     * @see SkipAction
+     */
     protected ActionPerformResult _SkipAction(TurnManager turnManager, Player[] players, int playerToBlock)
     {
         ((SkipAction) turnManager.getLastCardPlayed()).performSkipAction(turnManager, players, playerToBlock);
         return ActionPerformResult.SUCCESSFUL;
     }
 
-
+    /**
+     *
+     * @param players
+     * @param winner
+     * @return
+     */
     public int countPoints(Player[] players, Player winner)
     {
         int points = Arrays.stream(players).filter(p -> !p.equals(winner))
@@ -136,6 +181,11 @@ public abstract class UnoGameRules
         return points;
     }
 
+    /**
+     * Passes the turn
+     * @param turnManager
+     * @param currentPlayer
+     */
     public void passTurn(TurnManager turnManager, Player currentPlayer)
     {
         currentPlayer.setDrew(false);

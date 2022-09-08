@@ -13,12 +13,7 @@ public class ClassicRules extends UnoGameRules
     @Override
     public ActionPerformResult performFirstCardAction(Options parameters)  { return super.cardActionPerformance(parameters); }
 
-    /**
-     * if there is at least one not wild card and one wild card all the wild cards are not playables
-     * @param playerPlayableHand
-     * @param discardsPick
-     * @return
-     */
+
     @Override
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick)
     {

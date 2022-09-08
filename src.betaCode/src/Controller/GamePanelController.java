@@ -164,7 +164,7 @@ public class GamePanelController extends Controller<GamePanel>
     {
         if (!gameTable.getCurrentPlayerPLayableCards().contains(card.getCard()))
         {
-            view.cardNotPLayableEffects();
+            AudioManager.getInstance().setEffect(AudioManager.Effect.NOT_VALID);
             return;
         }
 

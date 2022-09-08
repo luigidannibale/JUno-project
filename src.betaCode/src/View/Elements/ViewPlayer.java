@@ -10,8 +10,9 @@ public class ViewPlayer
 {
     private Player player;
     private ArrayList<ViewAnimableCard> imagesHand;
-    private Rectangle namePosition = new Rectangle();
     private CircularImage profilePicture;
+
+    private final Rectangle namePosition = new Rectangle();
 
     public ViewPlayer(String name) { this(new HumanPlayer(name, "null"), new CircularImage()); }
 
@@ -30,10 +31,6 @@ public class ViewPlayer
     public void updatePlayer(Player player)
     {
         this.player = player;
-    }
-    public void reset()
-    {
-
     }
 
     public void setNamePosition(int x, int y, int width, int height) { namePosition.setRect(x, y ,width, height); }

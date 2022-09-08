@@ -17,11 +17,13 @@ import View.Elements.ViewCard;
 import View.Elements.ViewPlayer;
 
 import javax.swing.*;
+import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class GamePanel extends JPanel implements Observer
 {
@@ -58,7 +60,7 @@ public class GamePanel extends JPanel implements Observer
 
     //AI PLAYING THREAD
     private Thread aiThread;
-    private boolean aiIsAlive = false;
+    private boolean aiRunning = false;
 
     //GAME REPAINT THREAD
     private Thread gameThread;
@@ -251,28 +253,30 @@ public class GamePanel extends JPanel implements Observer
             AudioManager.getInstance().setEffect(AudioManager.Effect.WIN);
             return;
         }
-
         players = gameTable.getPlayers();
         deckSize = gameTable.getDeck().size();
 
+        //CHECK SOMEONE DIDNT SAY ONE BUT HE IS SAVED
         int prePreviousPlayer = gameTable.getTurnManager().previous(gameTable.getTurnManager().previous());
-        if(viewPlayers[prePreviousPlayer].getPlayer() instanceof AIPlayer && gameTable.isExposable(prePreviousPlayer) )
-            players[prePreviousPlayer].shoutUno(); //no one exposed him for this turn, he is safe
+        if(viewPlayers[prePreviousPlayer].getPlayer() instanceof AIPlayer && gameTable.isExposable(prePreviousPlayer)) players[prePreviousPlayer].shoutUno();
+
+        //CHECK CURRENT PLAYER IS BLOCKED
         if (currentViewPlayer.getPlayer().isBlocked())
-        {//he has been blocked
+        {
             currentViewPlayer.getPlayer().setBlocked(false);
             gameTable.passTurn();
             return;
         }
+        //CHANGE TURN ANIMATION
         if (rotatingAnimation.isAlive())
-        {//set correct turn flow (color and verse)
+        {
             rotatingAnimation.changeTurn(gameTable.antiClockwiseTurn());
             rotatingAnimation.imageColor(discard.getCard().getColor());
         }
-        if (currentState != State.GAME_PAUSED)
-            currentState = calculateState(); //game had been paused now update the sate
-        if (currentState == State.AI_TURN && !aiIsAlive)
-            asyncAITurn(gameTable); //artificial intelligence turn
+        //IF GAME NOT PAUSED UPDATE STATE
+        if (currentState != State.GAME_PAUSED) currentState = calculateState();
+        //ARTIFICIAL INTELLIGENCE TURN
+        if (currentState == State.AI_TURN && !aiRunning) asyncAITurn(gameTable);
     }
 
     public void createCards()
@@ -280,11 +284,11 @@ public class GamePanel extends JPanel implements Observer
         try
         {
             int[] rotations = new int[]{0, 270, 180, 90};
-
-            for (ViewPlayer viewPlayer : viewPlayers){
-                int rotation = Arrays.stream(viewPlayers).toList().indexOf(viewPlayer);
-                viewPlayer.setImagesHand(viewPlayer.getPlayer().getHand().stream().map(c -> new ViewAnimableCard(c, rotations[rotation])).collect(Collectors.toCollection(ArrayList::new)));
-            }
+            IntStream.range(0, viewPlayers.length).forEach(i -> {
+                ViewPlayer viewPlayer = viewPlayers[i];
+                int rotation = rotations[i];
+                viewPlayer.setImagesHand(viewPlayer.getPlayer().getHand().stream().map(c -> new ViewAnimableCard(c, rotation)).collect(Collectors.toCollection(ArrayList::new)));
+            });
             discard.setCard(lastCard);
         }
         catch (ConcurrentModificationException ignored){ }
@@ -293,27 +297,30 @@ public class GamePanel extends JPanel implements Observer
     private void randomSleep(int min, int max)
     {
         try { Thread.sleep(new Random().nextInt(min, max)); }
-        catch (InterruptedException e) {}
+        catch (InterruptedException ignored) {}
     }
 
     public void asyncAITurn(UnoGameTable gameTable)
     {
-        aiIsAlive = true;
+        aiRunning = true;
         aiThread = new Thread(() ->
         {
             AIPlayer ai = (AIPlayer) currentViewPlayer.getPlayer();
             randomSleep(1400, 1800);
+
+            //one player is exposable and the ai choose to expose him or not
             if (gameTable.isExposable(gameTable.getTurnManager().previous()) && ai.choiceFactor())
-            {//one player is exposable and the ai choose to expose him
+            {
                 Player player = players[gameTable.getTurnManager().previous()];
                 exposedAnimation().Join();
                 gameTable.expose(player);
                 randomSleep(400, 600);
             }
             if (!ai.hasSaidOne() && ai.hasOne()){ shoutUnoAnimation(ai); }
+
             List<Card> playableCards = gameTable.getCurrentPlayerPLayableCards();
-            aiIsAlive = false;
-            if (playableCards.size() == 0)
+            aiRunning = false;
+            if (playableCards.size() == 0) //DOESN'T HAVE PLAYABLE CARDS
             {
                 if (!ai.hasDrew() && !ai.hasPlayed())
                 {
@@ -322,7 +329,7 @@ public class GamePanel extends JPanel implements Observer
                 }
                 else gameTable.passTurn();
             }
-            else
+            else  //HAS PLAYABLE CARDS
             {
                 Card playedCard = playableCards.get(0);
                 ViewCard relatedImage = currentViewPlayer.getImagesHand().stream().filter(ci -> ci.getCard().equals(playedCard)).toList().get(0);
@@ -339,11 +346,14 @@ public class GamePanel extends JPanel implements Observer
     public Animation playCardAnimation(ViewCard card)
     {
         if (animationRunning(movingAnimation)) return null;
+
         movingAnimation = new MovingAnimation(card.getPosition().getX(), card.getPosition().getY(), discard.getPosition().getX(), discard.getPosition().getY(), card);
         animations.add(movingAnimation);
         card.setPaintedImage(null);
         AudioManager.getInstance().setEffect(AudioManager.Effect.PLAY);
         try{ AudioManager.getInstance().setEffect(AudioManager.Effect.valueOf(card.getCard().getValue().name())); }  catch (Exception ignored){}
+
+        //IF PLAYER IS PLAYING THE NEXT TO LAST CARD, THEN SHOUT UNO
         if (currentViewPlayer.getPlayer().getHand().size() == 2) shoutUnoAnimation(currentViewPlayer.getPlayer());
         return movingAnimation;
     }
@@ -386,21 +396,24 @@ public class GamePanel extends JPanel implements Observer
         return animation;
     }
 
-    public boolean animationRunning(Animation anim){return anim != null && anim.isAlive();}
+    public boolean animationRunning(Animation anim){ return anim != null && anim.isAlive(); }
 
     private void drawLadder(Graphics2D g2)
     {
         Composite noTransparent = g2.getComposite();
 
+        //BACKGROUND
         g2.setColor(java.awt.Color.BLACK);
         g2.setComposite(transparent);
         g2.fillRect(ladderX, ladderY, ladderWidth, ladderHeight);
 
+        //BORDER
         g2.setColor(java.awt.Color.WHITE);
         g2.setComposite(noTransparent);
         g2.setStroke(a);
         g2.drawRect(ladderX, ladderY, ladderWidth, ladderHeight);
 
+        //TITLE
         g2.setFont(titleFont);
         int titleWidth = g2.getFontMetrics().stringWidth("RESULTS");
         int titleHeight = g2.getFontMetrics().getHeight();
@@ -409,6 +422,7 @@ public class GamePanel extends JPanel implements Observer
         g2.setColor(java.awt.Color.YELLOW);
         g2.drawString("RESULTS", titleX, titleY);
 
+        //NAMES
         g2.setFont(ladderFont);
         g2.setColor(java.awt.Color.WHITE);
         int namesX = ladderX + ladderWidth / 10;
@@ -425,6 +439,7 @@ public class GamePanel extends JPanel implements Observer
             namesY += incrementY;
         }
 
+        //EXIT-CONTINUE
         if (currentState == State.MATCH_WIN) continueString = "EXIT";
         g2.setColor(playerBackground);
         int continueWidth = g2.getFontMetrics().stringWidth(continueString);
@@ -433,6 +448,14 @@ public class GamePanel extends JPanel implements Observer
         int continueY = ladderY + ladderHeight - ladderHeight / 15;
         g2.drawString(continueString, continueX, continueY);
         continuePosition.setRect(continueX, continueY - continueHeight, continueWidth, continueHeight);
+    }
+
+    private int getCardsWidth(ViewPlayer player, int cardsSpace)
+    {
+        int cardsWidth;
+        try{ cardsWidth = cardsSpace / player.getPlayer().getHand().size(); }
+        catch (ArithmeticException e){ cardsWidth = cardsSpace; } //IF PLAYER HAS NO CARDS
+        return cardsWidth;
     }
 
     private void drawHorizontalHand(ViewPlayer player, Graphics2D g2, int y)
@@ -459,20 +482,6 @@ public class GamePanel extends JPanel implements Observer
             card.setPosition(startX, y, cardsWidth);
             startX += cardsWidth;
         }
-    }
-
-    private int getCardsWidth(ViewPlayer player, int cardsSpace)
-    {
-        int cardsWidth;
-        try
-        {
-            cardsWidth = cardsSpace / player.getPlayer().getHand().size();
-        }
-        catch (ArithmeticException e)
-        {
-            cardsWidth = cardsSpace;
-        }
-        return cardsWidth;
     }
 
     private  void drawVerticalHand(ViewPlayer player, Graphics2D g2, int x)
@@ -504,6 +513,7 @@ public class GamePanel extends JPanel implements Observer
 
         viewPlayer.getProfilePicture().paintImage(g2, x - imageX, y - imageY);
 
+        //CLICKABLE SKIP TURN - UNO
         if (player instanceof HumanPlayer){
             y += height;
             if (player.hasOne() && !player.hasSaidOne()){
@@ -520,18 +530,16 @@ public class GamePanel extends JPanel implements Observer
         }
     }
 
-    public void endGame() { Arrays.stream(viewPlayers).forEach(ViewPlayer::reset); }
-
-
-    //controller usage
-
+    //CONTROLLER USAGE
     public void resumeGame()
     {
         createCards();
         currentState = calculateState();
     }
 
-    public void pauseGame() { currentState = State.GAME_PAUSED; }
+    public void pauseGame() {
+        currentState = State.GAME_PAUSED;
+    }
 
     public void stopTimer()
     {
@@ -539,22 +547,14 @@ public class GamePanel extends JPanel implements Observer
         gameRunning = false;
     }
 
+    //GETTERS
     public State calculateState()  { return currentViewPlayer.getPlayer() instanceof HumanPlayer ? State.PLAYER_TURN : State.AI_TURN; }
-
     public State getCurrentState(){return currentState;}
-
     public Player[] getPlayers() {return players;}
-
     public ViewCard getDeck() {return deck;}
-
     public ViewPlayer[] getViewPlayers() { return viewPlayers; }
-
     public Rectangle getSkipTurnPosition() {return skipTurnPosition;}
-
     public Rectangle getUnoPosition() {return unoPosition;}
-
     public Rectangle getContinuePosition() {return continuePosition;}
-
-    public void cardNotPLayableEffects() { AudioManager.getInstance().setEffect(AudioManager.Effect.NOT_VALID); }
 }
 
