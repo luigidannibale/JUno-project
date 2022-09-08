@@ -1,8 +1,8 @@
 package View.Pages;
 
 import Controller.GameChoiceController;
-import Utilities.Config;
-import Utilities.Utils;
+import Controller.Utilities.Config;
+import View.Utils;
 import View.Elements.GifComponent;
 import View.Elements.ImageComponent;
 
@@ -11,12 +11,11 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-
-
-
 public class GameChoicePanel extends ResizablePanel
 {
     private final String pathImages = MainFrame.IMAGE_PATH +"GameChoicePanel/";
+
+    //IMAGES
     private GifComponent[] gameModes;
     private ImageComponent[] infoLabels;
     private BufferedImage[] infos;
@@ -24,6 +23,7 @@ public class GameChoicePanel extends ResizablePanel
     private ImageComponent back;
     private ImageComponent title;
 
+    //PAINT INFO VARIABLES
     private int currentInfo = -1;
     private int infosWidth = 280;
     private int infosHeight = 350;
@@ -31,7 +31,6 @@ public class GameChoicePanel extends ResizablePanel
     public GameChoicePanel()
     {
         super(1080, 552, 6);
-
         setLayout(new GridBagLayout());
         setOpaque(false);
         setVisible(false);
@@ -42,29 +41,26 @@ public class GameChoicePanel extends ResizablePanel
         infosHeight *= Config.scalingPercentage;
     }
 
-    void InitializeComponents()
+    private void InitializeComponents()
     {
+        title = new ImageComponent(pathImages + "choose gamemode.png");
 
-        title = new ImageComponent(pathImages + "choose gamemode.png", -1, -1, false);
-
+        //IMAGES PER GAMEMODE
         int length = GameChoiceController.GameMode.values().length;
         gameModes = new GifComponent[length];
         infoLabels = new ImageComponent[length];
         infos = new BufferedImage[length];
-        ImageIcon baq = new ImageIcon(pathImages +"baq.png");
         Arrays.stream(GameChoiceController.GameMode.values()).forEach(gameMode ->
         {
             int index = gameMode.ordinal();
             String path = pathImages + gameMode.name().toLowerCase();
             gameModes[index] = new GifComponent(path, 150, 255);
-            infoLabels[index] = new ImageComponent(pathImages +"baq.png",-1,-1,false);
-            //@deprecated       @quarantined
-            //infoLabels[index] = new GifComponent(imagePath+"baq", 50, 52);
-            //@deprecated       @quarantined
+            infoLabels[index] = new ImageComponent(pathImages +"baq.png");
             infos[index] = Utils.getBufferedImage(path + "_info.png");
         });
 
-        back = new ImageComponent(pathImages + "back.png", -1, -1, false);
+        //BACK BUTTON
+        back = new ImageComponent(pathImages + "back.png");
 
         //Layout
         GridBagConstraints gbc = new GridBagConstraints();
@@ -111,18 +107,15 @@ public class GameChoicePanel extends ResizablePanel
         add(back, gbc);
     }
 
+    //GETTERS
     public GifComponent getBasicGame(){ return gameModes[GameChoiceController.GameMode.CLASSIC_RULES.ordinal()]; }
-
     public GifComponent getMemeGame(){ return gameModes[GameChoiceController.GameMode.MEME_RULES.ordinal()]; }
-
     public GifComponent getSevenoGame(){ return gameModes[GameChoiceController.GameMode.SEVENO_RULES.ordinal()]; }
-
     public GifComponent[] getGameModes() { return gameModes; }
-
     public JLabel[] getInfoLabels() { return infoLabels; }
-
     public ImageComponent getBack(){ return back; }
 
+    //SETTERS
     public void setCurrentInfo(int index) { this.currentInfo = index; }
 
     @Override

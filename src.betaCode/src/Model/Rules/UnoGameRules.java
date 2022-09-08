@@ -15,7 +15,7 @@ public abstract class UnoGameRules
     /**
      * @see DeckManager
      */
-    protected final HashMap<CardValue, Integer> cardsDistribution;
+    protected final HashMap<Value, Integer> cardsDistribution;
     /**
      * How many cards can be played in a single turn,<br/>
      * to play more than a card in a single turn cards must be the same value.
@@ -26,7 +26,7 @@ public abstract class UnoGameRules
      */
     protected final int numberOfCardsPerPlayer;
 
-    protected UnoGameRules(int numberOfCardsPerPlayer, int numberOfPlayableCards, HashMap<CardValue, Integer> cardsDistribution)
+    protected UnoGameRules(int numberOfCardsPerPlayer, int numberOfPlayableCards, HashMap<Value, Integer> cardsDistribution)
     {
         this.numberOfCardsPerPlayer = numberOfCardsPerPlayer;
         this.numberOfPlayableCards = numberOfPlayableCards;
@@ -38,32 +38,27 @@ public abstract class UnoGameRules
     public boolean checkWin(Player[] players, Player player)
     {
         boolean win = player.getPoints() + countPoints(players,player) >= WIN_POINTS_THRESHOLD;
-        if (win) {
-            System.out.println("HA VINTO DAVVERO");
+        if (win)
+        {
             for (Player p: players)
                 if (p instanceof HumanPlayer humanPlayer)
                 {
-                    Stats statsToUpdate = humanPlayer.getStats();
-                    if (humanPlayer.equals(player)) //he won
-                        statsToUpdate.setVictories(statsToUpdate.getVictories()+1);
-                    else //he lost
-                        statsToUpdate.setDefeats(statsToUpdate.getDefeats() + 1);
-                    statsToUpdate.setLevel((float) (statsToUpdate.getLevel() + humanPlayer.getPoints() / 1000));
-                    humanPlayer.setStats(statsToUpdate);
+                    double exp = humanPlayer.getPoints()/ 1000.0;
+                    if (humanPlayer.equals(player))
+                        humanPlayer.updateStats(1,0,exp);
+                    else
+                        humanPlayer.updateStats(0,1,exp);
 
-                    System.out.println("PRIMA UPDATE");
                     PlayerManager.updatePlayer(humanPlayer);
-                    System.out.println("DOPO UPDATE");
                     break;
                 }
         }
-        System.out.println("ACTUAL WIN " + win);
         return win;
     }
 
     public int getNumberOfCardsPerPlayer() { return numberOfCardsPerPlayer; }
 
-    public HashMap<CardValue, Integer> getCardsDistribution() { return cardsDistribution; }
+    public HashMap<Value, Integer> getCardsDistribution() { return cardsDistribution; }
 
     public boolean isStackableCards() { return numberOfPlayableCards > 1; }
 
@@ -79,7 +74,7 @@ public abstract class UnoGameRules
         Card lastCard = turnManager.getLastCardPlayed();
         ActionPerformResult actionPerformResult;
 
-        if (lastCard instanceof WildAction && lastCard.getColor() == CardColor.WILD)
+        if (lastCard instanceof WildAction && lastCard.getColor() == Color.WILD)
         {
             actionPerformResult = _WildAction(parameters);
             if (actionPerformResult != ActionPerformResult.SUCCESSFUL) return actionPerformResult;
@@ -105,7 +100,7 @@ public abstract class UnoGameRules
     {
         TurnManager turnManager = parameters.getTurnManager();
         Player current = parameters.getPlayers()[parameters.getCurrentPlayer()];
-        CardColor color = parameters.getColor();
+        Color color = parameters.getColor();
         if (color == null)
         {
             if (current instanceof HumanPlayer) return ActionPerformResult.NO_COLOR_PROVIDED;
@@ -116,7 +111,7 @@ public abstract class UnoGameRules
     }
     protected ActionPerformResult _DrawAction(Options parameters, DrawCard lastCard)
     {
-        parameters.getPlayers()[parameters.getNextPlayer()].drawCards(parameters.getDeck().draw(lastCard.getNumberOfCardsToDraw()));
+        ((DrawCard) parameters.getTurnManager().getLastCardPlayed()).performDrawAction(parameters.getPlayers()[parameters.getNextPlayer()],lastCard.getNumberOfCardsToDraw(),parameters.getDeck());
         return ActionPerformResult.SUCCESSFUL;
     }
     protected ActionPerformResult _ReverseAction(TurnManager turnManager)
@@ -129,6 +124,7 @@ public abstract class UnoGameRules
         ((SkipAction) turnManager.getLastCardPlayed()).performSkipAction(turnManager, players, playerToBlock);
         return ActionPerformResult.SUCCESSFUL;
     }
+
 
     public int countPoints(Player[] players, Player winner)
     {

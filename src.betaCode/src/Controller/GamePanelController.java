@@ -3,7 +3,7 @@ package Controller;
 import Model.Player.Player;
 import Model.Rules.*;
 import Model.UnoGameTable;
-import Utilities.AudioManager;
+import Controller.Utilities.AudioManager;
 import View.Animations.Animation;
 import View.Elements.ViewCard;
 import View.Elements.ViewPlayer;
@@ -35,7 +35,7 @@ public class GamePanelController extends Controller<GamePanel>
             default -> rules = new ClassicRules();
         }
         gameTable = new UnoGameTable(Stream.of(players).map(ViewPlayer::getPlayer).toArray(Player[]::new), rules);
-        players[0].getPlayer().getHand().removeAllElements();
+        //players[0].getPlayer().getHand().removeAllElements();
 
         view.addMouseListener(new MouseAdapter()
         {
@@ -152,19 +152,13 @@ public class GamePanelController extends Controller<GamePanel>
         {
             if (view.getCurrentState() == GamePanel.State.WIN)
                 gameTable.startGame();
-            else if(view.getCurrentState() == GamePanel.State.ACTUAL_WIN)
+            else if(view.getCurrentState() == GamePanel.State.MATCH_WIN)
                 MainFrameController.getInstance().quitGame();
         }
     }
 
     private void drawCardBranch(ViewPlayer currentViewPlayer)
-    {
-        boolean canDraw = !currentViewPlayer.getPlayer().hasDrew(),
-                mustDraw = gameTable.getCurrentPlayerPLayableCards().size() == 0;
-
-        if (canDraw || mustDraw)
-            drawOutCard(currentViewPlayer);
-    }
+    { if (!currentViewPlayer.getPlayer().hasDrew()) drawOutCard(currentViewPlayer); }
 
     private void playCardBranch(ViewCard card)
     {
@@ -179,7 +173,7 @@ public class GamePanelController extends Controller<GamePanel>
             if (anim != null){
                 anim.Join();
                 ActionPerformResult res = gameTable.playCard(card.getCard());
-                if (res != ActionPerformResult.WIN) tryCardActionPerformance(gameTable.getOptions());
+                if (res != ActionPerformResult.PLAYER_WON) tryCardActionPerformance(gameTable.getOptions());
             }
         },"playing card").start();
     }
@@ -191,7 +185,7 @@ public class GamePanelController extends Controller<GamePanel>
         {
             case NO_COLOR_PROVIDED -> parameters.color(view.choseColorByUser());
             case NO_PLAYER_PROVIDED -> parameters.playerToSwapCards(view.chosePlayerToSwap());
-            case SUCCESSFUL, WIN-> { return; }
+            case SUCCESSFUL, PLAYER_WON -> { return; }
         }
         tryCardActionPerformance(parameters);
     }

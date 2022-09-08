@@ -1,6 +1,6 @@
 package View.Pages.ProfileManagement;
 
-import Utilities.Config;
+import Controller.Utilities.Config;
 import View.Elements.GifComponent;
 import View.Pages.ResizablePanel;
 
@@ -32,12 +32,12 @@ public abstract class InputPanel extends ResizablePanel
         public String getMessage(){return associatedMessage;}
     }
 
+    public static final String IMAGE_PATH = ProfilePanel.IMAGE_PATH+"UpdatePanel/";
 
     JTextField txtInsertName;
     JTextField txtInsertPassword;
     GifComponent saveButton;
     GifComponent closeButton;
-    public static final String IMAGE_PATH = ProfilePanel.IMAGE_PATH+"UpdatePanel/";
 
     public InputPanel(Color backColor, Color borderColor)
     {
@@ -119,7 +119,6 @@ public abstract class InputPanel extends ResizablePanel
 
         setBackground(borderColor);
         setVisible(true);
-
     }
 
     @Override

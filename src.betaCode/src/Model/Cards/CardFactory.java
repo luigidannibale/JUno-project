@@ -1,5 +1,7 @@
 package Model.Cards;
 
+import java.util.function.Predicate;
+
 /**
  * Class used to provide methods to build cards
  * @author D'annibale Luigi, Venturini Daniele
@@ -7,33 +9,37 @@ package Model.Cards;
 public class CardFactory
 {
     /**
-     * Creates a classic Uno card, with {@link CardColor} and a {@link CardValue}
+     * Creates a classic Uno {@link Card}, with a {@link Color} and a {@link Value}
      * @param color
      * @param value
-     * @return the card
+     * @return the created {@link Card}
      * @throws IllegalArgumentException if the syntax of a Uno normal card wouldn't be respected. <br/>
      * I.e. a red draw 4 isn't syntactically valid. <br/>
      */
-    public static Card createCard(CardColor color, CardValue value)
+    public static Card createCard(Color color, Value value) throws IllegalArgumentException
     {
-        //--Syntax validity control--
-        if (color == CardColor.WILD && value != CardValue.WILD && value != CardValue.WILD_DRAW ||
-                color != CardColor.WILD && (value == CardValue.WILD || value == CardValue.WILD_DRAW) )
-            throw new IllegalArgumentException("this card combo is not accepted");
-        //---------------------------
-        //--Card creation------------
+        if(!systaxValidityControl(color, value))  throw new IllegalArgumentException("this card combo is not accepted");
         return createFlowCard(color, value);
-        //---------------------------
     }
+
     /**
-     * Creates a flow card, with {@link CardColor} and a {@link CardValue},
+     *
+     * @param color
+     * @param value
+     * @return true if {@link Color} - {@link Value} combination is accepted, false otherwise
+     */
+    private static boolean systaxValidityControl(Color color, Value value)
+    { return !(color == Color.WILD && value != Value.WILD && value != Value.WILD_DRAW || color != Color.WILD && (value == Value.WILD || value == Value.WILD_DRAW)); }
+
+    /**
+     * Creates a flow card, with {@link Color} and a {@link Value},
      * the purpose of flow cards is help keeping trace of last played cards
      * without dirtying the discards.
      * @param color
      * @param value
-     * @return the card
+     * @return the created {@link Card}
      */
-    public static Card createFlowCard(CardColor color, CardValue value)
+    public static Card createFlowCard(Color color, Value value)
     {
         switch (value)
         {

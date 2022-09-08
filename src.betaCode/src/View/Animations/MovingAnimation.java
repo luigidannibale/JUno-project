@@ -1,6 +1,6 @@
 package View.Animations;
 
-import Utilities.Utils;
+import View.Utils;
 import View.Elements.ViewCard;
 
 import java.awt.*;

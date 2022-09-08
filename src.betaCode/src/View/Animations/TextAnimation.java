@@ -1,6 +1,6 @@
 package View.Animations;
 
-import Utilities.Config;
+import Controller.Utilities.Config;
 
 import javax.swing.*;
 import java.awt.*;

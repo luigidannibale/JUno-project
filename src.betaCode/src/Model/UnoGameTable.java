@@ -1,7 +1,7 @@
 package Model;
 
 import Model.Cards.Card;
-import Model.Cards.CardValue;
+import Model.Cards.Value;
 import Model.Player.Player;
 import Model.Rules.ActionPerformResult;
 import Model.Rules.Options;
@@ -42,7 +42,7 @@ public class UnoGameTable extends Observable
         //Distributing cards to each player
         IntStream.range(0, ruleManager.getNumberOfCardsPerPlayer()).forEach(i -> Arrays.stream(players).forEach(p -> p.drawCard(deckManager.draw())));
         //Can't start with wild draw 4
-        while(deckManager.peek().getValue() == CardValue.WILD_DRAW){ deckManager.shuffle(); }
+        while(deckManager.peekDeck().getValue() == Value.WILD_DRAW){ deckManager.shuffle(); }
 
         deckManager.pushDiscards(deckManager.draw());
 
@@ -109,7 +109,7 @@ public class UnoGameTable extends Observable
             //current player ha vinto
             win = true;
             updateObservers();
-            return ActionPerformResult.WIN;
+            return ActionPerformResult.PLAYER_WON;
         }
 
         deckManager.pushDiscards(card);
@@ -151,7 +151,7 @@ public class UnoGameTable extends Observable
     }
 
     public boolean antiClockwiseTurn(){ return turnManager.antiClockwiseTurn();}
-    public Card peekNextCard(){ return deckManager.peek(); }
+    public Card peekNextCard(){ return deckManager.peekDeck(); }
     public Options.OptionsBuilder getOptions()  { return new Options.OptionsBuilder(turnManager, players, deckManager); }
     public Player currentPlayer() { return players[currentPlayerIndex()]; }
     public int currentPlayerIndex() { return turnManager.getPlayer(); }

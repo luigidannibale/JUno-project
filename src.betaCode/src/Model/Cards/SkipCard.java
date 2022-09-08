@@ -8,8 +8,9 @@ package Model.Cards;
 public class SkipCard extends ActionCard implements SkipAction
 {
     /**
-     * Creates a skip card
+     * Creates a {@link SkipCard} by a {@link Color}. <br/>
+     * It's recommendable to use {@link CardFactory}
      * @param color
      */
-    public SkipCard(CardColor color) { super(color, CardValue.SKIP); }
+    public SkipCard(Color color) { super(color, Value.SKIP); }
 }

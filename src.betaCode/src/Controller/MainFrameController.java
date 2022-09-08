@@ -1,9 +1,9 @@
 package Controller;
 
 import Model.Player.AIPlayer;
-import Utilities.AudioManager;
-import Utilities.Config;
-import Utilities.DataAccessManager;
+import Controller.Utilities.AudioManager;
+import Controller.Utilities.Config;
+import Controller.Utilities.DataAccessManager;
 import View.Elements.CircularImage;
 import View.Elements.ViewPlayer;
 import View.Pages.MainFrame;

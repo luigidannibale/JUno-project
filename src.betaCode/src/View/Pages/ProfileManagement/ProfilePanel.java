@@ -1,13 +1,11 @@
 package View.Pages.ProfileManagement;
 
 import Controller.MainFrameController;
-import Utilities.Config;
-import Utilities.Utils;
+import Controller.Utilities.Config;
+import View.Utils;
 import View.Elements.CircularImage;
 import View.Elements.ImageComponent;
-import View.Elements.ViewPlayer;
 import View.Elements.ViewSlider;
-import View.Pages.MainFrame;
 import View.Pages.ResizablePanel;
 
 import javax.swing.*;
@@ -68,7 +66,7 @@ public class ProfilePanel extends ResizablePanel
         lblName.setFont(fontLevel);
         lblLevel.setBorder(new EmptyBorder(0,0,2,3));
 
-        lblXp = new ImageComponent(IMAGE_PATH + "xp.png",-1,-1,false);
+        lblXp = new ImageComponent(IMAGE_PATH + "xp.png");
 
         levelXpBar = new ViewSlider();
         levelXpBar.setName("levelXPbar");

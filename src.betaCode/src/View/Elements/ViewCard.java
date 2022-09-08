@@ -1,8 +1,8 @@
 package View.Elements;
 
 import Model.Cards.Card;
-import Utilities.Config;
-import Utilities.Utils;
+import Controller.Utilities.Config;
+import View.Utils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -72,10 +72,12 @@ public class ViewCard
 
     public Card getCard(){ return card; }
 
+    public void setCard(Card card){
+        this.card = card;
+        buildCard();
+    }
+
     public int getRotation(){ return rotation; }
 
-    /**
-     * Takes the card image from the folder and assigns it
-     */
     private void buildCard() { cardImage = Utils.getBufferedImage(path + Config.deckStyle + "/" + card.getValue().name() + card.getColor().name() + ".png"); }
 }

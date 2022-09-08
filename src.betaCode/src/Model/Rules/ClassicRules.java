@@ -1,14 +1,14 @@
 package Model.Rules;
 
 import Model.Cards.Card;
-import Model.Cards.CardColor;
+import Model.Cards.Color;
 import Model.DeckManager;
 
 import java.util.List;
 
 public class ClassicRules extends UnoGameRules
 {
-    public ClassicRules()  { super(7,1,DeckManager.classicRules); }
+    public ClassicRules()  { super(7,1,DeckManager.CLASSIC_RULES_CARD_DISTRIBUTION); }
 
     @Override
     public ActionPerformResult performFirstCardAction(Options parameters)  { return super.cardActionPerformance(parameters); }
@@ -22,8 +22,8 @@ public class ClassicRules extends UnoGameRules
     @Override
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick)
     {
-        if(playerPlayableHand.stream().anyMatch(card -> card.getColor()!= CardColor.WILD) && playerPlayableHand.stream().anyMatch(card -> card.getColor()==CardColor.WILD))
-            playerPlayableHand = playerPlayableHand.stream().filter(card -> card.getColor()!=CardColor.WILD).toList();
+        if(playerPlayableHand.stream().anyMatch(card -> card.getColor()!= Color.WILD) && playerPlayableHand.stream().anyMatch(card -> card.getColor()== Color.WILD))
+            playerPlayableHand = playerPlayableHand.stream().filter(card -> card.getColor()!= Color.WILD).toList();
         return playerPlayableHand;
     }
 

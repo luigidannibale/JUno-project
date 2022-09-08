@@ -8,9 +8,15 @@ package Model.Cards;
 public class WildCard extends ActionCard implements WildAction
 {
     /**
-     * Class used to model a Uno card : Wild
+     * Creates a {@link WildCard}. <br/>
+     * It's recommendable to use {@link CardFactory}
      */
-    public WildCard() { super(CardColor.WILD,CardValue.WILD); }
+    public WildCard() { super(Color.WILD, Value.WILD); }
 
-    public WildCard(CardColor color) {super(color, CardValue.WILD);}
+    /**
+     * Creates a {@link WildCard} by a {@link Color}, used to create flow cards. <br/>
+     * It's recommendable to use {@link CardFactory}
+     * @param color
+     */
+    public WildCard(Color color) {super(color, Value.WILD);}
 }

@@ -1,6 +1,6 @@
 package View.Elements;
 
-import Utilities.AudioManager;
+import Controller.Utilities.AudioManager;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;

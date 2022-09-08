@@ -1,9 +1,8 @@
 import Controller.MainFrameController;
 import Model.Cards.Card;
-import Model.Cards.CardValue;
+import Model.Cards.Value;
 import Model.DeckManager;
-import Utilities.Utils;
-import com.sun.tools.javac.Main;
+import View.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +27,7 @@ public class Juno {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D)g;
                 Utils.applyQualityRenderingHints(g2);
-                g2.drawImage(Utils.getImage("resources/images/icon3.png"), 0,0, 550, 487, null);
+                g2.drawImage(Utils.getImage("resources/images/startingIcon.png"), 0,0, 550, 487, null);
             }
         }, SwingConstants.CENTER);
         loadingWindow.setSize(new Dimension(550,487));
@@ -70,11 +69,11 @@ public class Juno {
             i++;
 
             System.out.println();
-            if (c.getValue() == CardValue.WILD) wild ++;
-            if (c.getValue() == CardValue.WILD_DRAW) drawWild ++;
-            if (c.getValue() == CardValue.DRAW) draw ++;
-            if (c.getValue() == CardValue.SKIP) skip ++;
-            if (c.getValue() == CardValue.REVERSE) reverse ++;
+            if (c.getValue() == Value.WILD) wild ++;
+            if (c.getValue() == Value.WILD_DRAW) drawWild ++;
+            if (c.getValue() == Value.DRAW) draw ++;
+            if (c.getValue() == Value.SKIP) skip ++;
+            if (c.getValue() == Value.REVERSE) reverse ++;
             if (c.getClass() == Card.class) normal ++;
         }
 

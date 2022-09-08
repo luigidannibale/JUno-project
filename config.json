@@ -7,7 +7,7 @@
    "graphicQuality": "LOW"
   },
   "player": {
-   "name": "Luigi",
-   "password": "Pass123"
+   "PASSWORD": "Pass123",
+   "name": "Luigi"
   }
  }]

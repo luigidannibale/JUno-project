@@ -1,15 +1,15 @@
 package View.Pages;
 
 import Model.Cards.Card;
-import Model.Cards.CardColor;
+import Model.Cards.Color;
 import Model.Player.AIPlayer;
 import Model.Player.HumanPlayer;
 import Model.Player.Player;
 import Model.Rules.ActionPerformResult;
 import Model.UnoGameTable;
-import Utilities.AudioManager;
-import Utilities.Config;
-import Utilities.Utils;
+import Controller.Utilities.AudioManager;
+import Controller.Utilities.Config;
+import View.Utils;
 import View.Animations.*;
 import View.Elements.GraphicQuality;
 import View.Elements.ViewAnimableCard;
@@ -31,28 +31,40 @@ public class GamePanel extends JPanel implements Observer
         AI_TURN,
         GAME_PAUSED,
         WIN,
-        ACTUAL_WIN
+        MATCH_WIN
     }
+
     private static final String imagePath = MainFrame.IMAGE_PATH+"GamePanel/";
 
-    private final Color green = new Color(14, 209, 69);
-    private final Color playerBackground = new Color(101, 132, 247, 160);
-    private final Color currentPlayerBackground = new Color(255, 209, 26, 160);
+    //COLORS
+    private final java.awt.Color green = new java.awt.Color(14, 209, 69);
+    private final java.awt.Color playerBackground = new java.awt.Color(101, 132, 247, 160);
+    private final java.awt.Color currentPlayerBackground = new java.awt.Color(255, 209, 26, 160);
+
+    //FONTS
     private final Font fontNames;
     private final Font titleFont;
     private final Font ladderFont;
 
+    //PAINT VARIABLE
+    private final int centerX;
+    private final int centerY;
+    private final int deckX;
+    private final int deckY;
+    private final int discardX;
+    private final int discardY;
     private int maxCardsWidth = 1350;
     private int maxCardsHeight = 810;
 
+    //AI PLAYING THREAD
     private Thread aiThread;
     private boolean aiIsAlive = false;
+
+    //GAME REPAINT THREAD
     private Thread gameThread;
     private boolean gameRunning = true;
 
-    private final int centerX;
-    private final int centerY;
-
+    //MODEL VARIABLES
     private ViewPlayer[] viewPlayers;
     private Player[] players;
     private ViewPlayer currentViewPlayer;
@@ -61,10 +73,14 @@ public class GamePanel extends JPanel implements Observer
     private int deckSize;
     private ViewCard discard;
     private State currentState;
+
+    //ANIMATIONS
     private MovingAnimation movingAnimation;
     private ArrayList<Animation> animations;
     private FlippingAnimation flipAnimation;
     private final RotatingAnimation rotatingAnimation;
+
+    //CLICK POSITION
     private Rectangle skipTurnPosition;
     private Rectangle unoPosition;
     private Rectangle continuePosition;
@@ -86,20 +102,29 @@ public class GamePanel extends JPanel implements Observer
         setOpaque(true);
         setDoubleBuffered(true);
         //debug
-        setBackground(Color.GREEN);
+        setBackground(java.awt.Color.GREEN);
         InitializeComponents();
+
         ViewCard.height = (int) (180 * Config.scalingPercentage);
         ViewCard.width = (int) (120 * Config.scalingPercentage);
         fontNames = new Font("Digital-7", Font.PLAIN, (int) (25 * Config.scalingPercentage));
         titleFont = new Font("Digital-7", Font.BOLD, (int) (60 * Config.scalingPercentage));
         ladderFont = new Font("Digital-7", Font.BOLD, (int) (40 * Config.scalingPercentage));
 
-        var screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         centerX = screenSize.width / 2;
         centerY = screenSize.height / 2;
 
         ladderX = centerX - ladderWidth / 2;
         ladderY = centerY - ladderHeight / 2;
+
+        discardX = centerX + 25;
+        discardY = centerY - ViewCard.height / 2;
+        discard.setPosition(discardX, discardY, ViewCard.width);
+
+        deckX = centerX - 25 - ViewCard.width;
+        deckY = discardY;
+        deck.setPosition(deckX, deckY, ViewCard.width);
 
         maxCardsWidth = (int) (maxCardsWidth * Config.scalingPercentage);
         maxCardsHeight = (int) (maxCardsHeight * Config.scalingPercentage);
@@ -108,21 +133,24 @@ public class GamePanel extends JPanel implements Observer
         animations.add(rotatingAnimation);
 
         repaintView();
-
     }
+
+    private void InitializeComponents()
+    {
+        deck = new ViewCard();
+        discard = new ViewCard();
+        animations = new ArrayList<>();
+        skipTurnPosition = new Rectangle();
+        unoPosition = new Rectangle();
+        continuePosition = new Rectangle();
+    }
+
     private void repaintView()
     {
-        gameThread = new Thread(() ->
-        {
-            while(gameRunning) repaint();
-        },"gameViewPeriodicRepaint");
+        gameThread = new Thread(() ->{ while(gameRunning) repaint(); },"gameViewPeriodicRepaint");
         gameThread.start();
     }
 
-    /**
-     * When mouse enters a card this one goes up and the others go down
-     * @param e
-     */
     public void animateCardsOnHovering(MouseEvent e)
     {
         Point mouseClickPosition = e.getPoint();
@@ -130,12 +158,7 @@ public class GamePanel extends JPanel implements Observer
             card.setShiftHeight(card.contains(mouseClickPosition) ? -30 : 0);
     }
 
-    /**
-     * Show up a dialog in which the user must choose a color among RED, YELLOW, BLUE, GREEN and returns it as a CardColor
-     * used to change color in wild actions
-     * @return
-     */
-    public CardColor choseColorByUser()
+    public Color choseColorByUser()
     {
         String[] colors = new String[]{"RED", "YELLOW", "BLUE", "GREEN"};
         int choice = -1;
@@ -148,20 +171,13 @@ public class GamePanel extends JPanel implements Observer
                             JOptionPane.QUESTION_MESSAGE,
                             new ImageIcon(imagePath + "wild.png"),
                             colors, colors[0]);
-
         AudioManager.getInstance().setEffect(AudioManager.Effect.valueOf(colors[choice]));
-        return CardColor.valueOf(colors[choice]);
+        return Color.valueOf(colors[choice]);
     }
 
-    /**
-     * Show up a dialog in which the user must choose a player among the others players name
-     * @return
-     */
     public Player chosePlayerToSwap()
     {
-        //String[] playersNames = new String[players.length];
         HashMap<String,Player> playerHashMap = new HashMap<>();
-
         Arrays.stream(players).filter(p -> currentViewPlayer.getPlayer() != p).forEach(p -> playerHashMap.put(p.getName(), p));
         int choice = -1;
         while (choice == -1)
@@ -176,30 +192,10 @@ public class GamePanel extends JPanel implements Observer
         return (Player) playerHashMap.values().toArray()[choice];
     }
 
-
-    private void InitializeComponents()
-    {
-        deck = new ViewCard();
-        animations = new ArrayList<>();
-        skipTurnPosition = new Rectangle();
-        unoPosition = new Rectangle();
-        continuePosition = new Rectangle();
-    }
-
-//    ///debug
-//    int count = 0;
-//    int dps;
-//    double media;
-//    ///debug
-
     @Override
     protected void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-
-
-        ///Debug
-        //long start = System.nanoTime();
 
         g.setColor(green);
         g.fillRect(0,0, getWidth(), getHeight());
@@ -212,23 +208,21 @@ public class GamePanel extends JPanel implements Observer
         drawVerticalHand(viewPlayers[1], g2, getWidth() - ViewCard.height);
         drawVerticalHand(viewPlayers[3], g2, 0);
 
-        g2.drawImage(discard.getCardImage(), centerX + 25, centerY - ViewCard.height / 2, ViewCard.width, ViewCard.height, null);
-        discard.setPosition(centerX + 25, centerY - ViewCard.height / 2, ViewCard.width);
+        g2.drawImage(discard.getCardImage(), discardX, discardY, ViewCard.width, ViewCard.height, null);
 
         if (deckSize > 1)
         {
-            int x = centerX - 25 - ViewCard.width;
-            int y = (centerY - ViewCard.height / 2)-10;
             g2.setFont(fontNames);
-            g2.setColor(Color.green);
+            g2.setColor(java.awt.Color.green);
             int width = g2.getFontMetrics().stringWidth(String.valueOf(deckSize));
             int height = g2.getFontMetrics().getHeight();
-            g2.fillRoundRect(x-5, y - height + 5, width + 10, height, 20, 20);
-            g2.setColor(Color.BLACK);
-            g2.drawString(String.valueOf(deckSize), x, y);
-            g2.drawImage(deck.getCardImage(), x, y+10, ViewCard.width, ViewCard.height, null);
-            deck.setPosition(x, y, ViewCard.width);
+            g2.fillRoundRect(deckX - 5, deckY - height, width + 10, height, 20, 20);
+            g2.setColor(java.awt.Color.BLACK);
+            g2.drawString(String.valueOf(deckSize), deckX, deckY - 5);
+            g2.drawImage(deck.getCardImage(), deckX, deckY, ViewCard.width, ViewCard.height, null);
         }
+
+        if (currentState == State.WIN || currentState == State.MATCH_WIN) drawLadder(g2);
 
         Iterator<Animation> iter = animations.iterator();
         while(iter.hasNext()){
@@ -237,20 +231,6 @@ public class GamePanel extends JPanel implements Observer
             else iter.remove();
         }
 
-        if (currentState == State.WIN || currentState == State.ACTUAL_WIN) drawLadder(g2);
-
-//        ///debug
-//        long end = System.nanoTime();
-//        media += (end - start) / 1000000000.0;
-//        count += 1;
-//        if (count == 60)
-//        {
-//            media /= 60;
-//            count = 0;
-//            dps = (int) (1 / media);
-//        }
-//        g2.drawString(String.valueOf(dps), 20, 20);
-//        ///debug
         g2.dispose();
     }
 
@@ -267,7 +247,7 @@ public class GamePanel extends JPanel implements Observer
             System.out.println("CHECK WIN CON " + currentViewPlayer.getPlayer());
             boolean win = gameTable.checkWin(currentViewPlayer.getPlayer());
             ladder = Arrays.stream(viewPlayers).map(ViewPlayer::getPlayer).sorted(Comparator.comparing(Player::getPoints).reversed()).toList();
-            currentState = win ? State.ACTUAL_WIN : State.WIN;
+            currentState = win ? State.MATCH_WIN : State.WIN;
             AudioManager.getInstance().setEffect(AudioManager.Effect.WIN);
             return;
         }
@@ -305,9 +285,9 @@ public class GamePanel extends JPanel implements Observer
                 int rotation = Arrays.stream(viewPlayers).toList().indexOf(viewPlayer);
                 viewPlayer.setImagesHand(viewPlayer.getPlayer().getHand().stream().map(c -> new ViewAnimableCard(c, rotations[rotation])).collect(Collectors.toCollection(ArrayList::new)));
             }
-            discard = new ViewCard(lastCard);
+            discard.setCard(lastCard);
         }
-        catch (ConcurrentModificationException cme){ }
+        catch (ConcurrentModificationException ignored){ }
     }
 
     private void randomSleep(int min, int max)
@@ -322,13 +302,13 @@ public class GamePanel extends JPanel implements Observer
         aiThread = new Thread(() ->
         {
             AIPlayer ai = (AIPlayer) currentViewPlayer.getPlayer();
-            randomSleep(1300, 1500);
+            randomSleep(1400, 1800);
             if (gameTable.isExposable(gameTable.getTurnManager().previous()) && ai.choiceFactor())
-            {//one player is exposable and the ai choices to expose him
+            {//one player is exposable and the ai choose to expose him
                 Player player = players[gameTable.getTurnManager().previous()];
                 exposedAnimation().Join();
                 gameTable.expose(player);
-                randomSleep(300, 500);
+                randomSleep(400, 600);
             }
             if (!ai.hasSaidOne() && ai.hasOne()){ shoutUnoAnimation(ai); }
             List<Card> playableCards = gameTable.getCurrentPlayerPLayableCards();
@@ -349,7 +329,7 @@ public class GamePanel extends JPanel implements Observer
                 playCardAnimation(relatedImage).Join();
 
                 ActionPerformResult res = gameTable.playCard(gameTable.getCurrentPlayerPLayableCards().get(0));
-                if (res != ActionPerformResult.WIN) gameTable.cardActionPerformance(gameTable.getOptions().build());
+                if (res != ActionPerformResult.PLAYER_WON) gameTable.cardActionPerformance(gameTable.getOptions().build());
             }
         });
         aiThread.setName(currentViewPlayer.getPlayer().getName());
@@ -412,11 +392,11 @@ public class GamePanel extends JPanel implements Observer
     {
         Composite noTransparent = g2.getComposite();
 
-        g2.setColor(Color.BLACK);
+        g2.setColor(java.awt.Color.BLACK);
         g2.setComposite(transparent);
         g2.fillRect(ladderX, ladderY, ladderWidth, ladderHeight);
 
-        g2.setColor(Color.WHITE);
+        g2.setColor(java.awt.Color.WHITE);
         g2.setComposite(noTransparent);
         g2.setStroke(a);
         g2.drawRect(ladderX, ladderY, ladderWidth, ladderHeight);
@@ -426,26 +406,26 @@ public class GamePanel extends JPanel implements Observer
         int titleHeight = g2.getFontMetrics().getHeight();
         int titleX = centerX - titleWidth / 2;
         int titleY = ladderY + ladderHeight / 10;
-        g2.setColor(Color.YELLOW);
+        g2.setColor(java.awt.Color.YELLOW);
         g2.drawString("RESULTS", titleX, titleY);
 
         g2.setFont(ladderFont);
-        g2.setColor(Color.WHITE);
+        g2.setColor(java.awt.Color.WHITE);
         int namesX = ladderX + ladderWidth / 10;
         int namesY = titleY + titleHeight + ladderHeight / 15;
         int incrementY = g2.getFontMetrics().getHeight() + ladderHeight / 10;
         int pointsX = namesX + ladderWidth / 2;
-        g2.setColor(Color.GREEN);
+        g2.setColor(java.awt.Color.GREEN);
         for (Player p : ladder){
             String points = String.valueOf(p.getPoints());
             g2.drawString(p.getName(), namesX, namesY);
             g2.drawString(points, pointsX, namesY);
             g2.drawLine(namesX - 10, namesY + 5, pointsX + g2.getFontMetrics().stringWidth(points) + 10, namesY + 5);
-            g2.setColor(Color.WHITE);
+            g2.setColor(java.awt.Color.WHITE);
             namesY += incrementY;
         }
 
-        if (currentState == State.ACTUAL_WIN) continueString = "EXIT";
+        if (currentState == State.MATCH_WIN) continueString = "EXIT";
         g2.setColor(playerBackground);
         int continueWidth = g2.getFontMetrics().stringWidth(continueString);
         int continueHeight = g2.getFontMetrics().getHeight();
@@ -514,11 +494,11 @@ public class GamePanel extends JPanel implements Observer
     {
         Player player = viewPlayer.getPlayer();
         g2.setFont(fontNames);
-        g2.setColor(player.hasSaidOne() ? Color.RED : player.equals(currentViewPlayer.getPlayer()) ? currentPlayerBackground : playerBackground);
+        g2.setColor(player.hasSaidOne() ? java.awt.Color.RED : player.equals(currentViewPlayer.getPlayer()) ? currentPlayerBackground : playerBackground);
         int width = g2.getFontMetrics().stringWidth(player.getName());
         int height = g2.getFontMetrics().getHeight();
         g2.fillRoundRect(x-5, y - height + 5, width + 10, height, 20, 20);
-        g2.setColor(Color.BLACK);
+        g2.setColor(java.awt.Color.BLACK);
         g2.drawString(player.getName(), x, y);
         viewPlayer.setNamePosition(x-5, y - height + 5, width + 10, height);
 

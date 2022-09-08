@@ -1,6 +1,6 @@
 package Model.Rules;
 
-import Model.Cards.CardColor;
+import Model.Cards.Color;
 import Model.DeckManager;
 import Model.Player.Player;
 import Model.TurnManager;
@@ -10,7 +10,7 @@ public class Options
     private final TurnManager turnManager;
     private final Player[] players;
     private final DeckManager deckManager;
-    private final CardColor color;
+    private final Color color;
     private final Player playerToSwapCards;
     private final int currentPlayer;
     private final int nextPlayer;
@@ -27,7 +27,7 @@ public class Options
     public TurnManager getTurnManager() { return turnManager; }
     public Player[] getPlayers() { return players; }
     public DeckManager getDeck() { return deckManager; }
-    public CardColor getColor() { return color; }
+    public Color getColor() { return color; }
     public Player getPlayerToSwapCards() { return playerToSwapCards; }
     public int getCurrentPlayer() { return currentPlayer; }
     public int getNextPlayer() { return nextPlayer; }
@@ -37,7 +37,7 @@ public class Options
         private TurnManager turnManager;
         private Player[] players;
         private DeckManager deckManager;
-        private CardColor color;
+        private Color color;
         private Player playerToSwapCards;
         private int currentPlayer;
         private int nextPlayer;
@@ -65,7 +65,7 @@ public class Options
             this.deckManager = deckManager;
             return this;
         }
-        public OptionsBuilder color (CardColor  color)
+        public OptionsBuilder color (Color color)
         {
             this.color = color;
             return this;

@@ -1,7 +1,7 @@
 package View.Pages;
 
-import Utilities.Config;
-import Utilities.Utils;
+import Controller.Utilities.Config;
+import View.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +18,7 @@ public class MainFrame extends JFrame
         public String toString() { return name(); }
     }
     public static final String IMAGE_PATH = "resources/images/MainFrame/";
-    private final String pathImages = IMAGE_PATH +"MainframeDesignElements/";
+    private final String pathImages = IMAGE_PATH + "MainframeDesignElements/";
 
     private final Dimension dimension = new Dimension(1440,920);
     private final Image background;

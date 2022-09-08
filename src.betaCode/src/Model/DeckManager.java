@@ -1,16 +1,16 @@
 package Model;
 
 import Model.Cards.Card;
-import Model.Cards.CardColor;
+import Model.Cards.Color;
 import Model.Cards.CardFactory;
-import Model.Cards.CardValue;
+import Model.Cards.Value;
 
 import java.util.*;
 
 /**
  * Class used to manage a deck of cards of a Uno Game. <br/>
  * Deck is composed basing on a card distribution,
- * each {@link CardValue} is associated with the number of instances for each {@link CardColor}.
+ * each {@link Value} is associated with the number of instances for each {@link Color}.
  *
  * @see Stack<Card>
  * @author D'annibale Luigi, Venturini Daniele
@@ -19,6 +19,7 @@ public class DeckManager
 {
     private Stack<Card> deck;
     private Stack<Card> discards;
+
     /**
      * <strong>Classic card distrbution of Uno</strong> <br/>
      *108 cards distributed so:
@@ -37,37 +38,39 @@ public class DeckManager
      *     </li>
      * </ul>
      * */
-    public static final HashMap<CardValue,Integer> classicRules = new HashMap<>(){
+    public static final HashMap<Value,Integer> CLASSIC_RULES_CARD_DISTRIBUTION = new HashMap<>(){
         {
-            put(CardValue.ZERO,1);
-            put(CardValue.ONE,2);
-            put(CardValue.TWO,2);
-            put(CardValue.THREE,2);
-            put(CardValue.FOUR,2);
-            put(CardValue.FIVE,2);
-            put(CardValue.SIX,2);
-            put(CardValue.SEVEN,2);
-            put(CardValue.EIGHT,2);
-            put(CardValue.NINE,2);
-            put(CardValue.SKIP,2);
-            put(CardValue.DRAW,2);
-            put(CardValue.REVERSE,2);
-            put(CardValue.WILD,4);
-            put(CardValue.WILD_DRAW,4);
+            put(Value.ZERO,1);
+            put(Value.ONE,2);
+            put(Value.TWO,2);
+            put(Value.THREE,2);
+            put(Value.FOUR,2);
+            put(Value.FIVE,2);
+            put(Value.SIX,2);
+            put(Value.SEVEN,2);
+            put(Value.EIGHT,2);
+            put(Value.NINE,2);
+            put(Value.SKIP,2);
+            put(Value.DRAW,2);
+            put(Value.REVERSE,2);
+            put(Value.WILD,4);
+            put(Value.WILD_DRAW,4);
         }};
+
     /**
      * Creates a deck with classic Uno cards distribution
      * */
-    public DeckManager() { this(classicRules); }
+    public DeckManager() { this(CLASSIC_RULES_CARD_DISTRIBUTION); }
+
     /**
     *
     * @param numberOfCards:
-    *                     it is an {@link HashMap} that maps a {@link CardValue} to an integer. <br/>
+    *                     it is an {@link HashMap} that maps a {@link Value} to an integer. <br/>
     *                     For each card value must be specified the corresponding
     *                     number of cards that have to assume that value.
     * @throws IllegalArgumentException : If the size of the numerOfCards is not 15.
     */
-    public DeckManager(HashMap<CardValue,Integer> numberOfCards)
+    public DeckManager(HashMap<Value,Integer> numberOfCards) throws IllegalArgumentException
     {
         assert (numberOfCards.size() == 15):"Specify one number for each of the CardValue in the deck creation";
         deck = new Stack<>();
@@ -75,35 +78,36 @@ public class DeckManager
         createDeck(numberOfCards);
         shuffle();
     }
+
     /**
      * Actually performs the creation of the deck: <br/>
      * puts in the deck, all the cards, basing on the cards distribution
      *
      * @param cardsDistribution
      */
-    private void createDeck(HashMap<CardValue,Integer> cardsDistribution)
+    private void createDeck(HashMap<Value,Integer> cardsDistribution)
     {
         //adds the wild cards
-        Arrays.stream(CardColor.values()).forEach(color ->
+        Arrays.stream(Color.values()).forEach(color ->
         {
-            if (color == CardColor.WILD)
+            if (color == Color.WILD)
             {
-                addManyCards(color, CardValue.WILD, cardsDistribution.get(CardValue.WILD));
-                addManyCards(color, CardValue.WILD_DRAW, cardsDistribution.get(CardValue.WILD_DRAW));
+                addManyCards(color, Value.WILD, cardsDistribution.get(Value.WILD));
+                addManyCards(color, Value.WILD_DRAW, cardsDistribution.get(Value.WILD_DRAW));
             }
             //adds the red, blue, green and yellow cards
             else
-                Arrays.stream(CardValue.values()).filter(cardValue -> !(cardValue == CardValue.WILD || cardValue == CardValue.WILD_DRAW)).toList().forEach(value -> addManyCards(color, value, cardsDistribution.get(value)));
+                Arrays.stream(Value.values()).filter(cardValue -> !(cardValue == Value.WILD || cardValue == Value.WILD_DRAW)).toList().forEach(value -> addManyCards(color, value, cardsDistribution.get(value)));
         });
     }
     /**
      *
      * Actually adds more instances of a card to the deck
-     * @param color : the {@link CardColor} of the {@link Card}
-     * @param value : the {@link CardValue} of the {@link Card}
+     * @param color : the {@link Color} of the {@link Card}
+     * @param value : the {@link Value} of the {@link Card}
      * @param numberOfCards : how many instances of the card have to be added
      */
-    private void addManyCards(CardColor color, CardValue value, int numberOfCards)
+    private void addManyCards(Color color, Value value, int numberOfCards)
     {
         for (int howMany = numberOfCards; howMany > 0; howMany--)
             deck.add(CardFactory.createCard(color, value));
@@ -125,32 +129,32 @@ public class DeckManager
      */
     public ArrayList<Card> draw(int cardsToDraw)
     {
-        ArrayList<Card> drawed = new ArrayList<>();
+        ArrayList<Card> drawn = new ArrayList<>();
         for (int i = 0; i < cardsToDraw; i++)
         {
             Card drawedCard = draw();
-            drawed.add(drawedCard);
+            drawn.add(drawedCard);
         }
-        return drawed;
+        return drawn;
     }
+
     public Stack<Card> getDeck() { return deck; }
+
     /**
      * @return the size of the Deck
      */
     public int size() { return deck.size(); }
+
     /**
      * @return {@link Card} the peek of the deck
      */
-    public Card peek() { return deck.peek(); }
-    /**
-     * Puts a {@link Card} in the deck
-     * @param card
-     */
-    public void push(Card card) { deck.push(card); }
+    public Card peekDeck() { return deck.peek(); }
+
     /**
      * Shuffles the deck
      */
     public void shuffle() { Collections.shuffle(deck); }
+
     /**
      * Builds the deck from the discards stack, <br/>
      * this method should be called when the deck goes out of bounds.
@@ -163,8 +167,9 @@ public class DeckManager
         discards.push(last);
         shuffle();
     }
-    public Stack<Card> getDiscards() { return discards; }
+
     public void pushDiscards(Card card) { discards.push(card); }
+
     public Card peekDiscards() { return discards.peek(); }
 
 }

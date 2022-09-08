@@ -1,8 +1,8 @@
 package View.Animations;
 
-import Model.Cards.CardColor;
-import Utilities.Config;
-import Utilities.Utils;
+import Model.Cards.Color;
+import Controller.Utilities.Config;
+import View.Utils;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -38,7 +38,7 @@ public class RotatingAnimation extends Animation{
 
         if (image == null) return;
 
-        imageColor(CardColor.BLUE);
+        imageColor(Color.BLUE);
 
         imageWidth = (int) (image.getWidth() * Config.scalingPercentage);
         height = (int) (image.getHeight() * Config.scalingPercentage);
@@ -57,9 +57,9 @@ public class RotatingAnimation extends Animation{
         }
     }
 
-    public void imageColor(CardColor c)
+    public void imageColor(Color c)
     {
-        if (c == CardColor.WILD) image = Utils.getBufferedImage(path + "four/four.png");
+        if (c == Color.WILD) image = Utils.getBufferedImage(path + "four/four.png");
         else image = Utils.getBufferedImage(path + "four/" + c.name() + ".png");
     }
 

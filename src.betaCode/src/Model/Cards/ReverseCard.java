@@ -10,16 +10,16 @@ import Model.TurnManager;
 public class ReverseCard extends ActionCard
 {
     /**
-     * Creates a reverse card
+     * Creates a {@link ReverseCard} by a {@link Color}. <br/>
+     * It's recommendable to use {@link CardFactory}
      * @param color
      */
-    public ReverseCard(CardColor color) { super(color, CardValue.REVERSE); }
+    public ReverseCard(Color color) { super(color, Value.REVERSE); }
+
+    /**
+     * Performs the reverse action, the turn is reversed on the {@link TurnManager}
+     * @param turnManager
+     */
     public void performReverseAction(TurnManager turnManager){ turnManager.reverseTurn(); }
 }
-//nousecode
-//public void performReverseAction(TurnManager turnManager, Player[] players)
-//{
-//    //Player player = players[turnManager.getPlayer()];
-//    //Collections.reverse(Arrays.asList(players));
-//    //Arrays.stream(players).filter(item -> player == item).forEach(item -> turnManager.passTurn());
-//}
+

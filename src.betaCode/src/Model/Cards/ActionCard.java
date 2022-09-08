@@ -1,11 +1,17 @@
 package Model.Cards;
 
 /**
- * Class used to model a generic Uno action card
+ * Class used to model a generic Uno action {@link Card}
  *
  * @author D'annibale Luigi, Venturini Daniele
  */
 public abstract class ActionCard extends Card
 {
-    protected ActionCard(CardColor color, CardValue value) { super(color, value); }
+    /**
+     * Creates an {@link ActionCard} by a {@link Color} and a {@link Value}. <br/>
+     * It's recommendable to use {@link CardFactory}
+     * @param color
+     * @param value
+     */
+    protected ActionCard(Color color, Value value) { super(color, value); }
 }

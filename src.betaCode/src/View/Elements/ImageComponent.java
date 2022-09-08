@@ -1,6 +1,6 @@
 package View.Elements;
 
-import Utilities.Config;
+import Controller.Utilities.Config;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,10 +18,10 @@ public class ImageComponent extends JLabel
 
     public ImageComponent(String imagePath)
     {
-        this(imagePath,-1,-1,true);
+        this(imagePath,-1,-1);
     }
 
-    public ImageComponent(String imagePath, int width, int height, boolean addDefaultScalingListener)
+    public ImageComponent(String imagePath, int width, int height)
     {
         icona = new ImageIcon(imagePath);
         setSize(icona.getIconWidth(), icona.getIconHeight());
@@ -34,10 +34,6 @@ public class ImageComponent extends JLabel
             System.out.println(imagePath);
 
         setPreferredSize(new Dimension(width,height));
-        //icona = ScaleImage(icona, width, height);
-
-        if(addDefaultScalingListener) AddScalingOnHovering();
-        //setIcon(icona);
     }
 
     public void setBiggerIcon() {   scaleUpIcon();}
@@ -52,7 +48,7 @@ public class ImageComponent extends JLabel
         super.setIcon(new ImageIcon(im));
     }
 
-    public void AddScalingOnHovering(){
+    public void addScalingOnHovering(){
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {

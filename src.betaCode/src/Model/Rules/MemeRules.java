@@ -21,12 +21,12 @@ public class MemeRules extends UnoGameRules
     public MemeRules()
     {
         super(11,3, new HashMap<>(){{
-            putAll(DeckManager.classicRules);
-            put(CardValue.SKIP,4);
-            put(CardValue.DRAW,4);
-            put(CardValue.REVERSE,4);
-            put(CardValue.WILD,8);
-            put(CardValue.WILD_DRAW,8);
+            putAll(DeckManager.CLASSIC_RULES_CARD_DISTRIBUTION);
+            put(Value.SKIP,4);
+            put(Value.DRAW,4);
+            put(Value.REVERSE,4);
+            put(Value.WILD,8);
+            put(Value.WILD_DRAW,8);
         }});
     }
 

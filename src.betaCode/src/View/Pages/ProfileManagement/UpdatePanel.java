@@ -1,7 +1,4 @@
 package View.Pages.ProfileManagement;
-import java.util.List;
-import Model.Player.PlayerManager;
-import Utilities.Config;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

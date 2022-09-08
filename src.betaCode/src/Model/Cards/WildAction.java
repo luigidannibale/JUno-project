@@ -9,9 +9,10 @@ import Model.TurnManager;
 public interface WildAction
 {
     /**
-     * Changes the color in a Uno Game match
+     * Changes the {@link Color} in the {@link TurnManager}.
      * @param turnManager
+     * @param color
      */
-    default void changeColor(TurnManager turnManager,CardColor  color)
+    default void changeColor(TurnManager turnManager, Color color)
     { turnManager.updateLastCardPlayed(turnManager.getLastCardPlayed().getValue(),color); }
 }

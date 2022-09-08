@@ -1,7 +1,7 @@
 package Controller;
 
-import Utilities.AudioManager;
-import Utilities.Config;
+import Controller.Utilities.AudioManager;
+import Controller.Utilities.Config;
 import View.Elements.*;
 import View.Pages.SettingsPanel;
 

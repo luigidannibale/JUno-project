@@ -1,6 +1,6 @@
 package Controller;
 
-import Utilities.AudioManager;
+import Controller.Utilities.AudioManager;
 import View.Elements.CustomMouseAdapter;
 import View.Pages.GameChoicePanel;
 

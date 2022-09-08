@@ -7,12 +7,12 @@ import java.awt.*;
 
 public class StartingMenuPanel extends ResizablePanel
 {
-    private final String pathImages = MainFrame.IMAGE_PATH +"StartingMenuPanel/";
+    private final String pathImages = MainFrame.IMAGE_PATH + "StartingMenuPanel/";
+
     //Components
     private ImageComponent startGameLabel;
     private ImageComponent settingLabel;
     private ImageComponent quitLabel;
-
 
     //Paint variables
     private final Color lightBlue = new Color(0, 114, 187);
@@ -25,7 +25,6 @@ public class StartingMenuPanel extends ResizablePanel
         super(480, 500, 6);
         setName("Starting menu panel");
         setLayout(new BorderLayout());
-
         setOpaque(false);
         InitializeComponents();
         resizeComponents();
@@ -33,24 +32,28 @@ public class StartingMenuPanel extends ResizablePanel
 
     private void InitializeComponents()
     {
+        //IMAGES
         startGameLabel = new ImageComponent(pathImages + "Startgame.png");
         settingLabel = new ImageComponent(pathImages + "Settings.png");
         quitLabel = new ImageComponent(pathImages + "Quit.png");
         quitLabel.setBorder(new EmptyBorder(5,0,0,0));
+
+        startGameLabel.addScalingOnHovering();
+        settingLabel.addScalingOnHovering();
+        quitLabel.addScalingOnHovering();
 
         add(startGameLabel, BorderLayout.NORTH);
         add(settingLabel, BorderLayout.CENTER);
         add(quitLabel, BorderLayout.SOUTH);
     }
 
+    //GETTERS
     public ImageComponent getGameChoiceIcon(){
         return startGameLabel;
     }
-
     public ImageComponent getSettingIcon(){
         return settingLabel;
     }
-
     public ImageComponent getQuitIcon(){
         return quitLabel;
     }

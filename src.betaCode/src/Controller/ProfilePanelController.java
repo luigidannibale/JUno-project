@@ -2,8 +2,8 @@ package Controller;
 
 import Model.Player.HumanPlayer;
 import Model.Player.PlayerManager;
-import Utilities.Config;
-import Utilities.DataAccessManager;
+import Controller.Utilities.Config;
+import Controller.Utilities.DataAccessManager;
 import View.Elements.CircularImage;
 import View.Elements.CustomMouseAdapter;
 import View.Elements.ViewPlayer;

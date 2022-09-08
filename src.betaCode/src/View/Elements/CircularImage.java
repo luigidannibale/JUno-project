@@ -1,7 +1,7 @@
 package View.Elements;
 
-import Utilities.Config;
-import Utilities.Utils;
+import Controller.Utilities.Config;
+import View.Utils;
 
 import javax.swing.*;
 import java.awt.*;

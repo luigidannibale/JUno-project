@@ -16,9 +16,9 @@ public class SevenoRules extends UnoGameRules
     public SevenoRules()
     {
         super(7,1, new HashMap<>(){{
-            putAll(DeckManager.classicRules);
-            put(CardValue.ZERO,3);
-            put(CardValue.SEVEN,4);
+            putAll(DeckManager.CLASSIC_RULES_CARD_DISTRIBUTION);
+            put(Value.ZERO,3);
+            put(Value.SEVEN,4);
         }});
     }
 
@@ -37,7 +37,7 @@ public class SevenoRules extends UnoGameRules
 
         var actionPerformResult = super.cardActionPerformance(parameters);
 
-        if (lastCard.getValue() == CardValue.SEVEN)
+        if (lastCard.getValue() == Value.SEVEN)
         {//who playes 7 swaps the cards with another player
 
             Player playerToSwap = parameters.getPlayerToSwapCards();
@@ -49,7 +49,7 @@ public class SevenoRules extends UnoGameRules
 
             currentPlayer.swapHand(swapHand(currentPlayer.getHand(), playerToSwap));
         }
-        if (lastCard.getValue() == CardValue.ZERO)
+        if (lastCard.getValue() == Value.ZERO)
         {//each player gets the hand of the previous player
             List<Stack<Card>> hands = new ArrayList<>(Arrays.stream(players).map(Player::getHand).toList());
             if (turnManager.antiClockwiseTurn())

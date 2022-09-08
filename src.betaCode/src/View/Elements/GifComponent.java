@@ -16,7 +16,7 @@ public class GifComponent extends ImageComponent
     }
 
     public GifComponent(String imagePath, int width, int height){
-        super(imagePath + ".png", width, height, false);
+        super(imagePath + ".png", width, height);
 
         gif = new ImageIcon(imagePath + ".gif");
         if (width < 0 && height < 0){

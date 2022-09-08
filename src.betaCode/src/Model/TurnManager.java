@@ -1,9 +1,9 @@
 package Model;
 
 import Model.Cards.Card;
-import Model.Cards.CardColor;
+import Model.Cards.Color;
 import Model.Cards.CardFactory;
-import Model.Cards.CardValue;
+import Model.Cards.Value;
 
 /**
  * Class used to manage the flow of turns in a Uno Game match
@@ -81,7 +81,7 @@ public class TurnManager
      * @param value : the value of the last card played
      * @param color : the color of the last card played (or the color that has been chosen after a wild)
      */
-    public void updateLastCardPlayed(CardValue value, CardColor color){ updateLastCardPlayed(CardFactory.createFlowCard(color,value)); }
+    public void updateLastCardPlayed(Value value, Color color){ updateLastCardPlayed(CardFactory.createFlowCard(color,value)); }
 
     /**
      *

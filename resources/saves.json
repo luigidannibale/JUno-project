@@ -1,9 +1,9 @@
 [{
   "name": "Luigi",
   "stats": {
-   "defeats": 1,
-   "level": 0,
-   "victories": 2
+   "defeats": 8,
+   "level": 7.420999952316284,
+   "victories": 11
   },
   "password": "Pass123"
  }]
