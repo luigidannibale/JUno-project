@@ -5,14 +5,17 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
-
-
 public class PlayerInputTabbedPanels extends JTabbedPane
 {
     LoginPanel loginPanel;
     RegistrationPanel registrationPanel;
     UpdatePanel updatePanel;
 
+    /**
+     * Initialize the {@link PlayerInputTabbedPanels} and the {@link InputPanel}s with the given back color and border color
+     * @param backColor
+     * @param borderColor
+     */
     public PlayerInputTabbedPanels(Color backColor, Color borderColor)
     {
 
@@ -30,17 +33,9 @@ public class PlayerInputTabbedPanels extends JTabbedPane
         setSelectedIndex(0);
     }
 
-    public List<InputPanel> getPanels(){ return List.of(loginPanel, registrationPanel, updatePanel); }
-
-    @Override
-    public void setPreferredSize(Dimension preferredSize)
-    {
-        super.setPreferredSize(preferredSize);
-        loginPanel.resizeComponents();
-        updatePanel.resizeComponents();
-        registrationPanel.resizeComponents();
-    }
-
+    /**
+     * Grabs transfers the focus for each {@link JTextField} in the panel and resets their text when the tabbed pane is changed
+     */
     public void clearTextField()
     {
         InputPanel panel = getPanels().get(getSelectedIndex());
@@ -51,4 +46,19 @@ public class PlayerInputTabbedPanels extends JTabbedPane
             requestFocusInWindow();
         });
     }
+
+    //GETTER
+    public List<InputPanel> getPanels(){ return List.of(loginPanel, registrationPanel, updatePanel); }
+
+    //needed to resize the components of the child panels
+    @Override
+    public void setPreferredSize(Dimension preferredSize)
+    {
+        super.setPreferredSize(preferredSize);
+        loginPanel.resizeComponents();
+        updatePanel.resizeComponents();
+        registrationPanel.resizeComponents();
+    }
+
+
 }

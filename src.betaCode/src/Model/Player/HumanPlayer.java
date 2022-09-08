@@ -11,7 +11,7 @@ public class HumanPlayer extends Player
     private String password;
 
     /**
-     * Creates a new {@link HumanPlayer} by the name and the password, with default {@link Stats}
+     * Creates a new {@link HumanPlayer} with the name and the password, with default {@link Stats}
      * @param name
      * @param password
      */

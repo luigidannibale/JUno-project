@@ -10,6 +10,12 @@ public class ResizablePanel extends JPanel
 {
     protected int panelWidth, panelHeight;
 
+    /**
+     * Initialize the panel with the given width, height and border
+     * @param panelWidth the width of the panel
+     * @param panelHeight the height of the panel
+     * @param borderOffset the width of the empty border
+     */
     public ResizablePanel(int panelWidth,int panelHeight, int borderOffset)
     {
         this.panelWidth = (int) (panelWidth * Config.scalingPercentage);
@@ -20,6 +26,9 @@ public class ResizablePanel extends JPanel
         setBorder(new EmptyBorder(borderPX,borderPX,borderPX,borderPX));
     }
 
+    /**
+     * Resize every component added to the panel based on the scaling percentage of the screen.
+     */
     protected void resizeComponents()
     {
         Arrays.stream(getComponents()).forEach(component ->

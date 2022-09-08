@@ -39,6 +39,12 @@ public abstract class InputPanel extends ResizablePanel
     GifComponent saveButton;
     GifComponent closeButton;
 
+    /**
+     * Initialize the {@link InputPanel} with the given back color and border color and
+     * initialize the common components of the class
+     * @param backColor
+     * @param borderColor
+     */
     public InputPanel(Color backColor, Color borderColor)
     {
         super(300,200,1);
@@ -121,6 +127,7 @@ public abstract class InputPanel extends ResizablePanel
         setVisible(true);
     }
 
+
     @Override
     public void resizeComponents()
     {
@@ -129,8 +136,6 @@ public abstract class InputPanel extends ResizablePanel
             if(component instanceof JTextField){
                 component.setPreferredSize(new Dimension((int) (getPreferredSize().width * Config.scalingPercentage), (int) (getPreferredSize().height / 5.0 * Config.scalingPercentage)));
                 component.setFont(component.getFont().deriveFont((float) (component.getFont().getSize()*Config.scalingPercentage)));
-                //System.out.println(getPreferredSize().width + " " + getPreferredSize().height);
-                //System.out.println(component.getPreferredSize().width + " " + component.getPreferredSize().height);
             }
             else component.setPreferredSize(new Dimension((int) (component.getPreferredSize().width * Config.scalingPercentage), (int) (component.getPreferredSize().height * Config.scalingPercentage)));
             component.repaint();
@@ -177,25 +182,24 @@ public abstract class InputPanel extends ResizablePanel
         return true;
     }
 
-    public GifComponent getCloseButton(){return closeButton;}
-
-    public GifComponent getSaveButton(){return saveButton;}
-
-    public JTextField getTxtInsertName() { return txtInsertName; }
-
-    public JTextField getTxtInsertPassword() { return txtInsertPassword; }
-
-    protected Predicate<String> ContainedInEnum = toCheck -> Arrays.stream(InputMessages.values()).anyMatch(v -> v.getMessage().equals(toCheck));
-
-    protected Predicate<String> check = toCheck -> toCheck.isEmpty() || ContainedInEnum.test(toCheck);
-
-    protected Predicate<String> isPasswordValid = password -> password.length() >= 6 && containsOnecapitalOnelower1digit(password);
-
     public  void textFieldError(JTextField textField, InputMessages error)
     {
         textField.setText(error.getMessage());
         textField.setForeground(Color.RED);
         textField.transferFocus();
     }
+
     public boolean containsOnecapitalOnelower1digit(String string){ return Pattern.compile("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])").matcher(string).find(); }
+
+    //PREDICATES
+    protected Predicate<String> ContainedInEnum = toCheck -> Arrays.stream(InputMessages.values()).anyMatch(v -> v.getMessage().equals(toCheck));
+    protected Predicate<String> check = toCheck -> toCheck.isEmpty() || ContainedInEnum.test(toCheck);
+    protected Predicate<String> isPasswordValid = password -> password.length() >= 6 && containsOnecapitalOnelower1digit(password);
+
+    //GETTERS
+    public GifComponent getCloseButton(){return closeButton;}
+    public GifComponent getSaveButton(){return saveButton;}
+    public JTextField getTxtInsertName() { return txtInsertName; }
+    public JTextField getTxtInsertPassword() { return txtInsertPassword; }
+
 }

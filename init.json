@@ -2,12 +2,12 @@
   "config": {
    "deckStyle": "WHITE",
    "effectsVolume": 50,
-   "savedIconPath": "C:\\Users\\luigi\\Pictures\\wallpaper\\konhoa.png",
-   "musicVolume": 50,
+   "savedIconPath": "resources/images/MainFrame/ProfilePanel/anonymous.png",
+   "musicVolume": 14,
    "graphicQuality": "LOW"
   },
   "player": {
-   "PASSWORD": "Password123",
-   "name": "Gigi"
+   "name": "Dan",
+   "PASSWORD": "Password123"
   }
  }]

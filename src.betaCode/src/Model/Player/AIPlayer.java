@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class AIPlayer extends Player
 {
     /**
-     * Creates an {@link AIPlayer} by the name
+     * Creates an {@link AIPlayer} with the name
      * @param name
      */
     public AIPlayer(String name) { super(name); }
@@ -75,9 +75,14 @@ public class AIPlayer extends Player
      */
     public Player chooseBestPlayerToSwap(Player[] players, int current)
     {
+        System.out.println("CURRENT " + players[current]);
         int min = players[0].getHand().size();
         Player bestPlayer = players[0];
-        for (Player p: players) if (p.getHand().size()<min && !p.equals(players[current])) bestPlayer = p;
+        for (Player p : players){
+            System.out.println("PLAYER " + p + " HAND SIZE " + p.getHand().size());
+            if (p.getHand().size() < min && !p.equals(players[current])) bestPlayer = p;
+        }
+        System.out.println("BEST PLAYER " + bestPlayer);
         return bestPlayer;
     }
 

@@ -98,6 +98,11 @@ public class GamePanel extends JPanel implements Observer
     BasicStroke a = new BasicStroke(ladderThickness);
     String continueString = "CONTINUE";
 
+    /**
+     * Creates the {@link GamePanel} with the {@link ViewPlayer}s of the game.
+     * Constants variables needed for the paint method are calculated here and then the repaint thread is called
+     * @param viewPlayers
+     */
     public GamePanel(ViewPlayer[] viewPlayers)
     {
         this.viewPlayers = viewPlayers;
@@ -137,6 +142,9 @@ public class GamePanel extends JPanel implements Observer
         repaintView();
     }
 
+    /**
+     * Initialize the main components of the panel
+     */
     private void InitializeComponents()
     {
         deck = new ViewCard();
@@ -147,12 +155,19 @@ public class GamePanel extends JPanel implements Observer
         continuePosition = new Rectangle();
     }
 
+    /**
+     * Thread called to always repaint the view, so that every update and animation is constantly painted
+     */
     private void repaintView()
     {
         gameThread = new Thread(() ->{ while(gameRunning) repaint(); },"gameViewPeriodicRepaint");
         gameThread.start();
     }
 
+    /**
+     * Lifts the cards of the {@link HumanPlayer} if hovered
+     * @param e
+     */
     public void animateCardsOnHovering(MouseEvent e)
     {
         Point mouseClickPosition = e.getPoint();
@@ -160,6 +175,11 @@ public class GamePanel extends JPanel implements Observer
             card.setShiftHeight(card.contains(mouseClickPosition) ? -30 : 0);
     }
 
+    /**
+     * Method called when the user plays a Wild Card, to provide a color chosen by the user.
+     * Cannot be closed without choosing a color
+     * @return the color chosen
+     */
     public Color choseColorByUser()
     {
         String[] colors = new String[]{"RED", "YELLOW", "BLUE", "GREEN"};
@@ -177,6 +197,11 @@ public class GamePanel extends JPanel implements Observer
         return Color.valueOf(colors[choice]);
     }
 
+    /**
+     * Method called when the user plays a seven card in seveno game mode, to provide a player to swap cards with.
+     * Cannot be closed without choosing a player
+     * @return the player chosen
+     */
     public Player chosePlayerToSwap()
     {
         HashMap<String,Player> playerHashMap = new HashMap<>();
@@ -199,19 +224,23 @@ public class GamePanel extends JPanel implements Observer
     {
         super.paintComponent(g);
 
+        //PAINTS THE BACKGROUND
         g.setColor(green);
         g.fillRect(0,0, getWidth(), getHeight());
 
         Graphics2D g2 = (Graphics2D) g;
         if (Config.graphicQuality == GraphicQuality.HIGH) Utils.applyQualityRenderingHints(g2);
 
+        //PAINTS THE HANDS
         drawHorizontalHand(viewPlayers[0], g2, getHeight() - ViewCard.height);
         drawHorizontalHand(viewPlayers[2], g2, 0);
         drawVerticalHand(viewPlayers[1], g2, getWidth() - ViewCard.height);
         drawVerticalHand(viewPlayers[3], g2, 0);
 
+        //PAINTS DISCARDS
         g2.drawImage(discard.getCardImage(), discardX, discardY, ViewCard.width, ViewCard.height, null);
 
+        //PAINTS DECK
         if (deckSize > 1)
         {
             g2.setFont(fontNames);
@@ -224,14 +253,16 @@ public class GamePanel extends JPanel implements Observer
             g2.drawImage(deck.getCardImage(), deckX, deckY, ViewCard.width, ViewCard.height, null);
         }
 
-        if (currentState == State.WIN || currentState == State.MATCH_WIN) drawLadder(g2);
-
+        //PAINTS ANIMATIONS
         Iterator<Animation> iter = animations.iterator();
         while(iter.hasNext()){
             Animation animation = iter.next();
             if (animation.isAlive()) animation.paint(g2);
             else iter.remove();
         }
+
+        //PAINTS WIN LADDER
+        if (currentState == State.WIN || currentState == State.MATCH_WIN) drawLadder(g2);
 
         g2.dispose();
     }
@@ -279,6 +310,9 @@ public class GamePanel extends JPanel implements Observer
         if (currentState == State.AI_TURN && !aiRunning) asyncAITurn(gameTable);
     }
 
+    /**
+     * Method used to create the graphic representation of the players' hand and to set the image of the discards
+     */
     public void createCards()
     {
         try
@@ -294,12 +328,22 @@ public class GamePanel extends JPanel implements Observer
         catch (ConcurrentModificationException ignored){ }
     }
 
+    /**
+     * Sleeps a random time between the given min and max milliseconds.
+     * @param min
+     * @param max
+     */
     private void randomSleep(int min, int max)
     {
         try { Thread.sleep(new Random().nextInt(min, max)); }
         catch (InterruptedException ignored) {}
     }
 
+    /**
+     * Async method to let the {@link AIPlayer}s play without blocking the main window.
+     * It does everything about the game turn, from shouting uno to playing
+     * @param gameTable needed to call methods in the model
+     */
     public void asyncAITurn(UnoGameTable gameTable)
     {
         aiRunning = true;
@@ -316,8 +360,10 @@ public class GamePanel extends JPanel implements Observer
                 gameTable.expose(player);
                 randomSleep(400, 600);
             }
+            //the ai has one card and didnt say one
             if (!ai.hasSaidOne() && ai.hasOne()){ shoutUnoAnimation(ai); }
 
+            //CHECK PLAYABLE CARDS
             List<Card> playableCards = gameTable.getCurrentPlayerPLayableCards();
             aiRunning = false;
             if (playableCards.size() == 0) //DOESN'T HAVE PLAYABLE CARDS
@@ -343,6 +389,12 @@ public class GamePanel extends JPanel implements Observer
         aiThread.start();
     }
 
+    /**
+     * Method called to display the play card {@link Animation}, given the {@link ViewCard}.
+     * If the animation is already running, it does nothing
+     * @param card the card to play
+     * @return the running animation that can be waited
+     */
     public Animation playCardAnimation(ViewCard card)
     {
         if (animationRunning(movingAnimation)) return null;
@@ -358,6 +410,13 @@ public class GamePanel extends JPanel implements Observer
         return movingAnimation;
     }
 
+    /**
+     * Method called to display the draw card animation, given the current {@link ViewPlayer} and the {@link ViewCard}.
+     * If the animation is already running, it does nothing
+     * @param currentViewPlayer the player that played the card
+     * @param drawnCard the card drawed
+     * @return the running animation that can be waited
+     */
     public Animation drawCardAnimation(ViewPlayer currentViewPlayer, ViewCard drawnCard)
     {
         if (animationRunning(movingAnimation)) return null;
@@ -370,6 +429,12 @@ public class GamePanel extends JPanel implements Observer
         return movingAnimation;
     }
 
+    /**
+     * Method called to display the flip card animation when the user is drawing, given the {@link ViewCard}.
+     * If the animation is already running, it does nothing
+     * @param drawnCard the card drawed
+     * @return the running animation that can be waited
+     */
     public Animation flipCardAnimation(ViewCard drawnCard)
     {
         if (animationRunning(flipAnimation)) return null;
@@ -379,6 +444,11 @@ public class GamePanel extends JPanel implements Observer
         return flipAnimation;
     }
 
+    /**
+     * Method called to display the shout uno animation, given the {@link Player} that has one card.
+     * If the Player is an {@link AIPlayer}, it may not say uno
+     * @param player
+     */
     public void shoutUnoAnimation(Player player)
     {
         if ((player instanceof HumanPlayer && player.hasSaidOne()) || (player instanceof AIPlayer a && a.chooseToSayUno()))
@@ -388,6 +458,10 @@ public class GamePanel extends JPanel implements Observer
         }
     }
 
+    /**
+     * Method called to display the expose player animation, when a player has one card and didnt said uno.
+     * @return the running animation that can be waited
+     */
     public Animation exposedAnimation()
     {
         AudioManager.getInstance().setEffect(AudioManager.Effect.ERROR);
@@ -396,8 +470,17 @@ public class GamePanel extends JPanel implements Observer
         return animation;
     }
 
+    /**
+     * Checks if the given animation is alive, i.e. is running
+     * @param anim
+     * @return true if alive, false otherwise
+     */
     public boolean animationRunning(Animation anim){ return anim != null && anim.isAlive(); }
 
+    /**
+     * Draws the Win ladder, displaying the player in descending order of the points
+     * @param g2
+     */
     private void drawLadder(Graphics2D g2)
     {
         Composite noTransparent = g2.getComposite();
@@ -450,6 +533,13 @@ public class GamePanel extends JPanel implements Observer
         continuePosition.setRect(continueX, continueY - continueHeight, continueWidth, continueHeight);
     }
 
+    /**
+     * Calculates the width needed by each {@link ViewPlayer}'s card to draw.
+     * If the cards to draw are 0, then catch the exception and returns the given cards space
+     * @param player
+     * @param cardsSpace the total width of the cards
+     * @return the draw width for each card
+     */
     private int getCardsWidth(ViewPlayer player, int cardsSpace)
     {
         int cardsWidth;
@@ -458,6 +548,12 @@ public class GamePanel extends JPanel implements Observer
         return cardsWidth;
     }
 
+    /**
+     *
+     * @param player
+     * @param g2
+     * @param y
+     */
     private void drawHorizontalHand(ViewPlayer player, Graphics2D g2, int y)
     {
         int cardsSpace = Math.min(player.getPlayer().getHand().size() * ViewCard.width, maxCardsWidth);
@@ -484,6 +580,12 @@ public class GamePanel extends JPanel implements Observer
         }
     }
 
+    /**
+     *
+     * @param player
+     * @param g2
+     * @param x
+     */
     private  void drawVerticalHand(ViewPlayer player, Graphics2D g2, int x)
     {
         int cardsSpace = Math.min(player.getPlayer().getHand().size() * ViewCard.width, maxCardsHeight);
@@ -499,11 +601,23 @@ public class GamePanel extends JPanel implements Observer
         }
     }
 
+    /**
+     * Given the x and y it draws the name of the given {@link ViewPlayer} with a small colorful background, based on the player status.
+     * Then it draws the profile picture at the given imageX and imageY.
+     * It saves the position of players' name on screen so that they can be clickable in order to be exposed.
+     * If the player is the user it draws the strings to shout uno and to skip turn, based on the necessity, and saves their position.
+     * @param viewPlayer the player to draw
+     * @param x the x on screen
+     * @param y the y on screen
+     * @param g2 graphic object
+     * @param imageX the x of the profile picture
+     * @param imageY the x of the profile picture
+     */
     private void drawNames(ViewPlayer viewPlayer, int x, int y, Graphics2D g2, int imageX, int imageY)
     {
         Player player = viewPlayer.getPlayer();
         g2.setFont(fontNames);
-        g2.setColor(player.hasSaidOne() ? java.awt.Color.RED : player.equals(currentViewPlayer.getPlayer()) ? currentPlayerBackground : playerBackground);
+        g2.setColor(player.hasOne() && player.hasSaidOne() ? java.awt.Color.RED : player.equals(currentViewPlayer.getPlayer()) ? currentPlayerBackground : playerBackground);
         int width = g2.getFontMetrics().stringWidth(player.getName());
         int height = g2.getFontMetrics().getHeight();
         g2.fillRoundRect(x-5, y - height + 5, width + 10, height, 20, 20);
@@ -531,16 +645,26 @@ public class GamePanel extends JPanel implements Observer
     }
 
     //CONTROLLER USAGE
+
+    /**
+     * Resumes the paused game. If the user changed the deck color the cards are updated
+     */
     public void resumeGame()
     {
         createCards();
         currentState = calculateState();
     }
 
+    /**
+     * Pause the game
+     */
     public void pauseGame() {
         currentState = State.GAME_PAUSED;
     }
 
+    /**
+     * Sets to flag to reapint the view to false and stop all running animations
+     */
     public void stopTimer()
     {
         animations.forEach(Animation::Stop);

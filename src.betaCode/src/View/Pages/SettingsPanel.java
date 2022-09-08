@@ -10,6 +10,10 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
+/**
+ *
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class SettingsPanel extends ResizablePanel
 {
     private final String pathImages = MainFrame.IMAGE_PATH +"SettingsPanel/";
@@ -39,6 +43,9 @@ public class SettingsPanel extends ResizablePanel
         resizeComponents();
     }
 
+    /**
+     * Initializes and adds the components of the {@link SettingsPanel}
+     */
     private void InitializeComponents()
     {
         //LABELS
@@ -157,6 +164,10 @@ public class SettingsPanel extends ResizablePanel
         g.fillRoundRect(0, 0, panelWidth, panelHeight, 15, 15);
     }
 
+    /**
+     * Custom JComponent
+     * @author D'annibale Luigi, Venturini Daniele
+     */
     public class DeckRectangle extends JComponent
     {
         private static int width = 114;
@@ -169,6 +180,13 @@ public class SettingsPanel extends ResizablePanel
         private Color deckRectangleBorder = Color.BLACK;
         private boolean paintBackground = false;
 
+        /**
+         * Initializes the {@link DeckRectangle} given the image to add at the center, the title of the component, and the related {@link DeckColor}.
+         * It gets highlighted when hovered.
+         * @param imagePath
+         * @param title
+         * @param deckColor
+         */
         public DeckRectangle(String imagePath, String title, DeckColor deckColor)
         {
             this.title = title;
@@ -196,6 +214,11 @@ public class SettingsPanel extends ResizablePanel
             });
         }
 
+        /**
+         * Sets the flag related to the color of the background.
+         * The background is green if true, otherwise transparent
+         * @param paintBackground
+         */
         public void setPaintBackground(boolean paintBackground)
         {
             this.paintBackground = paintBackground;

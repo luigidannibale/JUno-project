@@ -5,6 +5,10 @@ import View.Elements.ImageComponent;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+/**
+ *
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class StartingMenuPanel extends ResizablePanel
 {
     private final String pathImages = MainFrame.IMAGE_PATH + "StartingMenuPanel/";
@@ -30,6 +34,9 @@ public class StartingMenuPanel extends ResizablePanel
         resizeComponents();
     }
 
+    /**
+     * Initializes and adds the components of the {@link StartingMenuPanel}
+     */
     private void InitializeComponents()
     {
         //IMAGES

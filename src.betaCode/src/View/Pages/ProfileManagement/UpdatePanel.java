@@ -7,8 +7,13 @@ import java.util.Arrays;
 
 public class UpdatePanel extends InputPanel
 {
-
     JTextField txtConfirmPassword;
+
+    /**
+     * Initialize the {@link UpdatePanel} with the given back color and border color
+     * @param backColor
+     * @param borderColor
+     */
     public UpdatePanel(Color backColor, Color borderColor) 
     {
         super(backColor, borderColor);
@@ -42,30 +47,33 @@ public class UpdatePanel extends InputPanel
         txtInsertPassword.setVisible(false);
     }
 
+    /**
+     * Sets the confirmation password {@link JTextField} to visible if true, otherwise sets insert name and password {@link JTextField} to visible
+     * @param ConfirmPassword
+     */
     public void setTxtVisibility(boolean ConfirmPassword)
     {
         txtConfirmPassword.setVisible(ConfirmPassword);
         txtInsertName.setVisible(!ConfirmPassword);
         txtInsertPassword.setVisible(!ConfirmPassword);
 
-        if (!ConfirmPassword){
-            resetTextField(txtInsertName, txtInsertPassword);
-        }
-        else{
-            resetTextField(txtConfirmPassword);
-        }
-
-
+        if (!ConfirmPassword) resetTextField(txtInsertName, txtInsertPassword);
+        else  resetTextField(txtConfirmPassword);
     }
 
+    /**
+     * Grabs and transfers the focus for each given {@link JTextField} and resets their text
+     * @param textfields
+     */
     private void resetTextField(JTextField... textfields)
     {
         Arrays.stream(textfields).forEach(textfield -> {
             textfield.grabFocus();
+            textfield.setText("");
             textfield.transferFocus();
         });
-
     }
 
+    //GETTERS
     public JTextField getTxtConfirmPassword() { return txtConfirmPassword; }
 }

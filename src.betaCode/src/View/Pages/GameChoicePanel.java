@@ -41,6 +41,9 @@ public class GameChoicePanel extends ResizablePanel
         infosHeight *= Config.scalingPercentage;
     }
 
+    /**
+     * Initializes and adds the components of the {@link GameChoicePanel}
+     */
     private void InitializeComponents()
     {
         title = new ImageComponent(pathImages + "choose gamemode.png");
@@ -131,6 +134,7 @@ public class GameChoicePanel extends ResizablePanel
         g2.drawRoundRect(0,0,panelWidth,panelHeight, 50, 50);
     }
 
+    //needed to paint the info images on top of the other components
     @Override
     public void paint(Graphics g) {
         super.paint(g);
