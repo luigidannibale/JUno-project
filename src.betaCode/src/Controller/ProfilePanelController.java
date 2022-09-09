@@ -1,17 +1,13 @@
 package Controller;
 
-import Model.Players.HumanPlayer;
-import Model.Players.PlayerManager;
 import Controller.Utilities.Config;
 import Controller.Utilities.DataAccessManager;
-import View.Elements.ChangebleIcon;
+import Model.Players.HumanPlayer;
+import Model.Players.PlayerManager;
 import View.Elements.CircularImage;
 import View.Elements.CustomMouseAdapter;
 import View.Elements.ViewPlayer;
-import View.Pages.GameChoicePanel;
 import View.Pages.ProfilePanels.*;
-import View.Pages.SettingsPanel;
-import View.Pages.StartingMenuPanel;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -201,7 +197,7 @@ public class ProfilePanelController extends Controller<ProfilePanel>
 
         if (!optionalPlayer.getPassword().equals(password))
         {
-            panel.textFieldError(txtInsertName, InputPanel.InputMessages.PASSWORD_ERROR);
+            panel.textFieldError(txtInsertPassword, InputPanel.InputMessages.PASSWORD_ERROR);
             return;
         }
 
@@ -228,7 +224,7 @@ public class ProfilePanelController extends Controller<ProfilePanel>
         }
         player = new HumanPlayer(name, password);
         DataAccessManager DAM = new DataAccessManager();
-        System.out.println("Registrato : "+ name + " con esito " + DAM.saveModelProfile(player));
+        boolean registrated = DAM.saveModelProfile(player);
         Config.assignDefaultValues();
         Config.loggedPlayer = player;
         if (DAM.saveProfile(player)) MainFrameController.getInstance().setViewPlayer(new ViewPlayer(player, new CircularImage(Config.savedIconPath)));

@@ -3,9 +3,7 @@ package Controller;
 import Controller.Utilities.AudioManager;
 import Controller.Utilities.Config;
 import View.Elements.*;
-import View.Pages.GameChoicePanel;
 import View.Pages.SettingsPanel;
-import View.Pages.StartingMenuPanel;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;

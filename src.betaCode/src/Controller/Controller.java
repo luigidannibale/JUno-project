@@ -6,6 +6,7 @@ import java.awt.*;
  * Class used to model all the controllers that manage an associated view that extends container. <br/>
  * Provides methods to access the view.
  * @param <T>
+ * @author D'annibale Luigi, Venturini Daniele
  */
 public abstract class Controller <T extends Container>
 {

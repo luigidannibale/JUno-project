@@ -2,9 +2,9 @@ package View.Pages;
 
 import Controller.GameChoiceController;
 import Controller.Utilities.Config;
-import View.Utils;
 import View.Elements.GifComponent;
 import View.Elements.ImageComponent;
+import View.Utils;
 
 import javax.swing.*;
 import java.awt.*;

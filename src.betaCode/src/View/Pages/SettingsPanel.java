@@ -1,7 +1,7 @@
 package View.Pages;
 
-import View.Utils;
 import View.Elements.*;
+import View.Utils;
 
 import javax.swing.*;
 import java.awt.*;

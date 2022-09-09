@@ -12,6 +12,15 @@ import java.awt.*;
  */
 public class MainFrame extends JFrame
 {
+    /**
+     * State
+     * <ul>
+     *     <li>MAIN</li>
+     *     <li>SETTINGS</li>
+     *     <li>GAME</li>
+     * </ul>
+     * @author D'annibale Luigi, Venturini Daniele
+     */
     public enum Cards
     {
         MAIN,

@@ -1,5 +1,7 @@
 package View.Pages;
 
+import Controller.Utilities.AudioManager;
+import Controller.Utilities.Config;
 import Model.Cards.Card;
 import Model.Cards.Color;
 import Model.Players.AIPlayer;
@@ -7,17 +9,15 @@ import Model.Players.HumanPlayer;
 import Model.Players.Player;
 import Model.Rules.ActionPerformResult;
 import Model.UnoGameTable;
-import Controller.Utilities.AudioManager;
-import Controller.Utilities.Config;
+import View.Animations.*;
 import View.Elements.*;
 import View.Utils;
-import View.Animations.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -28,6 +28,18 @@ import java.util.stream.IntStream;
  */
 public class GamePanel extends JPanel implements Observer
 {
+
+    /**
+     * State
+     * <ul>
+     *     <li>PLAYER_TURN</li>
+     *     <li>AI_TURN</li>
+     *     <li>GAME_PAUSED</li>
+     *     <li>WIN</li>
+     *     <li>MATCH_WIN</li>
+     * </ul>
+     * @author D'annibale Luigi, Venturini Daniele
+     */
     public enum State
     {
         PLAYER_TURN,

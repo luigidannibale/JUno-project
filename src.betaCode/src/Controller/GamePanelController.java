@@ -1,15 +1,13 @@
 package Controller;
 
+import Controller.Utilities.AudioManager;
 import Model.Players.Player;
 import Model.Rules.*;
 import Model.UnoGameTable;
-import Controller.Utilities.AudioManager;
 import View.Animations.Animation;
 import View.Elements.ViewPlayer;
 import View.Elements.ViewRotatableCard;
 import View.Pages.GamePanel;
-import View.Pages.StartingMenuPanel;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.concurrent.TimeUnit;
@@ -19,12 +17,13 @@ import java.util.stream.Stream;
  * Specialize {@link Controller} on {@link GamePanel}.
  * Class used to get the inputs in the {@link GamePanel} and to update the {@link UnoGameTable} with the changes made by the user.
  * It manages the player's turn and the {@link Animation}s to be called in the view
+ * @author D'annibale Luigi, Venturini Daniele
  */
 public class GamePanelController extends Controller<GamePanel>
 {
     private UnoGameTable gameTable;
 
-    /*goes true when a card is drawn out*/
+    /*goes true when a DrawAnimation is carried out*/
     private boolean hasFinishedDrawing = false;
 
     private Animation exposeAnimation;
@@ -103,7 +102,8 @@ public class GamePanelController extends Controller<GamePanel>
     /**
      * Stops all the animations and paintings in the {@link GamePanel}
      */
-    public void quitGame(){
+    public void quitGame()
+    {
         AudioManager.getInstance().stopEffect();
         view.stopTimer();
     }

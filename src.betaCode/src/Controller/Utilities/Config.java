@@ -1,6 +1,5 @@
 package Controller.Utilities;
 
-import Model.Cards.Card;
 import Model.Players.HumanPlayer;
 import View.Elements.DeckColor;
 import View.Elements.GraphicQuality;
@@ -25,7 +24,7 @@ public class Config
      *     </tr>
      *     <tr>
      *         <td>EFFECTS_VOLUME</td>
-     *         <td>"effectsVolume"/td>
+     *         <td>"effectsVolume"</td>
      *     </tr>
      *     <tr>
      *         <td>MUSIC_VOLUME</td>

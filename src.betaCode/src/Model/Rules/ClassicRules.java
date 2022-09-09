@@ -7,7 +7,24 @@ import Model.DeckManager;
 import java.util.List;
 
 /**
- * This class specifies {@link UnoGameRules} to provide the methods of the classic game mode of UNO
+ * This class specializes {@link UnoGameRules} to provide the methods of the classic game mode of UNO <br/>
+ *
+ * <strong>Classic deck composition of Uno</strong> <br/>
+ *108 cards distributed so:
+ * <ul>
+ *     <li>4 Cards Wild</li>
+ *     <li>4 Cards Wild Draw</li>
+ *     <li>
+ *         Then for each color:
+ *         <ul>
+ *            <li>1 Zero Card</li>
+ *            <li>2 Cards for each value from 1 to 9</li>
+ *            <li>2 Cards draw</li>
+ *            <li>2 Cards skip</li>
+ *            <li>2 Cards reverse</li>
+ *         </ul>
+ *     </li>
+ * </ul>
  * @author D'annibale Luigi, Venturini Daniele
  */
 public class ClassicRules extends UnoGameRules
@@ -26,7 +43,6 @@ public class ClassicRules extends UnoGameRules
     public ActionPerformResult performFirstCardAction(Options parameters)  { return super.cardActionPerformance(parameters); }
 
     /**
-     * Returns the playable cards of the classic game mode.
      * The player can't play Wilds Cards if he has other playable cards
      * @param playerPlayableHand
      * @param discardsPick

@@ -97,12 +97,12 @@ public class UnoGameTable extends Observable
         Card drewCard = deckManager.draw();
         currentPlayer.drawCard(drewCard);
         currentPlayer.setDrew(true);
-        //--test start
-        System.out.println(currentPlayer);
-        System.out.println("DRAWED: " + drewCard);
-        System.out.println("HAND: " + currentPlayer.getHand());
-        System.out.println("PLAYABLE: " + getCurrentPlayerPLayableCards());
-        //--test end
+//        //--test start
+//        System.out.println(currentPlayer);
+//        System.out.println("DRAWN: " + drewCard);
+//        System.out.println("HAND: " + currentPlayer.getHand());
+//        System.out.println("PLAYABLE: " + getCurrentPlayerPLayableCards());
+//        //--test end
         updateObservers();
     }
 
@@ -124,18 +124,17 @@ public class UnoGameTable extends Observable
      */
     public ActionPerformResult playCard(Card card)
     {
-        //--test start
-        System.out.println(currentPlayer());
-        System.out.println("PLAYED: " + card);
-        System.out.println("HAND: " + currentPlayer().getHand());
-        System.out.println("PLAYABLE: " + getCurrentPlayerPLayableCards());
-        //--test end
+//        //--test start
+//        System.out.println(currentPlayer());
+//        System.out.println("PLAYED: " + card);
+//        System.out.println("HAND: " + currentPlayer().getHand());
+//        System.out.println("PLAYABLE: " + getCurrentPlayerPLayableCards());
+//        //--test end
         currentPlayer().playCard(card);
 
         if (checkGameWin(currentPlayer()))
         {
-            System.out.println("HAI VINTO " + currentPlayer());
-            //current player ha vinto
+//            System.out.println("YOU WON " + currentPlayer());
             win = true;
             updateObservers();
             return ActionPerformResult.PLAYER_WON;
@@ -163,12 +162,12 @@ public class UnoGameTable extends Observable
      */
     public void passTurn()
     {
-        //--test start
-        System.out.println(currentPlayer());
-        System.out.println("PASSED TURN");
-        System.out.println("HAND: " + currentPlayer().getHand());
-        System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
-        //--test end
+//        //--test start
+//        System.out.println(currentPlayer());
+//        System.out.println("PASSED TURN");
+//        System.out.println("HAND: " + currentPlayer().getHand());
+//        System.out.println("PLAYABLE: " + currentPlayer().getValidCards(turnManager.getLastCardPlayed()));
+//        //--test end
         ruleManager.passTurn(turnManager,currentPlayer());
         updateObservers();
     }

@@ -1,8 +1,8 @@
 package Model;
 
 import Model.Cards.Card;
-import Model.Cards.Color;
 import Model.Cards.CardFactory;
+import Model.Cards.Color;
 import Model.Cards.Value;
 
 import java.util.*;

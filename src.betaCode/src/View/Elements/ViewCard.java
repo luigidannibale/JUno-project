@@ -1,7 +1,7 @@
 package View.Elements;
 
-import Model.Cards.Card;
 import Controller.Utilities.Config;
+import Model.Cards.Card;
 import View.Utils;
 
 import java.awt.*;

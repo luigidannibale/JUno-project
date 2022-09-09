@@ -1,7 +1,6 @@
 package Controller;
 
 import View.Elements.CustomMouseAdapter;
-import View.Pages.GameChoicePanel;
 import View.Pages.StartingMenuPanel;
 
 import java.awt.event.MouseEvent;

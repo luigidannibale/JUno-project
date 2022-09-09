@@ -1,8 +1,7 @@
 package View.Animations;
 
-import Model.Cards.Color;
 import Controller.Utilities.Config;
-import View.Elements.ViewCard;
+import Model.Cards.Color;
 import View.Utils;
 
 import java.awt.*;

@@ -1,7 +1,5 @@
 package View.Animations;
 
-import View.Elements.ViewCard;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 

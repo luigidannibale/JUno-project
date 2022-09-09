@@ -1,6 +1,8 @@
 package Model.Rules;
 
-import Model.Cards.*;
+import Model.Cards.Card;
+import Model.Cards.Color;
+import Model.Cards.Value;
 import Model.DeckManager;
 import Model.Players.AIPlayer;
 import Model.Players.HumanPlayer;
@@ -10,8 +12,8 @@ import Model.TurnManager;
 import java.util.*;
 import java.util.stream.IntStream;
 /**
- * This class specifies {@link UnoGameRules} to provide the methods of the seven-o game mode of UNO.
- * In this game mode when someone plays a 7, he chooses a {@link Player} to swap hands with,
+ * This class specializes {@link UnoGameRules} to provide the methods of the seven-o game mode of UNO. <br/>
+ * In this game mode when someone plays a 7, he chooses a {@link Player} to swap hands with, <br/>
  * while when someone plays a 0, the players swap their hand with the next player following the direction of the turn
  * @author D'annibale Luigi, Venturini Daniele
  */
@@ -19,11 +21,12 @@ public class SevenoRules extends UnoGameRules
 {
     /**
      * Creates a new {@link SevenoRules} with the classic cards per player and cards playable, <br>
-     * while the deck has 3 more 0s and 4 more 7s.
+     * while the deck is made of the classic deck composition (spicified in {@link ClassicRules}) with 1 more zero and 2 more seven for each {@link Color}.
      */
     public SevenoRules()
     {
-        super(7,1, new HashMap<>(){{
+        super(7,1, new HashMap<>()
+        {{
             putAll(DeckManager.CLASSIC_RULES_CARD_DISTRIBUTION);
             put(Value.ZERO,3);
             put(Value.SEVEN,4);
@@ -39,7 +42,6 @@ public class SevenoRules extends UnoGameRules
     public ActionPerformResult performFirstCardAction(Options parameters) { return super.cardActionPerformance(parameters); }
 
     /**
-     * Returns the playable cards of the seveno game mode. <br>
      * All valid cards are playable.
      * @param playerPlayableHand
      * @param discardsPick

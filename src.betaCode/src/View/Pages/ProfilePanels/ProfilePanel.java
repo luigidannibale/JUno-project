@@ -2,11 +2,11 @@ package View.Pages.ProfilePanels;
 
 import Controller.MainFrameController;
 import Controller.Utilities.Config;
-import View.Utils;
 import View.Elements.CircularImage;
 import View.Elements.ImageComponent;
 import View.Elements.ViewSlider;
 import View.Pages.ResizablePanel;
+import View.Utils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

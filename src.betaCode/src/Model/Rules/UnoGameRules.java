@@ -2,8 +2,12 @@ package Model.Rules;
 
 import Model.Cards.*;
 import Model.DeckManager;
-import Model.Players.*;
+import Model.Players.AIPlayer;
+import Model.Players.HumanPlayer;
+import Model.Players.Player;
+import Model.Players.PlayerManager;
 import Model.TurnManager;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;

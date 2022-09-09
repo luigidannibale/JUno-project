@@ -1,8 +1,8 @@
 package Model;
 
 import Model.Cards.Card;
-import Model.Cards.Color;
 import Model.Cards.CardFactory;
+import Model.Cards.Color;
 import Model.Cards.Value;
 
 /**
@@ -38,7 +38,6 @@ public class TurnManager
      */
     public int next(int offset)
     {
-        //return ++player == numberOfPlayers ? 0 : ++player;
         if (offset + increase >= numberOfPlayers) return next(offset - numberOfPlayers);
         if (offset + increase <= -1) return numberOfPlayers - 1;
         return offset + increase;

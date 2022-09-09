@@ -1,8 +1,8 @@
 package View.Animations;
 
+import View.Elements.ViewCard;
 import View.Elements.ViewRotatableCard;
 import View.Utils;
-import View.Elements.ViewCard;
 
 import java.awt.*;
 

@@ -64,7 +64,8 @@ public class StartingMenuPanel extends ResizablePanel
     public ImageComponent getQuitIcon(){ return quitLabel; }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g)
+    {
         super.paintComponent(g);
         g.setColor(darkBlue);
         g.fillRoundRect(0, 0, panelWidth, panelHeight, angle, angle);

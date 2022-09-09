@@ -1,12 +1,8 @@
 import Controller.MainFrameController;
-import Model.Cards.Card;
-import Model.Cards.Value;
-import Model.DeckManager;
 import View.Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
 
 public class Juno
 {

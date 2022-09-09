@@ -1,8 +1,13 @@
 package Controller.Utilities;
 
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -12,7 +17,7 @@ import java.util.List;
 /**
  * Class used to read and write on files. <br/>
  *
- * <h3>For JSON management provides:</h3>
+ * <H3>For JSON management provides:</H3>
  * <ul>
  *      <li>wirteJson</li>
  *      <li>readJson</li>

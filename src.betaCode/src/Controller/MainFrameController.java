@@ -1,14 +1,12 @@
 package Controller;
 
-import Model.Players.AIPlayer;
 import Controller.Utilities.AudioManager;
 import Controller.Utilities.Config;
 import Controller.Utilities.DataAccessManager;
+import Model.Players.AIPlayer;
 import View.Elements.CircularImage;
 import View.Elements.ViewPlayer;
-import View.Pages.GameChoicePanel;
 import View.Pages.MainFrame;
-import View.Pages.StartingMenuPanel;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
@@ -199,7 +197,10 @@ public class MainFrameController extends Controller<MainFrame>
      * Sets the return panel of the {@link SettingsController}
      */
     public void setSettingsReturnPanel()
-    { if (currentPanel != Panels.SETTINGS) settingsController.setReturnPanel(currentPanel); }
+    {
+        if (currentPanel != Panels.SETTINGS)
+            settingsController.setReturnPanel(currentPanel);
+    }
 
     /**
      * Creates a new {@link GamePanelController} with the given {@link Controller.GameChoiceController.GameMode}
