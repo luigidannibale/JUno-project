@@ -9,10 +9,18 @@ import Model.TurnManager;
 
 import java.util.*;
 import java.util.stream.IntStream;
-
+/**
+ * This class specifies {@link UnoGameRules} to provide the methods of the seven-o game mode of UNO.
+ * In this game mode when someone plays a 7, he chooses a {@link Player} to swap hands with,
+ * while when someone plays a 0, the players swap their hand with the next player following the direction of the turn
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class SevenoRules extends UnoGameRules
 {
-
+    /**
+     * Creates a new {@link SevenoRules} with the classic cards per player and cards playable, <br>
+     * while the deck has 3 more 0s and 4 more 7s.
+     */
     public SevenoRules()
     {
         super(7,1, new HashMap<>(){{
@@ -22,11 +30,32 @@ public class SevenoRules extends UnoGameRules
         }});
     }
 
+    /**
+     * Performs the default action associated with the first {@link Card} put on the discards after shuffling the deck
+     * @param parameters
+     * @return the {@link ActionPerformResult} of the first card
+     */
     @Override
     public ActionPerformResult performFirstCardAction(Options parameters) { return super.cardActionPerformance(parameters); }
+
+    /**
+     * Returns the playable cards of the seveno game mode. <br>
+     * All valid cards are playable.
+     * @param playerPlayableHand
+     * @param discardsPick
+     * @return all the playable {@link Card} cards in the hand
+     */
     @Override
     public List<Card> getPlayableCards(List<Card> playerPlayableHand, Card discardsPick) { return playerPlayableHand; }
 
+    /**
+     * Performs the classic actions associated with the {@link Card}, adding the action of the 7 and 0 {@link Card}: <br>
+     * - with a 7, the current {@link Player} chooses a player to swap hands with;
+     * - with a 0, the players swap their hand with the next player following the direction of the turn.
+     * If the {@link ActionPerformResult} is SUCCESSFUL, then the turn is skipped, because the {@link Model.Players.Player} can't play other cards.
+     * @param parameters
+     * @return the {@link ActionPerformResult} of the operation
+     */
     @Override
     public ActionPerformResult cardActionPerformance(Options parameters)
     {
@@ -46,7 +75,6 @@ public class SevenoRules extends UnoGameRules
                 if (currentPlayer instanceof HumanPlayer) return ActionPerformResult.NO_PLAYER_PROVIDED;
                 else if (currentPlayer instanceof AIPlayer aiCurrentPLayer) playerToSwap = aiCurrentPLayer.chooseBestPlayerToSwap(players, turnManager.getPlayer());
             }
-
             currentPlayer.swapHand(swapHand(currentPlayer.getHand(), playerToSwap));
         }
         if (lastCard.getValue() == Value.ZERO)
@@ -63,5 +91,11 @@ public class SevenoRules extends UnoGameRules
         return actionPerformResult;
     }
 
+    /**
+     * Gives the hand to the {@link Player} to swap cards with, and returns his now old hand
+     * @param handToGiveAway the hand to give
+     * @param playerToSwapWith the player to receive the new hand
+     * @return the old hand of the player
+     */
     private Stack<Card> swapHand(Stack<Card> handToGiveAway, Player playerToSwapWith) { return playerToSwapWith.swapHand(handToGiveAway); }
 }
