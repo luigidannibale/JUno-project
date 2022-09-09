@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- *
+ * Creates the custom {@link JFrame} of the entire game. It contains every {@link Panel}, divided in their related background.
  * @author D'annibale Luigi, Venturini Daniele
  */
 public class MainFrame extends JFrame

@@ -27,7 +27,6 @@ public class ViewCard
     public static int width = 120;
     public static int height = 180;
 
-
     private Card card;
 
     //debug
@@ -38,35 +37,15 @@ public class ViewCard
      */
     public ViewCard(){ cardImage = BACK_CARD; }
 
-    /**
-     * Creates a new {@link ViewCard} of the given {@link Card} with no rotation.
-     * @param card the card to represent
-     */
-    //public ViewCard(Card card) { this(card); }
 
     /**
-     * Creates a new {@link ViewCard} of the given {@link Card} with the given rotation.
-     * If the rotation is not 0, then the painted image is chosen between the rotated back_card images based on the rotation.
+     * Creates a new {@link ViewCard} of the given {@link Card}
      * @param card
-     * @param rotation
      */
     public ViewCard(Card card)
     {
         this.card = card;
-        //this.rotation = rotation;
         buildCard();
-
-        //if (carteScoperte){ rotation = 0; }
-        /*
-        switch (rotation){
-            case 90 -> paintedImage = BACK_ROTATED_90;
-            case 180 -> paintedImage = BACK_CARD;
-            case 270 -> paintedImage = BACK_ROTATED_270;
-            default -> paintedImage = cardImage;
-        }
-
-         */
-
     }
 
     /**

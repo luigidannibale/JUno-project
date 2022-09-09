@@ -2,6 +2,10 @@ package View.Pages.ProfilePanels;
 
 import java.awt.*;
 
+/**
+ * Class used to provide the {@link InputPanel} where the user can create a new account.
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class RegistrationPanel extends InputPanel
 {
     /**

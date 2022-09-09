@@ -5,6 +5,11 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Arrays;
 
+/**
+ * Class used to provide the {@link InputPanel} where the user can change the name and the password of the account,
+ * only after checking the current password.
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class UpdatePanel extends InputPanel
 {
     private JTextField txtConfirmPassword;

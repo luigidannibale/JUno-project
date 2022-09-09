@@ -13,6 +13,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
+/**
+ * Class used to create two {@link ResizablePanel} used to display infos about the {@link View.Elements.ViewCard}. <br>
+ * A small {@link ResizablePanel} with less info is always displayed in the main background. When clicked it switches to the main panel.
+ * The main panel contains more information and adds the management of the profile.
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class ProfilePanel extends ResizablePanel
 {
     public static final String IMAGE_PATH = "resources/images/MainFrame/ProfilePanel/";

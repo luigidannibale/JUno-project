@@ -11,6 +11,11 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
+/**
+ * Class used to create a menu between the {@link StartingMenuPanel} and the {@link GamePanel}, where the user can choose the {@link Controller.GameChoiceController.GameMode}
+ * he wants to play. It also provides infos about the rules of the game mode
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class GameChoicePanel extends ResizablePanel
 {
     private final String pathImages = MainFrame.IMAGE_PATH +"GameChoicePanel/";

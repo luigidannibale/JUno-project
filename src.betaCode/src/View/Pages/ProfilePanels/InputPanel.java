@@ -15,6 +15,10 @@ import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
+/**
+ * Class used to provide the common {@link JComponent}s and method of the profile management {@link InputPanel}s.
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public abstract class InputPanel extends ResizablePanel
 {
     public enum InputMessages
@@ -29,7 +33,6 @@ public abstract class InputPanel extends ResizablePanel
         CONFIRM_PASSWORD("Confirm old password");
         public final String ASSOCIATED_MESSAGE;
         InputMessages(String associatedMessage){this.ASSOCIATED_MESSAGE = associatedMessage;}
-        //public String getMessage(){return associatedMessage;}
     }
 
     public static final String IMAGE_PATH = ProfilePanel.IMAGE_PATH+"UpdatePanel/";

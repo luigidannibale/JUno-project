@@ -6,6 +6,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Arrays;
 
+/**
+ * Class used to provide the default methods and attributes of each {@link Panel} of the game.
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class ResizablePanel extends JPanel
 {
     protected int panelWidth, panelHeight;

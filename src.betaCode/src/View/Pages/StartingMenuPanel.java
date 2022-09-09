@@ -6,7 +6,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
- *
+ * Class used to create the first visible {@link ResizablePanel} on screen.
+ * It lets the user switch between the {@link SettingsPanel}, {@link GameChoicePanel} and the {@link View.Pages.ProfilePanels.ProfilePanel}.
  * @author D'annibale Luigi, Venturini Daniele
  */
 public class StartingMenuPanel extends ResizablePanel

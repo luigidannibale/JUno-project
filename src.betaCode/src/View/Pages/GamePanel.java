@@ -21,6 +21,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * Class used to display the actual game. It is the {@link Observer} of the {@link UnoGameTable}, so that it can be updated after every change in the model.
+ * It provides every method and attributes used for drawing cards, infos and animation.
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class GamePanel extends JPanel implements Observer
 {
     public enum State

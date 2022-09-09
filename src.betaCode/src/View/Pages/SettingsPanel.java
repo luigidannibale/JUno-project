@@ -11,7 +11,8 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 /**
- *
+ * Class used to create the menu where the user can change the settings of the game and the music.
+ * It can be accessible from the {@link StartingMenuPanel} or by clicking ESC on the keyboard.
  * @author D'annibale Luigi, Venturini Daniele
  */
 public class SettingsPanel extends ResizablePanel

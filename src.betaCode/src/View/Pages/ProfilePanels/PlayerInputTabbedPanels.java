@@ -5,6 +5,10 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Custom {@link JTabbedPane} that contains all the {@link InputPanel} needed for the profile management
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class PlayerInputTabbedPanels extends JTabbedPane
 {
     private LoginPanel loginPanel;

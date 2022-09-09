@@ -5,16 +5,30 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Class used to normally draw an {@link ImageComponent} and a gif when hovered.
+ * It specializes the {@link ImageComponent}
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class GifComponent extends ImageComponent
 {
-
     private ImageIcon gif;
 
+    /**
+     * Creates a new {@link GifComponent} from the given path and default size of the gif
+     * @param imagePath
+     */
     public GifComponent(String imagePath)
     {
         this(imagePath,-1,-1);
     }
 
+    /**
+     * Creates a new {@link GifComponent} from the given path and scales the image with the given width and height
+     * @param imagePath
+     * @param width
+     * @param height
+     */
     public GifComponent(String imagePath, int width, int height){
         super(imagePath + ".png", width, height);
 
@@ -36,6 +50,7 @@ public class GifComponent extends ImageComponent
         });
     }
 
+    //needed to scale the image with the scaling percentage
     @Override
     public void setPreferredSize(Dimension preferredSize) {
         super.setPreferredSize(preferredSize);

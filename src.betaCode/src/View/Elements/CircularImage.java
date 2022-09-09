@@ -7,16 +7,34 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * Class used to crop an {@link Image} in a circle.
+ * Primarily used to display the profile picture of the {@link ViewPlayer}
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class CircularImage extends JComponent
 {
     private Image imm;
     private int width;
     private int height;
 
+    /**
+     * Creates a new {@link CircularImage} with the default path and size
+     */
     public CircularImage() { this(Config.DEFAULT_ICON_PATH, 60, 60); }
 
+    /**
+     * Creates a new {@link CircularImage} from the given path and default size
+     * @param path
+     */
     public CircularImage(String path) { this(path, 60, 60); }
 
+    /**
+     * Creates a new {@link CircularImage} from the given path and size
+     * @param path
+     * @param width
+     * @param height
+     */
     public CircularImage(String path, int width, int height)
     {
         this.width = width;
@@ -25,6 +43,10 @@ public class CircularImage extends JComponent
         setCircleImage(path);
     }
 
+    /**
+     * Crops the {@link CircularImage} in a circle and paints the result
+     * @param path the path of the normal image
+     */
     public void setCircleImage(String path)
     {
         BufferedImage master = Utils.getBufferedImage(path);
@@ -57,6 +79,7 @@ public class CircularImage extends JComponent
         repaint();
     }
 
+    //needed to scale the image with the scaling percentage
     @Override
     public void setPreferredSize(Dimension preferredSize)
     {
@@ -68,6 +91,12 @@ public class CircularImage extends JComponent
         repaint();
     }
 
+    /**
+     * Paints the image at the given coordinates
+     * @param g
+     * @param x
+     * @param y
+     */
     public void paintImage(Graphics2D g, int x, int y){
         g.drawImage(imm, x, y, width, height, this);
     }
