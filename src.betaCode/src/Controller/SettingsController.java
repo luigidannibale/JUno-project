@@ -3,6 +3,7 @@ package Controller;
 import Controller.Utilities.AudioManager;
 import Controller.Utilities.Config;
 import View.Elements.*;
+import View.Pages.GameChoicePanel;
 import View.Pages.SettingsPanel;
 import View.Pages.StartingMenuPanel;
 
@@ -11,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
+ * Specialize {@link Controller} on {@link SettingsPanel}.
  * Class used to get the inputs from the user in the {@link SettingsPanel}.
  * It manages the values of the {@link Config} and updates the {@link SettingsPanel} when they are modified.
  * It also initializes the {@link ChangebleIcon} with the icons they need.
@@ -94,12 +96,13 @@ public class SettingsController extends Controller<SettingsPanel>
 
     /**
      * Changes the selected {@link View.Pages.SettingsPanel.DeckRectangle}
-     * @param c the related {@link DeckColor}
+     * @param deckColor the related {@link DeckColor}
      */
-    private void changeDeckBack(DeckColor c) {
-        deckChanges = c;
-        view.getDarkDeck().setPaintBackground( c==DeckColor.BLACK);
-        view.getWhiteDeck().setPaintBackground(c==DeckColor.WHITE);
+    private void changeDeckBack(DeckColor deckColor)
+    {
+        deckChanges = deckColor;
+        view.getDarkDeck().setPaintBackground( deckColor==DeckColor.BLACK);
+        view.getWhiteDeck().setPaintBackground(deckColor==DeckColor.WHITE);
     }
 
     /**

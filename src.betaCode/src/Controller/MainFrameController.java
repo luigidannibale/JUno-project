@@ -6,6 +6,7 @@ import Controller.Utilities.Config;
 import Controller.Utilities.DataAccessManager;
 import View.Elements.CircularImage;
 import View.Elements.ViewPlayer;
+import View.Pages.GameChoicePanel;
 import View.Pages.MainFrame;
 import View.Pages.StartingMenuPanel;
 
@@ -18,6 +19,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
+ * Specialize {@link Controller} on {@link MainFrame}.
  * Class used to manage the communication between all the controllers.
  * It starts the actual game and sets the current visible panel. <br>
  * This class uses the Singleton Pattern because this class is used in every {@link Controller}
@@ -25,6 +27,16 @@ import java.awt.event.WindowEvent;
  */
 public class MainFrameController extends Controller<MainFrame>
 {
+    /**
+     * Panels :
+     * <ul>
+     *     <li>STARTMENU</li>
+     *     <li>SETTINGS</li>
+     *     <li>GAMECHOICE</li>
+     *     <li>PROFILE</li>
+     *     <li>GAME</li>
+     * </ul>
+     */
     public enum Panels
     {
         STARTMENU,
@@ -33,8 +45,8 @@ public class MainFrameController extends Controller<MainFrame>
         PROFILE,
         GAME
     }
-    private static MainFrameController instance;
 
+    private static MainFrameController instance;
     private final String imagesPath = "resources/images/MainFrame/MainframeDesignElements/";
     private StartingMenuController startingMenuController;
     private SettingsController settingsController;
@@ -45,12 +57,12 @@ public class MainFrameController extends Controller<MainFrame>
     private Panels currentPanel;
 
     /**
-     * Returns the static instace of the {@link MainFrameController}. If is null, then the class
-     * is instantiated with all its components.
-     * @return
+     * @return the static instance of the {@link MainFrameController}. If is null, then the class is instantiated with all its components.
      */
-    public static MainFrameController getInstance(){
-        if (instance == null){
+    public static MainFrameController getInstance()
+    {
+        if (instance == null)
+        {
             instance = new MainFrameController();
             instance.initializeMainFrameController();
         }
@@ -186,9 +198,8 @@ public class MainFrameController extends Controller<MainFrame>
     /**
      * Sets the return panel of the {@link SettingsController}
      */
-    public void setSettingsReturnPanel(){
-        if (currentPanel != Panels.SETTINGS) settingsController.setReturnPanel(currentPanel);
-    }
+    public void setSettingsReturnPanel()
+    { if (currentPanel != Panels.SETTINGS) settingsController.setReturnPanel(currentPanel); }
 
     /**
      * Creates a new {@link GamePanelController} with the given {@link Controller.GameChoiceController.GameMode}
@@ -210,7 +221,8 @@ public class MainFrameController extends Controller<MainFrame>
     /**
      * Closes the game and returns the {@link MainFrame} to its previous size
      */
-    public void quitGame(){
+    public void quitGame()
+    {
         gameController.quitGame();
         profileController.getView().update();
         view.getGameBackground().remove(gameController.getView());
@@ -227,20 +239,17 @@ public class MainFrameController extends Controller<MainFrame>
     /**
      * Calls the {@link WindowEvent} Window closing to ask the user if he is sure to close the game
      */
-    public void closeWindow(){
+    public void closeWindow()
+    {
         try //If the parent has a listener that manages the window closing it links that event, if an exception is generated the frame just get closed
         {
             view.dispatchEvent(new WindowEvent(view, WindowEvent.WINDOW_CLOSING));
         }
         catch(Exception ex)
-        {
-            view.dispose();
-        }
+        { view.dispose(); }
     }
 
-    //GETTER
     public ViewPlayer getViewPlayer() { return viewPlayer; }
 
-    //SETTER
     public void setViewPlayer(ViewPlayer viewPlayer) { this.viewPlayer = viewPlayer; }
 }

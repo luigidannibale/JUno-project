@@ -7,13 +7,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * This class acts as the data layer of the application,  <br/>
+ * and provides all the methods to access and store data. <br/>
+ * Works along the {@link PlayerManager}.
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class DataAccessManager
 {
 
     private static final String PLAYER_CONFIG_JSON = "config.json";
     private static final String INIT_JSON = "init.json";
 
-    //Model delegation of data
+    //MODEL DELEGATION OF DATA
     /**
      * Delegates the storing of player (model) data to the model.
      * @return true if the operation is successful, false otherwise.
@@ -36,7 +42,7 @@ public class DataAccessManager
     { return PlayerManager.findPlayerByNicknameOrDefault(name); }
     //------------------------
 
-    //Init data
+    //INITIALIZATION DATA
     /**
      * Stores player personal config as default for next start.
      * @return true if the operation is successful, false otherwise.
@@ -56,7 +62,7 @@ public class DataAccessManager
     }
     //------------------------
 
-    //Config data
+    //CONFIG DATA
     /**
      * Loads stored player config when this logs in.
      * @return true if the operation is successful, false otherwise.
@@ -74,22 +80,29 @@ public class DataAccessManager
         { return false; }
     }
 
-
+    /**
+     * Updates the player config by the old name. <br/>
+     * (The name can remain the same but some values are changed, in that case it's possible to give as oldName the actual name)
+     * @param player
+     * @param oldName
+     * @return true if the operation is successful, false otherwise
+     */
     public boolean updatePlayerConfig(HumanPlayer player, String oldName)
     {
         JsonFileManager fm = new JsonFileManager();
-        try {
+        try
+        {
             ArrayList<HashMap<Object, Object>> fileLines = new ArrayList<>(fm.readJson(PLAYER_CONFIG_JSON).stream().filter(l -> !(((HashMap<Object, Object>) l.get(Config.KEYS.LOGGED_PLAYER.VALUE)).get(PlayerManager.KEYS.NAME.VALUE).toString().equals(oldName))).toList());
             fileLines.add(Config.getPlayerConfig(player));
             return fm.overWriteJson(fileLines, PLAYER_CONFIG_JSON);
-        } catch (Exception e) {
-            return false;
         }
+        catch (Exception e)
+        { return false; }
     }
 
     /**
      * This method saves the player personal config, it sets it as default config for next start.
-     * @return
+     * @return true if the operation is successful, false otherwise
      */
     public boolean saveProfile(HumanPlayer player)
     {
@@ -97,6 +110,14 @@ public class DataAccessManager
         return savePlayerConfig(player) && saveInit(player);
     }
 
+    /**
+     * Updates the player config and his profile by the old name, and old password. <br/>
+     *(The name can remain the same but some values are changed, in that case it's possible to give as oldName the actual name)
+     * @param player
+     * @param oldName
+     * @param oldPassword
+     * @return true if the operation is successful, false otherwise
+     */
     public boolean updateProfile(HumanPlayer player, String oldName, String oldPassword)
     {
         if (player.getName().equals("default")) return false;
@@ -129,9 +150,9 @@ public class DataAccessManager
     }
 
     /**
-     * Assigns the data (player stats are retrieved using Model methods) to config, if something goes wrong throws exception.
+     * Assigns the data (player stats are retrieved using Model methods) to config
      * @param data
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     private void loadConfig(HashMap<Object, Object> data) throws Exception
     {

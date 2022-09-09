@@ -11,8 +11,21 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 
+/**
+ * Specialize {@link Controller} on {@link GameChoicePanel}.
+ * Class used to get the inputs from the user in the {@link GameChoicePanel}.
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class GameChoiceController extends Controller<GameChoicePanel>
 {
+    /**
+     * The selectable game-modes:
+     * <ul>
+     *     <li>CLASSIC_RULES</li>
+     *     <li>MEME_RULES</li>
+     *     <li>SEVENO_RULES</li>
+     * </ul>
+     */
     public enum GameMode
     {
         CLASSIC_RULES,
@@ -20,6 +33,9 @@ public class GameChoiceController extends Controller<GameChoicePanel>
         SEVENO_RULES
     }
 
+    /**
+     * Creates an associated view ({@link GameChoicePanel}), updating the displayed values and adding the listeners.
+     */
     public GameChoiceController()
     {
         super(new GameChoicePanel());
@@ -70,6 +86,11 @@ public class GameChoiceController extends Controller<GameChoicePanel>
         });
     }
 
+    /**
+     * Interacts with the {@link MainFrameController} delegating him to create a new game, <br/>
+     * as the user choice it in this associated view.
+     * @param gameMode
+     */
     private void createNewGame(GameMode gameMode)
     {
         AudioManager.getInstance().setFolder(gameMode.name());

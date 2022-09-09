@@ -1,11 +1,13 @@
 package Controller;
 
 import View.Elements.CustomMouseAdapter;
+import View.Pages.GameChoicePanel;
 import View.Pages.StartingMenuPanel;
 
 import java.awt.event.MouseEvent;
 
 /**
+ * Specialize {@link Controller} on {@link StartingMenuPanel}.
  * Class used to get the inputs from the user in the {@link StartingMenuPanel}.
  * It lets the user navigate between the {@link View.Pages.SettingsPanel} and the {@link View.Pages.GameChoicePanel}
  * @author D'annibale Luigi, Venturini Daniele

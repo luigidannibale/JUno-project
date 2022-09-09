@@ -10,14 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Class used to read and write on files
- * <h6>For JSON management provides:</h6>
+ * Class used to read and write on files. <br/>
+ *
+ * <h3>For JSON management provides:</h3>
  * <ul>
  *      <li>wirteJson</li>
  *      <li>readJson</li>
  * </ul>
- *
- *
  * @author D'annibale Luigi, Venturini Daniele
  */
 public class JsonFileManager
@@ -27,7 +26,7 @@ public class JsonFileManager
      *
      * @param file
      * @return the read data
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public ArrayList<HashMap<Object,Object>>  readJson(String file) throws Exception
     {
@@ -58,7 +57,7 @@ public class JsonFileManager
      * @param datas
      * @param file
      * @return true if the operation is successful, false otherwise
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public boolean writeJson(List<HashMap<Object,Object>> datas, String file) throws Exception
     {
@@ -112,10 +111,9 @@ public class JsonFileManager
     }
 
     /**
-     * Reads a {@link JSONArray} from a file.
      * @param file
-     * @return
-     * @throws Exception
+     * @return the {@link JSONArray} read from file
+     * @throws Exception if anything goes wrong
      */
     private JSONArray read(String file) throws Exception
     {

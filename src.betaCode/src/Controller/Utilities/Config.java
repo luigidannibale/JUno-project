@@ -119,9 +119,8 @@ public class Config
     public static void  refreshScalingPercentage() { scalingPercentage = Toolkit.getDefaultToolkit().getScreenSize().getWidth()/1920; }
 
     /**
-     * Represent into a {@link HashMap} the {@link Model.Players.Player} and his settings
      * @param player
-     * @return an {@link HashMap}
+     * @return an {@link HashMap} representation of the players personal {@link Config} that uses {@link KEYS}.VALUE as keys
      */
     public static HashMap<Object, Object> getPlayerConfig(HumanPlayer player)
     {
@@ -131,6 +130,15 @@ public class Config
         }};
     }
 
+    /**
+     *
+     * @param effectsVolume
+     * @param musicVolume
+     * @param deckStyle
+     * @param graphicQuality
+     * @param savedIconPath
+     * @return an {@link HashMap} representation of the given values that uses {@link KEYS}.VALUE as keys
+     */
     private static HashMap<Object, Object> getHashMap(int effectsVolume, int musicVolume, DeckColor deckStyle, GraphicQuality graphicQuality, String savedIconPath) {
         return new HashMap<>(){{
             put(KEYS.EFFECTS_VOLUME.VALUE, effectsVolume);
@@ -141,6 +149,20 @@ public class Config
         }};
     }
 
+    /**
+     * @param config
+     * Sets the stats basing on a given {@link HashMap} that uses {@link KEYS}.VALUE as keys. <br/>
+     * The expected attributes are:
+     * <ul>
+     *     <li>EFFECTS_VOLUME</li>
+     *     <li>MUSIC_VOLUME</li>
+     *     <li>GRAPHIC_QUALITY</li>
+     *     <li>DECK_STYLE</li>
+     *     <li>SAVED_ICON_PATH</li>
+     * </ul>
+     * @see KEYS
+     * @throws Exception if it doesn't find any attribute throws
+     */
     public static void setHashMap(HashMap<Object, Object> config) throws Exception
     {
         Object effectsVolume = config.get(KEYS.EFFECTS_VOLUME.VALUE),
@@ -162,12 +184,49 @@ public class Config
         Config.savedIconPath  =  (String) savedIconPath;
     }
 
+    /**
+     * Default settings values:
+     *  <table>
+     *     <tr>
+     *         <th>Value</th>
+     *         <th>default value associated</th>
+     *     </tr>
+     *     <tr>
+     *         <td>"effectsVolume"</td>
+     *         <td>50</td>
+     *     </tr>
+     *     <tr>
+     *         <td>"musicVolume"</td>
+     *         <td>50</td>
+     *     </tr>
+     *     <tr>
+     *         <td>"deckStyle"</td>
+     *         <td>DeckColor.WHITE</td>
+     *     </tr>
+     *     <tr>
+     *         <td>"graphicQuality"</td>
+     *         <td>GraphicQuality.LOW</td>
+     *     </tr>
+     *     <tr>
+     *         <td>"savedIconPath"</td>
+     *         <td>DEFAULT_ICON_PATH</td>
+     *     </tr>
+     *  </table>
+     * @return the {@link HashMap} representation, that uses {@link KEYS}.VALUE as keys
+     */
     public static HashMap<Object, Object> getDefaultSettings()
     { return getHashMap(50, 50, DeckColor.WHITE, GraphicQuality.LOW,DEFAULT_ICON_PATH); }
 
+    /**
+     * @return the {@link HashMap} representation of the actual settings, that uses {@link KEYS}.VALUE as keys
+     */
     public static HashMap<Object, Object> getSettings()
     { return getHashMap(effectsVolume,musicVolume,deckStyle,graphicQuality,savedIconPath); }
 
+    /**
+     * Delegates the storing of the actual {@link Config} into the database.
+     * @see DataAccessManager
+     */
     public static void storeConfig()
     {
         var DAM = new DataAccessManager();

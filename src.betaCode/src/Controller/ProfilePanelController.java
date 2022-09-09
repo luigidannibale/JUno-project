@@ -8,6 +8,7 @@ import View.Elements.ChangebleIcon;
 import View.Elements.CircularImage;
 import View.Elements.CustomMouseAdapter;
 import View.Elements.ViewPlayer;
+import View.Pages.GameChoicePanel;
 import View.Pages.ProfilePanels.*;
 import View.Pages.SettingsPanel;
 import View.Pages.StartingMenuPanel;
@@ -22,6 +23,7 @@ import java.util.Map;
 import java.util.Random;
 
 /**
+ * Specialize {@link Controller} on {@link View.Pages.MainFrame}.
  * Class used to get the inputs from the user in the {@link ProfilePanel}.
  * It contains all the methods related to the profile management.
  * When closed sets visible the caller panel, {@link View.Pages.StartingMenuPanel} or {@link View.Pages.GameChoicePanel}
@@ -232,9 +234,6 @@ public class ProfilePanelController extends Controller<ProfilePanel>
         if (DAM.saveProfile(player)) MainFrameController.getInstance().setViewPlayer(new ViewPlayer(player, new CircularImage(Config.savedIconPath)));
     }
 
-    //GETTER
-    public JPanel getSmallPanel(){ return view.getSmallPanel(); }
-
     /**
      * If the parameter is true the main panel is displayed, the small one otherwise
      * @param visible
@@ -253,5 +252,10 @@ public class ProfilePanelController extends Controller<ProfilePanel>
      * @param returnPanel
      */
     public void setReturnPanel(MainFrameController.Panels returnPanel)
-    { if (returnPanel != MainFrameController.Panels.PROFILE && returnPanel != MainFrameController.Panels.SETTINGS) this.returnPanel = returnPanel; }
+    {
+        if (returnPanel != MainFrameController.Panels.PROFILE && returnPanel != MainFrameController.Panels.SETTINGS)
+            this.returnPanel = returnPanel;
+    }
+
+    public JPanel getSmallPanel(){ return view.getSmallPanel(); }
 }

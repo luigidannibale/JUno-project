@@ -5,6 +5,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.function.Function;
 
+/**
+ * Class used to manage all the audio usages, playing and stopping clips, setting volumes.
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class AudioManager
 {
     /**
@@ -54,7 +58,6 @@ public class AudioManager
         BLUE;
     }
 
-
     /**
      * Background music
      * <ul>
@@ -73,6 +76,19 @@ public class AudioManager
     private final String pathAudio = "resources/audio/";
     private Clip audioTrack;
     private Clip effectsTrack;
+
+    /**
+     * The range of values available for the {@link FloatControl} volume goes from -80 to 6.
+     * Under -50 the volume is almost mute so we convert the volume from 0 to 100 to the corresponding from -50 to 6.
+     * If the volume is 0, then -80 is returned.
+     */
+    private Function<Integer,Float> convert = v -> v == -0 ? -80 : (v * 50 / 100.0f) - 44;
+
+    /**
+     * Private constructor because only one instance of {@link AudioManager} can be instantiated
+     */
+    private AudioManager() {}
+
     /**
      * If the static instance is null, it initializes the instance of {@link AudioManager}, otherwise it returns the static instance
      * @return the static unique instance of AudioManager
@@ -83,11 +99,6 @@ public class AudioManager
             instance = new AudioManager();
         return instance;
     }
-
-    /**
-     * Private constructor because only one instance of {@link AudioManager} can be instantiated
-     */
-    private AudioManager() { }
 
     /**
      * Sets the gamemode specific folder
@@ -183,10 +194,4 @@ public class AudioManager
     public void setVolume(int value)
     { if(audioTrack != null) ((FloatControl) audioTrack.getControl(FloatControl.Type.MASTER_GAIN)).setValue(convert.apply(value)); }
 
-    /**
-     * The range of values available for the {@link FloatControl} volume goes from -80 to 6.
-     * Under -50 the volume is almost mute so we convert the volume from 0 to 100 to the corresponding from -50 to 6.
-     * If the volume is 0, then -80 is returned.
-     */
-    private Function<Integer,Float> convert = v -> v == -0 ? -80 : (v * 50 / 100.0f) - 44;
 }

@@ -4,28 +4,70 @@ import Model.Cards.*;
 import Model.DeckManager;
 import Model.Players.*;
 import Model.TurnManager;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This class is used to model the possible rules a Uno game, more specifically the aspects the various game-modes can change. <br/>
+ * The main aspects to define to be well-designed Uno rules are :
+ * <table>
+ *     <tr>
+ *         <th>Setup</th>
+ *     </tr>
+ *     <tr>
+ *          <td>-the number of cards that can be played in a single turn</td>
+ *     </tr>
+ *     <tr>
+ *          <td>-the number of cards distributed to each player at the start </td>
+ *     </tr>
+ *     <tr>
+ *          <td>-the cards with which a deck is composed by</td>
+ *     </tr>
+ *      <tr>
+ *         <th>In game</th>
+ *     </tr>
+ *     <tr>
+ *          <td>-card playability</td>
+ *     </tr>
+ *     <tr>
+ *          <td>-game win condition</td>
+ *     </tr>
+ *     <tr>
+ *          <td>-card actions performances</td>
+ *     </tr>
+ *     <tr>
+ *          <td>-point scoring</td>
+ *     </tr>
+ * </table>
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public abstract class UnoGameRules
 {
     public static final int WIN_POINTS_THRESHOLD = 500;
+
     /**
      * @see DeckManager
      */
     protected final HashMap<Value, Integer> cardsDistribution;
+
     /**
      * How many cards can be played in a single turn,<br/>
      * to play more than a card in a single turn cards must be the same value.
      */
     protected final int numberOfPlayableCards;
+
     /**
      * How many cards are distributed to each player at the start of the game.
      */
     protected final int numberOfCardsPerPlayer;
 
+    /**
+     * Creates a {@link UnoGameRules}
+     * @param numberOfCardsPerPlayer
+     * @param numberOfPlayableCards
+     * @param cardsDistribution
+     */
     protected UnoGameRules(int numberOfCardsPerPlayer, int numberOfPlayableCards, HashMap<Value, Integer> cardsDistribution)
     {
         this.numberOfCardsPerPlayer = numberOfCardsPerPlayer;
@@ -33,8 +75,19 @@ public abstract class UnoGameRules
         this.cardsDistribution = cardsDistribution;
     }
 
-    public boolean checkGameWin(Player current){ return current.getHand().size() == 0; }
+    /**
+     * Checks the win of a single game
+     * @param currentPlayer
+     * @return true if the currentPlayer won, false otherwise
+     */
+    public boolean checkGameWin(Player currentPlayer){ return currentPlayer.getHand().size() == 0; }
 
+    /**
+     * Checks the win of an entire match
+     * @param players
+     * @param player
+     * @return true if the player won the entire match, false otherwise
+     */
     public boolean checkWin(Player[] players, Player player)
     {
         boolean win = player.getPoints() + countPoints(players,player) >= WIN_POINTS_THRESHOLD;
@@ -56,18 +109,26 @@ public abstract class UnoGameRules
         return win;
     }
 
+    /**
+     * @return if cards are stackable i.e. a {@link Player} can play more than a {@link Card} in a single turn.
+     */
+    public boolean isStackableCards() { return numberOfPlayableCards > 1; }
+
     public int getNumberOfCardsPerPlayer() { return numberOfCardsPerPlayer; }
 
     public HashMap<Value, Integer> getCardsDistribution() { return cardsDistribution; }
 
-    public boolean isStackableCards() { return numberOfPlayableCards > 1; }
-
     public int getNumberOfPlayableCards() { return numberOfPlayableCards; }
 
+    /**
+     * How the first card must be performed is delegated to inheritors.
+     * @param parameters
+     * @return the {@link ActionPerformResult} of the first card
+     */
     public abstract ActionPerformResult performFirstCardAction(Options parameters);
 
     /**
-     * The playability is defined in the rules for each game mode
+     * The playability must be defined in the rules for each game mode
      * @param playerHand
      * @param discardsPick
      * @return all the playable {@link Card} cards in the hand
@@ -109,7 +170,7 @@ public abstract class UnoGameRules
     }
 
     /**
-     * Perform the wild action
+     * Perform the classic wild action
      * @param parameters needs a color in parameters
      * @return the {@link ActionPerformResult} of the operation, if no color has been provided returns NO_COLOR_PROVIDED
      * @see WildAction
@@ -129,7 +190,7 @@ public abstract class UnoGameRules
     }
 
     /**
-     * Perform the draw action
+     * Perform the classic draw action
      * @param parameters
      * @return the {@link ActionPerformResult} of the operation
      * @see DrawCard
@@ -141,7 +202,7 @@ public abstract class UnoGameRules
     }
 
     /**
-     * Perform the reverse action
+     * Perform the classic reverse action
      * @return the {@link ActionPerformResult} of the operation
      * @see ReverseCard
      */
@@ -152,7 +213,7 @@ public abstract class UnoGameRules
     }
 
     /**
-     * Performs the skip action
+     * Performs the classic skip action
      * @param turnManager
      * @param players
      * @param playerToBlock
@@ -169,7 +230,7 @@ public abstract class UnoGameRules
      *
      * @param players
      * @param winner
-     * @return
+     * @return the points of the winner
      */
     public int countPoints(Player[] players, Player winner)
     {

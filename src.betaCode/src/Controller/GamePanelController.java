@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 /**
+ * Specialize {@link Controller} on {@link GamePanel}.
  * Class used to get the inputs in the {@link GamePanel} and to update the {@link UnoGameTable} with the changes made by the user.
  * It manages the player's turn and the {@link Animation}s to be called in the view
  */
