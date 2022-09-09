@@ -114,11 +114,13 @@ public class GamePanelController extends Controller<GamePanel>
     private boolean playersTurn() { return view.getCurrentState() == GamePanel.State.PLAYER_TURN; }
 
     /**
-     * Based on the click coordinates on the view, it checks if user: <br>
-     * - has to say UNO <br>
-     * - is exposing another player <br>
-     * - has skipped turn <br>
-     * - has drawn a card
+     * Based on the click coordinates on the view, it checks if user has clicked on: <br>
+     * - UNO <br>
+     * - another player if exposable <br>
+     * - continue or exit game <br>
+     * - a card to draw <br>
+     * - a card to play <br>
+     * - skip turn <br>
      * @param e
      */
     private void viewPlayerClick(MouseEvent e)
@@ -145,14 +147,28 @@ public class GamePanelController extends Controller<GamePanel>
             skipTurnBranch(humanPlayer.getPlayer());
     }
 
+    /**
+     * If the current {@link Player} can skip and the drawing animation is finished, then it skips turn
+     * @param currentPlayer
+     */
     private void skipTurnBranch(Player currentPlayer) { if(currentPlayer.hasDrew() && hasFinishedDrawing) gameTable.passTurn(); }
 
+    /**
+     * The current {@link Player} shouts UNO and the starts the related {@link View.Animations.TextAnimation}
+     * @param currentPlayer
+     */
     private void shoutUnoBranch(Player currentPlayer)
     {
         currentPlayer.shoutUno();
         view.shoutUnoAnimation(currentPlayer);
     }
 
+    /**
+     * If the {@link View.Animations.TextAnimation} it immediately returns.
+     * Otherwise, check if the clicked player didn't say one and expose him if true, starting the related {@link View.Animations.TextAnimation}
+     * @param viewPlayers
+     * @param mouseClickPosition
+     */
     private void exposeBranch(ViewPlayer[] viewPlayers, Point mouseClickPosition)
     {
         if (view.animationRunning(exposeAnimation)) return;
@@ -170,6 +186,10 @@ public class GamePanelController extends Controller<GamePanel>
         }
     }
 
+    /**
+     * Checks if the user clicked on the continue or exit button, and does the related action
+     * @param p
+     */
     private void continueBranch(Point p)
     {
         if (view.getContinuePosition().contains(p))
@@ -181,9 +201,19 @@ public class GamePanelController extends Controller<GamePanel>
         }
     }
 
+    /**
+     * Checks if the given {@link ViewPlayer} and then calls the draw method if true
+     * @param currentViewPlayer
+     */
     private void drawCardBranch(ViewPlayer currentViewPlayer)
     { if (!currentViewPlayer.getPlayer().hasDrew()) drawOutCard(currentViewPlayer); }
 
+    /**
+     * Checks if the clicked {@link ViewRotatableCard} is playable. <br>
+     * If true the card is played and its action is called (only if the {@link Player} didn't win).
+     * Otherwise, an error sound is played.
+     * @param card
+     */
     private void playCardBranch(ViewRotatableCard card)
     {
         if (!gameTable.getCurrentPlayerPLayableCards().contains(card.getCard()))
@@ -202,10 +232,15 @@ public class GamePanelController extends Controller<GamePanel>
         },"playing card").start();
     }
 
+    /**
+     * Tries to do the action related to the card with the given {@link Options}. <br>
+     * If other parameters are needed, they are asked to the user and then tries again to perform the card action;
+     * @param parameters
+     */
     private void tryCardActionPerformance(Options.OptionsBuilder parameters)
     {
-        ActionPerformResult a = gameTable.cardActionPerformance(parameters.build());
-        switch (a)
+        ActionPerformResult actionPerformResult = gameTable.cardActionPerformance(parameters.build());
+        switch (actionPerformResult)
         {
             case NO_COLOR_PROVIDED -> parameters.color(view.choseColorByUser());
             case NO_PLAYER_PROVIDED -> parameters.playerToSwapCards(view.chosePlayerToSwap());
@@ -214,6 +249,11 @@ public class GamePanelController extends Controller<GamePanel>
         tryCardActionPerformance(parameters);
     }
 
+    /**
+     * Starts the {@link View.Animations.FlippingAnimation} of the {@link View.Elements.ViewCard} on top of the deck.
+     * When it ends, draw card {@link View.Animations.MovingAnimation} is started
+     * @param currentViewPlayer the current player
+     */
     private void drawOutCard(ViewPlayer currentViewPlayer)
     {
         currentViewPlayer.getPlayer().setDrew(true);
