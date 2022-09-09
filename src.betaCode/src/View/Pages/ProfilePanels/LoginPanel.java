@@ -1,4 +1,4 @@
-package View.Pages.ProfileManagement;
+package View.Pages.ProfilePanels;
 
 import java.awt.*;
 

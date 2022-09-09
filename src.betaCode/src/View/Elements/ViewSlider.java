@@ -28,7 +28,8 @@ public class ViewSlider extends JProgressBar
      * Method used to make the {@link ViewSlider} clickable, changing its value based on where it has been clicked.
      * Used to change volume.
      */
-    public void addMouseListener(){
+    public void addDefaultMouseListener()
+    {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {

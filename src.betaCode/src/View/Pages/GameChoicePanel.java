@@ -38,7 +38,7 @@ public class GameChoicePanel extends ResizablePanel
         setLayout(new GridBagLayout());
         setOpaque(false);
         setVisible(false);
-        InitializeComponents();
+        initializeComponents();
         resizeComponents();
 
         infosWidth *= Config.scalingPercentage;
@@ -48,7 +48,7 @@ public class GameChoicePanel extends ResizablePanel
     /**
      * Initializes and adds the components of the {@link GameChoicePanel}
      */
-    private void InitializeComponents()
+    private void initializeComponents()
     {
         title = new ImageComponent(pathImages + "choose gamemode.png");
 

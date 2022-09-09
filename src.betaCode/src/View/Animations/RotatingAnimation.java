@@ -34,7 +34,7 @@ public class RotatingAnimation extends Animation
 
     private String path;
 
-    BufferedImage image;
+    private BufferedImage image;
 
     /**
      * Creates a new {@link RotatingAnimation} with the path of the image to draw at the given x and y.

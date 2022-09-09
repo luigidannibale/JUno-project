@@ -92,7 +92,7 @@ public class MainFrame extends JFrame
     }
 
     /**
-     * Adds the {@link View.Pages.ProfileManagement.ProfilePanel} at the main panel
+     * Adds the {@link View.Pages.ProfilePanels.ProfilePanel} at the main panel
      * @param pp the Profile Panel
      */
     public void addProfilePanel(JPanel pp)

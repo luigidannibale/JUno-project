@@ -10,8 +10,7 @@ import java.awt.event.MouseEvent;
 
 public class ImageComponent extends JLabel
 {
-    protected ImageIcon icona;
-
+    protected ImageIcon icon;
     private int scaleX = 15;
     private int scaleY = 5;
 
@@ -22,12 +21,12 @@ public class ImageComponent extends JLabel
 
     public ImageComponent(String imagePath, int width, int height)
     {
-        icona = new ImageIcon(imagePath);
-        setSize(icona.getIconWidth(), icona.getIconHeight());
+        icon = new ImageIcon(imagePath);
+        setSize(icon.getIconWidth(), icon.getIconHeight());
         if (width <= 0 && height <= 0)
         {
-            width = icona.getIconWidth();
-            height = icona.getIconHeight();
+            width = icon.getIconWidth();
+            height = icon.getIconHeight();
         }
         if (height == 0 || width == 0)
             System.out.println(imagePath);
@@ -54,7 +53,7 @@ public class ImageComponent extends JLabel
             @Override
             public void mouseExited(MouseEvent e) {
                 //setSmallerIcon();
-                setIcon(icona);
+                setIcon(icon);
             }});
     };
 
@@ -62,8 +61,8 @@ public class ImageComponent extends JLabel
     public void setPreferredSize(Dimension preferredSize)
     {
         super.setPreferredSize(preferredSize);
-        icona = ScaleImage(icona);
-        setIcon(icona);
+        icon = ScaleImage(icon);
+        setIcon(icon);
         repaint();
     }
 

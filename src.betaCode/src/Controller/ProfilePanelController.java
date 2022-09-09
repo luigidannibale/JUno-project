@@ -7,7 +7,7 @@ import Controller.Utilities.DataAccessManager;
 import View.Elements.CircularImage;
 import View.Elements.CustomMouseAdapter;
 import View.Elements.ViewPlayer;
-import View.Pages.ProfileManagement.*;
+import View.Pages.ProfilePanels.*;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -200,8 +200,8 @@ public class ProfilePanelController extends Controller<ProfilePanel>
     {
         view.setVisible(visible);
         view.getSmallPanel().setVisible(!visible);
-        if (visible) view.InitializeMainPanel();
-        else view.InitializeSmallPanel();
+        if (visible) view.initializeMainPanel();
+        else view.initializeSmallPanel();
     }
 
     public void setReturnPanel(MainFrameController.Panels returnPanel)

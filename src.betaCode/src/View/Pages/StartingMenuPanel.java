@@ -33,14 +33,14 @@ public class StartingMenuPanel extends ResizablePanel
         setName("Starting menu panel");
         setLayout(new BorderLayout());
         setOpaque(false);
-        InitializeComponents();
+        initializeComponents();
         resizeComponents();
     }
 
     /**
      * Initializes and adds the components of the {@link StartingMenuPanel}
      */
-    private void InitializeComponents()
+    private void initializeComponents()
     {
         //IMAGES
         startGameLabel = new ImageComponent(pathImages + "Startgame.png");

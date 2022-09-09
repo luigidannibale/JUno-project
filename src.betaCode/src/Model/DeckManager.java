@@ -38,7 +38,8 @@ public class DeckManager
      *     </li>
      * </ul>
      * */
-    public static final HashMap<Value,Integer> CLASSIC_RULES_CARD_DISTRIBUTION = new HashMap<>(){
+    public static final HashMap<Value,Integer> CLASSIC_RULES_CARD_DISTRIBUTION = new HashMap<>()
+    {
         {
             put(Value.ZERO,1);
             put(Value.ONE,2);
@@ -58,7 +59,7 @@ public class DeckManager
         }};
 
     /**
-     * Creates a deck with classic Uno cards distribution
+     * Creates a {@link DeckManager} with a deck with classic Uno cards distribution
      * */
     public DeckManager() { this(CLASSIC_RULES_CARD_DISTRIBUTION); }
 
@@ -87,11 +88,10 @@ public class DeckManager
      */
     private void createDeck(HashMap<Value,Integer> cardsDistribution)
     {
-        //adds the wild cards
         Arrays.stream(Color.values()).forEach(color ->
         {
             if (color == Color.WILD)
-            {
+            {//adds the wild cards
                 addManyCards(color, Value.WILD, cardsDistribution.get(Value.WILD));
                 addManyCards(color, Value.WILD_DRAW, cardsDistribution.get(Value.WILD_DRAW));
             }
@@ -100,6 +100,7 @@ public class DeckManager
                 Arrays.stream(Value.values()).filter(cardValue -> !(cardValue == Value.WILD || cardValue == Value.WILD_DRAW)).toList().forEach(value -> addManyCards(color, value, cardsDistribution.get(value)));
         });
     }
+
     /**
      *
      * Actually adds more instances of a card to the deck
@@ -112,15 +113,17 @@ public class DeckManager
         for (int howMany = numberOfCards; howMany > 0; howMany--)
             deck.add(CardFactory.createCard(color, value));
     }
+
     /**
-     * Pops the first card on the deck
-     * @return Card : the {@link Card} drawed out
+     * Pops the first card of the deck
+     * @return Card : the {@link Card} drawn out
      */
     public Card draw()
     {
         if (deck.size() == 0) re_shuffle();
         return deck.pop();
     }
+
     /**
      * Pops the first cards on the deck: <br/>
      * the number of cards to pop is specified as param.
@@ -138,6 +141,10 @@ public class DeckManager
         return drawn;
     }
 
+    /**
+     *
+     * @return the deck
+     */
     public Stack<Card> getDeck() { return deck; }
 
     /**
@@ -146,7 +153,7 @@ public class DeckManager
     public int size() { return deck.size(); }
 
     /**
-     * @return {@link Card} the peek of the deck
+     * @return the {@link Card} on top of the deck
      */
     public Card peekDeck() { return deck.peek(); }
 
@@ -156,7 +163,7 @@ public class DeckManager
     public void shuffle() { Collections.shuffle(deck); }
 
     /**
-     * Builds the deck from the discards stack, <br/>
+     * Builds the deck from the discards {@link Stack}, <br/>
      * this method should be called when the deck goes out of bounds.
      */
     private void re_shuffle()
@@ -168,8 +175,15 @@ public class DeckManager
         shuffle();
     }
 
+    /**
+     * Puts a {@link Card} on top on discards {@link Stack}
+     * @param card
+     */
     public void pushDiscards(Card card) { discards.push(card); }
 
+    /**
+     * @return the {@link Card} on top of the discards {@link Stack}
+     */
     public Card peekDiscards() { return discards.peek(); }
 
 }

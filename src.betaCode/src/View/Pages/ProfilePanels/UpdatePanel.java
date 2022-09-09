@@ -1,4 +1,4 @@
-package View.Pages.ProfileManagement;
+package View.Pages.ProfilePanels;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class UpdatePanel extends InputPanel
 {
-    JTextField txtConfirmPassword;
+    private JTextField txtConfirmPassword;
 
     /**
      * Instantiate the {@link UpdatePanel} with the given back color and border color
@@ -28,8 +28,8 @@ public class UpdatePanel extends InputPanel
         txtConfirmPassword.setBorder(new EmptyBorder(0,0,0,0));
         txtConfirmPassword.setPreferredSize(new Dimension(300,40));
         txtConfirmPassword.setFont(new Font(getFont().getFontName(),getFont().getStyle(),25));
-        txtConfirmPassword.setText(InputMessages.CONFIRM_PASSWORD.getMessage());
-        txtConfirmPassword.setToolTipText(InputMessages.CONFIRM_PASSWORD.getMessage());
+        txtConfirmPassword.setText(InputMessages.CONFIRM_PASSWORD.ASSOCIATED_MESSAGE);
+        txtConfirmPassword.setToolTipText(InputMessages.CONFIRM_PASSWORD.ASSOCIATED_MESSAGE);
         txtConfirmPassword.setHorizontalAlignment(JTextField.CENTER);
 
         txtConfirmPassword.addFocusListener(onClickCancelTextFocusListener());

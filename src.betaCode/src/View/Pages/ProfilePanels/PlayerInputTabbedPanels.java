@@ -1,4 +1,4 @@
-package View.Pages.ProfileManagement;
+package View.Pages.ProfilePanels;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,9 +7,9 @@ import java.util.List;
 
 public class PlayerInputTabbedPanels extends JTabbedPane
 {
-    LoginPanel loginPanel;
-    RegistrationPanel registrationPanel;
-    UpdatePanel updatePanel;
+    private LoginPanel loginPanel;
+    private RegistrationPanel registrationPanel;
+    private UpdatePanel updatePanel;
 
     /**
      * Initialize the {@link PlayerInputTabbedPanels} and the {@link InputPanel}s with the given back color and border color

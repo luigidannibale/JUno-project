@@ -11,12 +11,11 @@ import java.awt.*;
  */
 public class FlippingAnimation extends CardAnimation
 {
-    int x;
-    int y;
-    int increase = 3;
-
-    ViewCard card;
-    Rectangle position;
+    private int x;
+    private int y;
+    private int increase = 3;
+    private ViewCard card;
+    private Rectangle position;
 
     /**
      * Creates a new {@link FlippingAnimation} with the given {@link ViewCard} to draw and the Deck {@link Rectangle} position

@@ -1,5 +1,7 @@
 package View;
 
+import org.jetbrains.annotations.Nullable;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +56,9 @@ public class Utils
 
     public static Image getImage(String path)  { return new ImageIcon(path).getImage(); }
 
-    public static BufferedImage getBufferedImage(String path){
+
+    public static BufferedImage getBufferedImage(String path)
+    {
         try
         {
             return ImageIO.read(new File(path));

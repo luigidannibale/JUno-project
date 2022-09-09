@@ -85,14 +85,14 @@ public class GamePanel extends JPanel implements Observer
 
     //LADDER
     private List<Player> ladder;
-    final AlphaComposite transparent = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f);
-    int ladderWidth = (int) (550 * Config.scalingPercentage);
-    int ladderHeight = (int) (700 * Config.scalingPercentage);
-    int ladderX;
-    int ladderY;
-    int ladderThickness = 5;
-    BasicStroke a = new BasicStroke(ladderThickness);
-    String continueString = "CONTINUE";
+    private final AlphaComposite transparent = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f);
+    private int ladderWidth = (int) (550 * Config.scalingPercentage);
+    private int ladderHeight = (int) (700 * Config.scalingPercentage);
+    private int ladderX;
+    private int ladderY;
+    private  int ladderThickness = 5;
+    private BasicStroke a = new BasicStroke(ladderThickness);
+    private String continueString = "CONTINUE";
 
     /**
      * Creates the {@link GamePanel} with the {@link ViewPlayer}s of the game.
@@ -106,7 +106,7 @@ public class GamePanel extends JPanel implements Observer
         setDoubleBuffered(true);
         //debug
         setBackground(java.awt.Color.GREEN);
-        InitializeComponents();
+        initializeComponents();
 
         ViewCard.height = (int) (180 * Config.scalingPercentage);
         ViewCard.width = (int) (120 * Config.scalingPercentage);
@@ -141,7 +141,7 @@ public class GamePanel extends JPanel implements Observer
     /**
      * Initialize the main components of the panel
      */
-    private void InitializeComponents()
+    private void initializeComponents()
     {
         deck = new ViewCard();
         discard = new ViewCard();
@@ -340,7 +340,7 @@ public class GamePanel extends JPanel implements Observer
      * It does everything about the game turn, from shouting uno to playing
      * @param gameTable needed to call methods in the model
      */
-    public void asyncAITurn(UnoGameTable gameTable)
+    private void asyncAITurn(UnoGameTable gameTable)
     {
         aiRunning = true;
         aiThread = new Thread(() ->

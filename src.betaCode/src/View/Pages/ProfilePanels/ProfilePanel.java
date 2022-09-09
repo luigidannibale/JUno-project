@@ -1,4 +1,4 @@
-package View.Pages.ProfileManagement;
+package View.Pages.ProfilePanels;
 
 import Controller.MainFrameController;
 import Controller.Utilities.Config;
@@ -57,14 +57,14 @@ public class ProfilePanel extends ResizablePanel
         smallPanel.setOpaque(false);
         smallPanel.setLayout(new GridBagLayout());
 
-        InitializedComponents();
+        initializedComponents();
     }
 
     /**
      * Initializes and adds the components of the {@link ProfilePanel}, updated with the logged player.
      * Then it initializes the main profile panel, and it resizes all components based on the scaling percentage
      */
-    private void InitializedComponents()
+    private void initializedComponents()
     {
         setName("ProfilePanel");
         lblName = new JLabel();
@@ -101,7 +101,7 @@ public class ProfilePanel extends ResizablePanel
         update();
         playerInputTabbedPanel = new PlayerInputTabbedPanels(backColor,borderColor);
 
-        InitializeMainPanel();
+        initializeMainPanel();
         resizeComponents();
     }
 
@@ -125,7 +125,7 @@ public class ProfilePanel extends ResizablePanel
     /**
      * Removes the components from the main profile panel and adds them to the small profile panel
      */
-    public void InitializeSmallPanel()
+    public void initializeSmallPanel()
     {
         removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -187,7 +187,7 @@ public class ProfilePanel extends ResizablePanel
     /**
      * Removes the components from the small profile panell and adds them to the main profile panel
      */
-    public void InitializeMainPanel()
+    public void initializeMainPanel()
     {
         smallPanel.removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -313,7 +313,7 @@ public class ProfilePanel extends ResizablePanel
     //GETTERS
     public JPanel getSmallPanel()
     {
-        InitializeSmallPanel();
+        initializeSmallPanel();
         return smallPanel;
     }
     public PlayerInputTabbedPanels getPlayerInputTabbedPanel(){return playerInputTabbedPanel;}

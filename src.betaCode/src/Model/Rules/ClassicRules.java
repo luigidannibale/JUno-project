@@ -6,6 +6,9 @@ import Model.DeckManager;
 
 import java.util.List;
 
+/**
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class ClassicRules extends UnoGameRules
 {
     public ClassicRules()  { super(7,1,DeckManager.CLASSIC_RULES_CARD_DISTRIBUTION); }

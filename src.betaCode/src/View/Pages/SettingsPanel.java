@@ -42,14 +42,14 @@ public class SettingsPanel extends ResizablePanel
         setLayout(new GridBagLayout());
         setOpaque(false);
         setVisible(false);
-        InitializeComponents();
+        initializeComponents();
         resizeComponents();
     }
 
     /**
      * Initializes and adds the components of the {@link SettingsPanel}
      */
-    private void InitializeComponents()
+    private void initializeComponents()
     {
         //LABELS
         effectsLabel = new ChangebleIcon(pathImages +"EffectsVolume/",new String[]{"off","low","high"},".png");
@@ -67,9 +67,9 @@ public class SettingsPanel extends ResizablePanel
 
         //VOLUME SLIDER
         effectsViewSlider = new ViewSlider();
-        effectsViewSlider.addMouseListener();
+        effectsViewSlider.addDefaultMouseListener();
         musicViewSlider = new ViewSlider();
-        musicViewSlider.addMouseListener();
+        musicViewSlider.addDefaultMouseListener();
 
         //DECK RECTANGLE
         whiteDeck = new DeckRectangle(pathImages +"white.png", "White Deck", DeckColor.WHITE);

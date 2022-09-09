@@ -1,4 +1,4 @@
-package View.Pages.ProfileManagement;
+package View.Pages.ProfilePanels;
 
 import Controller.Utilities.Config;
 import View.Elements.GifComponent;
@@ -27,17 +27,17 @@ public abstract class InputPanel extends ResizablePanel
         PASSWORD_TOOLTIP("Password must have 6 character with 1 capital letter and 1 lowercase"),
         PASSWORD_ERROR("Password is not valid"),
         CONFIRM_PASSWORD("Confirm old password");
-        private final String associatedMessage;
-        InputMessages(String associatedMessage){this.associatedMessage = associatedMessage;}
-        public String getMessage(){return associatedMessage;}
+        public final String ASSOCIATED_MESSAGE;
+        InputMessages(String associatedMessage){this.ASSOCIATED_MESSAGE = associatedMessage;}
+        //public String getMessage(){return associatedMessage;}
     }
 
     public static final String IMAGE_PATH = ProfilePanel.IMAGE_PATH+"UpdatePanel/";
 
-    JTextField txtInsertName;
-    JTextField txtInsertPassword;
-    GifComponent saveButton;
-    GifComponent closeButton;
+    protected JTextField txtInsertName;
+    protected JTextField txtInsertPassword;
+    protected GifComponent saveButton;
+    protected GifComponent closeButton;
 
     /**
      * Instantiate the {@link InputPanel} with the given back color and border color and
@@ -60,8 +60,8 @@ public abstract class InputPanel extends ResizablePanel
         txtInsertName.setBorder(new EmptyBorder(0,0,0,0));
         txtInsertName.setPreferredSize(new Dimension(300,40));
         txtInsertName.setFont(new Font(getFont().getFontName(),getFont().getStyle(),25));
-        txtInsertName.setText(InputMessages.NAME_INSERT.getMessage());
-        txtInsertName.setToolTipText(InputMessages.NAME_INSERT.getMessage());
+        txtInsertName.setText(InputMessages.NAME_INSERT.ASSOCIATED_MESSAGE);
+        txtInsertName.setToolTipText(InputMessages.NAME_INSERT.ASSOCIATED_MESSAGE);
         txtInsertName.setHorizontalAlignment(JTextField.CENTER);
 
         txtInsertPassword = new JTextField();
@@ -71,8 +71,8 @@ public abstract class InputPanel extends ResizablePanel
         txtInsertPassword.setPreferredSize(new Dimension(300,40));
         txtInsertPassword.setFont(new Font(getFont().getFontName(),getFont().getStyle(),25));
 
-        txtInsertPassword.setText(InputMessages.PASSWORD_INSERT.getMessage());
-        txtInsertPassword.setToolTipText(InputMessages.PASSWORD_TOOLTIP.getMessage());
+        txtInsertPassword.setText(InputMessages.PASSWORD_INSERT.ASSOCIATED_MESSAGE);
+        txtInsertPassword.setToolTipText(InputMessages.PASSWORD_TOOLTIP.ASSOCIATED_MESSAGE);
         txtInsertPassword.setHorizontalAlignment(JTextField.CENTER);
 
         saveButton = new GifComponent(IMAGE_PATH + "save",80,80);
@@ -169,7 +169,7 @@ public abstract class InputPanel extends ResizablePanel
                 if (textfield.getText().isEmpty())
                 {
                     textfield.setForeground(Color.BLACK);
-                    textfield.setText(InputMessages.valueOf(textfield.getName().toUpperCase()+"_INSERT").getMessage());
+                    textfield.setText(InputMessages.valueOf(textfield.getName().toUpperCase()+"_INSERT").ASSOCIATED_MESSAGE);
                 }
             }};
     }
@@ -201,7 +201,7 @@ public abstract class InputPanel extends ResizablePanel
      */
     public  void textFieldError(JTextField textField, InputMessages error)
     {
-        textField.setText(error.getMessage());
+        textField.setText(error.ASSOCIATED_MESSAGE);
         textField.setForeground(Color.RED);
         textField.transferFocus();
     }
@@ -209,13 +209,13 @@ public abstract class InputPanel extends ResizablePanel
     /**
      * Checks if the given string has one capital, lower letter and one number
      */
-    public boolean containsOnecapitalOnelower1digit(String string){ return Pattern.compile("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])").matcher(string).find(); }
+    protected boolean containsOnecapitalOnelower1digit(String string){ return Pattern.compile("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])").matcher(string).find(); }
 
     //PREDICATES
     /**
      * Checks if the given string is contained in the {@link InputMessages} enum
      */
-    protected Predicate<String> ContainedInEnum = toCheck -> Arrays.stream(InputMessages.values()).anyMatch(v -> v.getMessage().equals(toCheck));
+    protected Predicate<String> ContainedInEnum = toCheck -> Arrays.stream(InputMessages.values()).anyMatch(message -> message.ASSOCIATED_MESSAGE.equals(toCheck));
     /**
      * Checks if the given string is empty or contained in the enum {@link InputMessages}
      */

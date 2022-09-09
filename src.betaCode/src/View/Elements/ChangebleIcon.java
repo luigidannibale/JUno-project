@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class ChangebleIcon extends JLabel
 {
-    public HashMap<String, ImageComponent> ICONS= new HashMap<>();
+    private HashMap<String, ImageComponent> ICONS = new HashMap<>();
     public ChangebleIcon(String path, String[]fileNames,String fileExtension)
     {
         setSize(new ImageComponent(path+fileNames[0]+fileExtension).getSize());

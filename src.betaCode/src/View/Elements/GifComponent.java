@@ -32,7 +32,7 @@ public class GifComponent extends ImageComponent
             @Override
             public void mouseEntered(MouseEvent e) { setIcon(gif); }
             @Override
-            public void mouseExited(MouseEvent e) { setIcon(icona); }
+            public void mouseExited(MouseEvent e) { setIcon(icon); }
         });
     }
 

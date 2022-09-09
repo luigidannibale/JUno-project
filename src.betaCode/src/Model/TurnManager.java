@@ -29,12 +29,12 @@ public class TurnManager
     public void passTurn(){ player = next(); }
 
     /**
-     * @return nextPlayer: provides the next player index
+     * @return the next player index
      */
     public int next()  { return next(player); }
 
     /**
-     * @return nextPlayer: provides the next player index of the given player
+     * @return the next player index of the given player
      */
     public int next(int offset)
     {
@@ -45,12 +45,12 @@ public class TurnManager
     }
 
     /**
-     * @return previousPlayer: provides the previous player index
+     * @return the previous player index
      */
     public int previous() { return previous(player); }
 
     /**
-     * @return previousPlayer: provides the previous player index of the given player
+     * @return the previous player index of the given player index
      */
     public int previous(int offset)
     {
@@ -59,27 +59,30 @@ public class TurnManager
         return offset - increase;
     }
 
+    /**
+     * Changes the turn flow from clockwise to anti-clockwise or vice-versa.
+     */
     public void reverseTurn() { increase = -increase; }
 
     /**
-     * @return player: provides the player who has to play the turn
+     * @return the player who has to play the turn
      */
     public int getPlayer(){ return  player==-1?0:player; }
 
     /**
-     * @return card: returns the last card played, more precisely a card which has the value of that card and the color (that can be either the same of the card or
+     * @return the last card played, more precisely a card which has the value of that card and the color (that can be either the same of the card or
      * the one chosen after a wild card)
      */
     public Card getLastCardPlayed(){return lastCardPlayed;}
 
     /**
-     * @param lastPlayed: the card that has been played
+     * @param lastPlayed the card that has been played
      */
     public void updateLastCardPlayed(Card lastPlayed){this.lastCardPlayed = lastPlayed;}
 
     /**
-     * @param value : the value of the last card played
-     * @param color : the color of the last card played (or the color that has been chosen after a wild)
+     * @param value the value of the last card played
+     * @param color the color of the last card played (or the color that has been chosen after a wild)
      */
     public void updateLastCardPlayed(Value value, Color color){ updateLastCardPlayed(CardFactory.createFlowCard(color,value)); }
 
@@ -91,7 +94,7 @@ public class TurnManager
 
     /**
     *
-    * @param player: the player that has to play the turn
+    * @param player the player that has to play the turn
     */
     public void setPlayer(int player) {this.player = player<=4&&player>=0?player:this.player;}
 }
