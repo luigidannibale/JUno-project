@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 public class Config
 {
+
     public enum KEYS
     {
         EFFECTS_VOLUME("effectsVolume"),
