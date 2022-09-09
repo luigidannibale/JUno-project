@@ -13,7 +13,8 @@ import java.util.Arrays;
 
 public class GameChoiceController extends Controller<GameChoicePanel>
 {
-    public enum GameMode{
+    public enum GameMode
+    {
         CLASSIC_RULES,
         MEME_RULES,
         SEVENO_RULES

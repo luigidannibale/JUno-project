@@ -1,5 +1,6 @@
 package Controller.Utilities;
 
+import Model.Cards.Card;
 import Model.Players.HumanPlayer;
 import View.Elements.DeckColor;
 import View.Elements.GraphicQuality;
@@ -7,9 +8,51 @@ import View.Elements.GraphicQuality;
 import java.awt.*;
 import java.util.HashMap;
 
-
+/**
+ * This class is a container for static values that represent the configuration of all the application settings.
+ *
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class Config
 {
+
+    /**
+     * Keys for configs hashmap representation:
+     * <table>
+     *     <tr>
+     *         <th>KEY</th>
+     *         <th>VALUE</th>
+     *     </tr>
+     *     <tr>
+     *         <td>EFFECTS_VOLUME</td>
+     *         <td>"effectsVolume"/td>
+     *     </tr>
+     *     <tr>
+     *         <td>MUSIC_VOLUME</td>
+     *         <td>"musicVolume"</td>
+     *     </tr>
+     *     <tr>
+     *         <td>DECK_STYLE</td>
+     *         <td>"deckStyle"</td>
+     *     </tr>
+     *     <tr>
+     *         <td>GRAPHIC_QUALITY</td>
+     *         <td>"graphicQuality"</td>
+     *     </tr>
+     *     <tr>
+     *         <td>SAVED_ICON_PATH</td>
+     *         <td>"savedIconPath"</td>
+     *     </tr>
+     *     <tr>
+     *         <td>LOGGED_PLAYER</td>
+     *         <td>"player"</td>
+     *     </tr>
+     *     <tr>
+     *         <td>CONFIG</td>
+     *         <td>"config"</td>
+     *     </tr>
+     * </table>
+     */
     public enum KEYS
     {
         EFFECTS_VOLUME("effectsVolume"),
@@ -33,6 +76,35 @@ public class Config
     public static String savedIconPath;
     public static double scalingPercentage;
 
+    /**
+     * Sets the default player, with associated default settings values:
+     *  <table>
+     *     <tr>
+     *         <th>Value</th>
+     *         <th>default value associated</th>
+     *     </tr>
+     *     <tr>
+     *         <td>effectsVolume</td>
+     *         <td>50</td>
+     *     </tr>
+     *     <tr>
+     *         <td>musicVolume</td>
+     *         <td>50</td>
+     *     </tr>
+     *     <tr>
+     *         <td>deckStyle</td>
+     *         <td>DeckColor.WHITE</td>
+     *     </tr>
+     *     <tr>
+     *         <td>graphicQuality</td>
+     *         <td>GraphicQuality.LOW</td>
+     *     </tr>
+     *     <tr>
+     *         <td>savedIconPath</td>
+     *         <td>DEFAULT_ICON_PATH</td>
+     *     </tr>
+     *  </table>
+     */
     public static void assignDefaultValues()
     {
         loggedPlayer = new DataAccessManager().getModelProfile("");
@@ -41,12 +113,15 @@ public class Config
         refreshScalingPercentage();
     }
 
+    /**
+     * Calculates the actual scaling percentage basing on current window dimensions
+     */
     public static void  refreshScalingPercentage() { scalingPercentage = Toolkit.getDefaultToolkit().getScreenSize().getWidth()/1920; }
 
     /**
-     * Represent into a hashmap the player and his settings
+     * Represent into a {@link HashMap} the {@link Model.Players.Player} and his settings
      * @param player
-     * @return
+     * @return an {@link HashMap}
      */
     public static HashMap<Object, Object> getPlayerConfig(HumanPlayer player)
     {

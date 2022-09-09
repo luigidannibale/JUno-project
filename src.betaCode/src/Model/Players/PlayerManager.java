@@ -16,7 +16,7 @@ public class PlayerManager
      * KEYS for stats
      * <table>
      *     <tr>
-     *         <th>Key</th>
+     *         <th>KEY</th>
      *         <th>String representation</th>
      *     </tr>
      *     <tr>

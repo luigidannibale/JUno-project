@@ -9,24 +9,26 @@ public class AudioManager
 {
     /**
      * KEYS for stats
-     * <table>
-     *     <tr>
-     *         <th>Key</th>
-     *         <th>String representation</th>
-     *     </tr>
-     *     <tr>
-     *         <td>VICTORIES</td>
-     *         <td>"victories"</td>
-     *     </tr>
-     *     <tr>
-     *         <td>DEFEATS</td>
-     *         <td>"defeats"</td>
-     *     </tr>
-     *     <tr>
-     *         <td>LEVEL</td>
-     *         <td>"level"</td>
-     *     </tr>
-     * </table>
+     *<ul>
+     *     <li>PLAY</li>
+     *     <li>DRAW_CARD</li>
+     *     <li>FLIP</li>
+     *     <li>UNO</li>
+     *     <li>NOT_VALID</li>
+     *     <li>ERROR</li>
+     *     <li>WIN</li>
+     *     <li>LOSS</li>
+     *     <li>CLICK</li>
+     *     <li>AUDIO_TEST</li>
+     *     <li>REVERSE</li>
+     *     <li>SKIP</li>
+     *     <li>DRAW</li>
+     *     <li>WILD_DRAW</li>
+     *     <li>GREEN</li>
+     *     <li>RED</li>
+     *     <li>YELLOW</li>
+     *     <li>BLUE</li>
+     *</ul>
      *
      * @author D'annibale Luigi, Venturini Daniele
      */
@@ -54,8 +56,10 @@ public class AudioManager
 
 
     /**
-     * Available musics
-     * <ul></ul>
+     * Background music
+     * <ul>
+     *     <li>CALM_BACKGROUND</li>
+     * </ul>
      *
      * @author D'annibale Luigi, Venturini Daniele
      */
@@ -71,7 +75,7 @@ public class AudioManager
     private Clip effectsTrack;
     /**
      * If the static instance is null, it initializes the instance of {@link AudioManager}, otherwise it returns the static instance
-     * @return the static instance of AudioManager
+     * @return the static unique instance of AudioManager
      */
     public static AudioManager getInstance()
     {
@@ -82,7 +86,6 @@ public class AudioManager
 
     /**
      * Private constructor because only one instance of {@link AudioManager} can be instantiated
-     * @param volume - to volume of the effects
      */
     private AudioManager() { }
 
