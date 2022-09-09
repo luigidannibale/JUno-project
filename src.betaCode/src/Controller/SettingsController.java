@@ -4,27 +4,39 @@ import Controller.Utilities.AudioManager;
 import Controller.Utilities.Config;
 import View.Elements.*;
 import View.Pages.SettingsPanel;
+import View.Pages.StartingMenuPanel;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Class used to get the inputs from the user in the {@link SettingsPanel}.
+ * It manages the values of the {@link Config} and updates the {@link SettingsPanel} when they are modified.
+ * It also initializes the {@link ChangebleIcon} with the icons they need.
+ * When the {@link SettingsPanel} is closed, the visible panel becomes the last one where the user was
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class SettingsController extends Controller<SettingsPanel>
 {
     private DeckColor deckChanges;
     private MainFrameController.Panels returnPanel;
 
+    /**
+     * Creates a new {@link SettingsController} with its associated view ({@link SettingsPanel}), updating the displayed values and adding the listeners
+     */
     public SettingsController()
     {
         super(new SettingsPanel());
 
-
         addButtonsListeners();
         addChangeableIconListeners();
         refreshSettings();
-
     }
 
+    /**
+     * Adds the listeners to the buttons
+     */
     private void addButtonsListeners()
     {
         view.getSaveButton().addMouseListener(new CustomMouseAdapter() {
@@ -54,6 +66,9 @@ public class SettingsController extends Controller<SettingsPanel>
 
     }
 
+    /**
+     * Saves the new {@link Config} values
+     */
     private void saveConfig()
     {
         Config.effectsVolume = view.getEffectsVolumeSlider().getValue();
@@ -66,6 +81,9 @@ public class SettingsController extends Controller<SettingsPanel>
         AudioManager.getInstance().setVolume(Config.musicVolume);
     }
 
+    /**
+     * Refresh the displayed values with the ones in {@link Config}
+     */
     public void refreshSettings()
     {
         view.getEffectsVolumeSlider().setValue(Config.effectsVolume);
@@ -74,12 +92,19 @@ public class SettingsController extends Controller<SettingsPanel>
         changeDeckBack(Config.deckStyle);
     }
 
+    /**
+     * Changes the selected {@link View.Pages.SettingsPanel.DeckRectangle}
+     * @param c the related {@link DeckColor}
+     */
     private void changeDeckBack(DeckColor c) {
         deckChanges = c;
         view.getDarkDeck().setPaintBackground( c==DeckColor.BLACK);
         view.getWhiteDeck().setPaintBackground(c==DeckColor.WHITE);
     }
 
+    /**
+     * Adds the listeners to the {@link View.Pages.SettingsPanel.DeckRectangle} and the {@link ChangebleIcon}
+     */
     private void addChangeableIconListeners()
     {
         MouseAdapter deckColorStyleMouseAdapter = new CustomMouseAdapter(){
@@ -131,6 +156,10 @@ public class SettingsController extends Controller<SettingsPanel>
         });
     }
 
+    /**
+     * Sets the {@link Controller.MainFrameController.Panels} to be visible when {@link SettingsPanel} is closed
+     * @param returnPanel
+     */
     public void setReturnPanel(MainFrameController.Panels returnPanel)
     {
         this.returnPanel = returnPanel;

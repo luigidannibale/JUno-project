@@ -7,6 +7,7 @@ import Controller.Utilities.DataAccessManager;
 import View.Elements.CircularImage;
 import View.Elements.ViewPlayer;
 import View.Pages.MainFrame;
+import View.Pages.StartingMenuPanel;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
@@ -16,6 +17,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * Class used to manage the communication between all the controllers.
+ * It starts the actual game and sets the current visible panel. <br>
+ * This class uses the Singleton Pattern because this class is used in every {@link Controller}
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class MainFrameController extends Controller<MainFrame>
 {
     public enum Panels
@@ -37,6 +44,11 @@ public class MainFrameController extends Controller<MainFrame>
     private ViewPlayer viewPlayer;
     private Panels currentPanel;
 
+    /**
+     * Returns the static instace of the {@link MainFrameController}. If is null, then the class
+     * is instantiated with all its components.
+     * @return
+     */
     public static MainFrameController getInstance(){
         if (instance == null){
             instance = new MainFrameController();
@@ -45,9 +57,15 @@ public class MainFrameController extends Controller<MainFrame>
         return instance;
     }
 
+    /**
+     * Creates a new {@link MainFrameController} with its associated view ({@link MainFrame}). Used by the getInstance method.
+     */
     private MainFrameController()
     { super(new MainFrame()); }
 
+    /**
+     * Loads the last used {@link Config} and initialize all the other controllers
+     */
     private void initializeMainFrameController()
     {
         DataAccessManager DAM = new DataAccessManager();
@@ -94,6 +112,10 @@ public class MainFrameController extends Controller<MainFrame>
         AudioManager.getInstance().setAudio(AudioManager.Music.CALM_BACKGROUND);
     }
 
+    /**
+     * Asks the user if he is sure to close the game
+     * @return the choice made
+     */
     private boolean confirmDispose()
     {
         UIManager.put("OptionPane.background", new ColorUIResource(255,255,255));
@@ -110,6 +132,10 @@ public class MainFrameController extends Controller<MainFrame>
         return (confirm == JOptionPane.YES_OPTION);
     }
 
+    /**
+     * It hides the current visible {@link Panels} and shows the given {@link Panels}
+     * @param panel the panel to show
+     */
     public void setVisiblePanel(MainFrameController.Panels panel)
     {
         if (currentPanel != null) switch (currentPanel)
@@ -142,6 +168,7 @@ public class MainFrameController extends Controller<MainFrame>
                 c1.show(view.getContentPane(), MainFrame.Cards.MAIN.name());
             }
             case GAME -> {
+                //Prepare the view to start the game
                 view.dispose();
                 view.setUndecorated(true);
                 view.pack();
@@ -156,10 +183,17 @@ public class MainFrameController extends Controller<MainFrame>
         currentPanel = panel;
     }
 
+    /**
+     * Sets the return panel of the {@link SettingsController}
+     */
     public void setSettingsReturnPanel(){
         if (currentPanel != Panels.SETTINGS) settingsController.setReturnPanel(currentPanel);
     }
 
+    /**
+     * Creates a new {@link GamePanelController} with the given {@link Controller.GameChoiceController.GameMode}
+     * @param gameMode
+     */
     public void createNewGame(GameChoiceController.GameMode gameMode)
     {
         ViewPlayer[] viewPlayers = new ViewPlayer[]{
@@ -173,6 +207,9 @@ public class MainFrameController extends Controller<MainFrame>
         setVisiblePanel(MainFrameController.Panels.GAME);
     }
 
+    /**
+     * Closes the game and returns the {@link MainFrame} to its previous size
+     */
     public void quitGame(){
         gameController.quitGame();
         profileController.getView().update();
@@ -187,6 +224,9 @@ public class MainFrameController extends Controller<MainFrame>
         setVisiblePanel(Panels.STARTMENU);
     }
 
+    /**
+     * Calls the {@link WindowEvent} Window closing to ask the user if he is sure to close the game
+     */
     public void closeWindow(){
         try //If the parent has a listener that manages the window closing it links that event, if an exception is generated the frame just get closed
         {
@@ -198,7 +238,9 @@ public class MainFrameController extends Controller<MainFrame>
         }
     }
 
+    //GETTER
     public ViewPlayer getViewPlayer() { return viewPlayer; }
 
+    //SETTER
     public void setViewPlayer(ViewPlayer viewPlayer) { this.viewPlayer = viewPlayer; }
 }

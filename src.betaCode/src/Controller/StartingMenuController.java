@@ -5,8 +5,16 @@ import View.Pages.StartingMenuPanel;
 
 import java.awt.event.MouseEvent;
 
+/**
+ * Class used to get the inputs from the user in the {@link StartingMenuPanel}.
+ * It lets the user navigate between the {@link View.Pages.SettingsPanel} and the {@link View.Pages.GameChoicePanel}
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class StartingMenuController extends Controller<StartingMenuPanel>
 {
+    /**
+     * Creates a new {@link StartingMenuController} with its associated view ({@link StartingMenuPanel}), and adds the listeners to the {@link View.Elements.ImageComponent} inside the {@link StartingMenuPanel}
+     */
     public StartingMenuController()
     {
         super(new StartingMenuPanel());

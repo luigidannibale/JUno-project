@@ -4,10 +4,13 @@ import Model.Players.HumanPlayer;
 import Model.Players.PlayerManager;
 import Controller.Utilities.Config;
 import Controller.Utilities.DataAccessManager;
+import View.Elements.ChangebleIcon;
 import View.Elements.CircularImage;
 import View.Elements.CustomMouseAdapter;
 import View.Elements.ViewPlayer;
 import View.Pages.ProfilePanels.*;
+import View.Pages.SettingsPanel;
+import View.Pages.StartingMenuPanel;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -18,10 +21,19 @@ import java.awt.font.TextAttribute;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Class used to get the inputs from the user in the {@link ProfilePanel}.
+ * It contains all the methods related to the profile management.
+ * When closed sets visible the caller panel, {@link View.Pages.StartingMenuPanel} or {@link View.Pages.GameChoicePanel}
+ * @author D'annibale Luigi, Venturini Daniele
+ */
 public class ProfilePanelController extends Controller<ProfilePanel>
 {
     private MainFrameController.Panels returnPanel;
 
+    /**
+     * Creates a new {@link ProfilePanelController} with its associated view ({@link ProfilePanel}), and adds the listeners to the components inside the {@link ProfilePanel}
+     */
     public ProfilePanelController()
     {
         super(new ProfilePanel());
@@ -35,7 +47,6 @@ public class ProfilePanelController extends Controller<ProfilePanel>
                 Color c;
                 switch (new Random().nextInt(1,10))
                 {
-                    case 1 -> c = Color.BLACK;
                     case 2 -> c = Color.RED;
                     case 3 -> c = Color.BLUE;
                     case 4 -> c = Color.YELLOW;
@@ -52,8 +63,8 @@ public class ProfilePanelController extends Controller<ProfilePanel>
             @Override
             public void mouseExited(MouseEvent e) { setFont(-1); }
 
-            //UNDERLINE 0 = sottolineato
-            //UNDERLINE -1 = non sottolineato
+            //UNDERLINE 0 = underline on
+            //UNDERLINE -1 = underline off
             private void setFont(int onOff)
             {
                 Font font = name.getFont();
@@ -78,6 +89,8 @@ public class ProfilePanelController extends Controller<ProfilePanel>
             inputPanel.getSaveButton().addMouseListener(getSave(inputPanel));
 
         });
+
+        //CHOOSE ICON
         JFileChooser chooser = new JFileChooser();
         chooser.setFileFilter(new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png"));
         view.getLblChangeIcon().addMouseListener(new CustomMouseAdapter()
@@ -96,6 +109,12 @@ public class ProfilePanelController extends Controller<ProfilePanel>
         });
     }
 
+    /**
+     * Custom mouse adapter that choose the right save function to do based on the {@link InputPanel} where the button was clicked.
+     * Then updates the {@link ProfilePanel}
+     * @param inputPanel
+     * @return the mouse adapter
+     */
     private CustomMouseAdapter getSave(InputPanel inputPanel)
     {
         return new CustomMouseAdapter()
@@ -125,6 +144,12 @@ public class ProfilePanelController extends Controller<ProfilePanel>
         };
     }
 
+    /**
+     * Updates the profile with a new name and password after the current password has been confirmed.
+     * @param panel
+     * @param txtInsertName
+     * @param txtInsertPassword
+     */
     private void update(UpdatePanel panel, JTextField txtInsertName, JTextField txtInsertPassword)
     {
         JTextField txtConfirmPassword = panel.getTxtConfirmPassword();
@@ -151,6 +176,13 @@ public class ProfilePanelController extends Controller<ProfilePanel>
         }
     }
 
+    /**
+     * Logs the profile of an already registered profile, given its name and password
+     * Then updates the {@link ViewPlayer}.
+     * @param panel
+     * @param txtInsertName
+     * @param txtInsertPassword
+     */
     private void login(LoginPanel panel, JTextField txtInsertName, JTextField txtInsertPassword)
     {
         String name = txtInsertName.getText(),
@@ -175,6 +207,13 @@ public class ProfilePanelController extends Controller<ProfilePanel>
         if (DAM.loadPlayerProfile(optionalPlayer.getName())) MainFrameController.getInstance().setViewPlayer(new ViewPlayer(optionalPlayer, new CircularImage(Config.savedIconPath)));
     }
 
+    /**
+     * Creates a new profile if no player are registered with that name and if the name and password are valid.
+     * Then updates the {@link ViewPlayer}.
+     * @param panel
+     * @param txtInsertName
+     * @param txtInsertPassword
+     */
     private void registrate(RegistrationPanel panel, JTextField txtInsertName, JTextField txtInsertPassword)
     {
         String name = txtInsertName.getText(),
@@ -193,8 +232,13 @@ public class ProfilePanelController extends Controller<ProfilePanel>
         if (DAM.saveProfile(player)) MainFrameController.getInstance().setViewPlayer(new ViewPlayer(player, new CircularImage(Config.savedIconPath)));
     }
 
+    //GETTER
     public JPanel getSmallPanel(){ return view.getSmallPanel(); }
 
+    /**
+     * If the parameter is true the main panel is displayed, the small one otherwise
+     * @param visible
+     */
     @Override
     public void setVisible(boolean visible)
     {
@@ -204,6 +248,10 @@ public class ProfilePanelController extends Controller<ProfilePanel>
         else view.initializeSmallPanel();
     }
 
+    /**
+     * Sets the {@link Controller.MainFrameController.Panels} to be visible when {@link ProfilePanel} is closed
+     * @param returnPanel
+     */
     public void setReturnPanel(MainFrameController.Panels returnPanel)
     { if (returnPanel != MainFrameController.Panels.PROFILE && returnPanel != MainFrameController.Panels.SETTINGS) this.returnPanel = returnPanel; }
 }

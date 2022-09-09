@@ -8,12 +8,17 @@ import View.Animations.Animation;
 import View.Elements.ViewPlayer;
 import View.Elements.ViewRotatableCard;
 import View.Pages.GamePanel;
+import View.Pages.StartingMenuPanel;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+/**
+ * Class used to get the inputs in the {@link GamePanel} and to update the {@link UnoGameTable} with the changes made by the user.
+ * It manages the player's turn and the {@link Animation}s to be called in the view
+ */
 public class GamePanelController extends Controller<GamePanel>
 {
     private UnoGameTable gameTable;
@@ -23,6 +28,12 @@ public class GamePanelController extends Controller<GamePanel>
 
     private Animation exposeAnimation;
 
+    /**
+     * Creates a new {@link GamePanelController} with its associated view ({@link GamePanel}), instantiating a new {@link UnoGameTable} with the given {@link Controller.GameChoiceController.GameMode} and {@link ViewPlayer}s
+     * If the {@link GamePanel} is hidden, then the game is paused, and it resumes when it gets shown again.
+     * @param gameMode
+     * @param players
+     */
     public GamePanelController(GameChoiceController.GameMode gameMode, ViewPlayer[] players)
     {
         super(new GamePanel(players));
@@ -35,7 +46,6 @@ public class GamePanelController extends Controller<GamePanel>
             default -> rules = new ClassicRules();
         }
         gameTable = new UnoGameTable(Stream.of(players).map(ViewPlayer::getPlayer).toArray(Player[]::new), rules);
-        //players[0].getPlayer().getHand().removeAllElements();
 
         view.addMouseListener(new MouseAdapter()
         {
@@ -72,6 +82,9 @@ public class GamePanelController extends Controller<GamePanel>
         startGame();
     }
 
+    /**
+     * Starts a new game and manages the first card on the table
+     */
     public void startGame()
     {
         ActionPerformResult result = gameTable.startGame();
@@ -86,13 +99,28 @@ public class GamePanelController extends Controller<GamePanel>
             }).start();
     }
 
+    /**
+     * Stops all the animations and paintings in the {@link GamePanel}
+     */
     public void quitGame(){
         AudioManager.getInstance().stopEffect();
         view.stopTimer();
     }
 
+    /**
+     * Checks if the user has to play his turn
+     * @return true if it's the user's turn, false otherwise
+     */
     private boolean playersTurn() { return view.getCurrentState() == GamePanel.State.PLAYER_TURN; }
 
+    /**
+     * Based on the click coordinates on the view, it checks if user: <br>
+     * - has to say UNO <br>
+     * - is exposing another player <br>
+     * - has skipped turn <br>
+     * - has drawn a card
+     * @param e
+     */
     private void viewPlayerClick(MouseEvent e)
     {
         Point mouseClickPosition = e.getPoint();
@@ -106,10 +134,6 @@ public class GamePanelController extends Controller<GamePanel>
         continueBranch(mouseClickPosition);
 
         if (!playersTurn()) return; // not players turn
-
-        if (humanPlayer.getPlayer() != gameTable.currentPlayer()) return; //not his turn
-
-        //this is his turn
 
         if (view.getDeck().contains(mouseClickPosition)) //clicked on deck
             drawCardBranch(humanPlayer);

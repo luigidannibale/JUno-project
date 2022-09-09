@@ -17,12 +17,12 @@
     "deckStyle": "WHITE",
     "effectsVolume": 62,
     "savedIconPath": "resources/images/MainFrame/ProfilePanel/anonymous.png",
-    "musicVolume": 40,
-    "graphicQuality": "LOW"
+    "musicVolume": 24,
+    "graphicQuality": "HIGH"
    },
    "player": {
-    "name": "Dan",
-    "PASSWORD": "Password123"
+    "PASSWORD": "Password123",
+    "name": "Dan"
    }
   }
  ]
