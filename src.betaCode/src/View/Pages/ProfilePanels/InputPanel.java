@@ -140,9 +140,8 @@ public abstract class InputPanel extends ResizablePanel
         Arrays.stream(getComponents()).forEach(component ->
         {
             if(component instanceof JTextField){
-                //System.out.println("prima" + component.getPreferredSize());
-                component.setPreferredSize(new Dimension((int) (component.getPreferredSize().width * Config.scalingPercentage), (int) (component.getPreferredSize().height * Config.scalingPercentage)));
-                //System.out.println("dopo" + component.getPreferredSize());
+                int width = Math.max((int) (component.getPreferredSize().width * Config.scalingPercentage), getPreferredSize().width - 100);
+                component.setPreferredSize(new Dimension(width, (int) (component.getPreferredSize().height * Config.scalingPercentage)));
                 component.setFont(component.getFont().deriveFont((float) (component.getFont().getSize()*Config.scalingPercentage)));
             }
             else component.setPreferredSize(new Dimension((int) (component.getPreferredSize().width * Config.scalingPercentage), (int) (component.getPreferredSize().height * Config.scalingPercentage)));
