@@ -584,7 +584,7 @@ public class GamePanel extends JPanel implements Observer
             width = -width;
             height = -height;
         }
-        drawNames(player, maxCardsWidth - 100, namesY, g2, 65, 40);
+        drawNames(player, maxCardsWidth - 100, namesY, g2, player.getProfilePicture().getWidth(), 40);
 
         for (ViewAnimableCard card :player.getImagesHand())
         {

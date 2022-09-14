@@ -40,6 +40,7 @@ public class CircularImage extends JComponent
         this.width = width;
         this.height = height;
         super.setPreferredSize(new Dimension(width, height));
+        super.setSize(width, height);
         setCircleImage(path);
     }
 
@@ -84,9 +85,10 @@ public class CircularImage extends JComponent
     public void setPreferredSize(Dimension preferredSize)
     {
         super.setPreferredSize(preferredSize);
+        super.setSize(preferredSize);
         if (imm == null) return;
-        width = preferredSize.width;
-        height = preferredSize.height;
+        this.width = preferredSize.width;
+        this.height = preferredSize.height;
         imm = imm.getScaledInstance(width,height,Image.SCALE_DEFAULT);
         repaint();
     }

@@ -59,6 +59,7 @@ public class PlayerInputTabbedPanels extends JTabbedPane
     public void setPreferredSize(Dimension preferredSize)
     {
         super.setPreferredSize(preferredSize);
+        System.out.println(preferredSize);
         loginPanel.resizeComponents();
         updatePanel.resizeComponents();
         registrationPanel.resizeComponents();

@@ -61,7 +61,7 @@ public abstract class InputPanel extends ResizablePanel
         txtInsertName.setName("name");
         txtInsertName.setBackground(backColor);
         txtInsertName.setBorder(new EmptyBorder(0,0,0,0));
-        txtInsertName.setPreferredSize(new Dimension(300,40));
+        txtInsertName.setPreferredSize(new Dimension(230,40));
         txtInsertName.setFont(new Font(getFont().getFontName(),getFont().getStyle(),25));
         txtInsertName.setText(InputMessages.NAME_INSERT.ASSOCIATED_MESSAGE);
         txtInsertName.setToolTipText(InputMessages.NAME_INSERT.ASSOCIATED_MESSAGE);
@@ -71,7 +71,7 @@ public abstract class InputPanel extends ResizablePanel
         txtInsertPassword.setName("password");
         txtInsertPassword.setBackground(backColor);
         txtInsertPassword.setBorder(new EmptyBorder(0,0,0,0));
-        txtInsertPassword.setPreferredSize(new Dimension(300,40));
+        txtInsertPassword.setPreferredSize(new Dimension(230,40));
         txtInsertPassword.setFont(new Font(getFont().getFontName(),getFont().getStyle(),25));
 
         txtInsertPassword.setText(InputMessages.PASSWORD_INSERT.ASSOCIATED_MESSAGE);
@@ -140,7 +140,9 @@ public abstract class InputPanel extends ResizablePanel
         Arrays.stream(getComponents()).forEach(component ->
         {
             if(component instanceof JTextField){
-                component.setPreferredSize(new Dimension((int) (getPreferredSize().width * Config.scalingPercentage), (int) (getPreferredSize().height / 5.0 * Config.scalingPercentage)));
+                //System.out.println("prima" + component.getPreferredSize());
+                component.setPreferredSize(new Dimension((int) (component.getPreferredSize().width * Config.scalingPercentage), (int) (component.getPreferredSize().height * Config.scalingPercentage)));
+                //System.out.println("dopo" + component.getPreferredSize());
                 component.setFont(component.getFont().deriveFont((float) (component.getFont().getSize()*Config.scalingPercentage)));
             }
             else component.setPreferredSize(new Dimension((int) (component.getPreferredSize().width * Config.scalingPercentage), (int) (component.getPreferredSize().height * Config.scalingPercentage)));
