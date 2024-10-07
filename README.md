@@ -1,2 +1,2 @@
 # JUno-project
-Un progetto molto carino
+Progetto della realizzazione di una piattaforma per giocare ad Uno, realizzata in Java.
